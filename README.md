@@ -1,7 +1,7 @@
-# RC News Desk – 5-minute sports & geopolitics headlines
+# RC News Desk – 2-hour sports & geopolitics headlines
 
 A static front page of news tiles (Sports | Geopolitics, filter by continent, search).
-A Python script pulls headlines from newspaper RSS feeds every 5 minutes and the site is
+A Python script pulls headlines from newspaper RSS feeds every 2 hours and the site is
 rebuilt and published automatically. Each tile shows headline, source, time and links
 to the original article.
 
@@ -9,7 +9,7 @@ to the original article.
 - `feeds.json` – the newspapers (edit this to add or remove sources)
 - `fetch_news.py` – fetches the feeds, writes `site/news.json` (standard library only)
 - `site/index.html` – the front page
-- `.github/workflows/update.yml` – 5-minute job: fetch, then deploy to GitHub Pages
+- `.github/workflows/update.yml` – 2-hour job: fetch, then deploy to GitHub Pages
 - `test_parser.py` – offline parser test (also writes demo data)
 
 ## Publish it free with GitHub Pages (about 5 minutes)
@@ -18,7 +18,7 @@ to the original article.
 3. In the repo go to **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 4. Go to the **Actions** tab, open "Update news and deploy", click **Run workflow**.
 5. When it turns green, your site is live at `https://<your-username>.github.io/world-desk/`.
-   After this it refreshes itself every 5 minutes.
+   After this it refreshes itself every 2 hours.
 
 Note: GitHub may delay scheduled runs by several minutes at busy times, and pauses
 scheduled workflows in repos with no activity for 60 days (re-run it manually to wake it).
