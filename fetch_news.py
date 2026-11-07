@@ -21,7 +21,7 @@ OUT_FILE = ROOT / "site" / "news.json"
 
 PER_FEED_LIMIT = 10      # newest N items per feed
 MAX_AGE_DAYS = 3         # drop anything older than this
-TIMEOUT = 20
+TIMEOUT = 30
 USER_AGENT = "NewsHubBot/1.0 (headline aggregator; links back to originals)"
 SNIPPET_LEN = 160
 

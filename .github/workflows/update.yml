@@ -30,6 +30,8 @@ jobs:
       - name: Fetch latest headlines
         run: python3 fetch_news.py
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
