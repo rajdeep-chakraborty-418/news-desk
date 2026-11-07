@@ -299,7 +299,10 @@ def main():
     for s in statuses:
         if not s["ok"]:
             tag = "PRIMARY" if s["primary"] else "secondary"
-            print(f"  FAILED [{tag}] {s['source']} ({s['category']}): {s.get('error')}", file=sys.stderr)
+            print(f"  FAILED [{tag}] {s['source']} ({s['category']}) {s['url'][:90]}: {s.get('error')}", file=sys.stderr)
+    for s_ in statuses:
+        if s_["ok"] and "news.google.com" in s_["url"]:
+            print(f"  GNEWS {s_['source']} ({s_['category']}): {s_['count']} items")
     if not items:
         sys.exit(1)
 
