@@ -57,10 +57,6 @@
   {"source": "Firstpost", "country": "India", "continent": "Asia", "category": "world", "url": "https://www.firstpost.com/commonfeeds/v1/mfp/rss/world.xml", "primary": true},
   {"source": "Firstpost", "country": "India", "continent": "Asia", "category": "sports", "url": "https://www.firstpost.com/commonfeeds/v1/mfp/rss/sports.xml", "primary": true},
   {"source": "Firstpost", "country": "India", "continent": "Asia", "category": "entertainment", "url": "https://www.firstpost.com/commonfeeds/v1/mfp/rss/entertainment.xml", "primary": true},
-  {"source": "Deccan Herald", "country": "India", "continent": "Asia", "category": "india", "url": "https://www.deccanherald.com/rss/national.rss", "primary": true},
-  {"source": "Deccan Herald", "country": "India", "continent": "Asia", "category": "world", "url": "https://www.deccanherald.com/rss/international.rss", "primary": true},
-  {"source": "Deccan Herald", "country": "India", "continent": "Asia", "category": "sports", "url": "https://www.deccanherald.com/rss/sports.rss", "primary": true},
-  {"source": "Deccan Herald", "country": "India", "continent": "Asia", "category": "entertainment", "url": "https://www.deccanherald.com/rss/entertainment.rss", "primary": true},
   {"source": "CNBC", "country": "United States", "continent": "North America", "category": "world", "url": "https://www.cnbc.com/id/100727362/device/rss/rss.html", "primary": true},
   {"source": "CNBC", "country": "United States", "continent": "North America", "category": "world", "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html", "primary": true},
   {"source": "India Today", "country": "India", "continent": "Asia", "category": "india", "url": "https://www.indiatoday.in/rss/1206514", "primary": true},
@@ -72,7 +68,6 @@
   {"source": "NDTV", "country": "India", "continent": "Asia", "category": "sports", "url": "https://feeds.feedburner.com/ndtvsports-latest", "primary": true},
   {"source": "NDTV", "country": "India", "continent": "Asia", "category": "entertainment", "url": "https://feeds.feedburner.com/ndtvmovies-latest", "primary": true},
   {"source": "Sportstar", "country": "India", "continent": "Asia", "category": "sports", "url": "https://sportstar.thehindu.com/feeder/default.rss", "primary": true},
-  {"source": "Goal.com", "country": null, "continent": "Europe", "category": "sports", "url": "https://www.goal.com/feeds/en/news", "primary": true},
   {"source": "The Guardian", "country": "United Kingdom", "continent": "Europe", "category": "world", "url": "https://www.theguardian.com/world/rss", "primary": true},
   {"source": "The Guardian", "country": "United Kingdom", "continent": "Europe", "category": "sports", "url": "https://www.theguardian.com/sport/rss", "primary": true},
   {"source": "The Guardian", "country": "United Kingdom", "continent": "Europe", "category": "entertainment", "url": "https://www.theguardian.com/culture/rss", "primary": true},
@@ -92,8 +87,7 @@
   {"source": "Sydney Morning Herald", "country": "Australia", "continent": "Oceania", "category": "sports", "url": "https://www.smh.com.au/rss/sport.xml", "primary": true},
   {"source": "Sydney Morning Herald", "country": "Australia", "continent": "Oceania", "category": "entertainment", "url": "https://www.smh.com.au/rss/culture.xml", "primary": true},
   {"source": "Al Jazeera", "country": "Qatar", "continent": "Asia", "category": "world", "url": "https://www.aljazeera.com/xml/rss/all.xml", "primary": true, "general": true},
-  {"source": "AP News", "country": "United States", "continent": "North America", "category": "world", "url": "https://apnews.com/hub/world-news.rss", "primary": true},
-  {"source": "Sports Illustrated", "country": "United States", "continent": "North America", "category": "sports", "url": "https://www.si.com/rss/si_topstories.rss", "primary": true},
+  {"source": "Sports Illustrated", "country": "United States", "continent": "North America", "category": "sports", "url": "https://www.si.com/feed", "primary": true},
   {"source": "Defense News", "country": "United States", "continent": "North America", "category": "defence", "url": "https://www.defensenews.com/arc/outboundfeeds/rss/?outputType=xml", "primary": false},
   {"source": "Breaking Defense", "country": "United States", "continent": "North America", "category": "defence", "url": "https://breakingdefense.com/feed/", "primary": false},
   {"source": "The War Zone", "country": "United States", "continent": "North America", "category": "defence", "url": "https://www.twz.com/feed", "primary": false},
@@ -105,5 +99,6 @@
   {"source": "Deadline", "country": "United States", "continent": "North America", "category": "entertainment", "url": "https://deadline.com/feed/", "primary": false},
   {"source": "Bollywood Hungama", "country": "India", "continent": "Asia", "category": "entertainment", "url": "https://www.bollywoodhungama.com/rss/news.xml", "primary": false},
   {"source": "Scroll.in", "country": "India", "continent": "Asia", "category": "india", "url": "https://feeds.feedburner.com/ScrollinArticles.rss", "primary": false},
-  {"source": "The Wire", "country": "India", "continent": "Asia", "category": "india", "url": "https://thewire.in/feed", "primary": false}
+  {"source": "The Wire", "country": "India", "continent": "Asia", "category": "india", "url": "https://thewire.in/feed", "primary": false},
+  {"source": "Deccan Herald", "country": "India", "continent": "Asia", "category": "india", "url": "https://prod-qt-images.s3.amazonaws.com/production/deccanherald/feed.xml", "primary": true, "general": true}
 ]
