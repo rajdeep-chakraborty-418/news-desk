@@ -22,13 +22,13 @@ ROOT = Path(__file__).parent
 FEEDS_FILE = ROOT / "feeds.json"
 OUT_FILE = ROOT / "site" / "news.json"
 
-PER_FEED_LIMIT = 12
-MAX_AGE_DAYS = 3
+PER_FEED_LIMIT = 15
+MAX_AGE_DAYS = 4
 TIMEOUT = 30
 USER_AGENT = "NewsHubBot/1.0 (headline aggregator; links back to originals)"
 SNIPPET_LEN = 160
 
-# Sections shown on the site. "india", "world", "sports", "entertainment", "defence" come from
+# Sections shown on the site. "india", "world", "sports", "entertainment", "lifestyle", "defence" come from
 # the feed's own category; "geopolitics" and "defence" are also derived from keywords.
 GEO_WORDS = ["sanction", "sanctions", "diplomat", "diplomats", "diplomacy", "diplomatic", "summit", "treaty",
              "ceasefire", "cease-fire", "nato", "united nations", "security council", "foreign minister",
@@ -43,6 +43,9 @@ DEF_WORDS = ["military", "army", "navy", "naval", "air force", "defence", "defen
 SPORT_WORDS = ["cricket", "football", "tennis", "olympic", "olympics", "fifa", "premier league", "tournament",
                "champions league", "world cup", "formula 1", "grand prix", "athlete", "nba", "nfl", "mlb",
                "rugby", "golf", "ipl", "medal", "t20", "test match", "wimbledon", "striker", "goalkeeper"]
+LIFE_WORDS = ["lifestyle", "recipe", "recipes", "wellness", "fitness", "fashion", "skincare", "diet", "travel",
+              "holiday", "destination", "wedding", "parenting", "yoga", "nutrition", "workout", "home decor",
+              "interior", "gardening", "mental health", "sleep", "cooking", "restaurant", "beauty", "relationship"]
 ENT_WORDS = ["film", "movie", "bollywood", "hollywood", "actor", "actress", "singer", "album", "box office",
              "netflix", "oscar", "oscars", "grammy", "concert", "celebrity", "tv series", "festival"]
 
@@ -51,7 +54,7 @@ def word_re(words):
     return re.compile(r"\b(?:" + "|".join(re.escape(w) for w in words) + r")\b", re.I)
 
 
-GEO_RE, DEF_RE, SPORT_RE, ENT_RE = map(word_re, (GEO_WORDS, DEF_WORDS, SPORT_WORDS, ENT_WORDS))
+GEO_RE, DEF_RE, SPORT_RE, ENT_RE, LIFE_RE = map(word_re, (GEO_WORDS, DEF_WORDS, SPORT_WORDS, ENT_WORDS, LIFE_WORDS))
 
 IMG_TAG_RE = re.compile(r"""<img[^>]+?src=["']([^"']+)["']""", re.I)
 IMG_EXT_RE = re.compile(r"\.(?:jpe?g|png|webp|gif|avif)(?:[?#]|$)", re.I)
@@ -171,6 +174,8 @@ def classify(feed, title, summary):
             sections.append("sports")
         if ENT_RE.search(text):
             sections.append("entertainment")
+        if LIFE_RE.search(text):
+            sections.append("lifestyle")
     return sorted(set(sections), key=sections.index)
 
 
@@ -215,6 +220,7 @@ def fetch_one(feed):
             "sections": classify(feed, it["title"], it["summary"]),
             "continent": continent,
             "country": country,
+            "state": feed.get("state"),
         })
     status.update(ok=True, count=len(out))
     return out, status
@@ -222,7 +228,7 @@ def fetch_one(feed):
 
 def main():
     feeds = json.loads(FEEDS_FILE.read_text())
-    with ThreadPoolExecutor(max_workers=12) as pool:
+    with ThreadPoolExecutor(max_workers=16) as pool:
         results = list(pool.map(fetch_one, feeds))
 
     by_link, statuses = {}, []

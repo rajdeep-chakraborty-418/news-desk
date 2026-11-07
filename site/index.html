@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RC News Desk — India, World, Sports, Entertainment, Defence &amp; Geopolitics</title>
+<title>RC News Desk — India, World, Sports, Entertainment, Defence, Geopolitics &amp; Lifestyle</title>
 <meta name="description" content="Headlines from newspapers across the world, refreshed every 2 hours.">
 <meta name="referrer" content="no-referrer">
 <style>
   :root {
     --bg: #f6f4ef; --card: #ffffff; --ink: #1b1b1f; --muted: #6a6a73; --line: #e3e0d8; --accent: #b3261e;
     --c-india: #c2570c; --c-world: #2a4d8f; --c-sports: #1b6e5a; --c-entertainment: #9b2f7a;
-    --c-defence: #4a5a2a; --c-geopolitics: #8a2d2d;
+    --c-defence: #4a5a2a; --c-geopolitics: #8a2d2d; --c-lifestyle: #0f7b8a;
   }
   @media (prefers-color-scheme: dark) {
     :root { --bg: #131316; --card: #1c1c21; --ink: #ecebe6; --muted: #9a9aa4; --line: #2c2c33; --accent: #ff6b5e;
       --c-india: #ff9a4d; --c-world: #7ea3f0; --c-sports: #4cc3a4; --c-entertainment: #e27cc0;
-      --c-defence: #9fbf5f; --c-geopolitics: #f08a8a; }
+      --c-defence: #9fbf5f; --c-geopolitics: #f08a8a; --c-lifestyle: #4fc3d3; }
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 Georgia, "Times New Roman", serif; }
@@ -38,9 +38,24 @@
   .toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); cursor: pointer; }
   input[type=search] { font: 14px system-ui, sans-serif; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); min-width: 190px; margin-left: auto; }
   .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
-  #grid { margin-top: 18px; }
-  .top { margin-top: 18px; }
-  .top h3 { margin: 0 0 8px; font: 700 13px system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 20px; margin-top: 18px; align-items: start; }
+  #grid { margin: 0; }
+  aside { position: sticky; top: 118px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-family: system-ui, sans-serif; }
+  aside summary { cursor: pointer; padding: 12px 14px; font-weight: 700; font-size: 14px; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  aside summary::-webkit-details-marker { display: none; }
+  .selnote { font-weight: 400; color: var(--muted); font-size: 12px; }
+  .sidebody { padding: 0 12px 12px; display: grid; gap: 8px; }
+  .sidebody input[type=search] { margin: 0; min-width: 0; width: 100%; }
+  .clear { padding: 5px 12px; font-size: 13px; justify-self: start; }
+  #clist { max-height: 56vh; overflow-y: auto; display: grid; gap: 2px; padding-right: 4px; }
+  #clist label { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
+  #clist label:hover { background: var(--bg); }
+  #clist .n { margin-left: auto; color: var(--muted); font-size: 12px; }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { position: static; order: -1; }
+    #clist { max-height: 40vh; }
+  }
   a.tile { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--card); border: 1px solid var(--line);
            border-radius: 10px; overflow: hidden; transition: transform .12s, box-shadow .12s; }
   a.tile:hover, a.tile:focus-visible { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.14); outline: none; }
@@ -58,6 +73,8 @@
   .pri { color: var(--accent); font-weight: 700; }
   .empty { text-align: center; color: var(--muted); padding: 60px 0; font-family: system-ui, sans-serif; grid-column: 1 / -1; }
   .more { display: block; margin: 22px auto 0; padding: 10px 26px; }
+  [hidden] { display: none !important; }
+  .end { text-align: center; color: var(--muted); font: 14px system-ui, sans-serif; margin-top: 22px; }
   footer { margin-top: 36px; color: var(--muted); font: 13px system-ui, sans-serif; text-align: center; }
 </style>
 </head>
@@ -73,19 +90,28 @@
     <div class="tabs" id="tabs" role="group" aria-label="Section"></div>
     <div class="row">
       <div class="chips" id="chips" role="group" aria-label="Continent"></div>
-      <select id="country" aria-label="Country"></select>
       <label class="toggle"><input type="checkbox" id="primaryOnly"> Primary sources only</label>
       <input type="search" id="q" placeholder="Search headlines…" aria-label="Search headlines">
     </div>
   </div>
 
-  <section class="top" id="top" hidden>
-    <h3 id="toph">Top stories: latest from each continent</h3>
-    <div class="grid" id="topgrid"></div>
-  </section>
-
-  <main class="grid" id="grid" aria-live="polite"></main>
-  <button class="more" id="more" hidden>Show more stories</button>
+  <div class="layout">
+    <div>
+      <main class="grid" id="grid" aria-live="polite"></main>
+      <button class="more" id="more" hidden>Show more stories</button>
+      <div class="end" id="end" hidden>No more articles available.</div>
+    </div>
+    <aside id="side">
+      <details id="sidebox" open>
+        <summary>Countries <span class="selnote" id="selnote">All shown</span></summary>
+        <div class="sidebody">
+          <input type="search" id="cq" placeholder="Find a country…" aria-label="Find a country">
+          <button class="clear" id="clear" type="button">Show all countries</button>
+          <div id="clist" role="group" aria-label="Filter by country"></div>
+        </div>
+      </details>
+    </aside>
+  </div>
   <noscript><p class="empty">Please enable JavaScript to see the headlines.</p></noscript>
 
   <footer>Headlines, images and links belong to their respective newspapers. Click a tile to read the original story. Refreshed every 2 hours.</footer>
@@ -94,12 +120,13 @@
 <script>
 const SECTIONS = [
   ["india", "Indian News"], ["world", "World News"], ["sports", "Sports News"],
-  ["entertainment", "Entertainment News"], ["defence", "Defence News"], ["geopolitics", "Geo Politics News"]
+  ["entertainment", "Entertainment News"], ["defence", "Defence News"], ["geopolitics", "Geo Politics News"],
+  ["lifestyle", "Lifestyle"]
 ];
 const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
 const PRIMARY_BOOST_MS = 6 * 3600 * 1000;   // primary-source stories rank as if 6 hours newer
-const PAGE = 60;
-const state = { section: "india", continent: "All", country: "All", primaryOnly: false, q: "", items: [], shown: PAGE };
+const FIRST = 50, STEP = 50, MAX = 200;      // show 50 first, each click adds 50, never more than 200
+const state = { section: "india", continent: "All", countries: new Set(), primaryOnly: false, q: "", cq: "", items: [], shown: FIRST };
 const $ = (id) => document.getElementById(id);
 
 const color = (sec) => `var(--c-${sec})`;
@@ -112,17 +139,18 @@ function ago(iso) {
 }
 const score = (i) => new Date(i.published).getTime() + (i.primary ? PRIMARY_BOOST_MS : 0);
 
+// stories in this section, honouring primary-only and search (but not continent/country, which the sidebar counts)
 function bySection() {
   const q = state.q.trim().toLowerCase();
   return state.items.filter(i =>
     i.sections.includes(state.section) &&
     (!state.primaryOnly || i.primary) &&
-    (!q || (i.title + " " + i.summary + " " + i.source + " " + i.country).toLowerCase().includes(q)));
+    (!q || (i.title + " " + i.summary + " " + i.source + " " + i.country + " " + (i.state || "")).toLowerCase().includes(q)));
 }
 
-function makeTile(i, lead) {
+function makeTile(i) {
   const a = document.createElement("a");
-  a.className = "tile" + (lead ? " lead" : "");
+  a.className = "tile";
   a.href = i.link; a.target = "_blank"; a.rel = "noopener noreferrer";
   a.style.setProperty("--tc", color(state.section));
 
@@ -140,7 +168,7 @@ function makeTile(i, lead) {
 
   const body = document.createElement("div"); body.className = "body";
   const meta = document.createElement("div"); meta.className = "meta";
-  const c = document.createElement("span"); c.textContent = i.continent;
+  const c = document.createElement("span"); c.textContent = i.state || i.continent;
   const t = document.createElement("span"); t.textContent = ago(i.published);
   meta.append(c, t);
   const h = document.createElement("h2"); h.textContent = i.title;
@@ -156,52 +184,53 @@ function makeTile(i, lead) {
   return a;
 }
 
-function renderCountries(list) {
-  const sel = $("country");
-  const inCont = list.filter(i => state.continent === "All" || i.continent === state.continent);
+function renderSidebar(base) {
+  const inCont = base.filter(i => state.continent === "All" || i.continent === state.continent);
   const counts = {};
   for (const i of inCont) counts[i.country] = (counts[i.country] || 0) + 1;
-  const names = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b));
-  if (state.country !== "All" && !counts[state.country]) state.country = "All";
-  sel.replaceChildren(new Option(`All countries (${inCont.length})`, "All"));
-  for (const n of names) sel.append(new Option(`${n} (${counts[n]})`, n));
-  sel.value = state.country;
-}
-
-function renderTop(list) {
-  const top = $("top"), tg = $("topgrid");
-  tg.replaceChildren();
-  const show = state.continent === "All" && state.country === "All" && !state.q.trim();
-  const picks = [];
-  if (show) {
-    for (const c of CONTINENTS.slice(1)) {
-      const best = list.filter(i => i.continent === c).sort((a, b) => score(b) - score(a))[0];
-      if (best) picks.push(best);
-    }
+  for (const c of state.countries) counts[c] = counts[c] || 0;      // keep ticked countries visible
+  const cq = state.cq.trim().toLowerCase();
+  const names = Object.keys(counts).filter(n => !cq || n.toLowerCase().includes(cq))
+    .sort((a, b) => (state.countries.has(b) - state.countries.has(a)) || counts[b] - counts[a] || a.localeCompare(b));
+  const box = $("clist");
+  box.replaceChildren();
+  for (const n of names) {
+    const l = document.createElement("label");
+    const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = state.countries.has(n);
+    cb.onchange = () => {
+      cb.checked ? state.countries.add(n) : state.countries.delete(n);
+      state.shown = FIRST; render();
+    };
+    const name = document.createElement("span"); name.textContent = n;
+    const num = document.createElement("span"); num.className = "n"; num.textContent = counts[n];
+    l.append(cb, name, num); box.append(l);
   }
-  top.hidden = picks.length < 2;
-  for (const i of picks) tg.append(makeTile(i, true));
+  if (!names.length) { const e = document.createElement("div"); e.className = "selnote"; e.textContent = "No countries found."; box.append(e); }
+  $("selnote").textContent = state.countries.size ? `${state.countries.size} selected` : "All shown";
 }
 
 function render() {
   const base = bySection();
-  renderCountries(base);
-  renderTop(base);
+  renderSidebar(base);
   const list = base.filter(i =>
     (state.continent === "All" || i.continent === state.continent) &&
-    (state.country === "All" || i.country === state.country)
+    (state.countries.size === 0 || state.countries.has(i.country))
   ).sort((a, b) => score(b) - score(a));
 
   const grid = $("grid");
   grid.replaceChildren();
+  const limit = Math.min(state.shown, MAX);
   if (!list.length) {
     const d = document.createElement("div"); d.className = "empty";
     d.textContent = "No stories match this filter right now.";
     grid.append(d);
   }
-  for (const i of list.slice(0, state.shown)) grid.append(makeTile(i, false));
-  $("more").hidden = list.length <= state.shown;
-  $("more").textContent = `Show more stories (${list.length - state.shown} left)`;
+  for (const i of list.slice(0, limit)) grid.append(makeTile(i));
+
+  const canMore = list.length > limit && limit < MAX;
+  $("more").hidden = !canMore;
+  $("more").textContent = `Show more stories (${Math.min(list.length, MAX) - limit} more)`;
+  $("end").hidden = canMore || list.length === 0;
 }
 
 function build() {
@@ -211,7 +240,7 @@ function build() {
     b.textContent = label; b.style.setProperty("--tabc", color(key));
     b.setAttribute("aria-pressed", key === state.section);
     b.onclick = () => {
-      state.section = key; state.continent = "All"; state.country = "All"; state.shown = PAGE;
+      state.section = key; state.continent = "All"; state.shown = FIRST;
       tabs.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
       $("chips").querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
       render();
@@ -223,16 +252,18 @@ function build() {
     const b = document.createElement("button");
     b.textContent = c; b.setAttribute("aria-pressed", c === state.continent);
     b.onclick = () => {
-      state.continent = c; state.country = "All"; state.shown = PAGE;
+      state.continent = c; state.shown = FIRST;
       chips.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
       render();
     };
     chips.append(b);
   }
-  $("country").onchange = (e) => { state.country = e.target.value; state.shown = PAGE; render(); };
-  $("primaryOnly").onchange = (e) => { state.primaryOnly = e.target.checked; state.shown = PAGE; render(); };
-  $("q").addEventListener("input", (e) => { state.q = e.target.value; state.shown = PAGE; render(); });
-  $("more").onclick = () => { state.shown += PAGE; render(); };
+  $("primaryOnly").onchange = (e) => { state.primaryOnly = e.target.checked; state.shown = FIRST; render(); };
+  $("q").addEventListener("input", (e) => { state.q = e.target.value; state.shown = FIRST; render(); });
+  $("cq").addEventListener("input", (e) => { state.cq = e.target.value; render(); });
+  $("clear").onclick = () => { state.countries.clear(); state.cq = ""; $("cq").value = ""; state.shown = FIRST; render(); };
+  $("more").onclick = () => { state.shown = Math.min(state.shown + STEP, MAX); render(); };
+  if (window.innerWidth <= 900) $("sidebox").open = false;   // start collapsed on phones
 }
 
 async function load() {

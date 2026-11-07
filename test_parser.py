@@ -38,6 +38,8 @@ feed_world = {"category": "world", "country": "United Kingdom", "continent": "Eu
 assert fn.classify(feed_world, "Army chief warns of missile threat at border", "") == ["world", "geopolitics", "defence"]
 assert fn.classify({"category": "india"}, "Budget session begins", "") == ["india"]
 assert fn.classify({"category": "world", "general": True}, "Cricket final tonight", "") == ["world", "sports"]
+assert fn.classify({"category": "world", "general": True}, "Ten recipes for winter wellness", "") == ["world", "lifestyle"]
+assert fn.classify({"category": "lifestyle"}, "Best travel spots", "") == ["lifestyle"]
 assert fn.place({"category": "india"}, "Anything about Pakistan", "") == ("India", "Asia")
 assert fn.place(feed_world, "Quiet day", "") == ("United Kingdom", "Europe")
 print("all parser, image, country and section checks passed")
@@ -55,6 +57,8 @@ rows = [  # section(s), country, continent, source, primary, title
     (["sports"], "Australia", "Oceania", "Sydney Morning Herald", True, "Sample: Wallabies prepare for northern tour"),
     (["entertainment"], "India", "Asia", "NDTV", True, "Sample: Festival season releases line up at the box office"),
     (["entertainment"], "United States", "North America", "Variety", False, "Sample: Streaming awards nominations announced"),
+    (["lifestyle"], "United Kingdom", "Europe", "The Guardian", True, "Sample: Winter wellness habits that actually stick"),
+    (["lifestyle"], "India", "Asia", "Hindustan Times", True, "Sample: Five festive recipes for the long weekend"),
     (["defence"], "India", "Asia", "IDRW", False, "Sample: Navy commissions new patrol vessel"),
     (["defence", "geopolitics"], "Ukraine", "Europe", "Defense News", False, "Sample: Air defence deliveries discussed by allies"),
     (["geopolitics", "world"], "Egypt", "Africa", "Egypt Independent", False, "Sample: Diplomats meet in Cairo on regional security"),
@@ -62,7 +66,7 @@ rows = [  # section(s), country, continent, source, primary, title
 items = [{
     "title": t, "link": "https://example.com/", "summary": "Demo tile. Real summaries come from each newspaper's feed.",
     "image": None, "published": (now - timedelta(minutes=25 * (i + 1))).isoformat(), "source": s, "primary": p,
-    "category": secs[0], "sections": secs, "continent": cont, "country": ctry,
+    "category": secs[0], "sections": secs, "continent": cont, "country": ctry, "state": None,
 } for i, (secs, ctry, cont, s, p, t) in enumerate(rows)]
 Path("site/news.json").write_text(json.dumps(
     {"generated_at": now.isoformat(), "demo": True, "items": items, "feeds": []}, indent=1))

@@ -6,8 +6,9 @@ rebuilt and published automatically. Each tile shows headline, source, time and 
 to the original article.
 
 ## Sections and sources
-- Sections: Indian News, World News, Sports News, Entertainment News, Defence News, Geo Politics News.
-  Each can be narrowed by continent, then country. Tiles show the story's main image (from the newspaper's feed).
+- Sections: Indian News, World News, Sports News, Entertainment News, Defence News, Geo Politics News, Lifestyle.
+  Each can be narrowed by continent, and by a multi-select country box on the right (nothing ticked = all countries).
+  The page shows the top 50 stories per section; "Show more" adds 50 at a time up to 200, then says no more are available. Tiles show the story's main image (from the newspaper's feed).
 - **Primary** sources are the newspapers you chose (`"primary": true` in `feeds.json`); everything else is
   secondary. Primary stories rank slightly higher and have a "Primary" mark. A checkbox shows primary only.
 - Defence and Geo Politics are filled from dedicated feeds plus keyword matching on world and Indian stories.

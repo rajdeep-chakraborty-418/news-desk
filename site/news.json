@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-07T13:20:39.774636+00:00",
+ "generated_at": "2026-11-07T17:41:31.872942+00:00",
  "demo": true,
  "items": [
   {
@@ -7,7 +7,7 @@
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T12:55:39.774636+00:00",
+   "published": "2026-11-07T17:16:31.872942+00:00",
    "source": "Times of India",
    "primary": true,
    "category": "india",
@@ -15,14 +15,15 @@
     "india"
    ],
    "continent": "Asia",
-   "country": "India"
+   "country": "India",
+   "state": null
   },
   {
    "title": "Sample: Monsoon recovery plan announced for southern states",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T12:30:39.774636+00:00",
+   "published": "2026-11-07T16:51:31.872942+00:00",
    "source": "The Hindu",
    "primary": true,
    "category": "india",
@@ -30,14 +31,15 @@
     "india"
    ],
    "continent": "Asia",
-   "country": "India"
+   "country": "India",
+   "state": null
   },
   {
    "title": "Sample: European leaders meet in Paris on energy",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T12:05:39.774636+00:00",
+   "published": "2026-11-07T16:26:31.872942+00:00",
    "source": "BBC",
    "primary": true,
    "category": "world",
@@ -45,14 +47,15 @@
     "world"
    ],
    "continent": "Europe",
-   "country": "France"
+   "country": "France",
+   "state": null
   },
   {
    "title": "Sample: Talks resume between Washington and allies",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T11:40:39.774636+00:00",
+   "published": "2026-11-07T16:01:31.872942+00:00",
    "source": "New York Times",
    "primary": true,
    "category": "world",
@@ -61,14 +64,15 @@
     "geopolitics"
    ],
    "continent": "North America",
-   "country": "United States"
+   "country": "United States",
+   "state": null
   },
   {
    "title": "Sample: Brazil confirms new trade partnership",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T11:15:39.774636+00:00",
+   "published": "2026-11-07T15:36:31.872942+00:00",
    "source": "The Rio Times",
    "primary": false,
    "category": "world",
@@ -76,14 +80,15 @@
     "world"
    ],
    "continent": "South America",
-   "country": "Brazil"
+   "country": "Brazil",
+   "state": null
   },
   {
    "title": "Sample: Regional summit opens in Nairobi",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T10:50:39.774636+00:00",
+   "published": "2026-11-07T15:11:31.872942+00:00",
    "source": "AllAfrica",
    "primary": false,
    "category": "world",
@@ -91,14 +96,15 @@
     "world"
    ],
    "continent": "Africa",
-   "country": "Kenya"
+   "country": "Kenya",
+   "state": null
   },
   {
    "title": "Sample: India name squad for the home series",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T10:25:39.774636+00:00",
+   "published": "2026-11-07T14:46:31.872942+00:00",
    "source": "Sportstar",
    "primary": true,
    "category": "sports",
@@ -106,14 +112,15 @@
     "sports"
    ],
    "continent": "Asia",
-   "country": "India"
+   "country": "India",
+   "state": null
   },
   {
    "title": "Sample: Title race tightens after weekend fixtures",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T10:00:39.774636+00:00",
+   "published": "2026-11-07T14:21:31.872942+00:00",
    "source": "Goal.com",
    "primary": true,
    "category": "sports",
@@ -121,14 +128,15 @@
     "sports"
    ],
    "continent": "Europe",
-   "country": "United Kingdom"
+   "country": "United Kingdom",
+   "state": null
   },
   {
    "title": "Sample: Wallabies prepare for northern tour",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T09:35:39.774636+00:00",
+   "published": "2026-11-07T13:56:31.872942+00:00",
    "source": "Sydney Morning Herald",
    "primary": true,
    "category": "sports",
@@ -136,14 +144,15 @@
     "sports"
    ],
    "continent": "Oceania",
-   "country": "Australia"
+   "country": "Australia",
+   "state": null
   },
   {
    "title": "Sample: Festival season releases line up at the box office",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T09:10:39.774636+00:00",
+   "published": "2026-11-07T13:31:31.872942+00:00",
    "source": "NDTV",
    "primary": true,
    "category": "entertainment",
@@ -151,14 +160,15 @@
     "entertainment"
    ],
    "continent": "Asia",
-   "country": "India"
+   "country": "India",
+   "state": null
   },
   {
    "title": "Sample: Streaming awards nominations announced",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T08:45:39.774636+00:00",
+   "published": "2026-11-07T13:06:31.872942+00:00",
    "source": "Variety",
    "primary": false,
    "category": "entertainment",
@@ -166,14 +176,47 @@
     "entertainment"
    ],
    "continent": "North America",
-   "country": "United States"
+   "country": "United States",
+   "state": null
+  },
+  {
+   "title": "Sample: Winter wellness habits that actually stick",
+   "link": "https://example.com/",
+   "summary": "Demo tile. Real summaries come from each newspaper's feed.",
+   "image": null,
+   "published": "2026-11-07T12:41:31.872942+00:00",
+   "source": "The Guardian",
+   "primary": true,
+   "category": "lifestyle",
+   "sections": [
+    "lifestyle"
+   ],
+   "continent": "Europe",
+   "country": "United Kingdom",
+   "state": null
+  },
+  {
+   "title": "Sample: Five festive recipes for the long weekend",
+   "link": "https://example.com/",
+   "summary": "Demo tile. Real summaries come from each newspaper's feed.",
+   "image": null,
+   "published": "2026-11-07T12:16:31.872942+00:00",
+   "source": "Hindustan Times",
+   "primary": true,
+   "category": "lifestyle",
+   "sections": [
+    "lifestyle"
+   ],
+   "continent": "Asia",
+   "country": "India",
+   "state": null
   },
   {
    "title": "Sample: Navy commissions new patrol vessel",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T08:20:39.774636+00:00",
+   "published": "2026-11-07T11:51:31.872942+00:00",
    "source": "IDRW",
    "primary": false,
    "category": "defence",
@@ -181,14 +224,15 @@
     "defence"
    ],
    "continent": "Asia",
-   "country": "India"
+   "country": "India",
+   "state": null
   },
   {
    "title": "Sample: Air defence deliveries discussed by allies",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T07:55:39.774636+00:00",
+   "published": "2026-11-07T11:26:31.872942+00:00",
    "source": "Defense News",
    "primary": false,
    "category": "defence",
@@ -197,14 +241,15 @@
     "geopolitics"
    ],
    "continent": "Europe",
-   "country": "Ukraine"
+   "country": "Ukraine",
+   "state": null
   },
   {
    "title": "Sample: Diplomats meet in Cairo on regional security",
    "link": "https://example.com/",
    "summary": "Demo tile. Real summaries come from each newspaper's feed.",
    "image": null,
-   "published": "2026-11-07T07:30:39.774636+00:00",
+   "published": "2026-11-07T11:01:31.872942+00:00",
    "source": "Egypt Independent",
    "primary": false,
    "category": "geopolitics",
@@ -213,7 +258,8 @@
     "world"
    ],
    "continent": "Africa",
-   "country": "Egypt"
+   "country": "Egypt",
+   "state": null
   }
  ],
  "feeds": []
