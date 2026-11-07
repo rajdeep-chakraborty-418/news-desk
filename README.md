@@ -5,8 +5,17 @@ A Python script pulls headlines from newspaper RSS feeds every 2 hours and the s
 rebuilt and published automatically. Each tile shows headline, source, time and links
 to the original article.
 
+## Sections and sources
+- Sections: Indian News, World News, Sports News, Entertainment News, Defence News, Geo Politics News.
+  Each can be narrowed by continent, then country. Tiles show the story's main image (from the newspaper's feed).
+- **Primary** sources are the newspapers you chose (`"primary": true` in `feeds.json`); everything else is
+  secondary. Primary stories rank slightly higher and have a "Primary" mark. A checkbox shows primary only.
+- Defence and Geo Politics are filled from dedicated feeds plus keyword matching on world and Indian stories.
+- Country is detected from the headline (`geo.py`); Indian News is always India; otherwise the paper's home country is used.
+
 ## Files
 - `feeds.json` – the newspapers (edit this to add or remove sources)
+- `geo.py` – country/continent detection from headlines
 - `fetch_news.py` – fetches the feeds, writes `site/news.json` (standard library only)
 - `site/index.html` – the front page
 - `.github/workflows/update.yml` – 2-hour job: fetch, then deploy to GitHub Pages
