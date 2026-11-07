@@ -1,0 +1,52 @@
+name: Refresh scheduler
+
+# GitHub's own cron is unreliable on small repos, so this workflow keeps time itself:
+# wait N minutes (refresh_minutes.txt) -> trigger "Update news and deploy" -> start the next round.
+# The slow cron below is only a safety net that restarts the chain if it ever stops.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      chain:
+        description: "Set by the scheduler itself when it continues its own chain"
+        default: "false"
+  schedule:
+    - cron: "47 */3 * * *"
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 200
+    steps:
+      - uses: actions/checkout@v4
+      - name: Only one chain at a time
+        id: guard
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ inputs.chain }}" = "true" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          others=$(gh run list --repo "${{ github.repository }}" --workflow scheduler.yml --json databaseId,status \
+            --jq '[.[] | select((.status=="in_progress" or .status=="queued") and .databaseId != ${{ github.run_id }})] | length')
+          echo "Other scheduler runs active: $others"
+          if [ "${others:-0}" -gt 0 ]; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
+      - name: Wait until the next refresh is due
+        if: steps.guard.outputs.go == 'true'
+        run: |
+          minutes=$(tr -dc '0-9' < refresh_minutes.txt)
+          echo "Waiting ${minutes:-118} minutes"
+          sleep $(( ${minutes:-118} * 60 ))
+      - name: Trigger the news update
+        if: steps.guard.outputs.go == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run update.yml --repo "${{ github.repository }}" --ref main
+      - name: Start the next round
+        if: steps.guard.outputs.go == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run scheduler.yml --repo "${{ github.repository }}" --ref main -f chain=true
