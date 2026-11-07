@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RC News Desk — Sports &amp; Geopolitics, every 30 minutes</title>
+<title>RC News Desk — Sports &amp; Geopolitics, every 5 minutes</title>
 <meta name="description" content="Hourly headlines from newspapers across six continents: sports and geopolitics.">
 <style>
   :root {
@@ -82,7 +82,7 @@
   <main class="grid" id="grid" aria-live="polite"></main>
   <noscript><p class="empty">Please enable JavaScript to see the headlines.</p></noscript>
 
-  <footer>Refreshed every 30 minutes. Headlines and links belong to their respective newspapers. Click a tile to read the original story.</footer>
+  <footer>Refreshed every 5 minutes. Headlines and links belong to their respective newspapers. Click a tile to read the original story.</footer>
 </div>
 
 <script>
@@ -189,7 +189,7 @@ async function load() {
   }
 }
 buildChips(); load();
-setInterval(load, 5 * 60 * 1000);    // re-check for the 30-minute update
+setInterval(load, 2 * 60 * 1000);    // re-check for new data every 2 minutes
 setInterval(render, 60 * 1000);       // keep "x min ago" fresh
 </script>
 </body>

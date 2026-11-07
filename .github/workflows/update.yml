@@ -2,7 +2,7 @@ name: Update news and deploy
 
 on:
   schedule:
-    - cron: "7,37 * * * *"   # every 30 minutes (at :07 and :37, UTC)
+    - cron: "*/5 * * * *"   # every 5 minutes (GitHub's minimum interval)
   workflow_dispatch:          # lets you run it by hand from the Actions tab
   push:
     branches: [main]
