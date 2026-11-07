@@ -28,7 +28,7 @@ TIMEOUT = 30
 USER_AGENT = "NewsHubBot/1.0 (headline aggregator; links back to originals)"
 SNIPPET_LEN = 160
 
-# Sections shown on the site. "india", "world", "sports", "entertainment", "lifestyle", "defence" come from
+# Sections shown on the site. "bengali", "india", "world", "sports", "entertainment", "lifestyle", "defence" come from
 # the feed's own category; "geopolitics" and "defence" are also derived from keywords.
 GEO_WORDS = ["sanction", "sanctions", "diplomat", "diplomats", "diplomacy", "diplomatic", "summit", "treaty",
              "ceasefire", "cease-fire", "nato", "united nations", "security council", "foreign minister",
@@ -184,6 +184,9 @@ def parse_feed(xml_bytes):
         link = entry_link(e)
         if not title or not link:
             continue
+        src = child_text(e, "source")
+        if src and title.endswith(" - " + src):
+            title = title[: -len(src) - 3].rstrip()
         date = parse_date(child_text(e, "pubDate", "published", "updated", "date"))
         summary = strip_html(child_text(e, "description", "summary"))
         if len(summary) > SNIPPET_LEN:
@@ -218,6 +221,8 @@ def place(feed, title, summary):
     """Country and continent a story is about. Indian-news stories are always India."""
     if feed["category"] == "india":
         return "India", "Asia"
+    if feed["category"] == "bengali":
+        return feed.get("country") or "Other", feed.get("continent") or "Other"
     country, continent = geo.find_country(title, summary)
     if country:
         return country, continent

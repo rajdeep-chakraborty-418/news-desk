@@ -42,6 +42,9 @@ assert fn.classify({"category": "world", "general": True}, "Ten recipes for wint
 assert fn.classify({"category": "world"}, "Sensex falls as investors watch inflation", "") == ["world", "business"]
 assert fn.classify({"category": "world"}, "Researchers say ancient ruins found near river", "") == ["world", "science", "geography", "history"]
 assert fn.classify({"category": "science"}, "Telescope finds new planet", "") == ["science"]
+assert fn.classify({"category": "bengali"}, "army and budget", "") == ["bengali"]
+assert fn.place({"category": "bengali", "country": "Bangladesh", "continent": "Asia"}, "শিরোনাম", "") == ("Bangladesh", "Asia")
+assert fn.parse_feed(b'<rss><channel><item><title>Ancient city - National Geographic</title><link>https://n.example/1</link><source url="x">National Geographic</source></item></channel></rss>')[0]["title"] == "Ancient city"
 assert fn.classify({"category": "lifestyle"}, "Best travel spots", "") == ["lifestyle"]
 assert fn.place({"category": "india"}, "Anything about Pakistan", "") == ("India", "Asia")
 assert fn.place(feed_world, "Quiet day", "") == ("United Kingdom", "Europe")
@@ -49,6 +52,9 @@ print("all parser, image, country and section checks passed")
 
 now = datetime.now(timezone.utc)
 rows = [  # section(s), country, continent, source, primary, title
+    (["bengali"], "India", "Asia", "Anandabazar Patrika", True, "নমুনা: কলকাতায় শীতের আমেজ, তাপমাত্রা নামল"),
+    (["bengali"], "India", "Asia", "ABP Ananda (ABP Live Bangla)", True, "নমুনা: রাজ্যের বিভিন্ন জেলায় ভোট প্রস্তুতি শুরু"),
+    (["bengali"], "Bangladesh", "Asia", "Prothom Alo", False, "নমুনা: ঢাকায় নতুন মেট্রোরেল পরিষেবার ঘোষণা"),
     (["india"], "India", "Asia", "Times of India", True, "Sample: Parliament session opens with budget debate"),
     (["india"], "India", "Asia", "The Hindu", True, "Sample: Monsoon recovery plan announced for southern states"),
     (["world"], "France", "Europe", "BBC", True, "Sample: European leaders meet in Paris on energy"),

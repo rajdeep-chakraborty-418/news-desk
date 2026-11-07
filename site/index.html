@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RC News Desk — India, World, Sports, Entertainment, Defence, Geopolitics, Lifestyle, Business, Technology, History, Geography, Science &amp; Nature</title>
+<title>RC News Desk — Bengali, India, World, Sports, Entertainment, Defence, Geopolitics, Lifestyle, Business, Technology, History, Geography, Science &amp; Nature</title>
 <meta name="description" content="Headlines from newspapers across the world, refreshed every 2 hours.">
 <meta name="referrer" content="no-referrer">
 <style>
@@ -11,16 +11,16 @@
     --bg: #f6f4ef; --card: #ffffff; --ink: #1b1b1f; --muted: #6a6a73; --line: #e3e0d8; --accent: #b3261e;
     --c-india: #c2570c; --c-world: #2a4d8f; --c-sports: #1b6e5a; --c-entertainment: #9b2f7a;
     --c-defence: #4a5a2a; --c-geopolitics: #8a2d2d; --c-lifestyle: #0f7b8a;
-    --c-business: #6b4e16; --c-technology: #3d4fb0; --c-history: #7a5230; --c-geography: #1f7a4d; --c-science: #5b3fa0; --c-nature: #2f7d2a;
+    --c-bengali: #b0123a; --c-business: #6b4e16; --c-technology: #3d4fb0; --c-history: #7a5230; --c-geography: #1f7a4d; --c-science: #5b3fa0; --c-nature: #2f7d2a;
   }
   @media (prefers-color-scheme: dark) {
     :root { --bg: #131316; --card: #1c1c21; --ink: #ecebe6; --muted: #9a9aa4; --line: #2c2c33; --accent: #ff6b5e;
       --c-india: #ff9a4d; --c-world: #7ea3f0; --c-sports: #4cc3a4; --c-entertainment: #e27cc0;
       --c-defence: #9fbf5f; --c-geopolitics: #f08a8a; --c-lifestyle: #4fc3d3;
-      --c-business: #d9b25f; --c-technology: #8c9cf0; --c-history: #d1a27a; --c-geography: #64c796; --c-science: #b49af0; --c-nature: #86cf7e; }
+      --c-bengali: #ff7a9a; --c-business: #d9b25f; --c-technology: #8c9cf0; --c-history: #d1a27a; --c-geography: #64c796; --c-science: #b49af0; --c-nature: #86cf7e; }
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 Georgia, "Times New Roman", serif; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 Georgia, "Times New Roman", "Noto Serif Bengali", "Kohinoor Bangla", "Nirmala UI", "Vrinda", serif; }
   .wrap { max-width: 1280px; margin: 0 auto; padding: 0 16px 48px; }
   header { padding: 24px 0 12px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; border-bottom: 3px double var(--ink); }
   h1 { margin: 0; font-size: clamp(28px, 5vw, 44px); letter-spacing: -.02em; }
@@ -139,7 +139,7 @@
 
 <script>
 const SECTIONS = [
-  ["india", "Indian News"], ["world", "World News"], ["sports", "Sports News"],
+  ["bengali", "Bengali News"], ["india", "Indian News"], ["world", "World News"], ["sports", "Sports News"],
   ["entertainment", "Entertainment News"], ["defence", "Defence News"], ["geopolitics", "Geo Politics News"],
   ["lifestyle", "Lifestyle"], ["business", "Business"], ["technology", "Technology"],
   ["history", "History"], ["geography", "Geography"], ["science", "Science"], ["nature", "Nature"]
@@ -147,7 +147,7 @@ const SECTIONS = [
 const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
 const PRIMARY_BOOST_MS = 6 * 3600 * 1000;   // primary-source stories rank as if 6 hours newer
 const FIRST = 50, STEP = 50, MAX = 200;      // show 50 first, each click adds 50, never more than 200
-const state = { section: "india", continent: "All", countries: new Set(), primaryOnly: false, q: "", cq: "", items: [], shown: FIRST };
+const state = { section: "bengali", continent: "All", countries: new Set(), primaryOnly: false, q: "", cq: "", items: [], shown: FIRST };
 const $ = (id) => document.getElementById(id);
 
 const color = (sec) => `var(--c-${sec})`;
