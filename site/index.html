@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>World Desk — Sports &amp; Geopolitics, hourly</title>
+<meta name="description" content="Hourly headlines from newspapers across six continents: sports and geopolitics.">
+<style>
+  :root {
+    --bg: #f6f4ef; --card: #ffffff; --ink: #1b1b1f; --muted: #6a6a73; --line: #e3e0d8;
+    --accent: #b3261e; --sports: #1b6e5a; --geo: #2a4d8f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #131316; --card: #1c1c21; --ink: #ecebe6; --muted: #9a9aa4; --line: #2c2c33;
+            --accent: #ff6b5e; --sports: #4cc3a4; --geo: #7ea3f0; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.45 Georgia, "Times New Roman", serif; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 16px 48px; }
+  header { padding: 28px 0 14px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px;
+           border-bottom: 3px double var(--ink); }
+  h1 { margin: 0; font-size: clamp(28px, 5vw, 44px); letter-spacing: -.02em; }
+  h1 span { color: var(--accent); }
+  .updated { color: var(--muted); font: 13px system-ui, sans-serif; margin-left: auto; }
+  .demo { background: #fff3cd; color: #5b4500; font: 14px system-ui, sans-serif; padding: 10px 14px;
+          border-radius: 8px; margin-top: 14px; display: none; }
+  .controls { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 14px 0 10px;
+              display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+              border-bottom: 1px solid var(--line); font-family: system-ui, sans-serif; }
+  .tabs, .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  button { font: inherit; font-size: 14px; cursor: pointer; border: 1px solid var(--line);
+           background: var(--card); color: var(--ink); padding: 7px 14px; border-radius: 999px; }
+  button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .tabs button { font-weight: 600; font-size: 15px; }
+  input[type=search] { font: 14px system-ui, sans-serif; padding: 7px 12px; border-radius: 999px;
+           border: 1px solid var(--line); background: var(--card); color: var(--ink); min-width: 200px; margin-left: auto; }
+  .top { margin-top: 18px; }
+  .top h3 { margin: 0 0 8px; font: 700 13px system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .top .grid { margin-top: 0; }
+  a.tile.lead h2 { font-size: 20px; }
+  .grid { display: grid; gap: 14px; margin-top: 18px;
+          grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
+  a.tile { display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: inherit;
+           background: var(--card); border: 1px solid var(--line); border-top-width: 4px;
+           border-radius: 10px; padding: 14px 16px 12px; transition: transform .12s, box-shadow .12s; }
+  a.tile:hover, a.tile:focus-visible { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.12); outline: none; }
+  a.tile.sports { border-top-color: var(--sports); }
+  a.tile.geopolitics { border-top-color: var(--geo); }
+  .meta { display: flex; justify-content: space-between; gap: 8px; font: 12px system-ui, sans-serif;
+          color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .tile h2 { margin: 0; font-size: 18px; line-height: 1.28; }
+  .tile p { margin: 0; color: var(--muted); font-size: 14px; }
+  .foot { margin-top: auto; display: flex; justify-content: space-between; font: 12px system-ui, sans-serif; color: var(--muted); }
+  .src { font-weight: 700; color: var(--ink); }
+  .empty { text-align: center; color: var(--muted); padding: 60px 0; font-family: system-ui, sans-serif; }
+  footer { margin-top: 36px; color: var(--muted); font: 13px system-ui, sans-serif; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>World <span>Desk</span></h1>
+    <div class="updated" id="updated">Loading…</div>
+  </header>
+  <div class="demo" id="demo">Sample data for preview. Real headlines appear after the first hourly update runs on your host.</div>
+
+  <div class="controls">
+    <div class="tabs" role="group" aria-label="Category">
+      <button data-cat="sports" aria-pressed="true">Sports</button>
+      <button data-cat="geopolitics" aria-pressed="false">Geopolitics</button>
+    </div>
+    <div class="chips" role="group" aria-label="Continent" id="chips"></div>
+    <input type="search" id="q" placeholder="Search headlines…" aria-label="Search headlines">
+  </div>
+
+  <section class="top" id="top" hidden>
+    <h3>Top stories: latest from each continent</h3>
+    <div class="grid" id="topgrid"></div>
+  </section>
+
+  <main class="grid" id="grid" aria-live="polite"></main>
+  <noscript><p class="empty">Please enable JavaScript to see the headlines.</p></noscript>
+
+  <footer>Headlines and links belong to their respective newspapers. Click a tile to read the original story.</footer>
+</div>
+
+<script>
+const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
+const state = { cat: "sports", continent: "All", q: "", items: [] };
+const $ = (id) => document.getElementById(id);
+
+function ago(iso) {
+  const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000));
+  if (m < 1) return "just now";
+  if (m < 60) return m + " min ago";
+  const h = Math.round(m / 60);
+  if (h < 24) return h + " h ago";
+  return Math.round(h / 24) + " d ago";
+}
+
+function renderTop() {
+  const top = $("top"), tg = $("topgrid");
+  tg.replaceChildren();
+  const show = state.continent === "All" && !state.q.trim();
+  const picks = [];
+  if (show) {
+    for (const c of CONTINENTS.slice(1)) {
+      const best = state.items.find(i => i.category === state.cat && i.continent === c); // items are newest-first
+      if (best) picks.push(best);
+    }
+  }
+  top.hidden = picks.length === 0;
+  for (const i of picks) tg.append(makeTile(i, true));
+}
+
+function render() {
+  const q = state.q.trim().toLowerCase();
+  renderTop();
+  const list = state.items.filter(i =>
+    i.category === state.cat &&
+    (state.continent === "All" || i.continent === state.continent) &&
+    (!q || (i.title + " " + i.summary + " " + i.source).toLowerCase().includes(q))
+  );
+  const grid = $("grid");
+  grid.replaceChildren();
+  if (!list.length) {
+    const d = document.createElement("div");
+    d.className = "empty"; d.style.gridColumn = "1/-1";
+    d.textContent = "No stories match this filter right now.";
+    grid.append(d); return;
+  }
+  for (const i of list) grid.append(makeTile(i, false));
+}
+
+function makeTile(i, lead) {
+  {
+    const a = document.createElement("a");
+    a.className = "tile " + i.category + (lead ? " lead" : "");
+    a.href = i.link; a.target = "_blank"; a.rel = "noopener noreferrer";
+    const meta = document.createElement("div"); meta.className = "meta";
+    const c = document.createElement("span"); c.textContent = i.continent;
+    const t = document.createElement("span"); t.textContent = ago(i.published);
+    meta.append(c, t);
+    const h = document.createElement("h2"); h.textContent = i.title;
+    a.append(meta, h);
+    if (i.summary) { const p = document.createElement("p"); p.textContent = i.summary; a.append(p); }
+    const f = document.createElement("div"); f.className = "foot";
+    const s = document.createElement("span"); s.className = "src"; s.textContent = i.source;
+    const r = document.createElement("span"); r.textContent = "Read ↗";
+    f.append(s, r); a.append(f);
+    return a;
+  }
+}
+
+function buildChips() {
+  const box = $("chips");
+  for (const c of CONTINENTS) {
+    const b = document.createElement("button");
+    b.textContent = c; b.setAttribute("aria-pressed", c === state.continent);
+    b.onclick = () => {
+      state.continent = c;
+      box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+      render();
+    };
+    box.append(b);
+  }
+}
+
+document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
+  state.cat = b.dataset.cat;
+  document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  render();
+});
+$("q").addEventListener("input", e => { state.q = e.target.value; render(); });
+
+async function load() {
+  try {
+    const res = await fetch("news.json?t=" + Date.now(), { cache: "no-store" });
+    const data = await res.json();
+    state.items = data.items || [];
+    $("demo").style.display = data.demo ? "block" : "none";
+    const when = new Date(data.generated_at);
+    $("updated").textContent = "Updated " + when.toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+    render();
+  } catch (e) {
+    $("updated").textContent = "Could not load headlines";
+    $("grid").innerHTML = '<div class="empty" style="grid-column:1/-1">News data is unavailable. If you opened this file directly, serve it with a web server (python3 -m http.server).</div>';
+  }
+}
+buildChips(); load();
+setInterval(load, 10 * 60 * 1000);   // re-check for the hourly update
+setInterval(render, 60 * 1000);       // keep "x min ago" fresh
+</script>
+</body>
+</html>
