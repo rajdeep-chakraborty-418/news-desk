@@ -45,9 +45,9 @@
            border-radius: 10px; overflow: hidden; transition: transform .12s, box-shadow .12s; }
   a.tile:hover, a.tile:focus-visible { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.14); outline: none; }
   .thumb { position: relative; aspect-ratio: 16 / 9; background: var(--line); overflow: hidden; }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block; }
   .ph { position: absolute; inset: 0; display: grid; place-items: center; font: 700 34px system-ui, sans-serif; color: #fff; background: var(--tc, #555); opacity: .9; }
-  .badge { position: absolute; left: 8px; top: 8px; font: 700 11px system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--tc, #555); color: #fff; }
+  .badge { z-index: 2; position: absolute; left: 8px; top: 8px; font: 700 11px system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--tc, #555); color: #fff; }
   .body { padding: 12px 14px 12px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
   .meta { display: flex; justify-content: space-between; gap: 8px; font: 12px system-ui, sans-serif; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
   .tile h2 { margin: 0; font-size: 18px; line-height: 1.28; }
