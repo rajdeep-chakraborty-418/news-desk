@@ -283,7 +283,6 @@
   {"source": "TV9 Bangla", "country": "India", "continent": "Asia", "category": "bengali", "url": "https://tv9bangla.com/feed", "primary": true, "state": "West Bengal"},
   {"source": "TV9 Bangla", "country": "India", "continent": "Asia", "category": "bengali", "url": "https://tv9bangla.com/rss", "primary": true, "state": "West Bengal"},
   {"source": "Zee 24 Ghanta (Zee Bangla)", "country": "India", "continent": "Asia", "category": "bengali", "url": "https://zeenews.india.com/bengali/rss.xml", "primary": true, "state": "West Bengal"},
-  {"source": "Zee 24 Ghanta (Zee Bangla)", "country": "India", "continent": "Asia", "category": "bengali", "url": "https://zeenews.india.com/bengali/rss-feed/west-bengal", "primary": true, "state": "West Bengal"},
   {"source": "Sangbad Pratidin", "country": "India", "continent": "Asia", "category": "bengali", "url": "https://www.sangbadpratidin.in/feed/", "primary": false, "state": "West Bengal"},
   {"source": "Kolkata24x7", "country": "India", "continent": "Asia", "category": "bengali", "url": "https://www.kolkata24x7.in/feed", "primary": false, "state": "West Bengal"},
   {"source": "Uttarbanga Sambad", "country": "India", "continent": "Asia", "category": "bengali", "url": "https://uttarbangasambad.com/feed", "primary": false, "state": "West Bengal"},

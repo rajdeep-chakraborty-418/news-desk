@@ -9,6 +9,7 @@ import html
 import json
 import re
 import sys
+import time
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -268,8 +269,18 @@ def fetch_one(feed):
 
 def main():
     feeds = json.loads(FEEDS_FILE.read_text())
+    # Google News throttles bursts (HTTP 503), so its feeds are fetched one at a time, with a pause and one retry.
+    google = [f for f in feeds if "news.google.com" in f["url"]]
+    others = [f for f in feeds if "news.google.com" not in f["url"]]
     with ThreadPoolExecutor(max_workers=16) as pool:
-        results = list(pool.map(fetch_one, feeds))
+        results = list(pool.map(fetch_one, others))
+    for f in google:
+        out, status = fetch_one(f)
+        if not status["ok"] and any(c in status.get("error", "") for c in ("503", "429")):
+            time.sleep(10)
+            out, status = fetch_one(f)
+        results.append((out, status))
+        time.sleep(2)
 
     by_link, statuses = {}, []
     for feed_items, status in results:
