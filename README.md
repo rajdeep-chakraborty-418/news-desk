@@ -14,6 +14,20 @@ to the original article.
 - Defence and Geo Politics are filled from dedicated feeds plus keyword matching on world and Indian stories.
 - Country is detected from the headline (`geo.py`); Indian News is always India; otherwise the paper's home country is used.
 
+## Refresh button (top right of the page)
+The button starts the "Update news and deploy" workflow, stays disabled while it runs, and shows
+"Last: Success" or "Last: Failed" when it finishes. Starting a run needs permission, so the first
+time you click it asks for a GitHub token, which is kept only in that browser:
+1. Open https://github.com/settings/personal-access-tokens/new
+2. Repository access: **Only select repositories** -> `news-desk`. Permissions -> Repository permissions ->
+   **Actions: Read and write**. Create the token and copy it.
+3. Click Refresh on the site and paste the token. (Do not share this token.)
+Anyone without a token can still see the last status, but cannot start a refresh.
+
+## Automatic schedule
+`scheduler.yml` keeps time itself: it waits `refresh_minutes.txt` minutes (118), triggers the update,
+then starts its next round. GitHub's own cron in `update.yml` is only a backup.
+
 ## Files
 - `feeds.json` – the newspapers (edit this to add or remove sources)
 - `geo.py` – country/continent detection from headlines

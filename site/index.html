@@ -25,7 +25,17 @@
   header { padding: 24px 0 12px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; border-bottom: 3px double var(--ink); }
   h1 { margin: 0; font-size: clamp(28px, 5vw, 44px); letter-spacing: -.02em; }
   h1 span { color: var(--accent); }
-  .updated { color: var(--muted); font: 13px system-ui, sans-serif; margin-left: auto; }
+  .hright { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+  .updated { color: var(--muted); font: 13px system-ui, sans-serif; }
+  button.refresh { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; border-radius: 10px; padding: 7px 14px; text-align: left; min-width: 168px; }
+  button.refresh .rl { font: 700 14px system-ui, sans-serif; }
+  button.refresh .rs { font: 12px system-ui, sans-serif; color: var(--muted); }
+  button.refresh.ok .rs { color: #1b7a43; }
+  button.refresh.fail .rs { color: #c0281f; }
+  button.refresh:disabled { opacity: .65; cursor: not-allowed; }
+  button.refresh.busy .ico { display: inline-block; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .refmsg { font: 12px system-ui, sans-serif; color: #c0281f; text-align: right; margin-top: 6px; }
   .demo { background: #fff3cd; color: #5b4500; font: 14px system-ui, sans-serif; padding: 10px 14px; border-radius: 8px; margin-top: 14px; display: none; }
   .controls { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 12px 0 10px; border-bottom: 1px solid var(--line);
               font-family: system-ui, sans-serif; display: grid; gap: 10px; }
@@ -85,8 +95,15 @@
 <div class="wrap">
   <header>
     <h1>RC News <span>Desk</span></h1>
-    <div class="updated" id="updated">Loading…</div>
+    <div class="hright">
+      <div class="updated" id="updated">Loading…</div>
+      <button class="refresh" id="refresh" type="button" disabled title="Fetch the latest headlines now">
+        <span class="rl"><span class="ico">⟳</span> <span id="rlabel">Refresh</span></span>
+        <span class="rs" id="rstatus">Checking…</span>
+      </button>
+    </div>
   </header>
+  <div class="refmsg" id="refmsg" hidden></div>
   <div class="demo" id="demo">Sample data for preview. Real headlines appear after the first update runs on your host.</div>
 
   <div class="controls">
@@ -283,6 +300,100 @@ async function load() {
     $("grid").innerHTML = '<div class="empty">News data is unavailable. If you opened this file directly, serve it with a web server (python3 -m http.server).</div>';
   }
 }
+
+// ---------- Refresh button: triggers the backend workflow and tracks it ----------
+const GH = { owner: "rajdeep-chakraborty-418", repo: "news-desk", workflow: "update.yml" };
+const TOKEN_KEY = "rcnd_gh_token";
+const POLL_MS = window.RC_POLL_MS || 6000;
+const ACTIVE = new Set(["queued", "in_progress", "waiting", "pending", "requested"]);
+const rf = { busy: false, last: null };
+const API = `https://api.github.com/repos/${GH.owner}/${GH.repo}/actions/workflows/${GH.workflow}`;
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+const getToken = () => { try { return localStorage.getItem(TOKEN_KEY) || ""; } catch (e) { return ""; } };
+const setToken = (t) => { try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch (e) {} };
+function ghHeaders() {
+  const h = { Accept: "application/vnd.github+json" };
+  const t = getToken(); if (t) h.Authorization = "Bearer " + t;
+  return h;
+}
+async function fetchRuns() {
+  const r = await fetch(API + "/runs?per_page=10", { headers: ghHeaders(), cache: "no-store" });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  const d = await r.json();
+  return (d.workflow_runs || []).filter(x => x.event !== "schedule").sort((a, b) => b.id - a.id);
+}
+function paintButton() {
+  const btn = $("refresh"), st = $("rstatus");
+  btn.classList.remove("ok", "fail", "busy");
+  if (rf.busy) {
+    btn.disabled = true; btn.classList.add("busy");
+    $("rlabel").textContent = "Refreshing…"; st.textContent = rf.note || "Please wait";
+    return;
+  }
+  btn.disabled = false; $("rlabel").textContent = "Refresh";
+  if (!rf.last) { st.textContent = rf.note || "Last: no refresh yet"; return; }
+  const ok = rf.last.conclusion === "success";
+  btn.classList.add(ok ? "ok" : "fail");
+  st.textContent = `Last: ${ok ? "✓ Success" : "✗ Failed"} · ${ago(rf.last.updated_at)}`;
+}
+function showMsg(text) {
+  const m = $("refmsg"); m.textContent = text || ""; m.hidden = !text;
+}
+async function trackRun(baselineId) {
+  // wait for the run newer than baselineId to appear, then until it finishes
+  rf.busy = true; rf.note = "Starting…"; paintButton();
+  const t0 = Date.now(); let errors = 0, runs = [];
+  while (true) {
+    await sleep(POLL_MS);
+    try { runs = await fetchRuns(); errors = 0; } catch (e) { if (++errors >= 5) break; continue; }
+    const mine = runs.filter(x => x.id > baselineId).pop();   // oldest run started after the click
+    if (!mine) { if (Date.now() - t0 > 90000) { showMsg("The refresh did not start. Please try again."); break; } continue; }
+    if (mine.status === "completed") { rf.last = mine; break; }
+    rf.note = "Running…"; paintButton();
+    if (Date.now() - t0 > 20 * 60000) { showMsg("The refresh is taking too long; check GitHub Actions."); break; }
+  }
+  if (errors >= 5) showMsg("Could not read refresh status (GitHub rate limit?). Try again in a few minutes.");
+  rf.busy = false; rf.note = ""; paintButton();
+  if (rf.last && rf.last.conclusion === "success") load();      // show the new headlines
+}
+async function syncStatus() {
+  try {
+    const runs = await fetchRuns();
+    const active = runs.find(x => ACTIVE.has(x.status));
+    rf.last = runs.find(x => x.status === "completed") || null;
+    if (active) return trackRun(active.id - 1);              // a refresh is already running
+    rf.busy = false; rf.note = ""; paintButton();
+  } catch (e) {
+    rf.busy = false; rf.note = "Status unavailable"; paintButton();
+  }
+}
+async function startRefresh() {
+  if (rf.busy) return;
+  showMsg("");
+  let token = getToken();
+  if (!token) {
+    token = (prompt("To trigger a refresh, paste a GitHub access token (fine-grained, only this repository, permission: Actions = Read and write). It is stored only in this browser.") || "").trim();
+    if (!token) return;
+    setToken(token);
+  }
+  rf.busy = true; rf.note = "Starting…"; paintButton();
+  let baseline = 0;
+  try { const runs = await fetchRuns(); baseline = runs.length ? runs[0].id : 0; } catch (e) {}
+  try {
+    const r = await fetch(API + "/dispatches", { method: "POST", headers: { ...ghHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ ref: "main" }) });
+    if (r.status !== 204) {
+      if ([401, 403, 404].includes(r.status)) { setToken(""); showMsg("GitHub rejected the token (needs Actions: Read and write on this repository). Click Refresh to enter a new one."); }
+      else showMsg("Could not start the refresh (HTTP " + r.status + ").");
+      rf.busy = false; rf.note = ""; paintButton(); return;
+    }
+  } catch (e) {
+    showMsg("Could not reach GitHub. Check your connection."); rf.busy = false; rf.note = ""; paintButton(); return;
+  }
+  trackRun(baseline);
+}
+$("refresh").onclick = startRefresh;
+syncStatus();
+setInterval(() => { if (!rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
 build(); load();
 setInterval(load, 10 * 60 * 1000);   // re-check for new data every 10 minutes
 setInterval(() => { if (state.items.length) render(); }, 5 * 60 * 1000);   // keep "x min ago" fresh
