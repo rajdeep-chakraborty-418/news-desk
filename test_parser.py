@@ -39,6 +39,9 @@ assert fn.classify(feed_world, "Army chief warns of missile threat at border", "
 assert fn.classify({"category": "india"}, "Budget session begins", "") == ["india"]
 assert fn.classify({"category": "world", "general": True}, "Cricket final tonight", "") == ["world", "sports"]
 assert fn.classify({"category": "world", "general": True}, "Ten recipes for winter wellness", "") == ["world", "lifestyle"]
+assert fn.classify({"category": "world"}, "Sensex falls as investors watch inflation", "") == ["world", "business"]
+assert fn.classify({"category": "world"}, "Researchers say ancient ruins found near river", "") == ["world", "science", "geography", "history"]
+assert fn.classify({"category": "science"}, "Telescope finds new planet", "") == ["science"]
 assert fn.classify({"category": "lifestyle"}, "Best travel spots", "") == ["lifestyle"]
 assert fn.place({"category": "india"}, "Anything about Pakistan", "") == ("India", "Asia")
 assert fn.place(feed_world, "Quiet day", "") == ("United Kingdom", "Europe")
@@ -59,6 +62,12 @@ rows = [  # section(s), country, continent, source, primary, title
     (["entertainment"], "United States", "North America", "Variety", False, "Sample: Streaming awards nominations announced"),
     (["lifestyle"], "United Kingdom", "Europe", "The Guardian", True, "Sample: Winter wellness habits that actually stick"),
     (["lifestyle"], "India", "Asia", "Hindustan Times", True, "Sample: Five festive recipes for the long weekend"),
+    (["business"], "India", "Asia", "The Hindu", True, "Sample: Markets close higher on banking gains"),
+    (["technology"], "United States", "North America", "TechCrunch", False, "Sample: New chip design promises faster AI training"),
+    (["history"], "Egypt", "Africa", "Smithsonian Magazine", False, "Sample: Archaeologists uncover ancient workshop"),
+    (["geography"], "Iceland", "Europe", "Atlas Obscura", False, "Sample: Mapping the island's shifting glaciers"),
+    (["science"], "United Kingdom", "Europe", "New Scientist", False, "Sample: Telescope spots a distant ocean world"),
+    (["nature"], "Brazil", "South America", "Mongabay", False, "Sample: Rainforest recovery study shows steady gains"),
     (["defence"], "India", "Asia", "IDRW", False, "Sample: Navy commissions new patrol vessel"),
     (["defence", "geopolitics"], "Ukraine", "Europe", "Defense News", False, "Sample: Air defence deliveries discussed by allies"),
     (["geopolitics", "world"], "Egypt", "Africa", "Egypt Independent", False, "Sample: Diplomats meet in Cairo on regional security"),

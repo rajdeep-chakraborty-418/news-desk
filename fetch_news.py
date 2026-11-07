@@ -43,6 +43,27 @@ DEF_WORDS = ["military", "army", "navy", "naval", "air force", "defence", "defen
 SPORT_WORDS = ["cricket", "football", "tennis", "olympic", "olympics", "fifa", "premier league", "tournament",
                "champions league", "world cup", "formula 1", "grand prix", "athlete", "nba", "nfl", "mlb",
                "rugby", "golf", "ipl", "medal", "t20", "test match", "wimbledon", "striker", "goalkeeper"]
+BIZ_WORDS = ["stock", "stocks", "sensex", "nifty", "shares", "stock market", "economy", "economic", "inflation",
+             "gdp", "earnings", "revenue", "ipo", "merger", "acquisition", "bank", "banks", "investors", "profit",
+             "rupee", "oil prices", "central bank", "interest rate", "interest rates", "recession", "startup", "startups", "trade deficit", "currency"]
+TECH_WORDS = ["ai", "artificial intelligence", "chatgpt", "openai", "smartphone", "iphone", "android", "software",
+              "semiconductor", "cyber", "cybersecurity", "robot", "robots", "google", "microsoft",
+              "apple", "meta", "nvidia", "internet", "5g", "quantum", "data centre", "data center", "gadget",
+              "technology", "algorithm", "startup", "hackers", "electric vehicle", "ev"]
+SCI_WORDS = ["scientists", "researchers", "study finds", "nasa", "isro", "planet", "telescope",
+             "astronomy", "astronomers", "physics", "genome", "vaccine", "clinical trial", "fossil", "laboratory",
+             "satellite", "rocket", "mars", "asteroid", "dna", "biology", "chemistry"]
+NATURE_WORDS = ["wildlife", "climate", "biodiversity", "forest", "forests", "tiger", "tigers", "elephant", "elephants",
+                "conservation", "endangered", "emissions", "global warming", "pollution", "ocean", "coral", "species",
+                "rainforest", "wetland", "glacier", "flood", "floods", "cyclone", "drought", "heatwave", "wildfire",
+                "environment", "ecosystem", "birds", "marine", "carbon", "renewable"]
+GEOG_WORDS = ["earthquake", "volcano", "tsunami", "island", "islands", "archipelago", "mountain", "mountains",
+              "himalaya", "himalayas", "river", "lake", "desert", "glacier", "coastline", "cartography", "geography",
+              "tectonic", "landslide", "cyclone", "monsoon", "terrain", "plateau", "canyon", "peninsula", "continent", "geological", "seismic"]
+HIST_WORDS = ["ancient", "archaeology", "archaeological", "archaeologists", "medieval", "empire", "dynasty",
+              "heritage site", "excavation", "artefact", "artefacts", "artifact", "artifacts", "ruins",
+              "centuries-old", "civilisation", "civilization", "historian", "historians", "mummy",
+              "monarchy", "unesco", "manuscript"]
 LIFE_WORDS = ["lifestyle", "recipe", "recipes", "wellness", "fitness", "fashion", "skincare", "diet", "travel",
               "holiday", "destination", "wedding", "parenting", "yoga", "nutrition", "workout", "home decor",
               "interior", "gardening", "mental health", "sleep", "cooking", "restaurant", "beauty", "relationship"]
@@ -55,6 +76,17 @@ def word_re(words):
 
 
 GEO_RE, DEF_RE, SPORT_RE, ENT_RE, LIFE_RE = map(word_re, (GEO_WORDS, DEF_WORDS, SPORT_WORDS, ENT_WORDS, LIFE_WORDS))
+
+# Extra sections derived from keywords: section -> (regex, feed categories it is derived from).
+# Feeds flagged "general" are checked for every section.
+DERIVED = {
+    "business": (word_re(BIZ_WORDS), {"world", "india"}),
+    "technology": (word_re(TECH_WORDS), {"world", "india", "business"}),
+    "science": (word_re(SCI_WORDS), {"world", "india", "technology"}),
+    "nature": (word_re(NATURE_WORDS), {"world", "india", "science", "lifestyle"}),
+    "geography": (word_re(GEOG_WORDS), {"world", "india", "science", "nature"}),
+    "history": (word_re(HIST_WORDS), {"world", "india", "entertainment", "lifestyle"}),
+}
 
 IMG_TAG_RE = re.compile(r"""<img[^>]+?src=["']([^"']+)["']""", re.I)
 IMG_EXT_RE = re.compile(r"\.(?:jpe?g|png|webp|gif|avif)(?:[?#]|$)", re.I)
@@ -176,6 +208,9 @@ def classify(feed, title, summary):
             sections.append("entertainment")
         if LIFE_RE.search(text):
             sections.append("lifestyle")
+    for name, (rx, cats) in DERIVED.items():
+        if (cat in cats or feed.get("general")) and rx.search(text):
+            sections.append(name)
     return sorted(set(sections), key=sections.index)
 
 
