@@ -84,6 +84,10 @@ def word_re(words):
 
 GEO_RE, DEF_RE, SPORT_RE, ENT_RE, LIFE_RE = map(word_re, (GEO_WORDS, DEF_WORDS, SPORT_WORDS, ENT_WORDS, LIFE_WORDS))
 
+ENT_STRICT = ["bollywood", "hollywood", "tollywood", "kollywood", "mollywood", "box office", "actor", "actress", "film", "films",
+              "movie", "movies", "web series", "bigg boss", "oscar", "oscars", "grammy", "grammys", "filmfare", "netflix", "prime video",
+              "singer", "album", "concert", "superstar", "director", "blockbuster", "cannes", "emmy", "emmys", "k-pop", "bts", "ott"]
+
 # Extra sections derived from keywords: section -> (regex, feed categories it is derived from).
 # Feeds flagged "general" are checked for every section.
 DERIVED = {
@@ -93,6 +97,7 @@ DERIVED = {
     "nature": (word_re(NATURE_WORDS), {"world", "india", "science", "lifestyle"}),
     "geography": (word_re(GEOG_WORDS), {"world", "india", "science", "nature"}),
     "history": (word_re(HIST_WORDS), {"world", "india", "entertainment", "lifestyle"}),
+    "entertainment": (word_re(ENT_STRICT), {"world", "india", "lifestyle"}),
 }
 
 WIDTH_QS_RE = re.compile(r"[?&](?:w|width)=(\d{2,4})\b", re.I)

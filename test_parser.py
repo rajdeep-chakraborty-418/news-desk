@@ -45,6 +45,9 @@ assert fn.classify({"category": "science"}, "Telescope finds new planet", "") ==
 assert fn.classify({"category": "bengali"}, "army and budget", "") == ["bengali"]
 assert fn.place({"category": "bengali", "country": "Bangladesh", "continent": "Asia"}, "শিরোনাম", "") == ("Bangladesh", "Asia")
 assert fn.parse_feed(b'<rss><channel><item><title>Ancient city - National Geographic</title><link>https://n.example/1</link><source url="x">National Geographic</source></item></channel></rss>')[0]["title"] == "Ancient city"
+assert fn.classify({"category": "india"}, "Bollywood actor announces new film", "") == ["india", "entertainment"]
+assert fn.classify({"category": "world"}, "Budget session begins in parliament", "") == ["world"]
+assert "entertainment" in fn.classify({"category": "world"}, "Grammy nominations announced", "")
 assert fn.classify({"category": "lifestyle"}, "Best travel spots", "") == ["lifestyle"]
 assert fn.place({"category": "india"}, "Anything about Pakistan", "") == ("India", "Asia")
 assert fn.place(feed_world, "Quiet day", "") == ("United Kingdom", "Europe")
