@@ -24,6 +24,19 @@ time you click it asks for a GitHub token, which is kept only in that browser:
 3. Click Refresh on the site and paste the token. (Do not share this token.)
 Anyone without a token can still see the last status, but cannot start a refresh.
 
+## Time range
+Next to the Refresh button, "Fetch stories from" sets how far back a refresh looks: last 6 hours, 12 hours,
+24 hours (default), 3 days, 7 days, 30 days or 90 days. Automatic and push-triggered runs always use 24 hours.
+Many newspaper feeds only list their latest items, so the longer ranges return whatever each feed still holds
+(Google News based sources honour the full range).
+
+## Images
+Each tile has the same 16:9 image box. The fetcher picks the largest image in each feed (not the first thumbnail),
+reads the article's own `og:image` when a feed has none, and the page letterboxes odd shapes over a blurred copy
+and shows small images at natural size. If a publisher's image URL fails, the page retries once through the public
+wsrv.nl image proxy, then falls back to a coloured placeholder. `check_images.py` logs an image health report
+on manual and push runs.
+
 ## Automatic schedule
 `scheduler.yml` keeps time itself: it waits `refresh_minutes.txt` minutes (118), triggers the update,
 then starts its next round. GitHub's own cron in `update.yml` is only a backup.

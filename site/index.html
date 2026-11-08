@@ -28,6 +28,10 @@
   .hright { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
   .updated { color: var(--muted); font: 13px system-ui, sans-serif; }
   button.refresh { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; border-radius: 10px; padding: 7px 14px; text-align: left; min-width: 168px; }
+  .rangebox { display: flex; flex-direction: column; gap: 1px; font-family: system-ui, sans-serif; }
+  .rangebox span { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .rangebox select { padding: 6px 10px; font-size: 13px; border-radius: 10px; max-width: none; }
+  .rangebox select:disabled { opacity: .65; cursor: not-allowed; }
   button.refresh .rl { font: 700 14px system-ui, sans-serif; }
   button.refresh .rs { font: 12px system-ui, sans-serif; color: var(--muted); }
   button.refresh.ok .rs { color: #1b7a43; }
@@ -73,9 +77,15 @@
            border-radius: 10px; overflow: hidden; transition: transform .12s, box-shadow .12s; }
   a.tile:hover, a.tile:focus-visible { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.14); outline: none; }
   .thumb { position: relative; aspect-ratio: 16 / 9; background: var(--line); overflow: hidden; }
-  .thumb img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .ph { position: absolute; inset: 0; display: grid; place-items: center; font: 700 34px system-ui, sans-serif; color: #fff; background: var(--tc, #555); opacity: .9; }
-  .badge { z-index: 2; position: absolute; left: 8px; top: 8px; font: 700 11px system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--tc, #555); color: #fff; }
+  /* Every tile gets the same 16:9 image box. A normal photo fills it (cropped from the top third, where faces
+     usually are); a narrow, square or tall photo is shown whole over a blurred copy of itself; a small image is
+     shown at its natural size, centred, instead of being stretched into a blur. */
+  .thumb img.main { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block; }
+  .thumb img.main.contain { object-fit: contain; object-position: center; }
+  .thumb img.main.small { inset: auto; top: 50%; left: 50%; width: auto; height: auto; max-width: 100%; max-height: 100%; transform: translate(-50%, -50%); object-fit: contain; }
+  .thumb .bg { position: absolute; inset: -14%; z-index: 1; background-size: cover; background-position: center; filter: blur(18px) saturate(1.15) brightness(.92); }
+  .ph { position: absolute; inset: 0; display: grid; place-items: center; font: 700 34px system-ui, sans-serif; color: #fff; background: linear-gradient(135deg, var(--tc, #555), color-mix(in srgb, var(--tc, #555) 70%, #000)); }
+  .badge { z-index: 3; position: absolute; left: 8px; top: 8px; font: 700 11px system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--tc, #555); color: #fff; }
   .body { padding: 12px 14px 12px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
   .meta { display: flex; justify-content: space-between; gap: 8px; font: 12px system-ui, sans-serif; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
   .tile h2 { margin: 0; font-size: 18px; line-height: 1.28; }
@@ -97,6 +107,18 @@
     <h1>RC News <span>Desk</span></h1>
     <div class="hright">
       <div class="updated" id="updated">Loading…</div>
+      <label class="rangebox" title="On refresh, only fetch stories published within this period">
+        <span>Fetch stories from</span>
+        <select id="range" aria-label="Time range to fetch on refresh">
+          <option value="6">Last 6 hours</option>
+          <option value="12">Last 12 hours</option>
+          <option value="24" selected>Last 24 hours</option>
+          <option value="72">Last 3 days</option>
+          <option value="168">Last 7 days</option>
+          <option value="720">Last 30 days</option>
+          <option value="2160">Last 90 days</option>
+        </select>
+      </label>
       <button class="refresh" id="refresh" type="button" disabled title="Fetch the latest headlines now">
         <span class="rl"><span class="ico">⟳</span> <span id="rlabel">Refresh</span></span>
         <span class="rs" id="rstatus">Checking…</span>
@@ -169,6 +191,30 @@ function bySection() {
     (!q || (i.title + " " + i.summary + " " + i.source + " " + i.country + " " + (i.state || "")).toLowerCase().includes(q)));
 }
 
+// A public image proxy used only as a second try when the publisher's own image URL fails to load.
+const proxied = (src) => "https://wsrv.nl/?url=" + encodeURIComponent(src) + "&w=800&h=450&fit=cover&a=attention";
+function attachImage(thumb, src) {
+  const img = document.createElement("img");
+  img.className = "main"; img.alt = ""; img.loading = "lazy"; img.decoding = "async"; img.referrerPolicy = "no-referrer";
+  let retried = false;
+  img.onerror = () => {
+    if (!retried) { retried = true; img.src = proxied(src); } else img.remove();   // placeholder stays visible
+  };
+  img.onload = () => {
+    const w = img.naturalWidth, h = img.naturalHeight;
+    if (!w || !h || w < 60 || h < 40) { img.remove(); return; }                   // icon or tracking pixel, not a photo
+    const ratio = w / h;
+    if (w < 320) img.classList.add("small");
+    else if (ratio < 1.25 || ratio > 2.4) img.classList.add("contain");
+    else return;                                                                  // normal photo: fill the box
+    const bg = document.createElement("div"); bg.className = "bg";
+    bg.style.backgroundImage = 'url("' + (img.currentSrc || img.src).replace(/"/g, "%22") + '")';
+    thumb.insertBefore(bg, img);
+  };
+  img.src = src;
+  thumb.append(img);
+}
+
 function makeTile(i) {
   const a = document.createElement("a");
   a.className = "tile";
@@ -178,12 +224,7 @@ function makeTile(i) {
   const thumb = document.createElement("div"); thumb.className = "thumb";
   const ph = document.createElement("div"); ph.className = "ph"; ph.textContent = (i.source || "?").charAt(0);
   thumb.append(ph);
-  if (i.image && i.image.startsWith("https://")) {
-    const img = document.createElement("img");
-    img.loading = "lazy"; img.alt = ""; img.referrerPolicy = "no-referrer"; img.src = i.image;
-    img.onerror = () => img.remove();
-    thumb.append(img);
-  }
+  if (i.image && i.image.startsWith("https://")) attachImage(thumb, i.image);
   const badge = document.createElement("span"); badge.className = "badge"; badge.textContent = i.country;
   thumb.append(badge);
 
@@ -293,7 +334,9 @@ async function load() {
     const data = await res.json();
     state.items = data.items || [];
     $("demo").style.display = data.demo ? "block" : "none";
-    $("updated").textContent = "Updated " + new Date(data.generated_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+    const RANGE_LABEL = { 6: "last 6 hours", 12: "last 12 hours", 24: "last 24 hours", 72: "last 3 days", 168: "last 7 days", 720: "last 30 days", 2160: "last 90 days" };
+    $("updated").textContent = "Updated " + new Date(data.generated_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })
+      + (RANGE_LABEL[data.range_hours] ? " · " + RANGE_LABEL[data.range_hours] : "");
     render();
   } catch (e) {
     $("updated").textContent = "Could not load headlines";
@@ -322,8 +365,11 @@ async function fetchRuns() {
   const d = await r.json();
   return (d.workflow_runs || []).filter(x => x.event !== "schedule").sort((a, b) => b.id - a.id);
 }
+const RANGE_KEY = "rcnd_range", RANGES = ["6", "12", "24", "72", "168", "720", "2160"];
+function getRange() { try { const v = localStorage.getItem(RANGE_KEY); if (RANGES.includes(v)) return v; } catch (e) {} return "24"; }
 function paintButton() {
   const btn = $("refresh"), st = $("rstatus");
+  $("range").disabled = rf.busy;
   btn.classList.remove("ok", "fail", "busy");
   if (rf.busy) {
     btn.disabled = true; btn.classList.add("busy");
@@ -380,7 +426,7 @@ async function startRefresh() {
   let baseline = 0;
   try { const runs = await fetchRuns(); baseline = runs.length ? runs[0].id : 0; } catch (e) {}
   try {
-    const r = await fetch(API + "/dispatches", { method: "POST", headers: { ...ghHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ ref: "main" }) });
+    const r = await fetch(API + "/dispatches", { method: "POST", headers: { ...ghHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ ref: "main", inputs: { hours: $("range").value } }) });
     if (r.status !== 204) {
       if ([401, 403, 404].includes(r.status)) { setToken(""); showMsg("GitHub rejected the token (needs Actions: Read and write on this repository). Click Refresh to enter a new one."); }
       else showMsg("Could not start the refresh (HTTP " + r.status + ").");
@@ -391,6 +437,8 @@ async function startRefresh() {
   }
   trackRun(baseline);
 }
+$("range").value = getRange();
+$("range").onchange = (e) => { try { localStorage.setItem(RANGE_KEY, e.target.value); } catch (err) {} };
 $("refresh").onclick = startRefresh;
 syncStatus();
 setInterval(() => { if (!rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh

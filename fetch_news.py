@@ -7,6 +7,7 @@ belongs to, and its continent/country.
 """
 import html
 import json
+import os
 import re
 import sys
 import time
@@ -15,6 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
+from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 
 import geo
@@ -23,8 +25,12 @@ ROOT = Path(__file__).parent
 FEEDS_FILE = ROOT / "feeds.json"
 OUT_FILE = ROOT / "site" / "news.json"
 
-PER_FEED_LIMIT = 15
-MAX_AGE_DAYS = 4
+ALLOWED_WINDOWS = (6, 12, 24, 72, 168, 720, 2160)   # hours: 6h, 12h, 24h, 3d, 7d, 30d, 90d
+DEFAULT_WINDOW = 24
+WINDOW_HOURS = DEFAULT_WINDOW        # set in main() from the WINDOW_HOURS environment variable
+KEEP_PER_SECTION = 500               # the page shows at most 200 per section; keep a margin for country filters
+OG_BUDGET_SECONDS = 150              # time allowed for fetching missing article images
+OG_MAX_ITEMS = 900
 TIMEOUT = 30
 USER_AGENT = "NewsHubBot/1.0 (headline aggregator; links back to originals)"
 SNIPPET_LEN = 160
@@ -89,9 +95,36 @@ DERIVED = {
     "history": (word_re(HIST_WORDS), {"world", "india", "entertainment", "lifestyle"}),
 }
 
+WIDTH_QS_RE = re.compile(r"[?&](?:w|width)=(\d{2,4})\b", re.I)
+BBC_W_RE = re.compile(r"/(?:ace/standard|ace/ws|news)/(\d{3,4})/", re.I)
+BBC_SIZE_RE = re.compile(r"/(ace/standard|ace/ws|news)/(\d{3,4})/", re.I)
+META_RE = re.compile(r"<meta\b[^>]*>", re.I)
+OG_NAME_RE = re.compile(r"""(?:property|name)=["'](?:og:image(?::secure_url|:url)?|twitter:image(?::src)?)["']""", re.I)
+CONTENT_RE = re.compile(r"""content=["']([^"']+)["']""", re.I)
 IMG_TAG_RE = re.compile(r"""<img[^>]+?src=["']([^"']+)["']""", re.I)
 IMG_EXT_RE = re.compile(r"\.(?:jpe?g|png|webp|gif|avif)(?:[?#]|$)", re.I)
 BAD_IMG = ("pixel", "1x1", "spacer", "blank.gif", "tracking", "/ads/", "doubleclick", "feedburner.com/~")
+
+
+def window_hours():
+    try:
+        h = int(os.environ.get("WINDOW_HOURS", DEFAULT_WINDOW))
+    except ValueError:
+        h = DEFAULT_WINDOW
+    return h if h in ALLOWED_WINDOWS else DEFAULT_WINDOW
+
+
+def per_feed_limit(hours):
+    """Longer windows may take more stories per feed (feeds only list what they still hold)."""
+    return 20 if hours <= 24 else 30 if hours <= 72 else 50 if hours <= 168 else 80 if hours <= 720 else 100
+
+
+def window_url(url, hours):
+    """Google News feeds carry their own 'when:' window; point it at the chosen range."""
+    if "news.google.com" not in url:
+        return url
+    when = f"{hours}h" if hours <= 72 else f"{hours // 24}d"
+    return re.sub(r"when%3A\d+[dh]", f"when%3A{when}", url)
 
 
 def strip_html(text):
@@ -148,8 +181,33 @@ def clean_image(url):
     return html.unescape(url)
 
 
+def guess_width(el, url):
+    """Width in pixels of an image candidate, from its width attribute or from the URL (0 = unknown)."""
+    v = (el.get("width") or "").strip()
+    if v.isdigit():
+        return int(v)
+    m = WIDTH_QS_RE.search(url) or BBC_W_RE.search(url)
+    return int(m.group(1)) if m else 0
+
+
+def upgrade_image(url):
+    """Ask for a bigger version where the publisher's URL scheme allows it (BBC thumbnails are 240px)."""
+    if "ichef.bbci.co.uk" in url:
+        m = BBC_SIZE_RE.search(url)
+        if m and int(m.group(2)) < 624:
+            return url[: m.start()] + f"/{m.group(1)}/800/" + url[m.end():]
+    return url
+
+
+def image_rank(width):
+    """Known-large beats unknown, unknown beats known-small."""
+    return width if width >= 300 else (299 if width == 0 else width)
+
+
 def find_image(entry):
-    """Primary image: media:content / media:thumbnail / enclosure / <image>, else first <img> in the body."""
+    """Best image for a story: the largest of media:content / thumbnail / enclosure / image,
+    else the first <img> in the body."""
+    cands = []
     for c in entry.iter():
         t = local(c.tag)
         url = None
@@ -166,14 +224,74 @@ def find_image(entry):
             url = c.get("url") or c.get("href") or (c.text or "").strip()
         img = clean_image(url)
         if img:
-            return img
+            cands.append((image_rank(guess_width(c, img)), -len(cands), img))
+    if cands:
+        return upgrade_image(max(cands)[2])
     for name in ("encoded", "description", "summary", "content"):
         body = child_text(entry, name)
         for m in IMG_TAG_RE.finditer(body):
             img = clean_image(m.group(1))
             if img:
-                return img
+                return upgrade_image(img)
     return None
+
+
+def og_image(page_html, page_url):
+    """The article's own main image, from its og:image / twitter:image meta tag."""
+    for tag in META_RE.findall(page_html):
+        if OG_NAME_RE.search(tag):
+            m = CONTENT_RE.search(tag)
+            if m:
+                img = clean_image(urljoin(page_url, html.unescape(m.group(1).strip())))
+                if img:
+                    return img
+    return None
+
+
+def enrich_images(items):
+    """For stories whose feed gave no image, read the article page's og:image (time-boxed, polite)."""
+    todo = [i for i in items if not i["image"] and "news.google.com" not in i["link"]]
+    todo.sort(key=lambda i: i["published"], reverse=True)      # newest first ...
+    todo.sort(key=lambda i: not i["primary"])                    # ... but primary papers before the rest (stable)
+    todo = todo[:OG_MAX_ITEMS]
+    deadline = time.monotonic() + OG_BUDGET_SECONDS
+    stats = {}                                   # host -> [ok, fail]
+
+    def work(it):
+        host = urlparse(it["link"]).netloc
+        ok, fail = stats.setdefault(host, [0, 0])
+        if time.monotonic() > deadline or (fail >= 3 and ok == 0):
+            return
+        try:
+            req = Request(it["link"], headers={"User-Agent": USER_AGENT, "Accept": "text/html"})
+            with urlopen(req, timeout=8) as r:
+                page = r.read(250_000).decode("utf-8", "ignore")
+            img = og_image(page, it["link"])
+            if img:
+                it["image"] = img
+                stats[host][0] += 1
+            else:
+                stats[host][1] += 1
+        except Exception:
+            stats[host][1] += 1
+
+    with ThreadPoolExecutor(max_workers=20) as pool:
+        list(pool.map(work, todo))
+    return sum(1 for i in todo if i["image"]), len(todo)
+
+
+def trim_sections(items, keep=KEEP_PER_SECTION):
+    """Keep the newest (primary-boosted) `keep` stories of each section so news.json stays a sane size."""
+    boost = timedelta(hours=6)
+    score = lambda i: datetime.fromisoformat(i["published"]) + (boost if i["primary"] else timedelta())
+    by_sec, keepers = {}, set()
+    for it in items:
+        for sec in it["sections"]:
+            by_sec.setdefault(sec, []).append(it)
+    for lst in by_sec.values():
+        lst.sort(key=score, reverse=True)
+        keepers.update(id(i) for i in lst[:keep])
+    return [i for i in items if id(i) in keepers]
 
 
 def parse_feed(xml_bytes):
@@ -234,7 +352,7 @@ def fetch_one(feed):
     status = {"source": feed["source"], "category": feed["category"], "primary": feed.get("primary", False),
               "url": feed["url"], "ok": False, "count": 0}
     try:
-        req = Request(feed["url"], headers={"User-Agent": USER_AGENT,
+        req = Request(window_url(feed["url"], WINDOW_HOURS), headers={"User-Agent": USER_AGENT,
                                             "Accept": "application/rss+xml, application/xml, text/xml, */*"})
         with urlopen(req, timeout=TIMEOUT) as resp:
             data = resp.read()
@@ -243,11 +361,11 @@ def fetch_one(feed):
         status["error"] = f"{type(exc).__name__}: {exc}"[:200]
         return [], status
 
-    cutoff = datetime.now(timezone.utc) - timedelta(days=MAX_AGE_DAYS)
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=WINDOW_HOURS)
     items = [it for it in items if not it["date"] or it["date"] >= cutoff]
     items.sort(key=lambda x: x["date"] or datetime.now(timezone.utc), reverse=True)
     out = []
-    for it in items[:PER_FEED_LIMIT]:
+    for it in items[:per_feed_limit(WINDOW_HOURS)]:
         country, continent = place(feed, it["title"], it["summary"])
         out.append({
             "title": it["title"],
@@ -268,6 +386,9 @@ def fetch_one(feed):
 
 
 def main():
+    global WINDOW_HOURS
+    WINDOW_HOURS = window_hours()
+    print(f"Time window: last {WINDOW_HOURS} hours")
     feeds = json.loads(FEEDS_FILE.read_text())
     # Google News throttles bursts (HTTP 503), so its feeds are fetched one at a time, with a pause and one retry.
     google = [f for f in feeds if "news.google.com" in f["url"]]
@@ -296,10 +417,15 @@ def main():
                 if not prev["image"] and it["image"]:
                     prev["image"] = it["image"]
     items = sorted(by_link.values(), key=lambda x: x["published"], reverse=True)
+    before = len(items)
+    items = trim_sections(items)
+    got, tried = enrich_images(items)
+    print(f"Article-page images: found {got} of {tried} tried; trimmed {before - len(items)} extra stories")
 
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     OUT_FILE.write_text(json.dumps({
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "range_hours": WINDOW_HOURS,
         "items": items,
         "feeds": statuses,
     }, ensure_ascii=False, separators=(",", ":")))

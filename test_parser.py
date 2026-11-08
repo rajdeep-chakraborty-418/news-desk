@@ -48,6 +48,63 @@ assert fn.parse_feed(b'<rss><channel><item><title>Ancient city - National Geogra
 assert fn.classify({"category": "lifestyle"}, "Best travel spots", "") == ["lifestyle"]
 assert fn.place({"category": "india"}, "Anything about Pakistan", "") == ("India", "Asia")
 assert fn.place(feed_world, "Quiet day", "") == ("United Kingdom", "Europe")
+# --- image choice: largest wins, BBC thumbnails upgraded, article-page image parsing ---
+GUARDIAN = b"""<rss xmlns:media="http://search.yahoo.com/mrss/"><channel><item><title>G</title><link>https://g.example/1</link>
+<media:content width="140" url="https://i.guim.co.uk/img/a.jpg?width=140&amp;s=1"/><media:content width="460" url="https://i.guim.co.uk/img/a.jpg?width=460&amp;s=2"/></item></channel></rss>"""
+assert fn.parse_feed(GUARDIAN)[0]["image"].endswith("width=460&s=2"), fn.parse_feed(GUARDIAN)[0]["image"]
+BBC = b"""<rss xmlns:media="http://search.yahoo.com/mrss/"><channel><item><title>B</title><link>https://b.example/1</link>
+<media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/ab12/live/x.jpg"/></item></channel></rss>"""
+assert fn.parse_feed(BBC)[0]["image"] == "https://ichef.bbci.co.uk/ace/standard/800/cpsprodpb/ab12/live/x.jpg"
+UNKNOWN_VS_SMALL = b"""<rss xmlns:media="http://search.yahoo.com/mrss/"><channel><item><title>U</title><link>https://u.example/1</link>
+<media:content width="100" url="https://x.example/tiny.jpg"/><media:content url="https://x.example/unknown.jpg"/></item></channel></rss>"""
+assert fn.parse_feed(UNKNOWN_VS_SMALL)[0]["image"].endswith("unknown.jpg")
+OG = ('<html><head><meta property="og:title" content="t"><meta content="/img/lead.jpg?x=1&amp;y=2" property="og:image">'
+      '<meta name="twitter:image" content="https://t.example/other.jpg"></head></html>')
+assert fn.og_image(OG, "https://news.example/a/b") == "https://news.example/img/lead.jpg?x=1&y=2"
+assert fn.og_image("<html><head></head></html>", "https://news.example/") is None
+
+# --- time window: allowed values, default, Google News rewrite, per-feed limit ---
+import os
+for val, want in (("6", 6), ("12", 12), ("24", 24), ("72", 72), ("168", 168), ("720", 720), ("2160", 2160),
+                  ("5", 24), ("abc", 24), ("", 24), ("-1", 24)):
+    os.environ["WINDOW_HOURS"] = val
+    assert fn.window_hours() == want, (val, fn.window_hours())
+del os.environ["WINDOW_HOURS"]
+assert fn.window_hours() == 24
+g = "https://news.google.com/rss/search?q=site%3Agoal.com%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
+assert "when%3A6h" in fn.window_url(g, 6) and "when%3A72h" in fn.window_url(g, 72)
+assert "when%3A7d" in fn.window_url(g, 168) and "when%3A30d" in fn.window_url(g, 720) and "when%3A90d" in fn.window_url(g, 2160)
+assert fn.window_url("https://x.example/feed", 6) == "https://x.example/feed"
+assert [fn.per_feed_limit(h) for h in (6, 24, 72, 168, 720, 2160)] == [20, 20, 30, 50, 80, 100]
+
+# --- the window really filters stories ---
+from unittest import mock
+def feed_xml(ages_hours):
+    items = "".join(f"<item><title>S{h}</title><link>https://n.example/{h}</link><pubDate>"
+                    f"{(datetime.now(timezone.utc) - timedelta(hours=h)).strftime('%a, %d %b %Y %H:%M:%S +0000')}</pubDate></item>"
+                    for h in ages_hours)
+    return f"<rss><channel>{items}</channel></rss>".encode()
+class FakeResp:
+    def __init__(self, data): self.data = data
+    def read(self, n=-1): return self.data
+    def __enter__(self): return self
+    def __exit__(self, *a): return False
+feed = {"source": "T", "category": "world", "url": "https://n.example/feed", "country": "India", "continent": "Asia", "primary": True}
+with mock.patch.object(fn, "urlopen", lambda *a, **k: FakeResp(feed_xml([1, 5, 11, 20, 50, 100, 400, 1000, 3000]))):
+    for hours, expect in ((6, 2), (12, 3), (24, 4), (72, 5), (168, 6), (720, 7), (2160, 8)):
+        fn.WINDOW_HOURS = hours
+        out, st = fn.fetch_one(feed)
+        assert len(out) == expect, (hours, len(out), expect)
+fn.WINDOW_HOURS = 24
+
+# --- trimming keeps each section's newest stories ---
+def mk(n, secs, primary=False, hours=0):
+    return {"link": f"l{n}", "sections": secs, "primary": primary, "published": (datetime.now(timezone.utc) - timedelta(hours=hours)).isoformat()}
+many = [mk(i, ["world"], hours=i) for i in range(10)] + [mk(100 + i, ["nature"], hours=i) for i in range(3)]
+kept = fn.trim_sections(many, keep=4)
+assert sum("world" in i["sections"] for i in kept) == 4 and sum("nature" in i["sections"] for i in kept) == 3
+assert {i["link"] for i in kept if "world" in i["sections"]} == {"l0", "l1", "l2", "l3"}
+
 print("all parser, image, country and section checks passed")
 
 now = datetime.now(timezone.utc)

@@ -5,7 +5,12 @@ on:
     # GitHub often delays or skips scheduled runs, so try every hour; the "gate" step below
     # only lets a run proceed if the last deployment is at least ~100 minutes old (about every 2 hours).
     - cron: "17 * * * *"
-  workflow_dispatch:          # lets you run it by hand from the Actions tab
+  workflow_dispatch:          # lets you run it by hand from the Actions tab (the page's Refresh button uses this)
+    inputs:
+      hours:
+        description: "Only include stories from the last N hours (6, 12, 24, 72, 168, 720 or 2160)"
+        required: false
+        default: "24"
   push:
     branches: [main]
 
@@ -45,7 +50,13 @@ jobs:
           python-version: "3.12"
       - name: Fetch latest headlines
         if: steps.gate.outputs.go == 'true'
+        env:
+          WINDOW_HOURS: ${{ github.event.inputs.hours || '24' }}
         run: python3 fetch_news.py
+      - name: Image check (diagnostic only)
+        if: steps.gate.outputs.go == 'true' && github.event_name != 'schedule'
+        continue-on-error: true
+        run: python3 check_images.py
       - uses: actions/configure-pages@v5
         if: steps.gate.outputs.go == 'true'
       - uses: actions/upload-pages-artifact@v3
