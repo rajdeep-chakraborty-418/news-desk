@@ -1,7 +1,7 @@
 name: Refresh scheduler
 
-# GitHub's own cron is unreliable on small repos, so this workflow keeps time itself:
-# wait N minutes (refresh_minutes.txt) -> trigger "Update news and deploy" -> start the next round.
+# Keeps time itself (GitHub's own cron is unreliable on small repos) and listens for requests from the
+# website's Refresh button. scheduler_loop.py runs for about 3 hours, then this workflow starts the next round.
 # The slow cron below is only a safety net that restarts the chain if it ever stops.
 on:
   push:
@@ -34,19 +34,15 @@ jobs:
             --jq '[.[] | select((.status=="in_progress" or .status=="queued") and .databaseId != ${{ github.run_id }})] | length')
           echo "Other scheduler runs active: $others"
           if [ "${others:-0}" -gt 0 ]; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
-      - name: Wait until the next refresh is due
+      - name: Run the refresh loop
         if: steps.guard.outputs.go == 'true'
-        run: |
-          minutes=$(tr -dc '0-9' < refresh_minutes.txt)
-          echo "Waiting ${minutes:-118} minutes"
-          sleep $(( ${minutes:-118} * 60 ))
-      - name: Trigger the news update
-        if: steps.guard.outputs.go == 'true'
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run update.yml --repo "${{ github.repository }}" --ref main
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python3 scheduler_loop.py
       - name: Start the next round
-        if: steps.guard.outputs.go == 'true'
+        if: always() && steps.guard.outputs.go == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run scheduler.yml --repo "${{ github.repository }}" --ref main -f chain=true

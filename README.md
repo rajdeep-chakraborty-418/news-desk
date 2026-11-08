@@ -15,14 +15,12 @@ to the original article.
 - Country is detected from the headline (`geo.py`); Indian News is always India; otherwise the paper's home country is used.
 
 ## Refresh button (top right of the page)
-The button starts the "Update news and deploy" workflow, stays disabled while it runs, and shows
-"Last: Success" or "Last: Failed" when it finishes. Starting a run needs permission, so the first
-time you click it asks for a GitHub token, which is kept only in that browser:
-1. Open https://github.com/settings/personal-access-tokens/new
-2. Repository access: **Only select repositories** -> `news-desk`. Permissions -> Repository permissions ->
-   **Actions: Read and write**. Create the token and copy it.
-3. Click Refresh on the site and paste the token. (Do not share this token.)
-Anyone without a token can still see the last status, but cannot start a refresh.
+Clicking it needs no login or token. The page posts a tiny request ("hours=24") to a public topic on ntfy.sh
+(`refresh_topic.txt`); the scheduler job on GitHub (`scheduler_loop.py`) checks that topic about every 30 seconds
+and starts the "Update news and deploy" workflow. The button stays disabled while the run is queued or running and
+then shows "Last: Success" or "Last: Failed". At most one refresh starts per 5 minutes, and anything on the topic
+that is not a proper `hours=` request is ignored. Optional: if you save a GitHub token in your browser
+(localStorage key `rcnd_gh_token`, Actions = Read and write) the button starts the workflow directly instead.
 
 ## Time range
 Next to the Refresh button, "Fetch stories from" sets how far back a refresh looks: last 6 hours, 12 hours,
@@ -38,8 +36,9 @@ wsrv.nl image proxy, then falls back to a coloured placeholder. `check_images.py
 on manual and push runs.
 
 ## Automatic schedule
-`scheduler.yml` keeps time itself: it waits `refresh_minutes.txt` minutes (118), triggers the update,
-then starts its next round. GitHub's own cron in `update.yml` is only a backup.
+`scheduler.yml` runs `scheduler_loop.py` for about 3 hours at a time and then starts its next round. The loop
+starts the update every `refresh_minutes.txt` minutes (118) and whenever the Refresh button asks. GitHub's own cron in
+`update.yml` (hourly, with a ~100 minute gate) is only a backup.
 
 ## Files
 - `feeds.json` – the newspapers (edit this to add or remove sources)

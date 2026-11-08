@@ -169,7 +169,7 @@ const SECTIONS = [
 const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
 const PRIMARY_BOOST_MS = 6 * 3600 * 1000;   // primary-source stories rank as if 6 hours newer
 const FIRST = 50, STEP = 50, MAX = 200;      // show 50 first, each click adds 50, never more than 200
-const state = { section: "bengali", continent: "All", countries: new Set(), primaryOnly: false, q: "", cq: "", items: [], shown: FIRST };
+const state = { lm: "", generated: "", section: "bengali", continent: "All", countries: new Set(), primaryOnly: false, q: "", cq: "", items: [], shown: FIRST };
 const $ = (id) => document.getElementById(id);
 
 const color = (sec) => `var(--c-${sec})`;
@@ -333,6 +333,7 @@ async function load() {
     const res = await fetch("news.json?t=" + Date.now(), { cache: "no-store" });
     const data = await res.json();
     state.items = data.items || [];
+    state.lm = res.headers.get("last-modified") || state.lm; state.generated = data.generated_at;
     $("demo").style.display = data.demo ? "block" : "none";
     const RANGE_LABEL = { 6: "last 6 hours", 12: "last 12 hours", 24: "last 24 hours", 72: "last 3 days", 168: "last 7 days", 720: "last 30 days", 2160: "last 90 days" };
     $("updated").textContent = "Updated " + new Date(data.generated_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })
@@ -347,7 +348,10 @@ async function load() {
 // ---------- Refresh button: triggers the backend workflow and tracks it ----------
 const GH = { owner: "rajdeep-chakraborty-418", repo: "news-desk", workflow: "update.yml" };
 const TOKEN_KEY = "rcnd_gh_token";
-const POLL_MS = window.RC_POLL_MS || 6000;
+// Clicking Refresh posts a tiny request ("hours=24") to this public relay topic; the scheduler job running on GitHub
+// reads it within ~30 s and starts the update. No account or token is needed.
+const RELAY = { base: window.RC_RELAY_BASE || "https://ntfy.sh", topic: "rcnd-d6930e74e95016bf07496776" };
+const pollMs = () => window.RC_POLL_MS || (getToken() ? 6000 : 10000);
 const ACTIVE = new Set(["queued", "in_progress", "waiting", "pending", "requested"]);
 const rf = { busy: false, last: null };
 const API = `https://api.github.com/repos/${GH.owner}/${GH.repo}/actions/workflows/${GH.workflow}`;
@@ -385,20 +389,36 @@ function paintButton() {
 function showMsg(text) {
   const m = $("refmsg"); m.textContent = text || ""; m.hidden = !text;
 }
-async function trackRun(baselineId) {
+async function dataChanged() {
+  try {
+    const r = await fetch("news.json?t=" + Date.now(), { method: "HEAD", cache: "no-store" });
+    const lm = r.headers.get("last-modified");
+    return !!(lm && state.lm && lm !== state.lm);
+  } catch (e) { return false; }
+}
+async function trackRun(baselineId, startWaitMs) {
   // wait for the run newer than baselineId to appear, then until it finishes
-  rf.busy = true; rf.note = "Starting…"; paintButton();
-  const t0 = Date.now(); let errors = 0, runs = [];
+  rf.busy = true; rf.note = startWaitMs > 90000 ? "Request sent…" : "Starting…"; paintButton();
+  const t0 = Date.now(); let errors = 0, runs = [], viaData = false;
   while (true) {
-    await sleep(POLL_MS);
-    try { runs = await fetchRuns(); errors = 0; } catch (e) { if (++errors >= 5) break; continue; }
+    await sleep(pollMs());
+    try { runs = await fetchRuns(); errors = 0; }
+    catch (e) {                                          // GitHub status unavailable (rate limit?): watch the data file instead
+      errors++;
+      if (await dataChanged()) { rf.last = { conclusion: "success", updated_at: new Date().toISOString() }; viaData = true; break; }
+      if (errors >= 12) break;
+      continue;
+    }
     const mine = runs.filter(x => x.id > baselineId).pop();   // oldest run started after the click
-    if (!mine) { if (Date.now() - t0 > 90000) { showMsg("The refresh did not start. Please try again."); break; } continue; }
+    if (!mine) {
+      if (Date.now() - t0 > startWaitMs) { showMsg("The refresh has not started yet. If one ran a few minutes ago it may be fresh already; otherwise try again in a minute."); break; }
+      continue;
+    }
     if (mine.status === "completed") { rf.last = mine; break; }
     rf.note = "Running…"; paintButton();
     if (Date.now() - t0 > 20 * 60000) { showMsg("The refresh is taking too long; check GitHub Actions."); break; }
   }
-  if (errors >= 5) showMsg("Could not read refresh status (GitHub rate limit?). Try again in a few minutes.");
+  if (errors >= 12 && !viaData) showMsg("Could not read refresh status (GitHub rate limit?). The headlines will update when the refresh finishes.");
   rf.busy = false; rf.note = ""; paintButton();
   if (rf.last && rf.last.conclusion === "success") load();      // show the new headlines
 }
@@ -407,35 +427,39 @@ async function syncStatus() {
     const runs = await fetchRuns();
     const active = runs.find(x => ACTIVE.has(x.status));
     rf.last = runs.find(x => x.status === "completed") || null;
-    if (active) return trackRun(active.id - 1);              // a refresh is already running
+    if (active) return trackRun(active.id - 1, 90000);              // a refresh is already running
     rf.busy = false; rf.note = ""; paintButton();
   } catch (e) {
     rf.busy = false; rf.note = "Status unavailable"; paintButton();
   }
 }
+async function sendRequest() {
+  const hours = $("range").value;
+  if (getToken()) {                                       // optional shortcut for the owner: start the workflow directly
+    try {
+      const r = await fetch(API + "/dispatches", { method: "POST", headers: { ...ghHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ ref: "main", inputs: { hours } }) });
+      if (r.status === 204) return window.RC_WAIT_MS || 90000;
+      if ([401, 403, 404].includes(r.status)) setToken("");   // stale token: forget it and use the relay
+      else throw new Error("HTTP " + r.status);
+    } catch (e) { if (String(e.message).startsWith("HTTP")) throw e; }
+  }
+  const r = await fetch(`${RELAY.base}/${RELAY.topic}`, { method: "POST", body: "hours=" + hours });
+  if (!r.ok) throw new Error("HTTP " + r.status);
+  return window.RC_WAIT_MS || 180000;                    // the scheduler checks the relay about every 30 s
+}
 async function startRefresh() {
   if (rf.busy) return;
   showMsg("");
-  let token = getToken();
-  if (!token) {
-    token = (prompt("To trigger a refresh, paste a GitHub access token (fine-grained, only this repository, permission: Actions = Read and write). It is stored only in this browser.") || "").trim();
-    if (!token) return;
-    setToken(token);
-  }
   rf.busy = true; rf.note = "Starting…"; paintButton();
   let baseline = 0;
   try { const runs = await fetchRuns(); baseline = runs.length ? runs[0].id : 0; } catch (e) {}
-  try {
-    const r = await fetch(API + "/dispatches", { method: "POST", headers: { ...ghHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ ref: "main", inputs: { hours: $("range").value } }) });
-    if (r.status !== 204) {
-      if ([401, 403, 404].includes(r.status)) { setToken(""); showMsg("GitHub rejected the token (needs Actions: Read and write on this repository). Click Refresh to enter a new one."); }
-      else showMsg("Could not start the refresh (HTTP " + r.status + ").");
-      rf.busy = false; rf.note = ""; paintButton(); return;
-    }
-  } catch (e) {
-    showMsg("Could not reach GitHub. Check your connection."); rf.busy = false; rf.note = ""; paintButton(); return;
+  let wait;
+  try { wait = await sendRequest(); }
+  catch (e) {
+    showMsg("Could not send the refresh request (" + (e.message || "network error") + "). Check your connection and try again.");
+    rf.busy = false; rf.note = ""; paintButton(); return;
   }
-  trackRun(baseline);
+  trackRun(baseline, wait);
 }
 $("range").value = getRange();
 $("range").onchange = (e) => { try { localStorage.setItem(RANGE_KEY, e.target.value); } catch (err) {} };
