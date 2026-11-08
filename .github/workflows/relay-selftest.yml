@@ -1,0 +1,48 @@
+name: Relay self-test (temporary)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: ntfy.sh behaves the way the page and scheduler assume
+        run: |
+          T="rcnd-selftest-$(openssl rand -hex 8)"
+          START=$(date +%s)
+          echo "--- POST from the website origin (look for the CORS header)"
+          curl -sS -i -H "Origin: https://rajdeep-chakraborty-418.github.io" -H "Content-Type: text/plain" -d "hours=24" "https://ntfy.sh/$T" | grep -iE "^HTTP|access-control|^content-type" | tr -d '\r'
+          echo "--- poll it back the way scheduler_loop.py does"
+          sleep 2
+          curl -sS "https://ntfy.sh/$T/json?poll=1&since=$((START-90))" | tee /tmp/poll.json
+          python3 - <<'PY'
+          import json
+          rows=[json.loads(l) for l in open("/tmp/poll.json") if l.strip()]
+          msgs=[r for r in rows if r.get("event")=="message"]
+          print("SELFTEST poll: messages =",len(msgs),"| fields:",sorted(msgs[0].keys()) if msgs else None,"| text:",msgs[0].get("message") if msgs else None)
+          PY
+          echo "--- preflight (browsers send this for non-simple requests)"
+          curl -sS -i -X OPTIONS -H "Origin: https://rajdeep-chakraborty-418.github.io" -H "Access-Control-Request-Method: POST" "https://ntfy.sh/$T" | grep -iE "^HTTP|access-control" | tr -d '\r'
+      - name: End to end through the live scheduler loop
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "waiting for the 5 minute gap after the latest update run..."
+          sleep 285
+          TOPIC=$(cat refresh_topic.txt)
+          POSTED=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          curl -sS -H "Content-Type: text/plain" -d "hours=24" "https://ntfy.sh/$TOPIC" > /dev/null
+          echo "posted refresh request at $POSTED"
+          for i in $(seq 1 14); do
+            sleep 10
+            row=$(gh run list --repo "${{ github.repository }}" --workflow update.yml --event workflow_dispatch --limit 3 --json createdAt,databaseId -q "[.[] | select(.createdAt > \"$POSTED\")][0] | .createdAt // empty")
+            if [ -n "$row" ]; then echo "E2E PASS: update run created at $row ($((i*10))s after the request)"; exit 0; fi
+          done
+          echo "E2E FAIL: no update run was started within 140s"; exit 1
