@@ -93,6 +93,27 @@ def main():
             f = next(r for r in rows if r not in ok)
             line += f" | FAIL status={f[0]} type={f[1] or f[4]} url={f[5][:100]}"
         print(line)
+    # For sources whose images fail directly: does a Referer matter, and does the page's proxy fallback recover them?
+    from urllib.parse import quote, urlparse
+    for src in sorted(per):
+        failed = [r for r in per[src] if not (r[0] == 200 and (r[1].startswith("image") or r[6]))]
+        if not failed:
+            continue
+        url = failed[0][5]
+        item = next(i for i in sample if i["image"] == url)
+        origin = "{0.scheme}://{0.netloc}/".format(urlparse(item["link"]))
+        out = []
+        for label, req_url, hdr in (
+            ("with-referer", url, {"User-Agent": UA, "Referer": origin, "Accept": "image/*"}),
+            ("via-proxy", "https://wsrv.nl/?url=" + quote(url, safe="") + "&w=800&h=450&fit=cover&a=attention", {"User-Agent": UA}),
+        ):
+            try:
+                with urlopen(Request(req_url, headers=hdr), timeout=20) as r:
+                    d = r.read(400_000)
+                    out.append(f"{label}: {r.status} {r.headers.get('Content-Type', '')} {image_size(d)}")
+            except Exception as e:
+                out.append(f"{label}: {getattr(e, 'code', type(e).__name__)}")
+        print(f"PROXYTEST {src}: " + " | ".join(out))
     counts = defaultdict(int)
     for i in items:
         for sec in i["sections"]:
