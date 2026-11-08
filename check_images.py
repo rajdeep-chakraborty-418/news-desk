@@ -10,7 +10,8 @@ from pathlib import Path
 from urllib.request import Request, urlopen
 
 NEWS = Path(__file__).parent / "site" / "news.json"
-UA = "NewsHubBot/1.0 (headline aggregator; image check)"
+# Mimic what a reader's browser sends for an <img> (no Referer), since that is what decides if a tile shows a photo.
+UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 PER_SOURCE = 3
 MAX_TOTAL = 260
 
@@ -46,14 +47,20 @@ def image_size(b):
     return None
 
 
+def sniff(b):
+    """True when the bytes are an image a browser can show, whatever Content-Type the server claims."""
+    return (b[:3] == b"\xff\xd8\xff" or b[:8] == b"\x89PNG\r\n\x1a\n" or b[:6] in (b"GIF87a", b"GIF89a")
+            or (b[:4] == b"RIFF" and b[8:12] == b"WEBP") or b[4:8] == b"ftyp" or b[:5] == b"<?xml" or b[:4] == b"<svg")
+
+
 def check(item):
     try:
         req = Request(item["image"], headers={"User-Agent": UA, "Accept": "image/*"})
         with urlopen(req, timeout=15) as r:
             data = r.read(400_000)
-            return item, r.status, r.headers.get("Content-Type", ""), len(data), image_size(data), None
+            return item, r.status, r.headers.get("Content-Type", ""), len(data), image_size(data), None, sniff(data)
     except Exception as e:
-        return item, getattr(e, "code", None), "", 0, None, f"{type(e).__name__}"
+        return item, getattr(e, "code", None), "", 0, None, f"{type(e).__name__}", False
 
 
 def main():
@@ -70,20 +77,27 @@ def main():
     with ThreadPoolExecutor(max_workers=12) as pool:
         res = list(pool.map(check, sample))
     per = defaultdict(list)
-    for item, status, ctype, n, size, err in res:
-        per[item["source"]].append((status, ctype, n, size, err, item["image"]))
+    for item, status, ctype, n, size, err, is_img in res:
+        per[item["source"]].append((status, ctype, n, size, err, item["image"], is_img))
     bad = small = 0
     for src in sorted(per):
         rows = per[src]
-        ok = [r for r in rows if r[0] == 200 and r[1].startswith("image")]
+        ok = [r for r in rows if r[0] == 200 and (r[1].startswith("image") or r[6])]
         widths = [r[3][0] for r in ok if r[3]]
         bad += len(rows) - len(ok)
         small += sum(1 for w in widths if w < 320)
         line = f"IMGCHECK {src}: {len(ok)}/{len(rows)} load; widths={widths}"
+        if len(ok) == len(rows) and not any(w < 320 for w in widths):
+            continue                       # healthy source: stay quiet
         if len(ok) < len(rows):
             f = next(r for r in rows if r not in ok)
             line += f" | FAIL status={f[0]} type={f[1] or f[4]} url={f[5][:100]}"
         print(line)
+    counts = defaultdict(int)
+    for i in items:
+        for sec in i["sections"]:
+            counts[sec] += 1
+    print("SECTIONS:", ", ".join(f"{k}={counts[k]}" for k in sorted(counts, key=lambda k: -counts[k])))
     print(f"IMGSUMMARY: tested {len(res)}, failed {bad}, narrower than 320px: {small}")
 
 
