@@ -48,6 +48,9 @@ jobs:
         if: steps.gate.outputs.go == 'true'
         with:
           python-version: "3.12"
+      - name: Build newspaper homepage list
+        if: steps.gate.outputs.go == 'true'
+        run: python3 homepages.py
       - name: Fetch latest headlines
         if: steps.gate.outputs.go == 'true'
         env:

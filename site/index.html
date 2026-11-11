@@ -64,7 +64,13 @@
   .sidebody { padding: 0 12px 12px; display: grid; gap: 8px; }
   .sidebody input[type=search] { margin: 0; min-width: 0; width: 100%; }
   .clear { padding: 5px 12px; font-size: 13px; justify-self: start; }
-  #clist { max-height: 56vh; overflow-y: auto; display: grid; gap: 2px; padding-right: 4px; }
+  .paperbox { border-top: 1px solid var(--line); padding: 12px; display: grid; gap: 8px; }
+  .paperbox label { font-weight: 700; font-size: 14px; }
+  .paperbox select { width: 100%; min-width: 0; padding: 7px 8px; font-size: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: inherit; }
+  .paperlink { display: block; padding: 8px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); font-size: 14px; font-weight: 600; text-decoration: none; color: inherit; overflow-wrap: anywhere; }
+  .paperlink:hover { text-decoration: underline; }
+  .paperlink small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+  #clist { max-height: 40vh; overflow-y: auto; display: grid; gap: 2px; padding-right: 4px; }
   #clist label { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
   #clist label:hover { background: var(--bg); }
   #clist .n { margin-left: auto; color: var(--muted); font-size: 12px; }
@@ -152,6 +158,11 @@
           <div id="clist" role="group" aria-label="Filter by country"></div>
         </div>
       </details>
+      <div class="paperbox">
+        <label for="paper">Newspaper homepage</label>
+        <select id="paper" aria-label="Choose a newspaper to open its homepage"><option value="">Choose a newspaper…</option></select>
+        <a id="paperlink" class="paperlink" target="_blank" rel="noopener noreferrer" hidden></a>
+      </div>
     </aside>
   </div>
   <noscript><p class="empty">Please enable JavaScript to see the headlines.</p></noscript>
@@ -328,6 +339,28 @@ function build() {
   if (window.innerWidth <= 900) $("sidebox").open = false;   // start collapsed on phones
 }
 
+// Newspapers dropdown: pick one paper (single select) and its homepage link appears below it.
+async function loadPapers() {
+  const sel = $("paper"), link = $("paperlink");
+  let papers = [];
+  try { papers = await (await fetch("papers.json?t=" + Date.now())).json(); } catch (e) { sel.disabled = true; sel.options[0].textContent = "Newspaper list unavailable"; return; }
+  for (const cont of [...CONTINENTS.slice(1), "Other"]) {
+    const list = papers.filter((p) => p.continent === cont || (cont === "Other" && !CONTINENTS.includes(p.continent)));
+    if (!list.length) continue;
+    const g = document.createElement("optgroup"); g.label = cont === "Other" ? "International" : cont;
+    for (const p of list) { const o = document.createElement("option"); o.value = p.url; o.textContent = p.name; g.appendChild(o); }
+    sel.appendChild(g);
+  }
+  sel.addEventListener("change", () => {
+    const p = papers.find((x) => x.url === sel.value);
+    if (!p || !/^https?:\/\//.test(p.url)) { link.hidden = true; return; }
+    link.href = p.url;
+    link.replaceChildren(document.createTextNode("Open " + p.name + " ↗"));
+    const host = document.createElement("small"); host.textContent = p.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    link.appendChild(host); link.hidden = false;
+  });
+}
+
 async function load() {
   try {
     const res = await fetch("news.json?t=" + Date.now(), { cache: "no-store" });
@@ -466,7 +499,7 @@ $("range").onchange = (e) => { try { localStorage.setItem(RANGE_KEY, e.target.va
 $("refresh").onclick = startRefresh;
 syncStatus();
 setInterval(() => { if (!rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
-build(); load();
+build(); load(); loadPapers();
 setInterval(load, 10 * 60 * 1000);   // re-check for new data every 10 minutes
 setInterval(() => { if (state.items.length) render(); }, 5 * 60 * 1000);   // keep "x min ago" fresh
 </script>
