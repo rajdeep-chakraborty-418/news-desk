@@ -66,6 +66,7 @@
   .clear { padding: 5px 12px; font-size: 13px; justify-self: start; }
   .paperbox { border-top: 1px solid var(--line); padding: 12px; display: grid; gap: 8px; }
   .paperbox label { font-weight: 700; font-size: 14px; }
+  .paperbox input[type=search] { margin: 0; min-width: 0; width: 100%; }
   .paperbox select { width: 100%; min-width: 0; padding: 7px 8px; font-size: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: inherit; }
   .paperlink { display: block; padding: 8px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); font-size: 14px; font-weight: 600; text-decoration: none; color: inherit; overflow-wrap: anywhere; }
   .paperlink:hover { text-decoration: underline; }
@@ -159,7 +160,8 @@
         </div>
       </details>
       <div class="paperbox">
-        <label for="paper">Newspaper homepage</label>
+        <label for="paper">Newspaper Homepage</label>
+        <input type="search" id="pq" placeholder="Find a newspaper…" aria-label="Find a newspaper" autocomplete="off">
         <select id="paper" aria-label="Choose a newspaper to open its homepage"><option value="">Choose a newspaper…</option></select>
         <a id="paperlink" class="paperlink" target="_blank" rel="noopener noreferrer" hidden></a>
       </div>
@@ -344,21 +346,38 @@ async function loadPapers() {
   const sel = $("paper"), link = $("paperlink");
   let papers = [];
   try { papers = await (await fetch("papers.json?t=" + Date.now())).json(); } catch (e) { sel.disabled = true; sel.options[0].textContent = "Newspaper list unavailable"; return; }
-  for (const cont of [...CONTINENTS.slice(1), "Other"]) {
-    const list = papers.filter((p) => p.continent === cont || (cont === "Other" && !CONTINENTS.includes(p.continent)));
-    if (!list.length) continue;
-    const g = document.createElement("optgroup"); g.label = cont === "Other" ? "International" : cont;
-    for (const p of list) { const o = document.createElement("option"); o.value = p.url; o.textContent = p.name; g.appendChild(o); }
-    sel.appendChild(g);
-  }
-  sel.addEventListener("change", () => {
-    const p = papers.find((x) => x.url === sel.value);
+  const show = (p) => {
     if (!p || !/^https?:\/\//.test(p.url)) { link.hidden = true; return; }
     link.href = p.url;
     link.replaceChildren(document.createTextNode("Open " + p.name + " ↗"));
-    const host = document.createElement("small"); host.textContent = p.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    const host = document.createElement("small"); host.textContent = p.country + " · " + p.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
     link.appendChild(host); link.hidden = false;
+  };
+  // (re)build the options, keeping only papers whose name matches the search box
+  const fill = (q) => {
+    const needle = q.trim().toLowerCase(); let n = 0;
+    sel.replaceChildren(sel.options[0] || new Option("Choose a newspaper…", ""));
+    const match = papers.filter((p) => !needle || p.name.toLowerCase().includes(needle));
+    const countries = [...new Set(match.map((p) => p.country))].sort((x, y) =>
+      (x === "International") - (y === "International") || x.localeCompare(y));   // A-Z, with "International" (multi-country papers) last
+    for (const c of countries) {
+      const g = document.createElement("optgroup"); g.label = c;
+      for (const p of match.filter((x) => x.country === c)) { g.appendChild(new Option(p.name, p.url)); n++; }
+      sel.appendChild(g);
+    }
+    if (needle && !n) sel.appendChild(Object.assign(new Option("No newspaper found", ""), { disabled: true }));
+    sel.size = needle ? Math.min(7, Math.max(2, n + 1)) : 1;   // while searching, show the matches as an open list
+    return n;
+  };
+  const pq = $("pq");
+  fill("");
+  pq.addEventListener("input", () => { fill(pq.value); sel.value = ""; show(null); });
+  pq.addEventListener("keydown", (e) => {            // Enter picks the first match
+    if (e.key !== "Enter") return;
+    const first = [...sel.options].find((o) => o.value);
+    if (first) { sel.value = first.value; show(papers.find((x) => x.url === first.value)); sel.size = 1; }
   });
+  sel.addEventListener("change", () => { show(papers.find((x) => x.url === sel.value)); sel.size = 1; });
 }
 
 async function load() {

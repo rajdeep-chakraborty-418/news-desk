@@ -41,7 +41,9 @@ SOURCE_HOME = {
     "NDTV": "https://www.ndtv.com/", "Vulture": "https://www.vulture.com/", "Gadgets 360": "https://www.gadgets360.com/", "Scroll.in": "https://scroll.in/",
     "Cannes/Film Festivals": None,   # a topic search, not a newspaper: left out of the dropdown
 }
-HOME_ALIASES = {"https://www.thehindu.com/": "https://www.thehindu.com/"}
+# feeds.json leaves country empty for papers that cover several countries; give single-country ones their real country
+COUNTRY_FIX = {"Jerusalem Post": ("Israel", "Asia"), "Euronews": ("France", "Europe"), "Goal.com": ("United Kingdom", "Europe"),
+               "The Local": ("Sweden", "Europe"), "Politico Europe": ("Belgium", "Europe")}
 
 
 def feed_host(url):
@@ -71,8 +73,9 @@ def build_papers(feeds):
         if not url:
             continue
         key = urlparse(url).netloc.removeprefix("www.") + urlparse(url).path.rstrip("/")
-        g = groups.setdefault(key, {"name": f["source"], "url": url, "country": f["country"],
-                                    "continent": f["continent"], "primary": False})
+        country, continent = COUNTRY_FIX.get(f["source"], (f["country"], f["continent"]))
+        g = groups.setdefault(key, {"name": f["source"], "url": url, "country": country or "International",
+                                    "continent": continent, "primary": False})
         if len(f["source"]) < len(g["name"]):
             g["name"] = f["source"]
         g["primary"] = g["primary"] or bool(f.get("primary"))

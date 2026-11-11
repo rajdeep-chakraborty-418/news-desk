@@ -58,7 +58,7 @@
 {
 "name": "AllAfrica",
 "url": "https://allafrica.com/",
-"country": null,
+"country": "International",
 "continent": "Africa",
 "primary": false
 },
@@ -79,7 +79,7 @@
 {
 "name": "Ancient Origins",
 "url": "https://ancient-origins.net/",
-"country": null,
+"country": "International",
 "continent": "Other",
 "primary": false
 },
@@ -121,7 +121,7 @@
 {
 "name": "Army Technology",
 "url": "https://www.army-technology.com/",
-"country": null,
+"country": "International",
 "continent": "Europe",
 "primary": false
 },
@@ -135,7 +135,7 @@
 {
 "name": "Asia Times",
 "url": "https://asiatimes.com/",
-"country": null,
+"country": "International",
 "continent": "Asia",
 "primary": false
 },
@@ -156,7 +156,7 @@
 {
 "name": "Balkan Insight",
 "url": "https://balkaninsight.com/",
-"country": null,
+"country": "International",
 "continent": "Europe",
 "primary": false
 },
@@ -450,7 +450,7 @@
 {
 "name": "The Diplomat",
 "url": "https://thediplomat.com/",
-"country": null,
+"country": "International",
 "continent": "Asia",
 "primary": false
 },
@@ -527,14 +527,14 @@
 {
 "name": "Euractiv",
 "url": "https://www.euractiv.com/",
-"country": null,
+"country": "International",
 "continent": "Europe",
 "primary": false
 },
 {
 "name": "Euronews",
 "url": "https://www.euronews.com/",
-"country": null,
+"country": "France",
 "continent": "Europe",
 "primary": false
 },
@@ -611,7 +611,7 @@
 {
 "name": "GIS Lounge",
 "url": "https://www.gislounge.com/",
-"country": null,
+"country": "International",
 "continent": "Other",
 "primary": false
 },
@@ -625,7 +625,7 @@
 {
 "name": "Goal.com",
 "url": "https://goal.com/",
-"country": null,
+"country": "United Kingdom",
 "continent": "Europe",
 "primary": true
 },
@@ -800,7 +800,7 @@
 {
 "name": "Jerusalem Post",
 "url": "https://www.jpost.com/",
-"country": null,
+"country": "Israel",
 "continent": "Asia",
 "primary": false
 },
@@ -870,7 +870,7 @@
 {
 "name": "Latin America Reports",
 "url": "https://latinamericareports.com/",
-"country": null,
+"country": "International",
 "continent": "South America",
 "primary": false
 },
@@ -898,7 +898,7 @@
 {
 "name": "The Local",
 "url": "https://www.thelocal.com/",
-"country": null,
+"country": "Sweden",
 "continent": "Europe",
 "primary": false
 },
@@ -926,7 +926,7 @@
 {
 "name": "Maps Mania",
 "url": "https://googlemapsmania.blogspot.com/",
-"country": null,
+"country": "International",
 "continent": "Other",
 "primary": false
 },
@@ -1157,7 +1157,7 @@
 {
 "name": "Past Horizons",
 "url": "https://www.pasthorizonspr.com/",
-"country": null,
+"country": "International",
 "continent": "Other",
 "primary": false
 },
@@ -1178,7 +1178,7 @@
 {
 "name": "Phys.org",
 "url": "https://phys.org/",
-"country": null,
+"country": "International",
 "continent": "Other",
 "primary": false
 },
@@ -1199,7 +1199,7 @@
 {
 "name": "Politico Europe",
 "url": "https://www.politico.eu/",
-"country": null,
+"country": "Belgium",
 "continent": "Europe",
 "primary": false
 },
