@@ -65,6 +65,8 @@
   .selnote { font-weight: 400; color: var(--muted); font-size: 12px; }
   .sidebody { padding: 0 12px 12px; display: grid; gap: 8px; }
   .sidebody input[type=search] { margin: 0; min-width: 0; width: 100%; }
+  .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .reset { padding: 2px 10px; font-size: 11px; border-radius: 999px; }
   .clear { padding: 5px 12px; font-size: 13px; justify-self: start; }
   .paperbox { border-top: 1px solid var(--line); padding: 12px; display: grid; gap: 8px; }
   .paperbox label { font-weight: 700; font-size: 14px; }
@@ -113,7 +115,10 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>RC News <span>Desk</span></h1>
+    <div class="brand">
+      <h1>RC News <span>Desk</span></h1>
+      <button class="reset" id="reset" type="button" title="Clear every selection and filter">Reset</button>
+    </div>
     <div class="hright">
       <div class="updated" id="updated">Loading…</div>
       <label class="rangebox" title="On refresh, only fetch stories published within this period">
@@ -361,6 +366,22 @@ function build() {
   $("q").addEventListener("input", (e) => { state.q = e.target.value; state.shown = FIRST; render(); });
   $("cq").addEventListener("input", (e) => { state.cq = e.target.value; render(); });
   $("clear").onclick = () => { state.countries.clear(); state.cq = ""; $("cq").value = ""; state.shown = FIRST; render(); };
+  // Reset: back to the starting view - first section, all continents and countries, both source types, no searches,
+  // no newspaper chosen, and the refresh options at their defaults (24 hours, 300 stories)
+  $("reset").onclick = () => {
+    state.section = SECTIONS[0][0]; state.continent = "All"; state.countries.clear(); state.kinds.clear();
+    state.q = ""; state.cq = ""; state.shown = FIRST;
+    $("q").value = ""; $("cq").value = "";
+    $("fPrimary").checked = false; $("fSecondary").checked = false;
+    tabs.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
+    chips.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
+    $("pq").value = ""; $("pq").dispatchEvent(new Event("input"));          // clears the newspaper search, choice and link
+    if (!$("range").disabled) {
+      $("range").value = "24"; $("count").value = "300";
+      try { localStorage.removeItem(RANGE_KEY); localStorage.removeItem(COUNT_KEY); } catch (e) {}
+    }
+    render(); window.scrollTo({ top: 0 });
+  };
   $("more").onclick = () => { state.shown = Math.min(state.shown + STEP, MAX); render(); };
   if (window.innerWidth <= 900) $("sidebox").open = false;   // start collapsed on phones
 }
