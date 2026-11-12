@@ -52,6 +52,8 @@
   button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .tabs button { font-weight: 600; font-size: 14px; white-space: nowrap; border-bottom-width: 3px; padding: 6px 12px; }
   .tabs button[aria-pressed="true"] { background: var(--tabc, var(--ink)); border-color: var(--tabc, var(--ink)); color: #fff; }
+  .kindbox { display: inline-flex; align-items: center; gap: 14px; margin: 0; padding: 4px 12px 6px; border: 1px solid var(--line); border-radius: 10px; }
+  .kindbox legend { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 0 4px; }
   .toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); cursor: pointer; }
   input[type=search] { font: 14px system-ui, sans-serif; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); min-width: 190px; margin-left: auto; }
   .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
@@ -149,10 +151,11 @@
     <div class="tabs" id="tabs" role="group" aria-label="Section"></div>
     <div class="row">
       <div class="chips" id="chips" role="group" aria-label="Continent"></div>
-      <div class="chips" id="kind" role="group" aria-label="Source type">
-        <button type="button" id="fPrimary" aria-pressed="false" title="Show only stories from primary newspapers">Primary</button>
-        <button type="button" id="fSecondary" aria-pressed="false" title="Show only stories from secondary newspapers">Secondary</button>
-      </div>
+      <fieldset class="kindbox" id="kind">
+        <legend>Source type</legend>
+        <label class="toggle"><input type="checkbox" id="fPrimary"> Primary</label>
+        <label class="toggle"><input type="checkbox" id="fSecondary"> Secondary</label>
+      </fieldset>
       <input type="search" id="q" placeholder="Search headlines…" aria-label="Search headlines">
     </div>
   </div>
@@ -347,11 +350,11 @@ function build() {
     };
     chips.append(b);
   }
-  // Primary / Secondary toggle buttons: none or both pressed = all stories; one pressed = only that kind
+  // Primary / Secondary checkboxes, applied on top of the section, continent, country and search filters:
+  // none or both ticked = both kinds of source; only one ticked = only that kind
   for (const [id, kind] of [["fPrimary", "primary"], ["fSecondary", "secondary"]]) {
-    $(id).onclick = () => {
-      state.kinds.has(kind) ? state.kinds.delete(kind) : state.kinds.add(kind);
-      $(id).setAttribute("aria-pressed", String(state.kinds.has(kind)));
+    $(id).onchange = (e) => {
+      e.target.checked ? state.kinds.add(kind) : state.kinds.delete(kind);
       state.shown = FIRST; render();
     };
   }
