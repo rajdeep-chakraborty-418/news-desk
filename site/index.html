@@ -126,6 +126,16 @@
           <option value="2160">Last 90 days</option>
         </select>
       </label>
+      <label class="rangebox" title="On refresh, keep up to this many stories in each section">
+        <span>Stories per section</span>
+        <select id="count" aria-label="Number of stories to fetch per section on refresh">
+          <option value="200">200</option>
+          <option value="300" selected>300</option>
+          <option value="400">400</option>
+          <option value="500">500</option>
+          <option value="1000">1000</option>
+        </select>
+      </label>
       <button class="refresh" id="refresh" type="button" disabled title="Fetch the latest headlines now">
         <span class="rl"><span class="ico">⟳</span> <span id="rlabel">Refresh</span></span>
         <span class="rs" id="rstatus">Checking…</span>
@@ -181,7 +191,8 @@ const SECTIONS = [
 ];
 const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
 const PRIMARY_BOOST_MS = 6 * 3600 * 1000;   // primary-source stories rank as if 6 hours newer
-const FIRST = 50, STEP = 50, MAX = 200;      // show 50 first, each click adds 50, never more than 200
+const FIRST = 50, STEP = 50;                 // show 50 first, each click adds 50 ...
+let MAX = 200;                               // ... up to the number of stories kept per section (news.json "max_articles"; 200 for older data)
 const state = { lm: "", generated: "", section: "bengali", continent: "All", countries: new Set(), primaryOnly: false, q: "", cq: "", items: [], shown: FIRST };
 const $ = (id) => document.getElementById(id);
 
@@ -385,6 +396,7 @@ async function load() {
     const res = await fetch("news.json?t=" + Date.now(), { cache: "no-store" });
     const data = await res.json();
     state.items = data.items || [];
+    MAX = data.max_articles || 200;
     state.lm = res.headers.get("last-modified") || state.lm; state.generated = data.generated_at;
     $("demo").style.display = data.demo ? "block" : "none";
     const RANGE_LABEL = { 6: "last 6 hours", 12: "last 12 hours", 24: "last 24 hours", 72: "last 3 days", 168: "last 7 days", 720: "last 30 days", 2160: "last 90 days" };
@@ -421,11 +433,13 @@ async function fetchRuns() {
   const d = await r.json();
   return (d.workflow_runs || []).filter(x => x.event !== "schedule").sort((a, b) => b.id - a.id);
 }
+const COUNT_KEY = "rcnd_count", COUNTS = ["200", "300", "400", "500", "1000"];
 const RANGE_KEY = "rcnd_range", RANGES = ["6", "12", "24", "72", "168", "720", "2160"];
 function getRange() { try { const v = localStorage.getItem(RANGE_KEY); if (RANGES.includes(v)) return v; } catch (e) {} return "24"; }
+function getCount() { try { const v = localStorage.getItem(COUNT_KEY); if (COUNTS.includes(v)) return v; } catch (e) {} return "300"; }
 function paintButton() {
   const btn = $("refresh"), st = $("rstatus");
-  $("range").disabled = rf.busy;
+  $("range").disabled = rf.busy; $("count").disabled = rf.busy;
   btn.classList.remove("ok", "fail", "busy");
   if (rf.busy) {
     btn.disabled = true; btn.classList.add("busy");
@@ -486,16 +500,16 @@ async function syncStatus() {
   }
 }
 async function sendRequest() {
-  const hours = $("range").value;
+  const hours = $("range").value, count = $("count").value;
   if (getToken()) {                                       // optional shortcut for the owner: start the workflow directly
     try {
-      const r = await fetch(API + "/dispatches", { method: "POST", headers: { ...ghHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ ref: "main", inputs: { hours } }) });
+      const r = await fetch(API + "/dispatches", { method: "POST", headers: { ...ghHeaders(), "Content-Type": "application/json" }, body: JSON.stringify({ ref: "main", inputs: { hours, count } }) });
       if (r.status === 204) return window.RC_WAIT_MS || 90000;
       if ([401, 403, 404].includes(r.status)) setToken("");   // stale token: forget it and use the relay
       else throw new Error("HTTP " + r.status);
     } catch (e) { if (String(e.message).startsWith("HTTP")) throw e; }
   }
-  const r = await fetch(`${RELAY.base}/${RELAY.topic}`, { method: "POST", body: "hours=" + hours });
+  const r = await fetch(`${RELAY.base}/${RELAY.topic}`, { method: "POST", body: "hours=" + hours + "&count=" + count });
   if (!r.ok) throw new Error("HTTP " + r.status);
   return window.RC_WAIT_MS || 180000;                    // the scheduler checks the relay about every 30 s
 }
@@ -513,6 +527,8 @@ async function startRefresh() {
   }
   trackRun(baseline, wait);
 }
+$("count").value = getCount();
+$("count").onchange = (e) => { try { localStorage.setItem(COUNT_KEY, e.target.value); } catch (err) {} };
 $("range").value = getRange();
 $("range").onchange = (e) => { try { localStorage.setItem(RANGE_KEY, e.target.value); } catch (err) {} };
 $("refresh").onclick = startRefresh;

@@ -7,8 +7,8 @@ Every POLL_SECONDS it
 Either one starts the "Update news and deploy" workflow through the GitHub CLI.
 After LOOP_MINUTES it exits so the workflow can start a fresh round of itself.
 
-Requests carry only the chosen time range ("hours=168"); anything else is ignored, the range must be one of
-the allowed values, and at most one refresh is started per MIN_GAP_SECONDS, so spamming the topic does nothing.
+Requests carry only the chosen time range and story count ("hours=168&count=500"); anything else is ignored, both must
+be one of the allowed values (a missing count means 300), and at most one refresh is started per MIN_GAP_SECONDS, so spamming the topic does nothing.
 """
 import json
 import os
@@ -20,6 +20,7 @@ from pathlib import Path
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).parent
+ALLOWED_COUNTS = {200, 300, 400, 500, 1000}
 ALLOWED = {6, 12, 24, 72, 168, 720, 2160}
 NTFY = os.environ.get("NTFY_BASE", "https://ntfy.sh").rstrip("/")
 GH = os.environ.get("GH_BIN", "gh")
@@ -37,6 +38,12 @@ def log(msg):
 
 def gh(*args):
     return subprocess.run([GH, *args], capture_output=True, text=True, timeout=120)
+
+
+def parse_count(text):
+    m = re.search(r"count=(\d+)", text or "")
+    n = int(m.group(1)) if m else 300
+    return n if n in ALLOWED_COUNTS else 300
 
 
 def parse_hours(text):
@@ -59,10 +66,10 @@ def run_ages():
     return newest, ok
 
 
-def trigger(hours, why):
-    r = gh("workflow", "run", "update.yml", "--repo", REPO, "--ref", "main", "-f", f"hours={hours}")
+def trigger(hours, why, count=300):
+    r = gh("workflow", "run", "update.yml", "--repo", REPO, "--ref", "main", "-f", f"hours={hours}", "-f", f"count={count}")
     ok = r.returncode == 0
-    log(("Started" if ok else "FAILED to start") + f" refresh ({why}, last {hours} h)" + ("" if ok else f": {r.stderr.strip()[:200]}"))
+    log(("Started" if ok else "FAILED to start") + f" refresh ({why}, last {hours} h, {count} per section)" + ("" if ok else f": {r.stderr.strip()[:200]}"))
     return ok
 
 
@@ -102,10 +109,10 @@ def main():
             seen.add(m["id"])
             since = max(since, float(m.get("time", since)))
         if new:
-            hours = parse_hours(new[-1].get("message"))
+            hours, count = parse_hours(new[-1].get("message")), parse_count(new[-1].get("message"))
             if time.time() - last_start < MIN_GAP_SECONDS:
                 log(f"Ignored {len(new)} refresh request(s): a refresh started less than {MIN_GAP_SECONDS / 60:g} min ago")
-            elif trigger(hours, f"requested on the website, {len(new)} request(s)"):
+            elif trigger(hours, f"requested on the website, {len(new)} request(s)", count):
                 last_start = time.time()
                 next_due = last_start + INTERVAL_MIN * 60
         elif time.time() >= next_due:

@@ -28,9 +28,11 @@ OUT_FILE = ROOT / "site" / "news.json"
 ALLOWED_WINDOWS = (6, 12, 24, 72, 168, 720, 2160)   # hours: 6h, 12h, 24h, 3d, 7d, 30d, 90d
 DEFAULT_WINDOW = 24
 WINDOW_HOURS = DEFAULT_WINDOW        # set in main() from the WINDOW_HOURS environment variable
-KEEP_PER_SECTION = 500               # the page shows at most 200 per section; keep a margin for country filters
+ALLOWED_COUNTS = (200, 300, 400, 500, 1000)   # stories kept per section, chosen on the page's Refresh control
+DEFAULT_COUNT = 300
+ARTICLE_COUNT = DEFAULT_COUNT        # set in main() from the ARTICLE_COUNT environment variable
 OG_BUDGET_SECONDS = 150              # time allowed for fetching missing article images
-OG_MAX_ITEMS = 900
+OG_MAX_ITEMS = 900                   # raised in proportion when more stories are requested
 TIMEOUT = 30
 USER_AGENT = "NewsHubBot/1.0 (headline aggregator; links back to originals)"
 SNIPPET_LEN = 160
@@ -119,9 +121,19 @@ def window_hours():
     return h if h in ALLOWED_WINDOWS else DEFAULT_WINDOW
 
 
-def per_feed_limit(hours):
-    """Longer windows may take more stories per feed (feeds only list what they still hold)."""
-    return 20 if hours <= 24 else 30 if hours <= 72 else 50 if hours <= 168 else 80 if hours <= 720 else 100
+def article_count():
+    try:
+        n = int(os.environ.get("ARTICLE_COUNT", DEFAULT_COUNT))
+    except ValueError:
+        n = DEFAULT_COUNT
+    return n if n in ALLOWED_COUNTS else DEFAULT_COUNT
+
+
+def per_feed_limit(hours, count=DEFAULT_COUNT):
+    """Longer windows may take more stories per feed (feeds only list what they still hold); asking for more
+    stories per section raises the per-feed allowance in proportion."""
+    base = 20 if hours <= 24 else 30 if hours <= 72 else 50 if hours <= 168 else 80 if hours <= 720 else 100
+    return int(base * max(1.0, count / DEFAULT_COUNT) + 0.999)
 
 
 def window_url(url, hours):
@@ -258,7 +270,7 @@ def enrich_images(items):
     todo = [i for i in items if not i["image"] and "news.google.com" not in i["link"]]
     todo.sort(key=lambda i: i["published"], reverse=True)      # newest first ...
     todo.sort(key=lambda i: not i["primary"])                    # ... but primary papers before the rest (stable)
-    todo = todo[:OG_MAX_ITEMS]
+    todo = todo[:int(OG_MAX_ITEMS * max(1.0, ARTICLE_COUNT / DEFAULT_COUNT))]
     deadline = time.monotonic() + OG_BUDGET_SECONDS
     stats = {}                                   # host -> [ok, fail]
 
@@ -285,7 +297,7 @@ def enrich_images(items):
     return sum(1 for i in todo if i["image"]), len(todo)
 
 
-def trim_sections(items, keep=KEEP_PER_SECTION):
+def trim_sections(items, keep=DEFAULT_COUNT):
     """Keep the newest (primary-boosted) `keep` stories of each section so news.json stays a sane size."""
     boost = timedelta(hours=6)
     score = lambda i: datetime.fromisoformat(i["published"]) + (boost if i["primary"] else timedelta())
@@ -370,7 +382,7 @@ def fetch_one(feed):
     items = [it for it in items if not it["date"] or it["date"] >= cutoff]
     items.sort(key=lambda x: x["date"] or datetime.now(timezone.utc), reverse=True)
     out = []
-    for it in items[:per_feed_limit(WINDOW_HOURS)]:
+    for it in items[:per_feed_limit(WINDOW_HOURS, ARTICLE_COUNT)]:
         country, continent = place(feed, it["title"], it["summary"])
         out.append({
             "title": it["title"],
@@ -391,9 +403,10 @@ def fetch_one(feed):
 
 
 def main():
-    global WINDOW_HOURS
+    global WINDOW_HOURS, ARTICLE_COUNT
     WINDOW_HOURS = window_hours()
-    print(f"Time window: last {WINDOW_HOURS} hours")
+    ARTICLE_COUNT = article_count()
+    print(f"Time window: last {WINDOW_HOURS} hours; keeping up to {ARTICLE_COUNT} stories per section")
     feeds = json.loads(FEEDS_FILE.read_text())
     # Google News throttles bursts (HTTP 503), so its feeds are fetched one at a time, with a pause and one retry.
     google = [f for f in feeds if "news.google.com" in f["url"]]
@@ -423,7 +436,7 @@ def main():
                     prev["image"] = it["image"]
     items = sorted(by_link.values(), key=lambda x: x["published"], reverse=True)
     before = len(items)
-    items = trim_sections(items)
+    items = trim_sections(items, ARTICLE_COUNT)
     got, tried = enrich_images(items)
     print(f"Article-page images: found {got} of {tried} tried; trimmed {before - len(items)} extra stories")
 
@@ -431,6 +444,7 @@ def main():
     OUT_FILE.write_text(json.dumps({
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "range_hours": WINDOW_HOURS,
+        "max_articles": ARTICLE_COUNT,
         "items": items,
         "feeds": statuses,
     }, ensure_ascii=False, separators=(",", ":")))

@@ -11,6 +11,10 @@ on:
         description: "Only include stories from the last N hours (6, 12, 24, 72, 168, 720 or 2160)"
         required: false
         default: "24"
+      count:
+        description: "Stories to keep per section (200, 300, 400, 500 or 1000)"
+        required: false
+        default: "300"
   push:
     branches: [main]
 
@@ -55,6 +59,7 @@ jobs:
         if: steps.gate.outputs.go == 'true'
         env:
           WINDOW_HOURS: ${{ github.event.inputs.hours || '24' }}
+          ARTICLE_COUNT: ${{ github.event.inputs.count || '300' }}
         run: python3 fetch_news.py
       - name: Image check (diagnostic only)
         if: steps.gate.outputs.go == 'true' && github.event_name != 'schedule'
