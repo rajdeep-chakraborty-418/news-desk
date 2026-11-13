@@ -3,21 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RC News Desk — Bengali, India, World, Sports, Entertainment, Defence, Geopolitics, Lifestyle, Business, Technology, History, Geography, Science &amp; Nature</title>
-<meta name="description" content="Headlines from newspapers across the world, refreshed every 2 hours.">
+<title>RC News Desk — headlines from newspapers around the world</title>
+<meta name="description" content="Headlines from newspapers across the world, refreshed regularly.">
 <meta name="referrer" content="no-referrer">
 <style>
   :root {
     --bg: #f6f4ef; --card: #ffffff; --ink: #1b1b1f; --muted: #6a6a73; --line: #e3e0d8; --accent: #b3261e;
-    --c-india: #c2570c; --c-world: #2a4d8f; --c-sports: #1b6e5a; --c-entertainment: #9b2f7a;
-    --c-defence: #4a5a2a; --c-geopolitics: #8a2d2d; --c-lifestyle: #0f7b8a;
-    --c-bengali: #b0123a; --c-business: #6b4e16; --c-technology: #3d4fb0; --c-history: #7a5230; --c-geography: #1f7a4d; --c-science: #5b3fa0; --c-nature: #2f7d2a;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #131316; --card: #1c1c21; --ink: #ecebe6; --muted: #9a9aa4; --line: #2c2c33; --accent: #ff6b5e;
-      --c-india: #ff9a4d; --c-world: #7ea3f0; --c-sports: #4cc3a4; --c-entertainment: #e27cc0;
-      --c-defence: #9fbf5f; --c-geopolitics: #f08a8a; --c-lifestyle: #4fc3d3;
-      --c-bengali: #ff7a9a; --c-business: #d9b25f; --c-technology: #8c9cf0; --c-history: #d1a27a; --c-geography: #64c796; --c-science: #b49af0; --c-nature: #86cf7e; }
+    :root { --bg: #131316; --card: #1c1c21; --ink: #ecebe6; --muted: #9a9aa4; --line: #2c2c33; --accent: #ff6b5e;}
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 Georgia, "Times New Roman", "Noto Serif Bengali", "Kohinoor Bangla", "Nirmala UI", "Vrinda", serif; }
@@ -123,25 +117,11 @@
       <div class="updated" id="updated">Loading…</div>
       <label class="rangebox" title="On refresh, only fetch stories published within this period">
         <span>Fetch stories from</span>
-        <select id="range" aria-label="Time range to fetch on refresh">
-          <option value="6">Last 6 hours</option>
-          <option value="12">Last 12 hours</option>
-          <option value="24" selected>Last 24 hours</option>
-          <option value="72">Last 3 days</option>
-          <option value="168">Last 7 days</option>
-          <option value="720">Last 30 days</option>
-          <option value="2160">Last 90 days</option>
-        </select>
+        <select id="range" aria-label="Time range to fetch on refresh"></select>
       </label>
       <label class="rangebox" title="On refresh, keep up to this many stories in each section">
         <span>Stories per section</span>
-        <select id="count" aria-label="Number of stories to fetch per section on refresh">
-          <option value="200">200</option>
-          <option value="300" selected>300</option>
-          <option value="400">400</option>
-          <option value="500">500</option>
-          <option value="1000">1000</option>
-        </select>
+        <select id="count" aria-label="Number of stories to fetch per section on refresh"></select>
       </label>
       <button class="refresh" id="refresh" type="button" disabled title="Fetch the latest headlines now">
         <span class="rl"><span class="ico">⟳</span> <span id="rlabel">Refresh</span></span>
@@ -194,17 +174,12 @@
 </div>
 
 <script>
-const SECTIONS = [
-  ["bengali", "Bengali News"], ["india", "Indian News"], ["world", "World News"], ["sports", "Sports News"],
-  ["entertainment", "Entertainment News"], ["defence", "Defence News"], ["geopolitics", "Geo Politics News"],
-  ["lifestyle", "Lifestyle"], ["business", "Business"], ["technology", "Technology"],
-  ["history", "History"], ["geography", "Geography"], ["science", "Science"], ["nature", "Nature"]
-];
+let SECTIONS = [];   // [key, label] pairs, filled from sections.json (external_config/sections.json) before the page is built
 const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
 const PRIMARY_BOOST_MS = 6 * 3600 * 1000;   // primary-source stories rank as if 6 hours newer
 const FIRST = 50, STEP = 50;                 // show 50 first, each click adds 50 ...
 let MAX = 200;                               // ... up to the number of stories kept per section (news.json "max_articles"; 200 for older data)
-const state = { lm: "", generated: "", section: "bengali", continent: "All", countries: new Set(), kinds: new Set(), q: "", cq: "", items: [], shown: FIRST };
+const state = { lm: "", generated: "", section: "", continent: "All", countries: new Set(), kinds: new Set(), q: "", cq: "", items: [], shown: FIRST };
 const $ = (id) => document.getElementById(id);
 
 const color = (sec) => `var(--c-${sec})`;
@@ -367,7 +342,7 @@ function build() {
   $("cq").addEventListener("input", (e) => { state.cq = e.target.value; render(); });
   $("clear").onclick = () => { state.countries.clear(); state.cq = ""; $("cq").value = ""; state.shown = FIRST; render(); };
   // Reset: back to the starting view - first section, all continents and countries, both source types, no searches,
-  // no newspaper chosen, and the refresh options at their defaults (24 hours, 300 stories)
+  // no newspaper chosen, and the refresh options at their defaults (the defaults in settings.json)
   $("reset").onclick = () => {
     state.section = SECTIONS[0][0]; state.continent = "All"; state.countries.clear(); state.kinds.clear();
     state.q = ""; state.cq = ""; state.shown = FIRST;
@@ -377,7 +352,7 @@ function build() {
     chips.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
     $("pq").value = ""; $("pq").dispatchEvent(new Event("input"));          // clears the newspaper search, choice and link
     if (!$("range").disabled) {
-      $("range").value = "24"; $("count").value = "300";
+      $("range").value = SETTINGS.default_hours; $("count").value = SETTINGS.default_count;
       try { localStorage.removeItem(RANGE_KEY); localStorage.removeItem(COUNT_KEY); } catch (e) {}
     }
     render(); window.scrollTo({ top: 0 });
@@ -448,7 +423,8 @@ const GH = { owner: "rajdeep-chakraborty-418", repo: "news-desk", workflow: "upd
 const TOKEN_KEY = "rcnd_gh_token";
 // Clicking Refresh posts a tiny request ("hours=24") to this public relay topic; the scheduler job running on GitHub
 // reads it within ~30 s and starts the update. No account or token is needed.
-const RELAY = { base: window.RC_RELAY_BASE || "https://ntfy.sh", topic: "rcnd-d6930e74e95016bf07496776" };
+const RELAY = { base: window.RC_RELAY_BASE || "https://ntfy.sh", topic: "" };   // topic comes from settings.json
+let SETTINGS = null;   // site/settings.json: the refresh choices, their defaults and the relay topic
 const pollMs = () => window.RC_POLL_MS || (getToken() ? 6000 : 10000);
 const ACTIVE = new Set(["queued", "in_progress", "waiting", "pending", "requested"]);
 const rf = { busy: false, last: null };
@@ -467,10 +443,11 @@ async function fetchRuns() {
   const d = await r.json();
   return (d.workflow_runs || []).filter(x => x.event !== "schedule").sort((a, b) => b.id - a.id);
 }
-const COUNT_KEY = "rcnd_count", COUNTS = ["200", "300", "400", "500", "1000"];
-const RANGE_KEY = "rcnd_range", RANGES = ["6", "12", "24", "72", "168", "720", "2160"];
-function getRange() { try { const v = localStorage.getItem(RANGE_KEY); if (RANGES.includes(v)) return v; } catch (e) {} return "24"; }
-function getCount() { try { const v = localStorage.getItem(COUNT_KEY); if (COUNTS.includes(v)) return v; } catch (e) {} return "300"; }
+const COUNT_KEY = "rcnd_count", RANGE_KEY = "rcnd_range";
+// the remembered choice is used only while it is still one of the configured options
+function remembered(key, options, fallback) { try { const v = localStorage.getItem(key); if (options.map(String).includes(v)) return v; } catch (e) {} return String(fallback); }
+const getRange = () => remembered(RANGE_KEY, SETTINGS.time_ranges.map((r) => r.hours), SETTINGS.default_hours);
+const getCount = () => remembered(COUNT_KEY, SETTINGS.article_counts, SETTINGS.default_count);
 function paintButton() {
   const btn = $("refresh"), st = $("rstatus");
   $("range").disabled = rf.busy; $("count").disabled = rf.busy;
@@ -561,14 +538,33 @@ async function startRefresh() {
   }
   trackRun(baseline, wait);
 }
-$("count").value = getCount();
-$("count").onchange = (e) => { try { localStorage.setItem(COUNT_KEY, e.target.value); } catch (err) {} };
-$("range").value = getRange();
-$("range").onchange = (e) => { try { localStorage.setItem(RANGE_KEY, e.target.value); } catch (err) {} };
+// the choices in the two selectors come from settings.json
+function initRefreshControls() {
+  for (const r of SETTINGS.time_ranges) $("range").appendChild(new Option(r.label, r.hours));
+  for (const c of SETTINGS.article_counts) $("count").appendChild(new Option(c, c));
+  RELAY.topic = SETTINGS.request_topic;
+  $("count").value = getCount();
+  $("count").onchange = (e) => { try { localStorage.setItem(COUNT_KEY, e.target.value); } catch (err) {} };
+  $("range").value = getRange();
+  $("range").onchange = (e) => { try { localStorage.setItem(RANGE_KEY, e.target.value); } catch (err) {} };
+}
 $("refresh").onclick = startRefresh;
 syncStatus();
 setInterval(() => { if (!rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
-build(); load(); loadPapers();
+// sections.json decides the tabs (order, names) and their colours; the page cannot start without it
+async function loadSections() {
+  const list = await (await fetch("sections.json?t=" + Date.now())).json();
+  SECTIONS = list.map((x) => [x.key, x.label]);
+  state.section = SECTIONS[0][0];
+  const css = (scheme) => list.map((x) => `--c-${x.key}: ${x.color[scheme]};`).join(" ");
+  const st = document.createElement("style");
+  st.textContent = `:root { ${css("light")} } @media (prefers-color-scheme: dark) { :root { ${css("dark")} } }`;
+  document.head.appendChild(st);
+}
+async function loadSettings() { SETTINGS = await (await fetch("settings.json?t=" + Date.now())).json(); }
+Promise.all([loadSections(), loadSettings()]).then(() => { initRefreshControls(); build(); load(); loadPapers(); }).catch(() => {
+  document.body.insertAdjacentHTML("afterbegin", '<p style="padding:20px">Could not load the page configuration (sections.json / settings.json).</p>');
+});
 setInterval(load, 10 * 60 * 1000);   // re-check for new data every 10 minutes
 setInterval(() => { if (state.items.length) render(); }, 5 * 60 * 1000);   // keep "x min ago" fresh
 </script>

@@ -1,3 +1,4 @@
-site/news.json
+site/
 __pycache__/
 *.pyc
+.pytest_cache/

@@ -1,87 +1,72 @@
-# RC News Desk – 2-hour sports & geopolitics headlines
+# RC News Desk
 
-A static front page of news tiles (Sports | Geopolitics, filter by continent, search).
-A Python script pulls headlines from newspaper RSS feeds every 2 hours and the site is
-rebuilt and published automatically. Each tile shows headline, source, time and links
-to the original article.
+A static front page of news tiles built from newspaper RSS feeds. A Python script fetches the headlines, a scheduler
+refreshes them, and the site is rebuilt and published to GitHub Pages. Each tile shows image, headline, source, time
+and a link to the original article.
 
-## Sections and sources
-- Sections: Indian News, World News, Sports News, Entertainment News, Defence News, Geo Politics News, Lifestyle.
-  Each can be narrowed by continent, and by a multi-select country box on the right (nothing ticked = all countries).
-  The page shows the top 50 stories per section; "Show more" adds 50 at a time up to 200, then says no more are available. Tiles show the story's main image (from the newspaper's feed).
-- **Primary** sources are the newspapers you chose (`"primary": true` in `feeds.json`); everything else is
-  secondary. Primary stories rank slightly higher and have a "Primary" mark. A checkbox shows primary only.
-- Defence and Geo Politics are filled from dedicated feeds plus keyword matching on world and Indian stories.
-- Country is detected from the headline (`geo.py`); Indian News is always India; otherwise the paper's home country is used.
+## Repository layout
+```
+external_config/        everything you configure (no code)
+  newspapers.json         newspapers, as "primary" and "secondary" nodes
+  sections.json           the sections (tabs): names, colours, keyword rules
+  settings.json           refresh interval, time-range and story-count choices, relay topic
+src/                    all code
+  fetch_news.py           fetches feeds, sorts stories into sections, writes site/news.json
+  config.py, settings.py  load and validate the files in external_config/
+  build_site.py           builds site/ (page + sections.json + papers.json + settings.json)
+  scheduler_loop.py       the refresh scheduler and the Refresh-button relay listener
+  geo.py                  country detection from headlines
+  check_images.py         image health report (diagnostic)
+  web/index.html          the front page
+test/                   tests (they use their own sample data and mocks, never external_config/)
+.github/workflows/      update.yml (fetch + deploy), scheduler.yml (timer + refresh requests)
+site/                   generated, not committed
+```
 
-## Refresh button (top right of the page)
-Clicking it needs no login or token. The page posts a tiny request ("hours=24") to a public topic on ntfy.sh
-(`refresh_topic.txt`); the scheduler job on GitHub (`scheduler_loop.py`) checks that topic about every 30 seconds
-and starts the "Update news and deploy" workflow. The button stays disabled while the run is queued or running and
-then shows "Last: Success" or "Last: Failed". At most one refresh starts per 5 minutes, and anything on the topic
-that is not a proper `hours=` request is ignored. Optional: if you save a GitHub token in your browser
-(localStorage key `rcnd_gh_token`, Actions = Read and write) the button starts the workflow directly instead.
+## Configuring
+- **Newspapers** (`newspapers.json`): `{"primary": [...], "secondary": [...]}`. Each newspaper has `name`, `homepage`,
+  optional `country` and `continent`, optional `"listed": false` (hide from the homepage dropdown) and `feeds`.
+  Each feed has `section` (where its stories always appear), `url`, and optionally `label`, `state`,
+  `general` (also match its stories against keyword sections), `country`, `continent`.
+- **Sections** (`sections.json`): the order here is the tab order. Each has `key`, `label` and `color` (light and dark).
+  Optional keyword rules: `keywords` are matched as whole words in headline and snippet of stories from feeds in
+  `also_from_sections`, and from `general` feeds when `include_general_newspapers` is true
+  (`extra_keywords_for_general_newspapers` adds words for those). `place` pins the story's country
+  (`{"country", "continent"}`) or takes it from the newspaper (`"newspaper"`).
+- **Settings** (`settings.json`): `refresh.interval_minutes` (how often the scheduled refresh runs),
+  `refresh.min_gap_seconds`, `refresh.request_topic`, `time_ranges` (the "Fetch stories from" choices and default) and
+  `article_counts` (the "Stories per section" choices and default). Scheduled refreshes use the defaults.
+  The cron line in `update.yml` is the one thing GitHub makes you write in the workflow itself.
 
-## Time range
-Next to the Refresh button, "Fetch stories from" sets how far back a refresh looks: last 6 hours, 12 hours,
-24 hours (default), 3 days, 7 days, 30 days or 90 days. Automatic and push-triggered runs always use 24 hours.
-Many newspaper feeds only list their latest items, so the longer ranges return whatever each feed still holds
-(Google News based sources honour the full range).
+A mistake in these files stops the build with a message naming the file, the entry and what to fix.
+Set `NEWSDESK_CONFIG_DIR` to read the configuration from another folder.
+
+## Running locally
+```
+python3 src/build_site.py          # page + config-derived files into site/
+python3 src/fetch_news.py          # fetch and write site/news.json (WINDOW_HOURS / ARTICLE_COUNT env vars optional)
+python3 -m http.server -d site     # preview
+python3 -m unittest discover -s test     # or: python3 -m pytest test
+```
+Tests need PyYAML for the workflow checks; the browser tests need Playwright and Chrome and skip themselves without.
+
+## The page
+- Tabs (sections), continent chips, a multi-select country box, search, and Primary / Secondary source-type checkboxes
+  that apply on top of the other filters. The Newspaper Homepage box (search + dropdown grouped by country) shows a link
+  to the chosen paper's homepage. Reset clears every selection.
+- Each section shows 50 stories, "Show more" adds 50 up to the story count kept by the last refresh, then
+  "No more articles available."
+- Refresh (top right) needs no login: it posts the chosen time range and story count to a public ntfy.sh topic
+  (`refresh.request_topic`); the scheduler job checks the topic about every 30 seconds and starts the update workflow.
+  The button stays disabled until the run finishes, then shows Last: Success or Failed. At most one refresh starts per
+  `refresh.min_gap_seconds`; anything that is not a valid request is ignored.
+- Many feeds only list their latest items, so long time ranges return what each feed still holds
+  (Google News based sources honour the full range).
 
 ## Images
-Each tile has the same 16:9 image box. The fetcher picks the largest image in each feed (not the first thumbnail),
-reads the article's own `og:image` when a feed has none, and the page letterboxes odd shapes over a blurred copy
-and shows small images at natural size. If a publisher's image URL fails, the page retries once through the public
-wsrv.nl image proxy, then falls back to a coloured placeholder. `check_images.py` logs an image health report
-on manual and push runs.
+Each tile has the same 16:9 box. The fetcher picks the largest image in each feed and reads the article's `og:image`
+when a feed has none; the page letterboxes odd shapes and falls back to a placeholder.
 
-## Automatic schedule
-`scheduler.yml` runs `scheduler_loop.py` for about 3 hours at a time and then starts its next round. The loop
-starts the update every `refresh_minutes.txt` minutes (118) and whenever the Refresh button asks. GitHub's own cron in
-`update.yml` (hourly, with a ~100 minute gate) is only a backup.
-
-## Files
-- `feeds.json` – the newspapers (edit this to add or remove sources)
-- `geo.py` – country/continent detection from headlines
-- `fetch_news.py` – fetches the feeds, writes `site/news.json` (standard library only)
-- `site/index.html` – the front page
-- `.github/workflows/update.yml` – 2-hour job: fetch, then deploy to GitHub Pages
-- `test_parser.py` – offline parser test (also writes demo data)
-
-## Publish it free with GitHub Pages (about 5 minutes)
-1. Create a free account at github.com and a new **public** repository, e.g. `world-desk`.
-2. Upload everything in this folder (keep the `.github` folder), on the `main` branch.
-3. In the repo go to **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-4. Go to the **Actions** tab, open "Update news and deploy", click **Run workflow**.
-5. When it turns green, your site is live at `https://<your-username>.github.io/world-desk/`.
-   After this it refreshes itself every 2 hours.
-
-Note: GitHub may delay scheduled runs by several minutes at busy times, and pauses
-scheduled workflows in repos with no activity for 60 days (re-run it manually to wake it).
-
-## Use your own domain (e.g. worlddesk.in)
-1. Buy a domain from any registrar (GoDaddy, Namecheap, Cloudflare, BigRock, etc.).
-2. In the repo go to **Settings → Pages → Custom domain**, enter the domain and Save.
-3. At your registrar's DNS settings add:
-   - For a subdomain such as `www.yourdomain.com`: a `CNAME` record pointing to `<your-username>.github.io`.
-   - For the bare domain `yourdomain.com`: four `A` records pointing to `185.199.108.153`,
-     `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
-     (confirm these against GitHub's current "Managing a custom domain" docs).
-4. Wait for DNS to update (minutes to a few hours), then tick **Enforce HTTPS** in Pages settings.
-Because the site is deployed with GitHub Actions, you do not need a `CNAME` file in the repo.
-
-## Preview locally
-```
-python3 fetch_news.py
-cd site && python3 -m http.server 8000     # open http://localhost:8000
-```
-
-## Adding sources
-Add an entry to `feeds.json` with `source`, `continent`, `category` (`sports` or
-`geopolitics`) and the RSS `url`. For a general feed, add `"keywords": [...]` to keep
-only matching stories. A feed that breaks is skipped and reported in the job log;
-some URLs may have changed, so check the log after the first run and fix or remove them.
-
-## Content note
-Only headlines, short snippets and links are shown, with clear attribution and a link
-to the original. Please don't copy full article text.
+## Publish for free with GitHub Pages
+Public repository, Settings -> Pages -> Source: GitHub Actions, then run "Update news and deploy" once.
+GitHub may delay scheduled runs and pauses them in repositories with no activity for 60 days.

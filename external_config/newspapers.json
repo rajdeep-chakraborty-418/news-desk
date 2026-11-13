@@ -1,0 +1,3632 @@
+{
+  "primary": [
+    {
+      "name": "ABP Ananda (ABP Live Bangla)",
+      "homepage": "https://bengali.abplive.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "bengali",
+          "url": "https://bengali.abplive.com/home/feed",
+          "state": "West Bengal"
+        },
+        {
+          "section": "bengali",
+          "url": "https://bengali.abplive.com/news/kolkata/feed",
+          "state": "West Bengal"
+        },
+        {
+          "section": "bengali",
+          "url": "https://bengali.abplive.com/news/india/feed",
+          "state": "West Bengal"
+        },
+        {
+          "section": "bengali",
+          "url": "https://bengali.abplive.com/news/world/feed",
+          "state": "West Bengal"
+        },
+        {
+          "section": "bengali",
+          "url": "https://bengali.abplive.com/sports/feed",
+          "state": "West Bengal"
+        }
+      ]
+    },
+    {
+      "name": "Al Jazeera",
+      "homepage": "https://www.aljazeera.com/",
+      "country": "Qatar",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.aljazeera.com/xml/rss/all.xml",
+          "general": true
+        }
+      ]
+    },
+    {
+      "name": "Anandabazar Patrika",
+      "homepage": "https://anandabazar.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "bengali",
+          "url": "https://news.google.com/rss/search?q=site%3Aanandabazar.com%20when%3A3d&hl=bn-IN&gl=IN&ceid=IN:bn",
+          "state": "West Bengal"
+        }
+      ]
+    },
+    {
+      "name": "AP News",
+      "homepage": "https://apnews.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://news.google.com/rss/search?q=site%3Aapnews.com%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Aapnews.com/hub/entertainment%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "The Athletic",
+      "homepage": "https://www.nytimes.com/athletic/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://www.nytimes.com/athletic/rss/news/"
+        }
+      ]
+    },
+    {
+      "name": "BBC",
+      "homepage": "https://www.bbc.com/news",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "http://feeds.bbci.co.uk/news/world/rss.xml"
+        },
+        {
+          "section": "india",
+          "url": "http://feeds.bbci.co.uk/news/world/asia/india/rss.xml"
+        },
+        {
+          "section": "sports",
+          "url": "http://feeds.bbci.co.uk/sport/rss.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "http://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml"
+        },
+        {
+          "section": "lifestyle",
+          "url": "http://feeds.bbci.co.uk/news/health/rss.xml"
+        },
+        {
+          "section": "business",
+          "url": "http://feeds.bbci.co.uk/news/business/rss.xml"
+        },
+        {
+          "section": "technology",
+          "url": "http://feeds.bbci.co.uk/news/technology/rss.xml"
+        },
+        {
+          "section": "science",
+          "url": "http://feeds.bbci.co.uk/news/science_and_environment/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "CNBC",
+      "homepage": "https://www.cnbc.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.cnbc.com/id/100727362/device/rss/rss.html"
+        },
+        {
+          "section": "world",
+          "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html"
+        },
+        {
+          "section": "business",
+          "url": "https://www.cnbc.com/id/10001147/device/rss/rss.html"
+        },
+        {
+          "section": "technology",
+          "url": "https://www.cnbc.com/id/19854910/device/rss/rss.html"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Acnbc.com%20media%20entertainment%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "Deccan Herald",
+      "homepage": "https://www.deccanherald.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://prod-qt-images.s3.amazonaws.com/production/deccanherald/feed.xml",
+          "general": true
+        },
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Adeccanherald.com/entertainment%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        }
+      ]
+    },
+    {
+      "name": "Firstpost",
+      "homepage": "https://www.firstpost.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://news.google.com/rss/search?q=site%3Afirstpost.com/india%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "world",
+          "url": "https://news.google.com/rss/search?q=site%3Afirstpost.com/world%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "sports",
+          "url": "https://news.google.com/rss/search?q=site%3Afirstpost.com/sports%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Afirstpost.com/entertainment%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        }
+      ]
+    },
+    {
+      "name": "Goal.com",
+      "homepage": "https://goal.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://news.google.com/rss/search?q=site%3Agoal.com%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "The Guardian",
+      "homepage": "https://www.theguardian.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.theguardian.com/world/rss"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.theguardian.com/sport/rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.theguardian.com/culture/rss"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://www.theguardian.com/lifeandstyle/rss"
+        },
+        {
+          "section": "business",
+          "url": "https://www.theguardian.com/uk/business/rss"
+        },
+        {
+          "section": "technology",
+          "url": "https://www.theguardian.com/technology/rss"
+        },
+        {
+          "section": "science",
+          "url": "https://www.theguardian.com/science/rss"
+        },
+        {
+          "section": "nature",
+          "url": "https://www.theguardian.com/environment/rss"
+        },
+        {
+          "section": "history",
+          "url": "https://www.theguardian.com/science/archaeology/rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.theguardian.com/film/rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.theguardian.com/music/rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.theguardian.com/tv-and-radio/rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.theguardian.com/stage/rss"
+        }
+      ]
+    },
+    {
+      "name": "The Hindu",
+      "homepage": "https://www.thehindu.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://www.thehindu.com/news/national/feeder/default.rss"
+        },
+        {
+          "section": "world",
+          "url": "https://www.thehindu.com/news/international/feeder/default.rss"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.thehindu.com/sport/feeder/default.rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.thehindu.com/entertainment/feeder/default.rss"
+        },
+        {
+          "section": "india",
+          "url": "https://www.thehindu.com/news/national/kerala/feeder/default.rss",
+          "label": "The Hindu (Kerala)",
+          "state": "Kerala"
+        },
+        {
+          "section": "india",
+          "url": "https://www.thehindu.com/news/national/karnataka/feeder/default.rss",
+          "label": "The Hindu (Karnataka)",
+          "state": "Karnataka"
+        },
+        {
+          "section": "india",
+          "url": "https://www.thehindu.com/news/national/tamil-nadu/feeder/default.rss",
+          "label": "The Hindu (Tamil Nadu)",
+          "state": "Tamil Nadu"
+        },
+        {
+          "section": "india",
+          "url": "https://www.thehindu.com/news/national/andhra-pradesh/feeder/default.rss",
+          "label": "The Hindu (Andhra Pradesh)",
+          "state": "Andhra Pradesh"
+        },
+        {
+          "section": "india",
+          "url": "https://www.thehindu.com/news/national/telangana/feeder/default.rss",
+          "label": "The Hindu (Telangana)",
+          "state": "Telangana"
+        },
+        {
+          "section": "india",
+          "url": "https://www.thehindu.com/news/national/other-states/feeder/default.rss",
+          "label": "The Hindu (Other states)",
+          "state": "Other states"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://www.thehindu.com/life-and-style/feeder/default.rss"
+        },
+        {
+          "section": "business",
+          "url": "https://www.thehindu.com/business/feeder/default.rss"
+        },
+        {
+          "section": "technology",
+          "url": "https://www.thehindu.com/sci-tech/technology/feeder/default.rss"
+        },
+        {
+          "section": "science",
+          "url": "https://www.thehindu.com/sci-tech/science/feeder/default.rss"
+        },
+        {
+          "section": "nature",
+          "url": "https://www.thehindu.com/sci-tech/energy-and-environment/feeder/default.rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.thehindu.com/entertainment/movies/feeder/default.rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.thehindu.com/entertainment/music/feeder/default.rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.thehindu.com/entertainment/theatre/feeder/default.rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.thehindu.com/entertainment/art/feeder/default.rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.thehindu.com/entertainment/dance/feeder/default.rss"
+        }
+      ]
+    },
+    {
+      "name": "Hindustan Times",
+      "homepage": "https://www.hindustantimes.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml"
+        },
+        {
+          "section": "world",
+          "url": "https://www.hindustantimes.com/feeds/rss/world-news/rssfeed.xml"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.hindustantimes.com/feeds/rss/sports/rssfeed.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.hindustantimes.com/feeds/rss/entertainment/rssfeed.xml"
+        },
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/cities/mumbai-news/rssfeed.xml",
+          "label": "Hindustan Times (Mumbai)",
+          "state": "Maharashtra"
+        },
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/cities/delhi-news/rssfeed.xml",
+          "label": "Hindustan Times (Delhi)",
+          "state": "Delhi"
+        },
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/cities/bengaluru-news/rssfeed.xml",
+          "label": "Hindustan Times (Bengaluru)",
+          "state": "Karnataka"
+        },
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/cities/kolkata-news/rssfeed.xml",
+          "label": "Hindustan Times (Kolkata)",
+          "state": "West Bengal"
+        },
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/cities/chandigarh-news/rssfeed.xml",
+          "label": "Hindustan Times (Chandigarh)",
+          "state": "Chandigarh"
+        },
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/cities/lucknow-news/rssfeed.xml",
+          "label": "Hindustan Times (Lucknow)",
+          "state": "Uttar Pradesh"
+        },
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/cities/pune-news/rssfeed.xml",
+          "label": "Hindustan Times (Pune)",
+          "state": "Maharashtra"
+        },
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/cities/patna-news/rssfeed.xml",
+          "label": "Hindustan Times (Patna)",
+          "state": "Bihar"
+        },
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/cities/ranchi-news/rssfeed.xml",
+          "label": "Hindustan Times (Ranchi)",
+          "state": "Jharkhand"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://www.hindustantimes.com/feeds/rss/lifestyle/rssfeed.xml"
+        },
+        {
+          "section": "business",
+          "url": "https://www.hindustantimes.com/feeds/rss/business/rssfeed.xml"
+        },
+        {
+          "section": "technology",
+          "url": "https://www.hindustantimes.com/feeds/rss/technology/rssfeed.xml"
+        },
+        {
+          "section": "science",
+          "url": "https://www.hindustantimes.com/feeds/rss/science/rssfeed.xml"
+        },
+        {
+          "section": "nature",
+          "url": "https://www.hindustantimes.com/feeds/rss/environment/rssfeed.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.hindustantimes.com/feeds/rss/entertainment/bollywood/rssfeed.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.hindustantimes.com/feeds/rss/entertainment/tv/rssfeed.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.hindustantimes.com/feeds/rss/entertainment/hollywood/rssfeed.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.hindustantimes.com/feeds/rss/entertainment/regional-movies/rssfeed.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.hindustantimes.com/feeds/rss/entertainment/music/rssfeed.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.hindustantimes.com/feeds/rss/entertainment/web-series/rssfeed.xml"
+        }
+      ]
+    },
+    {
+      "name": "India Today",
+      "homepage": "https://www.indiatoday.in/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://www.indiatoday.in/rss/1206514"
+        },
+        {
+          "section": "world",
+          "url": "https://www.indiatoday.in/rss/1206577"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.indiatoday.in/rss/1206550"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.indiatoday.in/rss/1206513"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.indiatoday.in/rss/1206589"
+        }
+      ]
+    },
+    {
+      "name": "The Indian Express",
+      "homepage": "https://indianexpress.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/india%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "world",
+          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/world%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "sports",
+          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/sports%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/entertainment%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/lifestyle%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "business",
+          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/business%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "technology",
+          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/technology%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/entertainment/bollywood%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/entertainment/television%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        }
+      ]
+    },
+    {
+      "name": "Mirror",
+      "homepage": "https://www.mirror.co.uk/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.mirror.co.uk/news/world-news/?service=rss"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.mirror.co.uk/sport/?service=rss"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.mirror.co.uk/3am/?service=rss"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://www.mirror.co.uk/lifestyle/?service=rss"
+        }
+      ]
+    },
+    {
+      "name": "NDTV",
+      "homepage": "https://www.ndtv.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://feeds.feedburner.com/ndtvnews-india-news"
+        },
+        {
+          "section": "world",
+          "url": "https://feeds.feedburner.com/ndtvnews-world-news"
+        },
+        {
+          "section": "sports",
+          "url": "https://feeds.feedburner.com/ndtvsports-latest"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://feeds.feedburner.com/ndtvmovies-latest"
+        },
+        {
+          "section": "technology",
+          "url": "https://feeds.feedburner.com/gadgets360-latest"
+        }
+      ]
+    },
+    {
+      "name": "New York Times",
+      "homepage": "https://www.nytimes.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+        },
+        {
+          "section": "sports",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Sports.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Style.xml"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Well.xml"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Travel.xml"
+        },
+        {
+          "section": "business",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml"
+        },
+        {
+          "section": "technology",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
+        },
+        {
+          "section": "science",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Science.xml"
+        },
+        {
+          "section": "nature",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Movies.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Music.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Television.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml"
+        }
+      ]
+    },
+    {
+      "name": "Sports Illustrated",
+      "homepage": "https://www.si.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://www.si.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "Sportstar",
+      "homepage": "https://sportstar.thehindu.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://sportstar.thehindu.com/feeder/default.rss"
+        }
+      ]
+    },
+    {
+      "name": "Sydney Morning Herald",
+      "homepage": "https://www.smh.com.au/",
+      "country": "Australia",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.smh.com.au/rss/world.xml"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.smh.com.au/rss/sport.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.smh.com.au/rss/culture.xml"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://www.smh.com.au/rss/lifestyle.xml"
+        },
+        {
+          "section": "business",
+          "url": "https://www.smh.com.au/rss/business.xml"
+        },
+        {
+          "section": "technology",
+          "url": "https://www.smh.com.au/rss/technology.xml"
+        }
+      ]
+    },
+    {
+      "name": "Times of India",
+      "homepage": "https://timesofindia.indiatimes.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms"
+        },
+        {
+          "section": "world",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/296589292.cms"
+        },
+        {
+          "section": "sports",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/4719148.cms"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms"
+        },
+        {
+          "section": "india",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128839596.cms",
+          "label": "Times of India (Delhi)",
+          "state": "Delhi"
+        },
+        {
+          "section": "india",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128833038.cms",
+          "label": "Times of India (Bengaluru)",
+          "state": "Karnataka"
+        },
+        {
+          "section": "india",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128816011.cms",
+          "label": "Times of India (Hyderabad)",
+          "state": "Telangana"
+        },
+        {
+          "section": "india",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128672765.cms",
+          "label": "Times of India (Chennai)",
+          "state": "Tamil Nadu"
+        },
+        {
+          "section": "india",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128830821.cms",
+          "label": "Times of India (Kolkata)",
+          "state": "West Bengal"
+        },
+        {
+          "section": "india",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128838597.cms",
+          "label": "Times of India (Mumbai)",
+          "state": "Maharashtra"
+        },
+        {
+          "section": "india",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128821153.cms",
+          "label": "Times of India (Ahmedabad)",
+          "state": "Gujarat"
+        },
+        {
+          "section": "india",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128821991.cms",
+          "label": "Times of India (Pune)",
+          "state": "Maharashtra"
+        },
+        {
+          "section": "india",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128819658.cms",
+          "label": "Times of India (Lucknow)",
+          "state": "Uttar Pradesh"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/2886704.cms"
+        },
+        {
+          "section": "business",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/1898055.cms"
+        },
+        {
+          "section": "technology",
+          "url": "https://timesofindia.indiatimes.com/rssfeeds/66949542.cms"
+        }
+      ]
+    },
+    {
+      "name": "TV9 Bangla",
+      "homepage": "https://tv9bangla.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "bengali",
+          "url": "https://tv9bangla.com/feed",
+          "state": "West Bengal"
+        },
+        {
+          "section": "bengali",
+          "url": "https://tv9bangla.com/rss",
+          "state": "West Bengal"
+        }
+      ]
+    },
+    {
+      "name": "Yahoo Sports",
+      "homepage": "https://sports.yahoo.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://sports.yahoo.com/rss/"
+        }
+      ]
+    },
+    {
+      "name": "Zee 24 Ghanta (Zee Bangla)",
+      "homepage": "https://zeenews.india.com/bengali",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "bengali",
+          "url": "https://zeenews.india.com/bengali/rss.xml",
+          "state": "West Bengal"
+        }
+      ]
+    }
+  ],
+  "secondary": [
+    {
+      "name": "123Telugu",
+      "homepage": "https://www.123telugu.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.123telugu.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "ABC News Australia",
+      "homepage": "https://www.abc.net.au/",
+      "country": "Australia",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.abc.net.au/news/feed/45910/rss.xml"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.abc.net.au/news/feed/1534/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "ABP Live",
+      "homepage": "https://news.abplive.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://news.abplive.com/entertainment/feed",
+          "label": "ABP Live Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "The Age",
+      "homepage": "https://www.theage.com.au/",
+      "country": "Australia",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.theage.com.au/rss/feed.xml"
+        }
+      ]
+    },
+    {
+      "name": "Agência Brasil (English)",
+      "homepage": "https://agenciabrasil.ebc.com.br/",
+      "country": "Brazil",
+      "continent": "South America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://agenciabrasil.ebc.com.br/en/rss/ultimasnoticias/feed.xml"
+        }
+      ]
+    },
+    {
+      "name": "Al-Monitor",
+      "homepage": "https://www.al-monitor.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.al-monitor.com/rss"
+        }
+      ]
+    },
+    {
+      "name": "AllAfrica",
+      "homepage": "https://allafrica.com/",
+      "continent": "Africa",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf"
+        }
+      ]
+    },
+    {
+      "name": "Anadolu Agency",
+      "homepage": "https://www.aa.com.tr/",
+      "country": "Turkey",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.aa.com.tr/en/rss/default?cat=world"
+        }
+      ]
+    },
+    {
+      "name": "Ancient Origins",
+      "homepage": "https://ancient-origins.net/",
+      "continent": "Other",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://news.google.com/rss/search?q=site%3Aancient-origins.net%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "Animal Planet",
+      "homepage": "https://animalplanet.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://news.google.com/rss/search?q=site%3Aanimalplanet.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        },
+        {
+          "section": "nature",
+          "url": "https://news.google.com/rss/search?q=site%3Aanimalplanet.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "Anime News Network",
+      "homepage": "https://www.animenewsnetwork.com/",
+      "country": "Japan",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.animenewsnetwork.com/all/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "ANSA English",
+      "homepage": "https://www.ansa.it/",
+      "country": "Italy",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.ansa.it/english/news/english_nr_rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "Archaeology Magazine",
+      "homepage": "https://archaeology.org/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://news.google.com/rss/search?q=site%3Aarchaeology.org%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "Army Technology",
+      "homepage": "https://www.army-technology.com/",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "defence",
+          "url": "https://www.army-technology.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Ars Technica",
+      "homepage": "https://arstechnica.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "technology",
+          "url": "https://feeds.arstechnica.com/arstechnica/index"
+        }
+      ]
+    },
+    {
+      "name": "Asia Times",
+      "homepage": "https://asiatimes.com/",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://asiatimes.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Atlas Obscura",
+      "homepage": "https://www.atlasobscura.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://www.atlasobscura.com/feeds/latest"
+        }
+      ]
+    },
+    {
+      "name": "Balkan Insight",
+      "homepage": "https://balkaninsight.com/",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://balkaninsight.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Bangkok Post",
+      "homepage": "https://www.bangkokpost.com/",
+      "country": "Thailand",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.bangkokpost.com/rss/data/world.xml"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.bangkokpost.com/rss/data/sports.xml"
+        }
+      ]
+    },
+    {
+      "name": "BBC Bangla",
+      "homepage": "https://www.bbc.com/bengali",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "bengali",
+          "url": "https://feeds.bbci.co.uk/bengali/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "BBC Earth",
+      "homepage": "https://bbcearth.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://news.google.com/rss/search?q=site%3Abbcearth.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        },
+        {
+          "section": "nature",
+          "url": "https://news.google.com/rss/search?q=site%3Abbcearth.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "BBC History Extra",
+      "homepage": "https://www.historyextra.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://www.historyextra.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "The Better India",
+      "homepage": "https://www.thebetterindia.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "lifestyle",
+          "url": "https://www.thebetterindia.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Billboard",
+      "homepage": "https://www.billboard.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.billboard.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Bollywood Hungama",
+      "homepage": "https://www.bollywoodhungama.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.bollywoodhungama.com/rss/news.xml"
+        }
+      ]
+    },
+    {
+      "name": "Bon Appétit",
+      "homepage": "https://www.bonappetit.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "lifestyle",
+          "url": "https://www.bonappetit.com/feed/rss"
+        }
+      ]
+    },
+    {
+      "name": "Breaking Defense",
+      "homepage": "https://breakingdefense.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "defence",
+          "url": "https://breakingdefense.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Brisbane Times",
+      "homepage": "https://www.brisbanetimes.com.au/",
+      "country": "Australia",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.brisbanetimes.com.au/rss/feed.xml"
+        }
+      ]
+    },
+    {
+      "name": "Britannica",
+      "homepage": "https://britannica.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://news.google.com/rss/search?q=site%3Abritannica.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        },
+        {
+          "section": "geography",
+          "url": "https://news.google.com/rss/search?q=site%3Abritannica.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "Buenos Aires Times",
+      "homepage": "https://www.batimes.com.ar/",
+      "country": "Argentina",
+      "continent": "South America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.batimes.com.ar/feed"
+        }
+      ]
+    },
+    {
+      "name": "Business Insider",
+      "homepage": "https://www.businessinsider.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "business",
+          "url": "https://feeds.businessinsider.com/custom/all"
+        }
+      ]
+    },
+    {
+      "name": "The Canberra Times",
+      "homepage": "https://www.canberratimes.com.au/",
+      "country": "Australia",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.canberratimes.com.au/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "Carbon Brief",
+      "homepage": "https://www.carbonbrief.org/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "nature",
+          "url": "https://www.carbonbrief.org/feed/"
+        }
+      ]
+    },
+    {
+      "name": "CBC News",
+      "homepage": "https://www.cbc.ca/",
+      "country": "Canada",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.cbc.ca/webfeed/rss/rss-world"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.cbc.ca/webfeed/rss/rss-sports",
+          "label": "CBC Sports"
+        }
+      ]
+    },
+    {
+      "name": "The Citizen (SA)",
+      "homepage": "https://www.citizen.co.za/",
+      "country": "South Africa",
+      "continent": "Africa",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.citizen.co.za/feed/"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.citizen.co.za/sport/feed/"
+        }
+      ]
+    },
+    {
+      "name": "The City Paper Bogotá",
+      "homepage": "https://thecitypaperbogota.com/",
+      "country": "Colombia",
+      "continent": "South America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://thecitypaperbogota.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "CNA",
+      "homepage": "https://www.channelnewsasia.com/",
+      "country": "Singapore",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.channelnewsasia.com/rssfeeds/8395986"
+        }
+      ]
+    },
+    {
+      "name": "Collider",
+      "homepage": "https://collider.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://collider.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Colombia One",
+      "homepage": "https://colombiaone.com/",
+      "country": "Colombia",
+      "continent": "South America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://colombiaone.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Condé Nast Traveler",
+      "homepage": "https://www.cntraveler.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "lifestyle",
+          "url": "https://www.cntraveler.com/feed/rss"
+        }
+      ]
+    },
+    {
+      "name": "Consequence",
+      "homepage": "https://consequence.net/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://consequence.net/feed/"
+        }
+      ]
+    },
+    {
+      "name": "The Conversation",
+      "homepage": "https://theconversation.com/",
+      "country": "Australia",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "science",
+          "url": "https://theconversation.com/global/articles.atom"
+        }
+      ]
+    },
+    {
+      "name": "The Copenhagen Post",
+      "homepage": "https://cphpost.dk/",
+      "country": "Denmark",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://cphpost.dk/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Crunchyroll News",
+      "homepage": "https://www.crunchyroll.com/news",
+      "country": "Japan",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://cr-news-api-service.prd.crunchyrollsvc.com/v1/en-US/rss"
+        }
+      ]
+    },
+    {
+      "name": "Daily Mail",
+      "homepage": "https://www.dailymail.co.uk/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/index.rss",
+          "label": "Daily Mail Showbiz"
+        }
+      ]
+    },
+    {
+      "name": "Daily Maverick",
+      "homepage": "https://www.dailymaverick.co.za/",
+      "country": "South Africa",
+      "continent": "Africa",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.dailymaverick.co.za/dmrss/"
+        }
+      ]
+    },
+    {
+      "name": "Daily News Hungary",
+      "homepage": "https://dailynewshungary.com/",
+      "country": "Hungary",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://dailynewshungary.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Daily Sabah",
+      "homepage": "https://www.dailysabah.com/",
+      "country": "Turkey",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.dailysabah.com/rssFeed/world"
+        }
+      ]
+    },
+    {
+      "name": "The Daily Star (Bangladesh)",
+      "homepage": "https://www.thedailystar.net/",
+      "country": "Bangladesh",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://www.thedailystar.net/sports/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "Dawn",
+      "homepage": "https://www.dawn.com/",
+      "country": "Pakistan",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.dawn.com/feeds/home"
+        }
+      ]
+    },
+    {
+      "name": "Deadline",
+      "homepage": "https://deadline.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://deadline.com/feed/"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Adeadline.com%20when%3A3d&hl=en-US&gl=US&ceid=US:en",
+          "label": "Deadline (Google News)"
+        }
+      ]
+    },
+    {
+      "name": "Defense News",
+      "homepage": "https://www.defensenews.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "defence",
+          "url": "https://www.defensenews.com/arc/outboundfeeds/rss/?outputType=xml"
+        }
+      ]
+    },
+    {
+      "name": "Den of Geek",
+      "homepage": "https://www.denofgeek.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.denofgeek.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "DeshGujarat",
+      "homepage": "https://deshgujarat.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://deshgujarat.com/feed/",
+          "state": "Gujarat"
+        }
+      ]
+    },
+    {
+      "name": "Deutsche Welle",
+      "homepage": "https://www.dw.com/en/",
+      "country": "Germany",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://rss.dw.com/rdf/rss-en-world"
+        }
+      ]
+    },
+    {
+      "name": "Dhaka Post",
+      "homepage": "https://www.dhakapost.com/",
+      "country": "Bangladesh",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "bengali",
+          "url": "https://www.dhakapost.com/rss/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "The Diplomat",
+      "homepage": "https://thediplomat.com/",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://thediplomat.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Discovery",
+      "homepage": "https://discovery.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://news.google.com/rss/search?q=site%3Adiscovery.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "E! News",
+      "homepage": "https://www.eonline.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml"
+        }
+      ]
+    },
+    {
+      "name": "Earth.com",
+      "homepage": "https://www.earth.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://www.earth.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Eater",
+      "homepage": "https://www.eater.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "lifestyle",
+          "url": "https://www.eater.com/rss/index.xml"
+        }
+      ]
+    },
+    {
+      "name": "The Economic Times",
+      "homepage": "https://economictimes.indiatimes.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "business",
+          "url": "https://economictimes.indiatimes.com/rssfeedstopstories.cms"
+        }
+      ]
+    },
+    {
+      "name": "The Economist",
+      "homepage": "https://www.economist.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "business",
+          "url": "https://www.economist.com/finance-and-economics/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "Ecuador Times",
+      "homepage": "https://www.ecuadortimes.net/",
+      "country": "Ecuador",
+      "continent": "South America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.ecuadortimes.net/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Egypt Independent",
+      "homepage": "https://www.egyptindependent.com/",
+      "country": "Egypt",
+      "continent": "Africa",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.egyptindependent.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Engadget",
+      "homepage": "https://www.engadget.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "technology",
+          "url": "https://www.engadget.com/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "Eos (AGU)",
+      "homepage": "https://eos.org/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://eos.org/feed"
+        }
+      ]
+    },
+    {
+      "name": "Euractiv",
+      "homepage": "https://www.euractiv.com/",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.euractiv.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Euronews",
+      "homepage": "https://www.euronews.com/",
+      "country": "France",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.euronews.com/rss?format=mrss"
+        }
+      ]
+    },
+    {
+      "name": "The Express Tribune",
+      "homepage": "https://tribune.com.pk/",
+      "country": "Pakistan",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://tribune.com.pk/feed/home"
+        }
+      ]
+    },
+    {
+      "name": "Film Companion",
+      "homepage": "https://www.filmcompanion.in/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.filmcompanion.in/feed"
+        }
+      ]
+    },
+    {
+      "name": "Filmfare",
+      "homepage": "https://www.filmfare.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.filmfare.com/rss/news.xml"
+        }
+      ]
+    },
+    {
+      "name": "Financial Times",
+      "homepage": "https://www.ft.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "business",
+          "url": "https://www.ft.com/rss/home"
+        }
+      ]
+    },
+    {
+      "name": "Fortune",
+      "homepage": "https://fortune.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "business",
+          "url": "https://fortune.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "France 24",
+      "homepage": "https://www.france24.com/",
+      "country": "France",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.france24.com/en/rss"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.france24.com/en/sport/rss"
+        }
+      ]
+    },
+    {
+      "name": "Gadgets 360",
+      "homepage": "https://www.gadgets360.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "technology",
+          "url": "https://feeds.feedburner.com/gadgets360-latest"
+        }
+      ]
+    },
+    {
+      "name": "GameSpot",
+      "homepage": "https://www.gamespot.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.gamespot.com/feeds/mashup/"
+        }
+      ]
+    },
+    {
+      "name": "Geographical Magazine",
+      "homepage": "https://geographical.co.uk/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://geographical.co.uk/feed"
+        }
+      ]
+    },
+    {
+      "name": "GIS Lounge",
+      "homepage": "https://www.gislounge.com/",
+      "continent": "Other",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://www.gislounge.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Global Times",
+      "homepage": "https://www.globaltimes.cn/",
+      "country": "China",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.globaltimes.cn/rss/outbrain.xml"
+        }
+      ]
+    },
+    {
+      "name": "Google News",
+      "homepage": "https://news.google.com/",
+      "listed": false,
+      "country": "France",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=film%20festival%20Cannes%20OR%20Venice%20OR%20Berlinale%20OR%20Sundance%20when%3A3d&hl=en-US&gl=US&ceid=US:en",
+          "label": "Cannes/Film Festivals"
+        }
+      ]
+    },
+    {
+      "name": "Greater Kashmir",
+      "homepage": "https://www.greaterkashmir.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://www.greaterkashmir.com/feed",
+          "state": "Jammu & Kashmir"
+        }
+      ]
+    },
+    {
+      "name": "Grist",
+      "homepage": "https://grist.org/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "nature",
+          "url": "https://grist.org/feed/"
+        }
+      ]
+    },
+    {
+      "name": "The Guardian Australia",
+      "homepage": "https://www.theguardian.com/au",
+      "country": "Australia",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.theguardian.com/australia-news/rss"
+        }
+      ]
+    },
+    {
+      "name": "Gulf News",
+      "homepage": "https://gulfnews.com/",
+      "country": "United Arab Emirates",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Agulfnews.com/entertainment%20when%3A3d&hl=en-US&gl=US&ceid=US:en",
+          "label": "Gulf News Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "Gulf Times",
+      "homepage": "https://www.gulf-times.com/",
+      "country": "Qatar",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.gulf-times.com/rssFeed/0"
+        }
+      ]
+    },
+    {
+      "name": "HeritageDaily",
+      "homepage": "https://heritagedaily.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://news.google.com/rss/search?q=site%3Aheritagedaily.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "Hindustan Times",
+      "homepage": "https://www.hindustantimes.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.hindustantimes.com/feeds/rss/brunch/rssfeed.xml",
+          "label": "Hindustan Times Brunch"
+        }
+      ]
+    },
+    {
+      "name": "History (History Channel)",
+      "homepage": "https://history.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://news.google.com/rss/search?q=site%3Ahistory.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "The Hollywood Reporter",
+      "homepage": "https://www.hollywoodreporter.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.hollywoodreporter.com/feed/"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Ahollywoodreporter.com%20when%3A3d&hl=en-US&gl=US&ceid=US:en",
+          "label": "Hollywood Reporter (Google News)"
+        }
+      ]
+    },
+    {
+      "name": "Hungary Today",
+      "homepage": "https://hungarytoday.hu/",
+      "country": "Hungary",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://hungarytoday.hu/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Hürriyet Daily News",
+      "homepage": "https://www.hurriyetdailynews.com/",
+      "country": "Turkey",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.hurriyetdailynews.com/rss"
+        }
+      ]
+    },
+    {
+      "name": "Iceland Review",
+      "homepage": "https://www.icelandreview.com/",
+      "country": "Iceland",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.icelandreview.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "IDRW",
+      "homepage": "https://idrw.org/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "defence",
+          "url": "https://idrw.org/feed/"
+        }
+      ]
+    },
+    {
+      "name": "IGN",
+      "homepage": "https://www.ign.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://feeds.ign.com/ign/all"
+        }
+      ]
+    },
+    {
+      "name": "Inc42",
+      "homepage": "https://inc42.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "technology",
+          "url": "https://inc42.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "India.com",
+      "homepage": "https://www.india.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.india.com/entertainment/feed/",
+          "label": "India.com Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "IndieWire",
+      "homepage": "https://www.indiewire.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.indiewire.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Inside Climate News",
+      "homepage": "https://insideclimatenews.org/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "nature",
+          "url": "https://insideclimatenews.org/feed/"
+        }
+      ]
+    },
+    {
+      "name": "IWMBuzz",
+      "homepage": "https://www.iwmbuzz.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.iwmbuzz.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Japan Times",
+      "homepage": "https://www.japantimes.co.jp/",
+      "country": "Japan",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.japantimes.co.jp/feed/"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.japantimes.co.jp/culture/feed/",
+          "label": "Japan Times Culture"
+        }
+      ]
+    },
+    {
+      "name": "Jerusalem Post",
+      "homepage": "https://www.jpost.com/",
+      "country": "Israel",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.jpost.com/rss/rssfeedsfrontpage.aspx"
+        }
+      ]
+    },
+    {
+      "name": "JSTOR Daily",
+      "homepage": "https://daily.jstor.org/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://daily.jstor.org/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Kashmir Observer",
+      "homepage": "https://kashmirobserver.net/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://kashmirobserver.net/feed/",
+          "state": "Jammu & Kashmir"
+        }
+      ]
+    },
+    {
+      "name": "The Kathmandu Post",
+      "homepage": "https://kathmandupost.com/",
+      "country": "Nepal",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://kathmandupost.com/rss"
+        }
+      ]
+    },
+    {
+      "name": "Khaleej Times",
+      "homepage": "https://khaleejtimes.com/",
+      "country": "United Arab Emirates",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Akhaleejtimes.com/entertainment%20when%3A3d&hl=en-US&gl=US&ceid=US:en",
+          "label": "Khaleej Times Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "Koimoi",
+      "homepage": "https://www.koimoi.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.koimoi.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Kolkata24x7",
+      "homepage": "https://www.kolkata24x7.in/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "bengali",
+          "url": "https://www.kolkata24x7.in/feed",
+          "state": "West Bengal"
+        }
+      ]
+    },
+    {
+      "name": "The Korea Times",
+      "homepage": "https://www.koreatimes.co.kr/",
+      "country": "South Korea",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.koreatimes.co.kr/www/rss/world.xml"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.koreatimes.co.kr/www/rss/sports.xml"
+        }
+      ]
+    },
+    {
+      "name": "Kyiv Post",
+      "homepage": "https://www.kyivpost.com/",
+      "country": "Ukraine",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.kyivpost.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "LA Times",
+      "homepage": "https://www.latimes.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.latimes.com/entertainment-arts/rss2.0.xml",
+          "label": "LA Times Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "Latin America Reports",
+      "homepage": "https://latinamericareports.com/",
+      "continent": "South America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://latinamericareports.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Le Monde (English)",
+      "homepage": "https://www.lemonde.fr/",
+      "country": "France",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.lemonde.fr/en/rss/une.xml"
+        }
+      ]
+    },
+    {
+      "name": "Live Science",
+      "homepage": "https://www.livescience.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "science",
+          "url": "https://www.livescience.com/feeds/all"
+        }
+      ]
+    },
+    {
+      "name": "Livemint",
+      "homepage": "https://www.livemint.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://www.livemint.com/rss/news"
+        },
+        {
+          "section": "business",
+          "url": "https://www.livemint.com/rss/companies"
+        },
+        {
+          "section": "technology",
+          "url": "https://www.livemint.com/rss/technology"
+        }
+      ]
+    },
+    {
+      "name": "The Local",
+      "homepage": "https://www.thelocal.com/",
+      "country": "Sweden",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.thelocal.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "The Local Sweden",
+      "homepage": "https://www.thelocal.se/",
+      "country": "Sweden",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.thelocal.se/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Lonely Planet",
+      "homepage": "https://lonelyplanet.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://news.google.com/rss/search?q=site%3Alonelyplanet.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "The Manila Times",
+      "homepage": "https://www.manilatimes.net/",
+      "country": "Philippines",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.manilatimes.net/news/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Maps Mania",
+      "homepage": "https://googlemapsmania.blogspot.com/",
+      "continent": "Other",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://googlemapsmania.blogspot.com/feeds/posts/default"
+        }
+      ]
+    },
+    {
+      "name": "MarketWatch",
+      "homepage": "https://www.marketwatch.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "business",
+          "url": "http://feeds.marketwatch.com/marketwatch/topstories/"
+        }
+      ]
+    },
+    {
+      "name": "MercoPress",
+      "homepage": "https://en.mercopress.com/",
+      "country": "Uruguay",
+      "continent": "South America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://en.mercopress.com/rss"
+        }
+      ]
+    },
+    {
+      "name": "Metro",
+      "homepage": "https://metro.co.uk/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://metro.co.uk/entertainment/feed/",
+          "label": "Metro Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "Mid-day",
+      "homepage": "https://www.mid-day.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://www.mid-day.com/Resources/midday/rss/mumbai-news.xml",
+          "state": "Maharashtra"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.mid-day.com/Resources/midday/rss/entertainment.xml",
+          "label": "Mid-day Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "Middle East Eye",
+      "homepage": "https://www.middleeasteye.net/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.middleeasteye.net/rss"
+        }
+      ]
+    },
+    {
+      "name": "Middle East Monitor",
+      "homepage": "https://www.middleeastmonitor.com/",
+      "country": "United Kingdom",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.middleeastmonitor.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "MIT Technology Review",
+      "homepage": "https://www.technologyreview.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "technology",
+          "url": "https://www.technologyreview.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Mongabay",
+      "homepage": "https://news.mongabay.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "nature",
+          "url": "https://news.mongabay.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Mongabay India",
+      "homepage": "https://india.mongabay.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "nature",
+          "url": "https://india.mongabay.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "The Moscow Times",
+      "homepage": "https://www.themoscowtimes.com/",
+      "country": "Russia",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.themoscowtimes.com/rss/news"
+        }
+      ]
+    },
+    {
+      "name": "NASA",
+      "homepage": "https://www.nasa.gov/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "science",
+          "url": "https://www.nasa.gov/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Nat Geo Traveller India",
+      "homepage": "https://natgeotraveller.in/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://news.google.com/rss/search?q=site%3Anatgeotraveller.in%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "The National",
+      "homepage": "https://www.thenationalnews.com/",
+      "country": "United Arab Emirates",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.thenationalnews.com/arc/outboundfeeds/rss/?outputType=xml"
+        }
+      ]
+    },
+    {
+      "name": "National Geographic",
+      "homepage": "https://nationalgeographic.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://news.google.com/rss/search?q=site%3Anationalgeographic.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        },
+        {
+          "section": "geography",
+          "url": "https://news.google.com/rss/search?q=site%3Anationalgeographic.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "Nature",
+      "homepage": "https://www.nature.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "science",
+          "url": "https://www.nature.com/nature.rss"
+        }
+      ]
+    },
+    {
+      "name": "Naval News",
+      "homepage": "https://www.navalnews.com/",
+      "country": "France",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "defence",
+          "url": "https://www.navalnews.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "The New Arab",
+      "homepage": "https://www.newarab.com/",
+      "country": "United Kingdom",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.newarab.com/rss"
+        }
+      ]
+    },
+    {
+      "name": "New Scientist",
+      "homepage": "https://www.newscientist.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "science",
+          "url": "https://www.newscientist.com/feed/home/"
+        }
+      ]
+    },
+    {
+      "name": "News in English (Norway)",
+      "homepage": "https://www.newsinenglish.no/",
+      "country": "Norway",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.newsinenglish.no/feed/"
+        }
+      ]
+    },
+    {
+      "name": "The News Minute",
+      "homepage": "https://www.thenewsminute.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.thenewsminute.com/feed",
+          "label": "The News Minute Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "NHK World",
+      "homepage": "https://www3.nhk.or.jp/nhkworld/",
+      "country": "Japan",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www3.nhk.or.jp/rss/news/cat6.xml"
+        }
+      ]
+    },
+    {
+      "name": "Nikkei Asia",
+      "homepage": "https://asia.nikkei.com/",
+      "country": "Japan",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://asia.nikkei.com/rss/feed/nar"
+        },
+        {
+          "section": "business",
+          "url": "https://asia.nikkei.com/rss/feed/nar",
+          "label": "Nikkei Asia Business"
+        }
+      ]
+    },
+    {
+      "name": "NME",
+      "homepage": "https://www.nme.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.nme.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "Northeast Now",
+      "homepage": "https://nenow.in/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://nenow.in/feed",
+          "state": "Northeast"
+        }
+      ]
+    },
+    {
+      "name": "Notes from Poland",
+      "homepage": "https://notesfrompoland.com/",
+      "country": "Poland",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://notesfrompoland.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "NPR",
+      "homepage": "https://www.npr.org/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://feeds.npr.org/1004/rss.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://feeds.npr.org/1008/rss.xml",
+          "label": "NPR Arts & Life"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://feeds.npr.org/1039/rss.xml",
+          "label": "NPR Music"
+        }
+      ]
+    },
+    {
+      "name": "NZ Herald",
+      "homepage": "https://www.nzherald.co.nz/",
+      "country": "New Zealand",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.nzherald.co.nz/arc/outboundfeeds/rss/section/world/?outputType=xml"
+        }
+      ]
+    },
+    {
+      "name": "Orissa Post",
+      "homepage": "https://www.orissapost.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://www.orissapost.com/feed/",
+          "state": "Odisha"
+        }
+      ]
+    },
+    {
+      "name": "Page Six",
+      "homepage": "https://pagesix.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://pagesix.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Past Horizons",
+      "homepage": "https://www.pasthorizonspr.com/",
+      "continent": "Other",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://www.pasthorizonspr.com/index.php/feed"
+        }
+      ]
+    },
+    {
+      "name": "Peru Reports",
+      "homepage": "https://perureports.com/",
+      "country": "Peru",
+      "continent": "South America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://perureports.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Philippine Daily Inquirer",
+      "homepage": "https://www.inquirer.net/",
+      "country": "Philippines",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.inquirer.net/fullfeed"
+        }
+      ]
+    },
+    {
+      "name": "Phys.org",
+      "homepage": "https://phys.org/",
+      "continent": "Other",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://phys.org/rss-feed/science-news/archaeology-fossils/",
+          "label": "Archaeology News (Phys.org)"
+        },
+        {
+          "section": "geography",
+          "url": "https://phys.org/rss-feed/earth-news/",
+          "label": "Earth Sciences (Phys.org)"
+        },
+        {
+          "section": "science",
+          "url": "https://phys.org/rss-feed/"
+        },
+        {
+          "section": "nature",
+          "url": "https://phys.org/rss-feed/biology-news/ecology/",
+          "label": "Wildlife Trust (Conservation)"
+        }
+      ]
+    },
+    {
+      "name": "Pinkvilla",
+      "homepage": "https://www.pinkvilla.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.pinkvilla.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "Pitchfork",
+      "homepage": "https://pitchfork.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://pitchfork.com/feed/feed-news/rss"
+        }
+      ]
+    },
+    {
+      "name": "Politico Europe",
+      "homepage": "https://www.politico.eu/",
+      "country": "Belgium",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.politico.eu/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Polygon",
+      "homepage": "https://www.polygon.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.polygon.com/rss/index.xml"
+        }
+      ]
+    },
+    {
+      "name": "Premium Times",
+      "homepage": "https://www.premiumtimesng.com/",
+      "country": "Nigeria",
+      "continent": "Africa",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.premiumtimesng.com/feed"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.premiumtimesng.com/category/sports/feed"
+        }
+      ]
+    },
+    {
+      "name": "The Print",
+      "homepage": "https://theprint.in/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://theprint.in/category/entertainment/feed/",
+          "label": "The Print Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "Prothom Alo",
+      "homepage": "https://www.prothomalo.com/",
+      "country": "Bangladesh",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "bengali",
+          "url": "https://www.prothomalo.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "Prothom Alo (English)",
+      "homepage": "https://en.prothomalo.com/",
+      "country": "Bangladesh",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://en.prothomalo.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "The Quint",
+      "homepage": "https://www.thequint.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.thequint.com/stories.rss",
+          "label": "The Quint Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "The Register",
+      "homepage": "https://www.theregister.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "technology",
+          "url": "https://www.theregister.com/headlines.atom"
+        }
+      ]
+    },
+    {
+      "name": "The Rio Times",
+      "homepage": "https://www.riotimesonline.com/",
+      "country": "Brazil",
+      "continent": "South America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.riotimesonline.com/feed/",
+          "general": true
+        }
+      ]
+    },
+    {
+      "name": "RNZ",
+      "homepage": "https://www.rnz.co.nz/",
+      "country": "New Zealand",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.rnz.co.nz/rss/world.xml"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.rnz.co.nz/rss/sport.xml"
+        },
+        {
+          "section": "world",
+          "url": "https://www.rnz.co.nz/rss/pacific.xml",
+          "label": "RNZ Pacific"
+        }
+      ]
+    },
+    {
+      "name": "Rolling Stone",
+      "homepage": "https://www.rollingstone.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.rollingstone.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Romania Insider",
+      "homepage": "https://www.romania-insider.com/",
+      "country": "Romania",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.romania-insider.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "RTÉ News",
+      "homepage": "https://www.rte.ie/",
+      "country": "Ireland",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.rte.ie/news/rss/news-headlines.xml"
+        }
+      ]
+    },
+    {
+      "name": "Sangbad Pratidin",
+      "homepage": "https://www.sangbadpratidin.in/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "bengali",
+          "url": "https://www.sangbadpratidin.in/feed/",
+          "state": "West Bengal"
+        }
+      ]
+    },
+    {
+      "name": "SAPIENS",
+      "homepage": "https://www.sapiens.org/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://www.sapiens.org/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Science News",
+      "homepage": "https://www.sciencenews.org/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "science",
+          "url": "https://www.sciencenews.org/feed"
+        }
+      ]
+    },
+    {
+      "name": "ScienceAlert",
+      "homepage": "https://www.sciencealert.com/",
+      "country": "Australia",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "science",
+          "url": "https://www.sciencealert.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "ScienceDaily",
+      "homepage": "https://www.sciencedaily.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "science",
+          "url": "https://www.sciencedaily.com/rss/all.xml"
+        }
+      ]
+    },
+    {
+      "name": "Scientific American",
+      "homepage": "https://www.scientificamerican.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "science",
+          "url": "http://rss.sciam.com/ScientificAmerican-Global"
+        }
+      ]
+    },
+    {
+      "name": "Screen Daily",
+      "homepage": "https://screendaily.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Ascreendaily.com%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "Screen Rant",
+      "homepage": "https://screenrant.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://screenrant.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Scroll.in",
+      "homepage": "https://scroll.in/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://feeds.feedburner.com/ScrollinArticles.rss"
+        }
+      ]
+    },
+    {
+      "name": "The Sentinel (Assam)",
+      "homepage": "https://www.sentinelassam.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://www.sentinelassam.com/feed",
+          "state": "Assam"
+        }
+      ]
+    },
+    {
+      "name": "The Shillong Times",
+      "homepage": "https://theshillongtimes.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://theshillongtimes.com/feed/",
+          "state": "Meghalaya"
+        }
+      ]
+    },
+    {
+      "name": "Siasat Daily",
+      "homepage": "https://www.siasat.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://www.siasat.com/feed/",
+          "state": "Telangana"
+        }
+      ]
+    },
+    {
+      "name": "Sky News",
+      "homepage": "https://news.sky.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "http://feeds.skynews.com/feeds/rss/world.xml"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://feeds.skynews.com/feeds/rss/entertainment.xml",
+          "label": "Sky News Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "Sky Sports",
+      "homepage": "https://www.skysports.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://www.skysports.com/rss/12040"
+        }
+      ]
+    },
+    {
+      "name": "Slashfilm",
+      "homepage": "https://www.slashfilm.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.slashfilm.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "The Slovak Spectator",
+      "homepage": "https://spectator.sme.sk/",
+      "country": "Slovakia",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://spectator.sme.sk/rss"
+        }
+      ]
+    },
+    {
+      "name": "Smithsonian Magazine",
+      "homepage": "https://www.smithsonianmag.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "history",
+          "url": "https://www.smithsonianmag.com/rss/history/"
+        },
+        {
+          "section": "history",
+          "url": "https://news.google.com/rss/search?q=site%3Asmithsonianmag.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        },
+        {
+          "section": "geography",
+          "url": "https://news.google.com/rss/search?q=site%3Asmithsonianmag.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
+        }
+      ]
+    },
+    {
+      "name": "Soompi",
+      "homepage": "https://www.soompi.com/",
+      "country": "South Korea",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.soompi.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "South China Morning Post",
+      "homepage": "https://www.scmp.com/",
+      "country": "Hong Kong",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.scmp.com/rss/91/feed"
+        }
+      ]
+    },
+    {
+      "name": "Space.com",
+      "homepage": "https://www.space.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "science",
+          "url": "https://www.space.com/feeds/all"
+        }
+      ]
+    },
+    {
+      "name": "Stereogum",
+      "homepage": "https://www.stereogum.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.stereogum.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Straits Times",
+      "homepage": "https://www.straitstimes.com/",
+      "country": "Singapore",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://www.straitstimes.com/news/sport/rss.xml"
+        },
+        {
+          "section": "world",
+          "url": "https://www.straitstimes.com/news/world/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "Stuff",
+      "homepage": "https://www.stuff.co.nz/",
+      "country": "New Zealand",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.stuff.co.nz/rss"
+        }
+      ]
+    },
+    {
+      "name": "Taipei Times",
+      "homepage": "https://www.taipeitimes.com/",
+      "country": "Taiwan",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.taipeitimes.com/xml/index.rss"
+        }
+      ]
+    },
+    {
+      "name": "talkSPORT",
+      "homepage": "https://talksport.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://talksport.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "TechCrunch",
+      "homepage": "https://techcrunch.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "technology",
+          "url": "https://techcrunch.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "Tehran Times",
+      "homepage": "https://www.tehrantimes.com/",
+      "country": "Iran",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.tehrantimes.com/rss"
+        }
+      ]
+    },
+    {
+      "name": "Telangana Today",
+      "homepage": "https://telanganatoday.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "india",
+          "url": "https://telanganatoday.com/feed",
+          "state": "Telangana"
+        }
+      ]
+    },
+    {
+      "name": "The Telegraph",
+      "homepage": "https://www.telegraph.co.uk/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.telegraph.co.uk/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "TheWrap",
+      "homepage": "https://www.thewrap.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.thewrap.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "TMZ",
+      "homepage": "https://www.tmz.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.tmz.com/rss.xml"
+        }
+      ]
+    },
+    {
+      "name": "Us Weekly",
+      "homepage": "https://www.usmagazine.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://www.usmagazine.com/feed/"
+        }
+      ]
+    },
+    {
+      "name": "USGS Earthquakes",
+      "homepage": "https://earthquake.usgs.gov/earthquakes/map/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "geography",
+          "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.atom"
+        }
+      ]
+    },
+    {
+      "name": "Uttarbanga Sambad",
+      "homepage": "https://uttarbangasambad.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "bengali",
+          "url": "https://uttarbangasambad.com/feed",
+          "state": "West Bengal"
+        }
+      ]
+    },
+    {
+      "name": "Variety",
+      "homepage": "https://variety.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://variety.com/feed/"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://news.google.com/rss/search?q=site%3Avariety.com%20when%3A3d&hl=en-US&gl=US&ceid=US:en",
+          "label": "Variety (Google News)"
+        }
+      ]
+    },
+    {
+      "name": "Venezuelanalysis",
+      "homepage": "https://venezuelanalysis.com/",
+      "country": "Venezuela",
+      "continent": "South America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://venezuelanalysis.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "The Verge",
+      "homepage": "https://www.theverge.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "technology",
+          "url": "https://www.theverge.com/rss/index.xml"
+        }
+      ]
+    },
+    {
+      "name": "Vietnam News",
+      "homepage": "https://vietnamnews.vn/",
+      "country": "Vietnam",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://vietnamnews.vn/rss/politics-laws.rss"
+        }
+      ]
+    },
+    {
+      "name": "VnExpress International",
+      "homepage": "https://e.vnexpress.net/",
+      "country": "Vietnam",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://e.vnexpress.net/rss/news.rss"
+        }
+      ]
+    },
+    {
+      "name": "Vulture",
+      "homepage": "https://www.vulture.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://feeds.feedburner.com/nymag/vulture"
+        }
+      ]
+    },
+    {
+      "name": "The War Zone",
+      "homepage": "https://www.twz.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "defence",
+          "url": "https://www.twz.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "Washington Post",
+      "homepage": "https://www.washingtonpost.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://feeds.washingtonpost.com/rss/world"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://feeds.washingtonpost.com/rss/entertainment",
+          "label": "Washington Post Entertainment"
+        }
+      ]
+    },
+    {
+      "name": "WAtoday",
+      "homepage": "https://www.watoday.com.au/",
+      "country": "Australia",
+      "continent": "Oceania",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.watoday.com.au/rss/feed.xml"
+        }
+      ]
+    },
+    {
+      "name": "Wired",
+      "homepage": "https://www.wired.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "technology",
+          "url": "https://www.wired.com/feed/rss"
+        }
+      ]
+    },
+    {
+      "name": "Xinhua",
+      "homepage": "https://english.news.cn/",
+      "country": "China",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "http://www.news.cn/english/rss/worldrss.xml"
+        }
+      ]
+    },
+    {
+      "name": "Yale Environment 360",
+      "homepage": "https://e360.yale.edu/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "nature",
+          "url": "https://e360.yale.edu/feed.xml"
+        }
+      ]
+    },
+    {
+      "name": "Yonhap News",
+      "homepage": "https://en.yna.co.kr/",
+      "country": "South Korea",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://en.yna.co.kr/RSS/news.xml"
+        }
+      ]
+    },
+    {
+      "name": "YourStory",
+      "homepage": "https://yourstory.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "technology",
+          "url": "https://yourstory.com/feed"
+        }
+      ]
+    },
+    {
+      "name": "Zee News",
+      "homepage": "https://zeenews.india.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "entertainment",
+          "url": "https://zeenews.india.com/rss/entertainment-news.xml",
+          "label": "Zee News Entertainment"
+        }
+      ]
+    }
+  ]
+}

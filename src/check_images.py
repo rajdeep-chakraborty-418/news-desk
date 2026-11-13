@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-NEWS = Path(__file__).parent / "site" / "news.json"
+NEWS = Path(__file__).resolve().parent.parent / "site" / "news.json"
 # Mimic what a reader's browser sends for an <img> (no Referer), since that is what decides if a tile shows a photo.
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 PER_SOURCE = 3

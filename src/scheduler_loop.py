@@ -3,12 +3,12 @@
 
 Every POLL_SECONDS it
   1. reads refresh requests that the website's Refresh button posted to a public ntfy.sh topic, and
-  2. checks whether the regular refresh (every refresh_minutes.txt minutes) is due.
+  2. checks whether the regular refresh (every refresh.interval_minutes (external_config/settings.json)) is due.
 Either one starts the "Update news and deploy" workflow through the GitHub CLI.
 After LOOP_MINUTES it exits so the workflow can start a fresh round of itself.
 
 Requests carry only the chosen time range and story count ("hours=168&count=500"); anything else is ignored, both must
-be one of the allowed values (a missing count means 300), and at most one refresh is started per MIN_GAP_SECONDS, so spamming the topic does nothing.
+be one of the allowed values (a missing or invalid value means the default in settings.json), and at most one refresh is started per MIN_GAP_SECONDS, so spamming the topic does nothing.
 """
 import json
 import os
@@ -19,17 +19,27 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-ROOT = Path(__file__).parent
-ALLOWED_COUNTS = {200, 300, 400, 500, 1000}
-ALLOWED = {6, 12, 24, 72, 168, 720, 2160}
+import config
+import settings
+
+ROOT = Path(__file__).resolve().parent.parent
+CONFIG = Path(os.environ.get("NEWSDESK_CONFIG_DIR") or ROOT / "external_config")
 NTFY = os.environ.get("NTFY_BASE", "https://ntfy.sh").rstrip("/")
 GH = os.environ.get("GH_BIN", "gh")
 REPO = os.environ.get("GITHUB_REPOSITORY", "")
-TOPIC = (ROOT / "refresh_topic.txt").read_text().strip()
-INTERVAL_MIN = int(re.sub(r"\D", "", (ROOT / "refresh_minutes.txt").read_text()) or 118)
+try:
+    SETTINGS = settings.load_settings(CONFIG)      # external_config/settings.json
+except config.ConfigError as exc:
+    raise SystemExit(f"Configuration error: {exc}")
+ALLOWED_COUNTS = set(SETTINGS["counts"])
+ALLOWED = set(SETTINGS["hours"])
+DEFAULT_HOURS = SETTINGS["default_hours"]          # used by scheduled refreshes and when a request names no valid range
+DEFAULT_COUNT = SETTINGS["default_count"]
+TOPIC = SETTINGS["request_topic"]
+INTERVAL_MIN = SETTINGS["interval_minutes"]
 LOOP_MINUTES = float(os.environ.get("LOOP_MINUTES", 175))
 POLL_SECONDS = float(os.environ.get("POLL_SECONDS", 30))
-MIN_GAP_SECONDS = float(os.environ.get("MIN_GAP_SECONDS", 300))
+MIN_GAP_SECONDS = float(os.environ.get("MIN_GAP_SECONDS", SETTINGS["min_gap_seconds"]))
 
 
 def log(msg):
@@ -42,14 +52,14 @@ def gh(*args):
 
 def parse_count(text):
     m = re.search(r"count=(\d+)", text or "")
-    n = int(m.group(1)) if m else 300
-    return n if n in ALLOWED_COUNTS else 300
+    n = int(m.group(1)) if m else DEFAULT_COUNT
+    return n if n in ALLOWED_COUNTS else DEFAULT_COUNT
 
 
 def parse_hours(text):
     m = re.search(r"hours=(\d+)", text or "")
-    hours = int(m.group(1)) if m else 24
-    return hours if hours in ALLOWED else 24
+    hours = int(m.group(1)) if m else DEFAULT_HOURS
+    return hours if hours in ALLOWED else DEFAULT_HOURS
 
 
 def run_ages():
@@ -66,7 +76,8 @@ def run_ages():
     return newest, ok
 
 
-def trigger(hours, why, count=300):
+def trigger(hours, why, count=None):
+    count = count or DEFAULT_COUNT
     r = gh("workflow", "run", "update.yml", "--repo", REPO, "--ref", "main", "-f", f"hours={hours}", "-f", f"count={count}")
     ok = r.returncode == 0
     log(("Started" if ok else "FAILED to start") + f" refresh ({why}, last {hours} h, {count} per section)" + ("" if ok else f": {r.stderr.strip()[:200]}"))
@@ -116,7 +127,7 @@ def main():
                 last_start = time.time()
                 next_due = last_start + INTERVAL_MIN * 60
         elif time.time() >= next_due:
-            if trigger(24, "scheduled"):
+            if trigger(DEFAULT_HOURS, "scheduled"):
                 last_start = time.time()
                 next_due = last_start + INTERVAL_MIN * 60
             else:

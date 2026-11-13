@@ -2,19 +2,20 @@ name: Update news and deploy
 
 on:
   schedule:
-    # GitHub often delays or skips scheduled runs, so try every hour; the "gate" step below
-    # only lets a run proceed if the last deployment is at least ~100 minutes old (about every 2 hours).
+    # GitHub often delays or skips scheduled runs, so try every hour; the "gate" step below only lets a run proceed
+    # if the last deployment is old enough for refresh.interval_minutes (external_config/settings.json).
+    # (GitHub needs the cron expression itself written here; it cannot be read from a settings file.)
     - cron: "17 * * * *"
   workflow_dispatch:          # lets you run it by hand from the Actions tab (the page's Refresh button uses this)
     inputs:
       hours:
-        description: "Only include stories from the last N hours (6, 12, 24, 72, 168, 720 or 2160)"
+        description: "Only include stories from the last N hours (one of time_ranges in external_config/settings.json; empty = its default)"
         required: false
-        default: "24"
+        default: ""
       count:
-        description: "Stories to keep per section (200, 300, 400, 500 or 1000)"
+        description: "Stories to keep per section (one of article_counts in external_config/settings.json; empty = its default)"
         required: false
-        default: "300"
+        default: ""
   push:
     branches: [main]
 
@@ -35,36 +36,35 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Gate (scheduled runs only refresh about every 2 hours)
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Gate (scheduled runs only refresh about every refresh.interval_minutes)
         id: gate
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "${{ github.event_name }}" != "schedule" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          need=$(python3 src/settings.py gate_minutes)
           last=$(gh api "repos/${{ github.repository }}/deployments?environment=github-pages&per_page=1" --jq '.[0].created_at' || true)
           if [ -z "$last" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
           age=$(( ( $(date +%s) - $(date -d "$last" +%s) ) / 60 ))
-          echo "Last deployment was $age minutes ago"
-          if [ "$age" -ge 100 ]; then echo "go=true" >> "$GITHUB_OUTPUT"; else echo "go=false" >> "$GITHUB_OUTPUT"; echo "Too soon, skipping this run."; fi
-      - uses: actions/checkout@v4
+          echo "Last deployment was $age minutes ago (a scheduled run needs $need)"
+          if [ "$age" -ge "$need" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; else echo "go=false" >> "$GITHUB_OUTPUT"; echo "Too soon, skipping this run."; fi
+      - name: Build the site (page, sections, newspaper list)
         if: steps.gate.outputs.go == 'true'
-      - uses: actions/setup-python@v5
-        if: steps.gate.outputs.go == 'true'
-        with:
-          python-version: "3.12"
-      - name: Build newspaper homepage list
-        if: steps.gate.outputs.go == 'true'
-        run: python3 homepages.py
+        run: python3 src/build_site.py
       - name: Fetch latest headlines
         if: steps.gate.outputs.go == 'true'
         env:
-          WINDOW_HOURS: ${{ github.event.inputs.hours || '24' }}
-          ARTICLE_COUNT: ${{ github.event.inputs.count || '300' }}
-        run: python3 fetch_news.py
+          WINDOW_HOURS: ${{ github.event.inputs.hours }}
+          ARTICLE_COUNT: ${{ github.event.inputs.count }}
+        run: python3 src/fetch_news.py
       - name: Image check (diagnostic only)
         if: steps.gate.outputs.go == 'true' && github.event_name != 'schedule'
         continue-on-error: true
-        run: python3 check_images.py
+        run: python3 src/check_images.py
       - uses: actions/configure-pages@v5
         if: steps.gate.outputs.go == 'true'
       - uses: actions/upload-pages-artifact@v3

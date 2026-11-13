@@ -40,7 +40,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-        run: python3 scheduler_loop.py
+        run: python3 src/scheduler_loop.py
       - name: Start the next round
         if: always() && steps.guard.outputs.go == 'true'
         env:

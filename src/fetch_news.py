@@ -19,16 +19,19 @@ from pathlib import Path
 from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 
+import config
 import geo
+import settings
 
-ROOT = Path(__file__).parent
-FEEDS_FILE = ROOT / "feeds.json"
+ROOT = Path(__file__).resolve().parent.parent
 OUT_FILE = ROOT / "site" / "news.json"
 
-ALLOWED_WINDOWS = (6, 12, 24, 72, 168, 720, 2160)   # hours: 6h, 12h, 24h, 3d, 7d, 30d, 90d
+# The allowed time ranges and story counts come from external_config/settings.json (configure() loads them);
+# the values below are only what is used if configure() was never called.
+ALLOWED_WINDOWS = (6, 12, 24, 72, 168, 720, 2160)
 DEFAULT_WINDOW = 24
 WINDOW_HOURS = DEFAULT_WINDOW        # set in main() from the WINDOW_HOURS environment variable
-ALLOWED_COUNTS = (200, 300, 400, 500, 1000)   # stories kept per section, chosen on the page's Refresh control
+ALLOWED_COUNTS = (200, 300, 400, 500, 1000)   # stories kept per section
 DEFAULT_COUNT = 300
 ARTICLE_COUNT = DEFAULT_COUNT        # set in main() from the ARTICLE_COUNT environment variable
 OG_BUDGET_SECONDS = 150              # time allowed for fetching missing article images
@@ -37,70 +40,20 @@ TIMEOUT = 30
 USER_AGENT = "NewsHubBot/1.0 (headline aggregator; links back to originals)"
 SNIPPET_LEN = 160
 
-# Sections shown on the site. "bengali", "india", "world", "sports", "entertainment", "lifestyle", "defence" come from
-# the feed's own category; "geopolitics" and "defence" are also derived from keywords.
-GEO_WORDS = ["sanction", "sanctions", "diplomat", "diplomats", "diplomacy", "diplomatic", "summit", "treaty",
-             "ceasefire", "cease-fire", "nato", "united nations", "security council", "foreign minister",
-             "foreign policy", "border", "tensions", "annex", "annexation", "geopolitical", "geopolitics",
-             "alliance", "embassy", "ambassador", "trade war", "tariff", "tariffs", "bilateral", "g20", "g7",
-             "brics", "war", "invasion", "peace talks", "peace deal", "coup", "sovereignty", "occupation",
-             "refugees", "airspace", "strait", "embargo", "talks"]
-DEF_WORDS = ["military", "army", "navy", "naval", "air force", "defence", "defense", "missile", "missiles",
-             "drone", "drones", "warship", "fighter jet", "troops", "soldier", "soldiers", "weapon", "weapons",
-             "submarine", "pentagon", "armed forces", "airstrike", "airstrikes", "artillery", "warplane",
-             "warplanes", "ballistic", "combat", "battalion", "paramilitary", "defence ministry", "bomber"]
-SPORT_WORDS = ["cricket", "football", "tennis", "olympic", "olympics", "fifa", "premier league", "tournament",
-               "champions league", "world cup", "formula 1", "grand prix", "athlete", "nba", "nfl", "mlb",
-               "rugby", "golf", "ipl", "medal", "t20", "test match", "wimbledon", "striker", "goalkeeper"]
-BIZ_WORDS = ["stock", "stocks", "sensex", "nifty", "shares", "stock market", "economy", "economic", "inflation",
-             "gdp", "earnings", "revenue", "ipo", "merger", "acquisition", "bank", "banks", "investors", "profit",
-             "rupee", "oil prices", "central bank", "interest rate", "interest rates", "recession", "startup", "startups", "trade deficit", "currency"]
-TECH_WORDS = ["ai", "artificial intelligence", "chatgpt", "openai", "smartphone", "iphone", "android", "software",
-              "semiconductor", "cyber", "cybersecurity", "robot", "robots", "google", "microsoft",
-              "apple", "meta", "nvidia", "internet", "5g", "quantum", "data centre", "data center", "gadget",
-              "technology", "algorithm", "startup", "hackers", "electric vehicle", "ev"]
-SCI_WORDS = ["scientists", "researchers", "study finds", "nasa", "isro", "planet", "telescope",
-             "astronomy", "astronomers", "physics", "genome", "vaccine", "clinical trial", "fossil", "laboratory",
-             "satellite", "rocket", "mars", "asteroid", "dna", "biology", "chemistry"]
-NATURE_WORDS = ["wildlife", "climate", "biodiversity", "forest", "forests", "tiger", "tigers", "elephant", "elephants",
-                "conservation", "endangered", "emissions", "global warming", "pollution", "ocean", "coral", "species",
-                "rainforest", "wetland", "glacier", "flood", "floods", "cyclone", "drought", "heatwave", "wildfire",
-                "environment", "ecosystem", "birds", "marine", "carbon", "renewable"]
-GEOG_WORDS = ["earthquake", "volcano", "tsunami", "island", "islands", "archipelago", "mountain", "mountains",
-              "himalaya", "himalayas", "river", "lake", "desert", "glacier", "coastline", "cartography", "geography",
-              "tectonic", "landslide", "cyclone", "monsoon", "terrain", "plateau", "canyon", "peninsula", "continent", "geological", "seismic"]
-HIST_WORDS = ["ancient", "archaeology", "archaeological", "archaeologists", "medieval", "empire", "dynasty",
-              "heritage site", "excavation", "artefact", "artefacts", "artifact", "artifacts", "ruins",
-              "centuries-old", "civilisation", "civilization", "historian", "historians", "mummy",
-              "monarchy", "unesco", "manuscript"]
-LIFE_WORDS = ["lifestyle", "recipe", "recipes", "wellness", "fitness", "fashion", "skincare", "diet", "travel",
-              "holiday", "destination", "wedding", "parenting", "yoga", "nutrition", "workout", "home decor",
-              "interior", "gardening", "mental health", "sleep", "cooking", "restaurant", "beauty", "relationship"]
-ENT_WORDS = ["film", "movie", "bollywood", "hollywood", "actor", "actress", "singer", "album", "box office",
-             "netflix", "oscar", "oscars", "grammy", "concert", "celebrity", "tv series", "festival"]
+# The sections and their keyword rules come from external_config/sections.json (see config.py); main() loads them.
+SECTIONS = []          # validated section definitions, in tab order
+PLACE = {}             # section key -> "newspaper" | {"country", "continent"} for sections whose stories get a fixed place
 
 
-def word_re(words):
-    return re.compile(r"\b(?:" + "|".join(re.escape(w) for w in words) + r")\b", re.I)
+def configure(sections, st=None):
+    """Install the section rules and the refresh choices (settings.json; loaded from the config folder if not given)."""
+    global SECTIONS, PLACE, ALLOWED_WINDOWS, DEFAULT_WINDOW, ALLOWED_COUNTS, DEFAULT_COUNT
+    st = st or settings.load_settings()
+    ALLOWED_WINDOWS, DEFAULT_WINDOW = st["hours"], st["default_hours"]
+    ALLOWED_COUNTS, DEFAULT_COUNT = st["counts"], st["default_count"]
+    SECTIONS = sections
+    PLACE = {s["key"]: s["place"] for s in sections if s["place"]}
 
-
-GEO_RE, DEF_RE, SPORT_RE, ENT_RE, LIFE_RE = map(word_re, (GEO_WORDS, DEF_WORDS, SPORT_WORDS, ENT_WORDS, LIFE_WORDS))
-
-ENT_STRICT = ["bollywood", "hollywood", "tollywood", "kollywood", "mollywood", "box office", "actor", "actress", "film", "films",
-              "movie", "movies", "web series", "bigg boss", "oscar", "oscars", "grammy", "grammys", "filmfare", "netflix", "prime video",
-              "singer", "album", "concert", "superstar", "director", "blockbuster", "cannes", "emmy", "emmys", "k-pop", "bts", "ott"]
-
-# Extra sections derived from keywords: section -> (regex, feed categories it is derived from).
-# Feeds flagged "general" are checked for every section.
-DERIVED = {
-    "business": (word_re(BIZ_WORDS), {"world", "india"}),
-    "technology": (word_re(TECH_WORDS), {"world", "india", "business"}),
-    "science": (word_re(SCI_WORDS), {"world", "india", "technology"}),
-    "nature": (word_re(NATURE_WORDS), {"world", "india", "science", "lifestyle"}),
-    "geography": (word_re(GEOG_WORDS), {"world", "india", "science", "nature"}),
-    "history": (word_re(HIST_WORDS), {"world", "india", "entertainment", "lifestyle"}),
-    "entertainment": (word_re(ENT_STRICT), {"world", "india", "lifestyle"}),
-}
 
 WIDTH_QS_RE = re.compile(r"[?&](?:w|width)=(\d{2,4})\b", re.I)
 BBC_W_RE = re.compile(r"/(?:ace/standard|ace/ws|news)/(\d{3,4})/", re.I)
@@ -129,9 +82,10 @@ def article_count():
     return n if n in ALLOWED_COUNTS else DEFAULT_COUNT
 
 
-def per_feed_limit(hours, count=DEFAULT_COUNT):
+def per_feed_limit(hours, count=None):
     """Longer windows may take more stories per feed (feeds only list what they still hold); asking for more
     stories per section raises the per-feed allowance in proportion."""
+    count = count or DEFAULT_COUNT
     base = 20 if hours <= 24 else 30 if hours <= 72 else 50 if hours <= 168 else 80 if hours <= 720 else 100
     return int(base * max(1.0, count / DEFAULT_COUNT) + 0.999)
 
@@ -297,8 +251,9 @@ def enrich_images(items):
     return sum(1 for i in todo if i["image"]), len(todo)
 
 
-def trim_sections(items, keep=DEFAULT_COUNT):
+def trim_sections(items, keep=None):
     """Keep the newest (primary-boosted) `keep` stories of each section so news.json stays a sane size."""
+    keep = keep or DEFAULT_COUNT
     boost = timedelta(hours=6)
     score = lambda i: datetime.fromisoformat(i["published"]) + (boost if i["primary"] else timedelta())
     by_sec, keepers = {}, set()
@@ -332,32 +287,27 @@ def parse_feed(xml_bytes):
 
 
 def classify(feed, title, summary):
-    """Return the list of sections a story belongs to."""
+    """Return the list of sections a story belongs to: its newspaper's own section for that feed, plus every section
+    whose keyword rule matches (see config.py for the rule fields)."""
     cat = feed["category"]
     text = title + " " + summary
     sections = [cat]
-    if cat in ("world", "india", "defence") and GEO_RE.search(text):
-        sections.append("geopolitics")
-    if cat in ("world", "india") and DEF_RE.search(text):
-        sections.append("defence")
-    if feed.get("general"):
-        if SPORT_RE.search(text):
-            sections.append("sports")
-        if ENT_RE.search(text):
-            sections.append("entertainment")
-        if LIFE_RE.search(text):
-            sections.append("lifestyle")
-    for name, (rx, cats) in DERIVED.items():
-        if (cat in cats or feed.get("general")) and rx.search(text):
-            sections.append(name)
-    return sorted(set(sections), key=sections.index)
+    for sec in SECTIONS:
+        if sec["key"] == cat or not sec["rx"]:
+            continue
+        if cat in sec["also_from"] and sec["rx"].search(text):
+            sections.append(sec["key"])
+        elif feed.get("general") and sec["general"] and sec["rx_general"].search(text):
+            sections.append(sec["key"])
+    return sections
 
 
 def place(feed, title, summary):
-    """Country and continent a story is about. Indian-news stories are always India."""
-    if feed["category"] == "india":
-        return "India", "Asia"
-    if feed["category"] == "bengali":
+    """Country and continent a story is about. A section can pin it (Indian News = India) or take it from the newspaper."""
+    rule = PLACE.get(feed["category"])
+    if isinstance(rule, dict):
+        return rule["country"], rule["continent"]
+    if rule == "newspaper":
         return feed.get("country") or "Other", feed.get("continent") or "Other"
     country, continent = geo.find_country(title, summary)
     if country:
@@ -404,10 +354,15 @@ def fetch_one(feed):
 
 def main():
     global WINDOW_HOURS, ARTICLE_COUNT
+    try:
+        sections, feeds = config.load_all()
+        configure(sections)
+    except config.ConfigError as e:
+        sys.exit(f"Configuration error: {e}")
     WINDOW_HOURS = window_hours()
     ARTICLE_COUNT = article_count()
     print(f"Time window: last {WINDOW_HOURS} hours; keeping up to {ARTICLE_COUNT} stories per section")
-    feeds = json.loads(FEEDS_FILE.read_text())
+    print(f"{len(sections)} sections, {len(feeds)} feeds from {config.config_dir()}")
     # Google News throttles bursts (HTTP 503), so its feeds are fetched one at a time, with a pause and one retry.
     google = [f for f in feeds if "news.google.com" in f["url"]]
     others = [f for f in feeds if "news.google.com" not in f["url"]]
