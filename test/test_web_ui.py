@@ -229,6 +229,20 @@ class WebUITest(BrowserBase):
         self.assertEqual(self.page.inner_text("#selnote"), "1 selected")
         self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "Europe")
 
+    def test_headline_is_entirely_black(self):
+        self.open()
+        colours = self.page.evaluate("[document.querySelector('h1'), document.querySelector('h1 span')].map(e => getComputedStyle(e).color)")
+        self.assertEqual(colours, ["rgb(0, 0, 0)", "rgb(0, 0, 0)"])
+        self.assertEqual(self.page.inner_text("h1").replace("\n", " "), "RC News Desk")
+
+    def test_headline_stays_readable_in_dark_mode(self):
+        page = self.ctx.new_page(); page.on("pageerror", lambda e: self.errors.append(str(e)))
+        page.emulate_media(color_scheme="dark")
+        self.open(page=page)
+        colours = page.evaluate("[document.querySelector('h1'), document.querySelector('h1 span')].map(e => getComputedStyle(e).color)")
+        self.assertEqual(colours[0], colours[1])
+        self.assertNotEqual(colours[0], "rgb(0, 0, 0)")                  # black on the dark background would vanish
+
     # ---------------------------------------------------------------- Newspaper Homepage moved to its own page
     def test_header_links_to_the_newspaper_list_page(self):
         self.open()
