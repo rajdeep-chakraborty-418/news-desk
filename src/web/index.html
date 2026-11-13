@@ -21,7 +21,6 @@
   h1 span { color: inherit; }
   .hright { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
   .updated { color: var(--muted); font: 13px/1.5 system-ui, sans-serif; text-align: right; }
-  .updated b { color: var(--ink); font-weight: 600; }
   button.refresh { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; border-radius: 10px; padding: 7px 14px; text-align: left; min-width: 168px; }
   .rangebox { display: flex; flex-direction: column; gap: 1px; font-family: system-ui, sans-serif; }
   .rangebox span { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
@@ -195,14 +194,14 @@ function inText(ms) {
 function paintSchedule() {
   const last = $("lastrefresh"), next = $("nextrefresh");
   const when = state.generated ? new Date(state.generated) : null;
-  if (!when || isNaN(when)) { last.textContent = "Last successful refresh: unknown"; next.textContent = ""; return; }
-  const range = (SETTINGS && SETTINGS.time_ranges.find((r) => r.hours === state.rangeHours) || {}).label;
-  last.replaceChildren(document.createTextNode("Last successful refresh: "), Object.assign(document.createElement("b"), { textContent: fmtTime(when) }),
-    document.createTextNode(" (" + ago(when.toISOString()) + (range ? " · " + range.toLowerCase() : "") + ")"));
+  if (!when || isNaN(when)) { last.textContent = "Last Refresh: unknown"; next.textContent = ""; return; }
+  // green tick unless the most recent refresh run is known to have failed (then a red cross)
+  const failed = typeof rf !== "undefined" && rf.last && rf.last.conclusion && rf.last.conclusion !== "success";
+  const mark = Object.assign(document.createElement("span"), { textContent: failed ? "✗" : "✓", title: failed ? "Last refresh failed" : "Last refresh succeeded" });
+  mark.style.color = failed ? "#c62828" : "#2e9d4f";
+  last.replaceChildren(document.createTextNode("Last Refresh "), mark, document.createTextNode(" " + fmtTime(when)));
   if (!SETTINGS || !SETTINGS.interval_minutes) { next.textContent = ""; return; }
-  const due = new Date(when.getTime() + SETTINGS.interval_minutes * 60000), left = due - Date.now();
-  next.replaceChildren(document.createTextNode("Next scheduled refresh: "), Object.assign(document.createElement("b"), { textContent: "about " + fmtTime(due) }),
-    document.createTextNode(" (" + (left <= 0 ? "due now" : inText(left)) + ")"));
+  next.textContent = "Next Refresh " + fmtTime(new Date(when.getTime() + SETTINGS.interval_minutes * 60000));
 }
 
 function ago(iso) {
@@ -443,6 +442,7 @@ function paintButton() {
   const ok = rf.last.conclusion === "success";
   btn.classList.add(ok ? "ok" : "fail");
   st.textContent = `Last: ${ok ? "✓ Success" : "✗ Failed"} · ${ago(rf.last.updated_at)}`;
+  paintSchedule();
 }
 function showMsg(text) {
   const m = $("refmsg"); m.textContent = text || ""; m.hidden = !text;
