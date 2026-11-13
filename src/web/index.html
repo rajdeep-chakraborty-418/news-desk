@@ -60,15 +60,13 @@
   .sidebody { padding: 0 12px 12px; display: grid; gap: 8px; }
   .sidebody input[type=search] { margin: 0; min-width: 0; width: 100%; }
   .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .titlerow { display: flex; align-items: baseline; gap: 6px 16px; flex-wrap: wrap; }
+  .navlinks { display: inline-flex; align-items: baseline; gap: 4px; font: 600 14px/1 system-ui, sans-serif; }
+  .navlink { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+  .navnew { color: var(--muted); text-decoration: none; padding: 0 4px; }
+  .navlink:hover, .navnew:hover { color: var(--ink); }
   .reset { padding: 2px 10px; font-size: 11px; border-radius: 999px; }
   .clear { padding: 5px 12px; font-size: 13px; justify-self: start; }
-  .paperbox { border-top: 1px solid var(--line); padding: 12px; display: grid; gap: 8px; }
-  .paperbox label { font-weight: 700; font-size: 14px; }
-  .paperbox input[type=search] { margin: 0; min-width: 0; width: 100%; }
-  .paperbox select { width: 100%; min-width: 0; padding: 7px 8px; font-size: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: inherit; }
-  .paperlink { display: block; padding: 8px 10px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); font-size: 14px; font-weight: 600; text-decoration: none; color: inherit; overflow-wrap: anywhere; }
-  .paperlink:hover { text-decoration: underline; }
-  .paperlink small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
   #clist { max-height: 40vh; overflow-y: auto; display: grid; gap: 2px; padding-right: 4px; }
   #clist label { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
   #clist label:hover { background: var(--bg); }
@@ -110,7 +108,11 @@
 <div class="wrap">
   <header>
     <div class="brand">
-      <h1>RC News <span>Desk</span></h1>
+      <div class="titlerow">
+        <h1>RC News <span>Desk</span></h1>
+        <span class="navlinks"><a class="navlink" id="paperlist" href="newspaper-list/" title="Browse newspapers and open their homepages">Newspaper Homepage</a>
+          <a class="navnew" href="newspaper-list/" target="_blank" rel="noopener" title="Open Newspaper Homepage in a new tab" aria-label="Open Newspaper Homepage in a new tab">↗</a></span>
+      </div>
       <button class="reset" id="reset" type="button" title="Clear every selection and filter">Reset</button>
     </div>
     <div class="hright">
@@ -160,12 +162,6 @@
           <div id="clist" role="group" aria-label="Filter by country"></div>
         </div>
       </details>
-      <div class="paperbox">
-        <label for="paper">Newspaper Homepage</label>
-        <input type="search" id="pq" placeholder="Find a newspaper…" aria-label="Find a newspaper" autocomplete="off">
-        <select id="paper" aria-label="Choose a newspaper to open its homepage"><option value="">Choose a newspaper…</option></select>
-        <a id="paperlink" class="paperlink" target="_blank" rel="noopener noreferrer" hidden></a>
-      </div>
     </aside>
   </div>
   <noscript><p class="empty">Please enable JavaScript to see the headlines.</p></noscript>
@@ -350,7 +346,6 @@ function build() {
     $("fPrimary").checked = false; $("fSecondary").checked = false;
     tabs.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
     chips.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
-    $("pq").value = ""; $("pq").dispatchEvent(new Event("input"));          // clears the newspaper search, choice and link
     if (!$("range").disabled) {
       $("range").value = SETTINGS.default_hours; $("count").value = SETTINGS.default_count;
       try { localStorage.removeItem(RANGE_KEY); localStorage.removeItem(COUNT_KEY); } catch (e) {}
@@ -359,45 +354,6 @@ function build() {
   };
   $("more").onclick = () => { state.shown = Math.min(state.shown + STEP, MAX); render(); };
   if (window.innerWidth <= 900) $("sidebox").open = false;   // start collapsed on phones
-}
-
-// Newspapers dropdown: pick one paper (single select) and its homepage link appears below it.
-async function loadPapers() {
-  const sel = $("paper"), link = $("paperlink");
-  let papers = [];
-  try { papers = await (await fetch("papers.json?t=" + Date.now())).json(); } catch (e) { sel.disabled = true; sel.options[0].textContent = "Newspaper list unavailable"; return; }
-  const show = (p) => {
-    if (!p || !/^https?:\/\//.test(p.url)) { link.hidden = true; return; }
-    link.href = p.url;
-    link.replaceChildren(document.createTextNode("Open " + p.name + " ↗"));
-    const host = document.createElement("small"); host.textContent = p.country + " · " + p.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
-    link.appendChild(host); link.hidden = false;
-  };
-  // (re)build the options, keeping only papers whose name matches the search box
-  const fill = (q) => {
-    const needle = q.trim().toLowerCase(); let n = 0;
-    sel.replaceChildren(sel.options[0] || new Option("Choose a newspaper…", ""));
-    const match = papers.filter((p) => !needle || p.name.toLowerCase().includes(needle));
-    const countries = [...new Set(match.map((p) => p.country))].sort((x, y) =>
-      (x === "International") - (y === "International") || x.localeCompare(y));   // A-Z, with "International" (multi-country papers) last
-    for (const c of countries) {
-      const g = document.createElement("optgroup"); g.label = c;
-      for (const p of match.filter((x) => x.country === c)) { g.appendChild(new Option(p.name, p.url)); n++; }
-      sel.appendChild(g);
-    }
-    if (needle && !n) sel.appendChild(Object.assign(new Option("No newspaper found", ""), { disabled: true }));
-    sel.size = needle ? Math.min(7, Math.max(2, n + 1)) : 1;   // while searching, show the matches as an open list
-    return n;
-  };
-  const pq = $("pq");
-  fill("");
-  pq.addEventListener("input", () => { fill(pq.value); sel.value = ""; show(null); });
-  pq.addEventListener("keydown", (e) => {            // Enter picks the first match
-    if (e.key !== "Enter") return;
-    const first = [...sel.options].find((o) => o.value);
-    if (first) { sel.value = first.value; show(papers.find((x) => x.url === first.value)); sel.size = 1; }
-  });
-  sel.addEventListener("change", () => { show(papers.find((x) => x.url === sel.value)); sel.size = 1; });
 }
 
 async function load() {
@@ -562,7 +518,7 @@ async function loadSections() {
   document.head.appendChild(st);
 }
 async function loadSettings() { SETTINGS = await (await fetch("settings.json?t=" + Date.now())).json(); }
-Promise.all([loadSections(), loadSettings()]).then(() => { initRefreshControls(); build(); load(); loadPapers(); }).catch(() => {
+Promise.all([loadSections(), loadSettings()]).then(() => { initRefreshControls(); build(); load(); }).catch(() => {
   document.body.insertAdjacentHTML("afterbegin", '<p style="padding:20px">Could not load the page configuration (sections.json / settings.json).</p>');
 });
 setInterval(load, 10 * 60 * 1000);   // re-check for new data every 10 minutes

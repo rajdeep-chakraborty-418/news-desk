@@ -31,16 +31,19 @@ def make_news(max_articles=120):
         country, continent = COUNTRIES[n % 5]
         items.append({"title": f"World story {n}", "link": f"https://news.example/w{n}", "summary": "", "image": "",
                       "published": (NOW - timedelta(minutes=n)).isoformat(), "source": "Alpha Times" if n % 4 == 0 else "Beta Post",
-                      "primary": n % 4 == 0, "category": "world", "sections": ["world"] + (["defence"] if n % 10 == 0 else []),
+                      "newspaper": "Alpha Times" if n % 4 == 0 else "Beta Post", "primary": n % 4 == 0, "category": "world", "sections": ["world"] + (["defence"] if n % 10 == 0 else []),
                       "continent": continent, "country": country, "state": None})
     for n in range(5):
         items.append({"title": f"Home story {n}", "link": f"https://news.example/h{n}", "summary": "", "image": "",
-                      "published": (NOW - timedelta(minutes=n)).isoformat(), "source": "Gazette Home", "primary": True,
+                      "published": (NOW - timedelta(minutes=n)).isoformat(), "source": "Gazette Home", "newspaper": "Gazette Home", "primary": True,
                       "category": "home", "sections": ["home"], "continent": "Asia", "country": "Bangladesh", "state": "Dhaka"})
     for n in range(3):
         items.append({"title": f"Sports story {n}", "link": f"https://news.example/s{n}", "summary": "", "image": "",
-                      "published": (NOW - timedelta(minutes=n)).isoformat(), "source": "Gamma Wire", "primary": False,
+                      "published": (NOW - timedelta(minutes=n)).isoformat(), "source": "Gamma Wire", "newspaper": "Gamma Wire", "primary": False,
                       "category": "sports", "sections": ["sports"], "continent": "Europe", "country": "United Kingdom", "state": None})
+    for it in items:                                    # older data without the field: matched on the source name instead
+        if it["title"].startswith("World story") and int(it["title"].split()[-1]) % 4 == 1:
+            del it["newspaper"]
     return {"generated_at": NOW.isoformat(), "range_hours": 24, "max_articles": max_articles, "items": items, "feeds": []}
 
 
@@ -54,8 +57,8 @@ def run(id_, status, conclusion=None):
     return {"id": id_, "status": status, "conclusion": conclusion, "event": "workflow_dispatch", "created_at": t, "updated_at": t}
 
 
-@unittest.skipUnless(sync_playwright and CHROME, "Playwright with Chrome is not available")
-class WebUITest(unittest.TestCase):
+class BrowserBase(unittest.TestCase):
+    """A site built from the sample configuration, served locally, opened in Chrome with the network mocked."""
     @classmethod
     def setUpClass(cls):
         cls.site = support.SESSION_DIR / "ui_site"
@@ -65,7 +68,8 @@ class WebUITest(unittest.TestCase):
         handler = functools.partial(QuietHandler, directory=str(cls.site))
         cls.server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
         threading.Thread(target=cls.server.serve_forever, daemon=True).start()
-        cls.url = f"http://127.0.0.1:{cls.server.server_port}/index.html"
+        cls.base = f"http://127.0.0.1:{cls.server.server_port}/"
+        cls.url = cls.base + "index.html"
         cls.pw = sync_playwright().start()
         cls.browser = cls.pw.chromium.launch(executable_path=CHROME, args=["--no-sandbox"])
 
@@ -95,11 +99,17 @@ class WebUITest(unittest.TestCase):
         self.page.route("https://ntfy.sh/**", relay)
         self.page.route("https://api.github.com/**", gh)
 
+    def tearDown(self):
+        self.assertEqual(self.errors, [], "the page raised JavaScript errors")
+
+
+@unittest.skipUnless(sync_playwright and CHROME, "Playwright with Chrome is not available")
+class WebUITest(BrowserBase):
     # ---------------------------------------------------------------- helpers
     def open(self, page=None):
         page = page or self.page
         page.goto(self.url)
-        page.wait_for_function("document.querySelectorAll('#paper option').length > 3 && document.querySelectorAll('#grid > *').length > 0")
+        page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
         return page
 
     def tiles(self):
@@ -110,9 +120,6 @@ class WebUITest(unittest.TestCase):
 
     def tab(self, label):
         self.page.click(f"#tabs button:text-is('{label}')")
-
-    def tearDown(self):
-        self.assertEqual(self.errors, [], "the page raised JavaScript errors")
 
     # ---------------------------------------------------------------- tabs and colours come from sections.json
     def test_tabs_follow_sections_json_in_order(self):
@@ -222,39 +229,39 @@ class WebUITest(unittest.TestCase):
         self.assertEqual(self.page.inner_text("#selnote"), "1 selected")
         self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "Europe")
 
-    # ---------------------------------------------------------------- newspaper homepage dropdown
-    def test_newspaper_dropdown_lists_papers_by_country(self):
+    # ---------------------------------------------------------------- Newspaper Homepage moved to its own page
+    def test_header_links_to_the_newspaper_list_page(self):
         self.open()
-        groups = self.page.evaluate("[...document.querySelectorAll('#paper optgroup')].map(g => g.label)")
-        self.assertEqual(groups, ["Bangladesh", "France", "India", "International"])
-        self.assertEqual(self.page.locator("label[for=paper]").inner_text(), "Newspaper Homepage")
-        names = self.page.evaluate("[...document.querySelectorAll('#paper option')].map(o => o.textContent)")
-        self.assertNotIn("Hidden Search", names)
+        link, new = self.page.locator("a.navlink"), self.page.locator("a.navnew")
+        self.assertEqual(link.inner_text(), "Newspaper Homepage")
+        self.assertEqual(link.get_attribute("href"), "newspaper-list/")
+        self.assertIsNone(link.get_attribute("target"))                                   # same tab by default
+        self.assertEqual((new.get_attribute("href"), new.get_attribute("target")), ("newspaper-list/", "_blank"))
+        self.assertIn("noopener", new.get_attribute("rel"))
+        title, box = self.page.locator("h1").bounding_box(), link.bounding_box()
+        self.assertLess(abs((box["y"] + box["height"] / 2) - (title["y"] + title["height"] / 2)), 30)   # beside the headline
+        self.assertGreater(box["x"], title["x"] + title["width"] - 2)
 
-    def test_choosing_a_newspaper_shows_its_homepage_link(self):
+    def test_link_opens_the_page_in_the_same_tab(self):
         self.open()
-        self.assertTrue(self.page.is_hidden("#paperlink"))
-        self.page.select_option("#paper", label="Beta Post")
-        link = self.page.locator("#paperlink")
-        self.assertEqual(link.get_attribute("href"), "https://betapost.example/")
-        self.assertEqual(link.get_attribute("target"), "_blank")
-        self.assertIn("noopener", link.get_attribute("rel"))
-        self.assertIn("Open Beta Post", link.inner_text())
-        self.assertIn("France", link.inner_text())
-        self.page.select_option("#paper", index=0)
-        self.assertTrue(self.page.is_hidden("#paperlink"))
+        self.page.click("a.navlink")
+        self.page.wait_for_url("**/newspaper-list/")
+        self.assertEqual(self.page.locator("h1").inner_text().replace("\n", " "), "Newspaper Homepage")
 
-    def test_newspaper_search(self):
+    def test_arrow_opens_the_page_in_a_new_tab(self):
         self.open()
-        self.page.fill("#pq", "alp")
-        self.assertEqual(self.page.evaluate("[...document.querySelectorAll('#paper option')].filter(o => o.value).map(o => o.textContent)"), ["Alpha Times"])
-        self.page.press("#pq", "Enter")                                       # Enter picks the first match
-        self.assertEqual(self.page.locator("#paperlink").get_attribute("href"), "https://www.alphatimes.example/")
-        self.page.fill("#pq", "zzz")
-        self.assertEqual(self.page.evaluate("[...document.querySelectorAll('#paper option')].map(o => o.textContent)")[-1], "No newspaper found")
-        self.assertTrue(self.page.is_hidden("#paperlink"))
-        self.page.fill("#pq", "")
-        self.assertEqual(self.page.evaluate("document.querySelectorAll('#paper option').length"), 5)
+        with self.ctx.expect_page() as popup:
+            self.page.click("a.navnew")
+        new = popup.value
+        new.wait_for_load_state()
+        self.assertTrue(new.url.endswith("/newspaper-list/"))
+        self.assertTrue(self.page.url.endswith("/index.html"))                            # the original tab stays put
+
+    def test_main_page_no_longer_has_the_newspaper_dropdown(self):
+        self.open()
+        for gone in ("#paper", "#pq", "#paperlink", ".paperbox"):
+            self.assertEqual(self.page.locator(gone).count(), 0, gone)
+        self.assertEqual(self.page.locator("label[for=paper]").count(), 0)
 
     # ---------------------------------------------------------------- reset
     def test_reset_clears_every_selection(self):
@@ -263,7 +270,6 @@ class WebUITest(unittest.TestCase):
         self.tab("World Desk"); self.page.click("#chips button:text-is('Europe')")
         self.page.fill("#q", "story 1"); self.page.check("#fPrimary"); self.page.fill("#cq", "fr")
         self.page.locator("#clist label", has_text="France").locator("input").check()
-        self.page.fill("#pq", "beta"); self.page.press("#pq", "Enter")
         self.page.select_option("#range", "72"); self.page.select_option("#count", "250")
         self.assertNotEqual(self.snapshot(), start)
         self.page.click("#reset")
@@ -273,7 +279,7 @@ class WebUITest(unittest.TestCase):
         p = self.page
         return dict(tab=p.locator("#tabs button[aria-pressed=true]").inner_text(), chip=p.locator("#chips button[aria-pressed=true]").inner_text(),
                     q=p.input_value("#q"), cq=p.input_value("#cq"), pri=p.is_checked("#fPrimary"), sec=p.is_checked("#fSecondary"),
-                    sel=p.inner_text("#selnote"), pq=p.input_value("#pq"), paper=p.input_value("#paper"), link=p.is_hidden("#paperlink"),
+                    sel=p.inner_text("#selnote"),
                     range=p.input_value("#range"), count=p.input_value("#count"), tiles=self.tiles())
 
     def test_reset_button_sits_under_the_logo(self):
@@ -380,6 +386,154 @@ class WebUITest(unittest.TestCase):
     def test_header_shows_when_the_data_was_generated(self):
         self.open()
         self.assertIn("Updated", self.page.inner_text("#updated"))
+
+
+@unittest.skipUnless(sync_playwright and CHROME, "Playwright with Chrome is not available")
+class NewspaperPageTest(BrowserBase):
+    """newspaper-list/: continent -> country -> newspaper (one at a time) -> a front-page tile with 4 recent headlines."""
+
+    def open(self, suffix="", page=None):
+        page = page or self.page
+        page.goto(self.base + "newspaper-list/" + suffix)
+        page.wait_for_function("document.querySelectorAll('#papers label').length > 0")
+        return page
+
+    def names(self):
+        return [t.split("\n")[0] for t in self.page.locator("#papers label").all_inner_texts()]
+
+    def countries(self):
+        return [t.split("\n")[0] for t in self.page.locator("#countries label").all_inner_texts()]
+
+    def pick(self, name):
+        self.page.locator("#papers label", has_text=name).locator("input").check()
+
+    def test_layout_and_initial_state(self):
+        self.open()
+        self.assertEqual(self.page.title(), "Newspaper Homepage — RC News Desk")
+        self.assertEqual(self.page.locator("#continents button").all_inner_texts(), ["All (4)", "Asia (2)", "Europe (1)", "Other (1)"])
+        self.assertEqual(self.countries(), ["All countries", "Bangladesh", "France", "India", "International"])
+        self.assertEqual(self.names(), ["Alpha Times", "Beta Post", "Gamma Wire", "Gazette Home"])
+        self.assertIn("Choose a newspaper", self.page.inner_text("#stage"))
+        self.assertEqual(self.page.locator("a.front").count(), 0)
+
+    def test_back_link_returns_to_the_news_page(self):
+        self.open()
+        self.page.click("a.back")
+        self.page.wait_for_url("**/")
+        self.assertEqual(self.page.locator("h1").first.inner_text().replace("\n", " "), "RC News Desk")
+
+    def test_continent_then_country_filters(self):
+        self.open()
+        self.page.click("#continents button:text-is('Asia (2)')")
+        self.assertEqual(self.countries(), ["All countries", "Bangladesh", "India"])
+        self.assertEqual(self.names(), ["Alpha Times", "Gazette Home"])
+        self.page.locator("#countries label", has_text="India").locator("input").check()
+        self.assertEqual(self.names(), ["Alpha Times"])
+        self.page.click("#continents button:text-is('Europe (1)')")                      # changing continent resets the country
+        self.assertEqual(self.names(), ["Beta Post"])
+        self.page.click("#continents button:text-is('All (4)')")
+        self.assertEqual(len(self.names()), 4)
+
+    def test_search_matches_newspaper_or_country_and_narrows_both_lists(self):
+        self.open()
+        self.page.fill("#q", "fra")
+        self.assertEqual(self.names(), ["Beta Post"])
+        self.assertEqual(self.countries(), ["All countries", "France"])
+        self.page.fill("#q", "gamma")
+        self.assertEqual(self.names(), ["Gamma Wire"])
+        self.page.fill("#q", "zzz")
+        self.assertEqual(self.page.inner_text("#papers"), "No newspapers match.")
+        self.page.fill("#q", "")
+        self.assertEqual(len(self.names()), 4)
+
+    def test_enter_in_the_search_box_picks_the_first_match(self):
+        self.open()
+        self.page.fill("#q", "gaz"); self.page.press("#q", "Enter")
+        self.assertIn("Gazette Home", self.page.inner_text(".mname"))
+
+    def test_only_one_newspaper_can_be_selected_at_a_time(self):
+        self.open()
+        self.pick("Alpha Times"); self.pick("Beta Post")
+        self.assertEqual(self.page.locator("#papers input:checked").count(), 1)
+        self.assertEqual(self.page.locator("a.front").count(), 1)
+        self.assertEqual(self.page.inner_text(".mname"), "Beta Post")
+
+    def test_front_page_tile_shows_the_four_most_recent_headlines(self):
+        self.open(); self.pick("Alpha Times")
+        tile = self.page.locator("a.front")
+        self.assertEqual(self.page.inner_text(".mname"), "Alpha Times")
+        self.assertIn("INDIA · ASIA", self.page.inner_text(".mmeta").upper())
+        self.assertIn("primary", self.page.inner_text(".mmeta").lower())
+        # Alpha Times has stories 0, 4, 8, 12 ... (newest first); the lead is the newest, three more follow
+        self.assertEqual(self.page.inner_text("#lead h3"), "World story 0")
+        self.assertEqual(self.page.locator(".rest article h4").all_inner_texts(), ["World story 4", "World story 8", "World story 12"])
+        self.assertEqual(self.page.locator("#lead h3, .rest h4").count(), 4)
+        self.assertIn("Open Alpha Times homepage", self.page.inner_text(".cta"))
+        self.assertIn("www.alphatimes.example", self.page.inner_text(".cta"))
+
+    def test_clicking_the_tile_opens_the_newspaper_homepage_in_a_new_tab(self):
+        self.ctx.route("https://www.alphatimes.example/**", lambda r: r.fulfill(status=200, content_type="text/html", body="<title>Alpha</title>"))
+        self.open(); self.pick("Alpha Times")
+        tile = self.page.locator("a.front")
+        self.assertEqual(tile.get_attribute("href"), "https://www.alphatimes.example/")
+        self.assertEqual(tile.get_attribute("target"), "_blank")
+        self.assertIn("noopener", tile.get_attribute("rel"))
+        with self.ctx.expect_page() as popup:
+            tile.click()
+        self.assertEqual(popup.value.url, "https://www.alphatimes.example/")
+        self.assertIn("/newspaper-list/", self.page.url)                                  # this page stays open
+
+    def test_stories_from_older_data_are_matched_on_the_source_name(self):
+        self.open(); self.pick("Beta Post")
+        titles = [self.page.inner_text("#lead h3")] + self.page.locator(".rest h4").all_inner_texts()
+        self.assertEqual(len(titles), 4)
+        self.assertTrue(all(t.startswith("World story") for t in titles))
+        self.assertEqual(titles[0], "World story 1")                                       # newest Beta Post story
+
+    def test_a_paper_with_fewer_than_four_stories(self):
+        self.open(); self.pick("Gamma Wire")
+        self.assertEqual(self.page.inner_text("#lead h3"), "Sports story 0")
+        self.assertEqual(self.page.locator(".rest article").count(), 2)
+
+    def test_a_paper_with_no_recent_stories_still_offers_its_homepage(self):
+        self.page.route("**/news.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps({"items": []})))
+        self.open(); self.pick("Beta Post")
+        self.assertIn("No recent headlines", self.page.inner_text(".none"))
+        self.assertEqual(self.page.locator("a.front").get_attribute("href"), "https://betapost.example/")
+
+    def test_works_when_the_news_file_cannot_be_loaded(self):
+        self.page.route("**/news.json*", lambda r: r.fulfill(status=500, body="x"))
+        self.open(); self.pick("Gazette Home")
+        self.assertIn("No recent headlines", self.page.inner_text(".none"))
+
+    def test_images_fall_back_to_a_letter_when_they_fail(self):
+        self.page.route("https://img.example/**", lambda r: r.abort())
+        self.page.route("**/news.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps(
+            {"items": [{"title": "T", "link": "https://x.example/1", "published": NOW.isoformat(), "source": "Beta Post",
+                        "newspaper": "Beta Post", "image": "https://img.example/a.jpg"}]})))
+        self.open(); self.pick("Beta Post")
+        self.page.wait_for_timeout(300)
+        self.assertEqual(self.page.locator("#lead img").count(), 0)
+        self.assertEqual(self.page.inner_text("#lead .ph"), "B")
+
+    def test_selection_is_kept_in_the_address_and_restored(self):
+        self.open(); self.pick("Beta Post")
+        self.assertTrue(self.page.url.endswith("#paper=Beta%20Post"))
+        page2 = self.ctx.new_page(); page2.on("pageerror", lambda e: self.errors.append(str(e)))
+        page2.goto(self.base + "newspaper-list/#paper=Beta%20Post")
+        page2.wait_for_selector("a.front")
+        self.assertEqual(page2.inner_text(".mname"), "Beta Post")
+        self.assertEqual(page2.locator("#papers input:checked").count(), 1)
+
+    def test_the_address_without_a_trailing_slash_also_works(self):
+        self.page.goto(self.base + "newspaper-list")
+        self.page.wait_for_selector("#papers label")
+        self.assertTrue(self.page.url.endswith("/newspaper-list/"))
+
+    def test_list_page_fails_gracefully_without_the_newspaper_list(self):
+        self.page.route("**/papers.json*", lambda r: r.fulfill(status=404, body="no"))
+        self.page.goto(self.base + "newspaper-list/")
+        self.page.wait_for_selector("text=Could not load the newspaper list")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Newspaper Homepage — RC News Desk</title>
+<meta name="description" content="Pick a newspaper to see its latest headlines and open its homepage.">
+<meta name="referrer" content="no-referrer">
+<style>
+  :root { --bg: #f6f4ef; --card: #ffffff; --ink: #1b1b1f; --muted: #6a6a73; --line: #e3e0d8; --accent: #b3261e; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #131316; --card: #1c1c21; --ink: #ecebe6; --muted: #9a9aa4; --line: #2c2c33; --accent: #ff6b5e; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 Georgia, "Times New Roman", "Noto Serif Bengali", "Kohinoor Bangla", "Nirmala UI", serif; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 16px 48px; }
+  header { padding: 24px 0 12px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; border-bottom: 3px double var(--ink); }
+  h1 { margin: 0; font-size: clamp(26px, 4.5vw, 40px); letter-spacing: -.02em; }
+  h1 span { color: var(--accent); }
+  .back { font: 600 14px/1 system-ui, sans-serif; color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+  .back:hover { color: var(--ink); }
+  .layout { display: grid; grid-template-columns: 360px 1fr; gap: 24px; margin-top: 20px; align-items: start; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 12px; font-family: system-ui, sans-serif; }
+  .panel h2 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips button { font: 600 13px system-ui, sans-serif; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: inherit; cursor: pointer; }
+  .chips button[aria-pressed=true] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  input[type=search] { width: 100%; padding: 9px 11px; font-size: 15px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: inherit; }
+  .list { max-height: 210px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+  .list.tall { max-height: 340px; }
+  .list label { display: flex; align-items: center; gap: 9px; padding: 7px 10px; cursor: pointer; font-size: 14px; border-bottom: 1px solid var(--line); }
+  .list label:last-child { border-bottom: 0; }
+  .list label:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+  .list label:has(input:checked) { background: color-mix(in srgb, var(--accent) 14%, transparent); font-weight: 700; }
+  .list .n { margin-left: auto; color: var(--muted); font-size: 12px; font-weight: 400; }
+  .list small { color: var(--muted); font-weight: 400; }
+  .empty { padding: 12px; color: var(--muted); font-size: 14px; }
+  .count { font-size: 12px; color: var(--muted); }
+
+  .stage { min-height: 320px; }
+  .hint { padding: 48px 24px; text-align: center; color: var(--muted); border: 2px dashed var(--line); border-radius: 14px; font-family: system-ui, sans-serif; }
+  a.front { display: block; color: inherit; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 0 var(--line), 0 14px 34px -22px rgba(0,0,0,.45); transition: transform .12s, box-shadow .12s; }
+  a.front:hover, a.front:focus-visible { transform: translateY(-2px); box-shadow: 0 2px 0 var(--accent), 0 18px 38px -20px rgba(0,0,0,.5); outline: none; }
+  .mast { padding: 18px 22px 14px; border-bottom: 3px double var(--ink); display: grid; gap: 4px; text-align: center; }
+  .mname { font-size: clamp(28px, 5vw, 46px); font-weight: 700; letter-spacing: -.01em; line-height: 1.1; }
+  .mmeta { font: 600 12px system-ui, sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .mmeta .pri { color: var(--accent); }
+  .cols { display: grid; grid-template-columns: 1.4fr 1fr; gap: 0; }
+  @media (max-width: 700px) { .cols { grid-template-columns: 1fr; } }
+  .lead { padding: 18px 22px; border-right: 1px solid var(--line); display: grid; gap: 10px; align-content: start; }
+  @media (max-width: 700px) { .lead { border-right: 0; border-bottom: 1px solid var(--line); } }
+  .pic { position: relative; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: color-mix(in srgb, var(--accent) 12%, var(--bg)); display: grid; place-items: center; }
+  .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .pic .ph { font-size: 44px; font-weight: 700; color: var(--accent); opacity: .5; }
+  .lead h3 { margin: 0; font-size: clamp(20px, 2.6vw, 28px); line-height: 1.2; }
+  .lead p { margin: 0; color: var(--muted); font-size: 15px; }
+  .story-meta { font: 12px system-ui, sans-serif; color: var(--muted); }
+  .rest { display: grid; align-content: start; }
+  .rest article { display: grid; grid-template-columns: 84px 1fr; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  .rest article:last-child { border-bottom: 0; }
+  .rest .pic { aspect-ratio: 1 / 1; border-radius: 6px; }
+  .rest .pic .ph { font-size: 24px; }
+  .rest h4 { margin: 0 0 4px; font-size: 16px; line-height: 1.25; }
+  .none { grid-column: 1 / -1; padding: 28px 22px; color: var(--muted); text-align: center; font-family: system-ui, sans-serif; }
+  .cta { padding: 14px 22px; background: var(--ink); color: var(--bg); font: 700 15px system-ui, sans-serif; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .cta .host { font-weight: 400; opacity: .8; }
+  footer { margin-top: 28px; font: 12px system-ui, sans-serif; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Newspaper <span>Homepage</span></h1>
+    <a class="back" href="../">← RC News Desk</a>
+  </header>
+
+  <div class="layout">
+    <aside class="panel" aria-label="Find a newspaper">
+      <div>
+        <h2>Continent</h2>
+        <div class="chips" id="continents" role="group" aria-label="Continent"></div>
+      </div>
+      <div>
+        <label for="q"><h2>Search country or newspaper</h2></label>
+        <input type="search" id="q" placeholder="e.g. India, Guardian…" autocomplete="off">
+      </div>
+      <div>
+        <h2>Country <span class="count" id="ccount"></span></h2>
+        <div class="list" id="countries" role="radiogroup" aria-label="Country"></div>
+      </div>
+      <div>
+        <h2>Newspaper <span class="count" id="ncount"></span></h2>
+        <div class="list tall" id="papers" role="radiogroup" aria-label="Newspaper (choose one)"></div>
+      </div>
+    </aside>
+
+    <main class="stage" id="stage" aria-live="polite">
+      <div class="hint" id="hint">Choose a newspaper to see its latest headlines. Click the front page to open the newspaper's own homepage.</div>
+    </main>
+  </div>
+  <footer>Headlines, images and links belong to their respective newspapers. Headlines shown are the latest ones collected by the most recent refresh.</footer>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const state = { continent: "All", country: "", q: "", paper: null };
+let PAPERS = [], NEWS = [];
+
+function ago(iso) {
+  const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000));
+  if (m < 1) return "just now";
+  if (m < 60) return m + " min ago";
+  const h = Math.round(m / 60);
+  return h < 24 ? h + " h ago" : Math.round(h / 24) + " d ago";
+}
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const norm = (s) => String(s || "").toLowerCase();
+
+// papers passing the continent and search filters (the country choice is applied afterwards, so the country list can show counts)
+function visiblePapers() {
+  const q = norm(state.q).trim();
+  return PAPERS.filter((p) => (state.continent === "All" || p.continent === state.continent) &&
+    (!q || norm(p.name).includes(q) || norm(p.country).includes(q)));
+}
+
+function renderContinents() {
+  const box = $("continents"); box.replaceChildren();
+  const counts = {}; for (const p of PAPERS) counts[p.continent] = (counts[p.continent] || 0) + 1;
+  for (const c of ["All", ...Object.keys(counts).sort()]) {
+    const b = el("button", "", c === "All" ? `All (${PAPERS.length})` : `${c} (${counts[c]})`);
+    b.type = "button"; b.setAttribute("aria-pressed", String(state.continent === c));
+    b.onclick = () => { state.continent = c; state.country = ""; render(); };
+    box.appendChild(b);
+  }
+}
+
+function radio(listId, name, value, checked, label, small, count, onpick) {
+  const l = el("label");
+  const r = el("input"); r.type = "radio"; r.name = name; r.value = value; r.checked = checked;
+  r.onchange = () => onpick(value);
+  l.append(r, el("span", "", label));
+  if (small) l.appendChild(el("small", "", small));
+  if (count != null) l.appendChild(el("span", "n", count));
+  $(listId).appendChild(l);
+}
+
+function renderCountries(list) {
+  const box = $("countries"); box.replaceChildren();
+  const counts = {}; for (const p of list) counts[p.country] = (counts[p.country] || 0) + 1;
+  const names = Object.keys(counts).sort((a, b) => (a === "International") - (b === "International") || a.localeCompare(b));
+  radio("countries", "country", "", state.country === "", "All countries", "", list.length, () => { state.country = ""; render(); });
+  for (const c of names) radio("countries", "country", c, state.country === c, c, "", counts[c], (v) => { state.country = v; render(); });
+  $("ccount").textContent = `(${names.length})`;
+}
+
+function renderPapers(list) {
+  const box = $("papers"); box.replaceChildren();
+  const shown = list.filter((p) => !state.country || p.country === state.country);
+  for (const p of shown) radio("papers", "paper", p.url, state.paper === p, p.name, p.country, null, () => select(p));
+  if (!shown.length) box.appendChild(el("div", "empty", "No newspapers match."));
+  $("ncount").textContent = `(${shown.length})`;
+}
+
+function render() {
+  const list = visiblePapers();
+  renderContinents(); renderCountries(list); renderPapers(list);
+}
+
+function placeholder(initial) { return el("span", "ph", (initial || "?").charAt(0)); }
+function picture(story, name) {
+  const pic = el("div", "pic");
+  const ph = placeholder(name); pic.appendChild(ph);
+  if (story.image && story.image.startsWith("https://")) {
+    const img = el("img"); img.src = story.image; img.alt = ""; img.loading = "lazy"; img.referrerPolicy = "no-referrer";
+    img.onload = () => ph.remove(); img.onerror = () => img.remove();
+    pic.appendChild(img);
+  }
+  return pic;
+}
+
+function recentStories(p) {
+  const names = new Set(p.names || [p.name]);
+  return NEWS.filter((s) => names.has(s.newspaper || s.source))
+    .sort((a, b) => new Date(b.published) - new Date(a.published)).slice(0, 4);
+}
+
+function frontPage(p) {
+  const stories = recentStories(p);
+  const a = el("a", "front"); a.id = "front"; a.href = p.url; a.target = "_blank"; a.rel = "noopener noreferrer";
+  a.setAttribute("aria-label", `Open the ${p.name} homepage`);
+  const mast = el("div", "mast");
+  mast.appendChild(el("div", "mname", p.name));
+  const meta = el("div", "mmeta", `${p.country} · ${p.continent}`);
+  if (p.primary) meta.appendChild(el("span", "pri", "  ● Primary source"));
+  mast.appendChild(meta);
+  a.appendChild(mast);
+
+  const cols = el("div", "cols");
+  if (!stories.length) {
+    cols.appendChild(el("div", "none", "No recent headlines from this newspaper in the latest refresh. It may not offer a news feed, or the chosen time range was short. You can still open its homepage."));
+  } else {
+    const [lead, ...rest] = stories;
+    const l = el("div", "lead"); l.id = "lead";
+    l.appendChild(picture(lead, p.name));
+    l.appendChild(el("h3", "", lead.title));
+    if (lead.summary) l.appendChild(el("p", "", lead.summary.length > 220 ? lead.summary.slice(0, 217) + "…" : lead.summary));
+    l.appendChild(el("div", "story-meta", ago(lead.published)));
+    cols.appendChild(l);
+    const r = el("div", "rest");
+    for (const s of rest) {
+      const art = el("article");
+      art.appendChild(picture(s, p.name));
+      const body = el("div");
+      body.appendChild(el("h4", "", s.title));
+      body.appendChild(el("div", "story-meta", ago(s.published)));
+      art.appendChild(body); r.appendChild(art);
+    }
+    cols.appendChild(r);
+  }
+  a.appendChild(cols);
+  const cta = el("div", "cta");
+  cta.appendChild(el("span", "", `Open ${p.name} homepage ↗`));
+  cta.appendChild(el("span", "host", p.url.replace(/^https?:\/\//, "").replace(/\/$/, "")));
+  a.appendChild(cta);
+  return a;
+}
+
+function select(p) {
+  state.paper = p;
+  const stage = $("stage"); stage.replaceChildren(frontPage(p));
+  try { history.replaceState(null, "", "#paper=" + encodeURIComponent(p.name)); } catch (e) {}
+}
+
+// typing narrows both lists; Enter picks the first newspaper
+$("q").addEventListener("input", (e) => { state.q = e.target.value; state.country = ""; render(); });
+$("q").addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
+  const first = visiblePapers().filter((p) => !state.country || p.country === state.country)[0];
+  if (first) { select(first); render(); }
+});
+
+async function init() {
+  try { PAPERS = await (await fetch("../papers.json?t=" + Date.now())).json(); }
+  catch (e) { $("hint").textContent = "Could not load the newspaper list."; return; }
+  render();
+  try { NEWS = (await (await fetch("../news.json?t=" + Date.now())).json()).items || []; } catch (e) { NEWS = []; }
+  const want = decodeURIComponent((location.hash.match(/^#paper=(.+)$/) || [])[1] || "");
+  const found = PAPERS.find((p) => p.name === want);
+  if (found) { state.continent = "All"; select(found); render(); }
+  else if (state.paper) select(state.paper);
+}
+init();
+</script>
+</body>
+</html>

@@ -18,6 +18,7 @@ src/                    all code
   geo.py                  country detection from headlines
   check_images.py         image health report (diagnostic)
   web/index.html          the front page
+  web/newspaper-list/     the Newspaper Homepage page (published at .../newspaper-list/)
 test/                   tests (they use their own sample data and mocks, never external_config/)
 .github/workflows/      update.yml (fetch + deploy), scheduler.yml (timer + refresh requests)
 site/                   generated, not committed
@@ -52,8 +53,11 @@ Tests need PyYAML for the workflow checks; the browser tests need Playwright and
 
 ## The page
 - Tabs (sections), continent chips, a multi-select country box, search, and Primary / Secondary source-type checkboxes
-  that apply on top of the other filters. The Newspaper Homepage box (search + dropdown grouped by country) shows a link
-  to the chosen paper's homepage. Reset clears every selection.
+  that apply on top of the other filters. Reset clears every selection.
+- **Newspaper Homepage** (link beside the headline; the arrow opens it in a new tab) is a separate page at
+  `newspaper-list/`: filter by continent, then country, search by country or newspaper, pick one newspaper, and a
+  front-page style tile shows its 4 most recent headlines from the latest refresh. Clicking the tile opens the
+  newspaper's own homepage in a new tab. The chosen paper is kept in the address (`#paper=Name`) so it can be shared.
 - Each section shows 50 stories, "Show more" adds 50 up to the story count kept by the last refresh, then
   "No more articles available."
 - Refresh (top right) needs no login: it posts the chosen time range and story count to a public ntfy.sh topic

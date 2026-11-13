@@ -19,9 +19,7 @@ def build(out_dir=None, web_dir=None):
     sections = config.load_sections()
     newspapers = config.load_newspapers(sections)
     out.mkdir(parents=True, exist_ok=True)
-    for f in web.iterdir():
-        if f.is_file():
-            shutil.copy2(f, out / f.name)
+    shutil.copytree(web, out, dirs_exist_ok=True)          # the page and its sub-pages (e.g. newspaper-list/)
     st = settings.load_settings()
     (out / "settings.json").write_text(json.dumps(settings.public_settings(st), separators=(",", ":")))
     papers = config.public_newspapers(newspapers)

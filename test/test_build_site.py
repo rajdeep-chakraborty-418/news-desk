@@ -11,11 +11,13 @@ import config
 
 
 class BuildSiteTest(TestCase):
-    def test_writes_page_and_the_three_data_files(self):
+    def test_writes_the_pages_and_the_three_data_files(self):
         n_sections, n_papers, out = build_site.build(self.tmp / "site")
         self.assertEqual((n_sections, n_papers), (7, 4))
-        self.assertEqual(sorted(p.name for p in out.iterdir()), ["index.html", "papers.json", "sections.json", "settings.json"])
+        self.assertEqual(sorted(p.name for p in out.iterdir()), ["index.html", "newspaper-list", "papers.json", "sections.json", "settings.json"])
         self.assertEqual((out / "index.html").read_bytes(), (support.SRC / "web" / "index.html").read_bytes())
+        self.assertEqual((out / "newspaper-list" / "index.html").read_bytes(),
+                         (support.SRC / "web" / "newspaper-list" / "index.html").read_bytes())      # served at .../newspaper-list/
 
     def test_sections_json_for_the_page(self):
         build_site.build(self.tmp / "site")
@@ -28,6 +30,7 @@ class BuildSiteTest(TestCase):
         build_site.build(self.tmp / "site")
         papers = json.loads((self.tmp / "site" / "papers.json").read_text())
         self.assertEqual([p["name"] for p in papers], ["Alpha Times", "Beta Post", "Gamma Wire", "Gazette Home"])
+        self.assertEqual(papers[0]["names"], ["Alpha Times"])
 
     def test_settings_json_for_the_page(self):
         build_site.build(self.tmp / "site")
@@ -53,11 +56,15 @@ class BuildSiteTest(TestCase):
 
     def test_rebuilding_overwrites_cleanly(self):
         build_site.build(self.tmp / "site"); build_site.build(self.tmp / "site")
-        self.assertEqual(len(list((self.tmp / "site").iterdir())), 4)
+        self.assertEqual(len(list((self.tmp / "site").iterdir())), 5)
 
     def test_the_page_itself_has_no_built_in_sections_or_refresh_choices(self):
         page = (support.SRC / "web" / "index.html").read_text()
         for leftover in ("Bengali News", "Geo Politics", "--c-india", "Last 6 hours", "Last 90 days", 'value="1000"', "rcnd-d6930e74"):
             self.assertNotIn(leftover, page, f"{leftover!r} should come from external_config, not the page")
-        for fetch in ("sections.json", "settings.json", "papers.json", "news.json"):
+        for fetch in ("sections.json", "settings.json", "news.json"):
             self.assertIn(fetch, page)
+        self.assertNotIn("papers.json", page)                        # the newspaper list belongs to the newspaper-list page
+        sub = (support.SRC / "web" / "newspaper-list" / "index.html").read_text()
+        for fetch in ("../papers.json", "../news.json"):
+            self.assertIn(fetch, sub)

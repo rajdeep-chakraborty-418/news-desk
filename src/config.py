@@ -161,13 +161,18 @@ def public_sections(sections):
 
 
 def public_newspapers(newspapers):
-    """The list behind the page's Newspaper Homepage dropdown (a paper in both nodes appears once, as primary)."""
-    seen, out = set(), []
+    """The list behind the Newspaper Homepage page (a homepage listed more than once appears once, as the first/primary entry;
+    "names" holds every newspaper name that shares it, so stories can be matched to it)."""
+    by_url, out = {}, []
     for node in ("primary", "secondary"):
         for p in newspapers[node]:
-            if p.get("listed", True) is False or p["homepage"] in seen:
+            if p.get("listed", True) is False:
                 continue
-            seen.add(p["homepage"])
-            out.append({"name": p["name"], "url": p["homepage"], "country": p.get("country") or "International",
-                        "continent": p.get("continent") or "Other", "primary": node == "primary"})
+            if p["homepage"] in by_url:                       # same homepage listed again: remember the name for story matching
+                by_url[p["homepage"]]["names"].append(p["name"])
+                continue
+            entry = {"name": p["name"], "names": [p["name"]], "url": p["homepage"], "country": p.get("country") or "International",
+                     "continent": p.get("continent") or "Other", "primary": node == "primary"}
+            by_url[p["homepage"]] = entry
+            out.append(entry)
     return sorted(out, key=lambda p: re.sub(r"^the\s+", "", p["name"].lower()))

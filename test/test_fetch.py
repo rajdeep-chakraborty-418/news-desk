@@ -97,6 +97,7 @@ class FetchOneTest(EnvTestCase):
                          ("Army exercise", "s", "Alpha Times", True, "world"))
         self.assertEqual(s["sections"], ["world", "defence"])
         self.assertEqual((s["country"], s["continent"], s["state"]), ("France", "Europe", None))
+        self.assertEqual(s["newspaper"], "Alpha Times")                     # the paper in newspapers.json, for the Newspaper Homepage page
         self.assertTrue(s["published"].endswith("+00:00"))
 
     def test_state_is_carried(self):
@@ -244,7 +245,9 @@ class MainRunTest(EnvTestCase):
         self.assertEqual(data["items"][0]["link"], "https://a.example/1")                       # newest first
         # the same story from a primary and a secondary paper is merged: primary source, image from the other feed
         shared_item = by_link["https://shared.example/1"]
-        self.assertEqual((shared_item["primary"], shared_item["source"]), (True, "Alpha Times"))
+        self.assertEqual((shared_item["primary"], shared_item["source"], shared_item["newspaper"]), (True, "Alpha Times", "Alpha Times"))
+        self.assertEqual(by_link["https://a.example/2"]["source"], "Alpha Times (World)")           # a feed label ...
+        self.assertEqual(by_link["https://a.example/2"]["newspaper"], "Alpha Times")                # ... still maps to its newspaper
         self.assertEqual(shared_item["image"], "https://img.example/shared.jpg")
         self.assertEqual(shared_item["sections"], ["defence", "india", "world"])
         self.assertEqual(by_link["https://a.example/2"]["sections"], ["world", "sports"])      # general feed + keyword

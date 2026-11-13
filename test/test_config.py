@@ -155,12 +155,19 @@ class PublicListsTest(TestCase):
         self.assertEqual(by["Gamma Wire"]["continent"], "Other")
         self.assertEqual(by["Alpha Times"]["url"], "https://www.alphatimes.example/")
 
-    def test_a_paper_in_both_nodes_appears_once_as_primary(self):
+    def test_a_homepage_listed_twice_appears_once_as_primary_and_keeps_both_names(self):
         data = copy.deepcopy(SAMPLE_NEWSPAPERS)
         dup = copy.deepcopy(data["primary"][0]); dup["name"] = "Alpha Times Brunch"
         data["secondary"].append(dup)
         pub = config.public_newspapers(data)
-        self.assertEqual([p["name"] for p in pub if "alphatimes" in p["url"]], ["Alpha Times"])
+        alpha = [p for p in pub if "alphatimes" in p["url"]]
+        self.assertEqual([p["name"] for p in alpha], ["Alpha Times"])
+        self.assertEqual(alpha[0]["names"], ["Alpha Times", "Alpha Times Brunch"])      # stories from either name belong to it
+        self.assertTrue(alpha[0]["primary"])
+
+    def test_every_entry_lists_its_own_name(self):
+        for p in config.public_newspapers(self.newspapers):
+            self.assertIn(p["name"], p["names"])
 
     def test_sort_ignores_a_leading_the(self):
         data = copy.deepcopy(SAMPLE_NEWSPAPERS)

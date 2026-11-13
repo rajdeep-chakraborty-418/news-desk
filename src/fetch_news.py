@@ -341,6 +341,7 @@ def fetch_one(feed):
             "image": it["image"],
             "published": (it["date"] or datetime.now(timezone.utc)).isoformat(),
             "source": feed["source"],
+            "newspaper": feed.get("newspaper") or feed["source"],      # the paper in newspapers.json (source may be a section label)
             "primary": bool(feed.get("primary")),
             "category": feed["category"],
             "sections": classify(feed, it["title"], it["summary"]),
@@ -386,7 +387,7 @@ def main():
             else:  # same story from two feeds: merge sections, prefer primary source and an image
                 prev["sections"] = sorted(set(prev["sections"]) | set(it["sections"]))
                 if it["primary"] and not prev["primary"]:
-                    prev["primary"], prev["source"] = True, it["source"]
+                    prev["primary"], prev["source"], prev["newspaper"] = True, it["source"], it["newspaper"]
                 if not prev["image"] and it["image"]:
                     prev["image"] = it["image"]
     items = sorted(by_link.values(), key=lambda x: x["published"], reverse=True)
