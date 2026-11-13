@@ -1,6 +1,6 @@
 {
   "refresh": {
-    "interval_minutes": 118,
+    "interval_minutes": 360,
     "min_gap_seconds": 300,
     "request_topic": "rcnd-d6930e74e95016bf07496776"
   },
