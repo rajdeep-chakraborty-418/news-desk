@@ -66,5 +66,6 @@ class SettingsTest(TestCase):
         self.assertEqual(pub["default_count"], 150)
         self.assertEqual(pub["request_topic"], "test-topic-abc")
         self.assertEqual(pub["time_ranges"][0], {"hours": 6, "label": "Six hours"})
-        self.assertNotIn("interval_minutes", pub)           # server-side detail, not for the page
+        self.assertEqual(pub["interval_minutes"], 60)       # the page shows when the next scheduled refresh is due
+        self.assertNotIn("min_gap_seconds", pub)            # server-side detail, not for the page
         json.dumps(pub)

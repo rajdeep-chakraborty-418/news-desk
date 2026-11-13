@@ -20,7 +20,8 @@
   h1 { margin: 0; font-size: clamp(28px, 5vw, 44px); letter-spacing: -.02em; color: var(--brand); }   /* the whole headline is one colour: black (light text in dark mode) */
   h1 span { color: inherit; }
   .hright { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
-  .updated { color: var(--muted); font: 13px system-ui, sans-serif; }
+  .updated { color: var(--muted); font: 13px/1.5 system-ui, sans-serif; text-align: right; }
+  .updated b { color: var(--ink); font-weight: 600; }
   button.refresh { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; border-radius: 10px; padding: 7px 14px; text-align: left; min-width: 168px; }
   .rangebox { display: flex; flex-direction: column; gap: 1px; font-family: system-ui, sans-serif; }
   .rangebox span { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
@@ -116,7 +117,10 @@
       <button class="reset" id="reset" type="button" title="Clear every selection and filter">Reset</button>
     </div>
     <div class="hright">
-      <div class="updated" id="updated">Loading…</div>
+      <div class="updated" id="updated" aria-live="polite">
+        <div id="lastrefresh">Loading…</div>
+        <div id="nextrefresh"></div>
+      </div>
       <label class="rangebox" title="On refresh, only fetch stories published within this period">
         <span>Fetch stories from</span>
         <select id="range" aria-label="Time range to fetch on refresh"></select>
@@ -179,6 +183,28 @@ const state = { lm: "", generated: "", section: "", continent: "All", countries:
 const $ = (id) => document.getElementById(id);
 
 const color = (sec) => `var(--c-${sec})`;
+// "Last successful refresh" is when news.json was generated; the next scheduled one is due refresh.interval_minutes later
+// (settings.json). A manual refresh or a new deployment restarts that count, and this recalculates from the new data.
+const fmtTime = (d) => d.toLocaleString([], { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+function inText(ms) {
+  const m = Math.round(ms / 60000);
+  if (m < 1) return "any moment now";
+  if (m < 60) return "in " + m + " min";
+  return "in " + Math.floor(m / 60) + " h" + (m % 60 ? " " + (m % 60) + " min" : "");
+}
+function paintSchedule() {
+  const last = $("lastrefresh"), next = $("nextrefresh");
+  const when = state.generated ? new Date(state.generated) : null;
+  if (!when || isNaN(when)) { last.textContent = "Last successful refresh: unknown"; next.textContent = ""; return; }
+  const range = (SETTINGS && SETTINGS.time_ranges.find((r) => r.hours === state.rangeHours) || {}).label;
+  last.replaceChildren(document.createTextNode("Last successful refresh: "), Object.assign(document.createElement("b"), { textContent: fmtTime(when) }),
+    document.createTextNode(" (" + ago(when.toISOString()) + (range ? " · " + range.toLowerCase() : "") + ")"));
+  if (!SETTINGS || !SETTINGS.interval_minutes) { next.textContent = ""; return; }
+  const due = new Date(when.getTime() + SETTINGS.interval_minutes * 60000), left = due - Date.now();
+  next.replaceChildren(document.createTextNode("Next scheduled refresh: "), Object.assign(document.createElement("b"), { textContent: "about " + fmtTime(due) }),
+    document.createTextNode(" (" + (left <= 0 ? "due now" : inText(left)) + ")"));
+}
+
 function ago(iso) {
   const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000));
   if (m < 1) return "just now";
@@ -364,12 +390,11 @@ async function load() {
     MAX = data.max_articles || 200;
     state.lm = res.headers.get("last-modified") || state.lm; state.generated = data.generated_at;
     $("demo").style.display = data.demo ? "block" : "none";
-    const RANGE_LABEL = { 6: "last 6 hours", 12: "last 12 hours", 24: "last 24 hours", 72: "last 3 days", 168: "last 7 days", 720: "last 30 days", 2160: "last 90 days" };
-    $("updated").textContent = "Updated " + new Date(data.generated_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })
-      + (RANGE_LABEL[data.range_hours] ? " · " + RANGE_LABEL[data.range_hours] : "");
+    state.rangeHours = data.range_hours;
+    paintSchedule();
     render();
   } catch (e) {
-    $("updated").textContent = "Could not load headlines";
+    $("lastrefresh").textContent = "Could not load headlines"; $("nextrefresh").textContent = "";
     $("grid").innerHTML = '<div class="empty">News data is unavailable. If you opened this file directly, serve it with a web server (python3 -m http.server).</div>';
   }
 }
@@ -506,7 +531,7 @@ function initRefreshControls() {
 }
 $("refresh").onclick = startRefresh;
 syncStatus();
-setInterval(() => { if (!rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
+setInterval(() => { if (!rf.busy) paintButton(); paintSchedule(); }, 60 * 1000);   // keep "x min ago" / "in x min" fresh
 // sections.json decides the tabs (order, names) and their colours; the page cannot start without it
 async function loadSections() {
   const list = await (await fetch("sections.json?t=" + Date.now())).json();

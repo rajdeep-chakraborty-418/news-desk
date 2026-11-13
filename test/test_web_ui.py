@@ -406,7 +406,14 @@ class WebUITest(BrowserBase):
 
     def test_header_shows_when_the_data_was_generated(self):
         self.open()
-        self.assertIn("Updated", self.page.inner_text("#updated"))
+        self.assertIn("Last successful refresh:", self.page.inner_text("#lastrefresh"))
+
+    def test_header_shows_the_next_scheduled_refresh(self):
+        self.open()
+        self.page.wait_for_function("document.querySelector('#nextrefresh').innerText.startsWith('Next scheduled refresh')")
+        text = self.page.inner_text("#nextrefresh")
+        self.assertIn("about", text)
+        self.assertRegex(text, r"in (5\d|\d) min|in 1 h")                     # sample interval is 60 min, data is fresh
 
 
 @unittest.skipUnless(sync_playwright and CHROME, "Playwright with Chrome is not available")

@@ -80,8 +80,9 @@ def gate_minutes(st):
 
 
 def public_settings(st):
-    """What the web page needs: the two choice lists, their defaults and the relay topic."""
-    return {"time_ranges": st["time_ranges"], "default_hours": st["default_hours"],
+    """What the web page needs: the two choice lists, their defaults, the relay topic and the refresh interval."""
+    return {"interval_minutes": st["interval_minutes"],      # lets the page show when the next scheduled refresh is due
+            "time_ranges": st["time_ranges"], "default_hours": st["default_hours"],
             "article_counts": list(st["counts"]), "default_count": st["default_count"], "request_topic": st["request_topic"]}
 
 
