@@ -235,6 +235,13 @@ class WebUITest(BrowserBase):
         self.assertEqual(colours, ["rgb(0, 0, 0)", "rgb(0, 0, 0)"])
         self.assertEqual(self.page.inner_text("h1").replace("\n", " "), "RC News Desk")
 
+    def test_newspaper_homepage_link_and_page_title_are_entirely_black(self):
+        self.open()
+        self.assertEqual(self.page.evaluate("getComputedStyle(document.querySelector('a.navlink')).color"), "rgb(0, 0, 0)")
+        self.page.click("a.navlink"); self.page.wait_for_url("**/newspaper-list/")
+        colours = self.page.evaluate("[document.querySelector('h1'), document.querySelector('h1 span')].map(e => getComputedStyle(e).color)")
+        self.assertEqual(colours, ["rgb(0, 0, 0)", "rgb(0, 0, 0)"])
+
     def test_headline_stays_readable_in_dark_mode(self):
         page = self.ctx.new_page(); page.on("pageerror", lambda e: self.errors.append(str(e)))
         page.emulate_media(color_scheme="dark")
