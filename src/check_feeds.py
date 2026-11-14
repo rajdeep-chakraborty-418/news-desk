@@ -30,8 +30,7 @@ def check(feed):
 
 
 def main(words):
-    sections, newspapers = config.load_all()
-    feeds = config.load_feeds(sections, newspapers)
+    sections, feeds = config.load_all()
     if words:
         feeds = [f for f in feeds if any(w.lower() in f["newspaper"].lower() for w in words)]
     plain = [f for f in feeds if "news.google.com" not in f["url"]]
