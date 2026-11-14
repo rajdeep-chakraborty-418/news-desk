@@ -17,6 +17,9 @@ import config
 import fetch_news as fn
 
 
+ITEMS = {}      # feed url -> its parsed stories (used for the detail lines)
+
+
 def check(feed):
     t0 = time.time()
     try:
@@ -25,6 +28,7 @@ def check(feed):
             items = fn.parse_feed(resp.read())
     except Exception as exc:
         return "FAIL", 0, None, f"{type(exc).__name__}: {exc}"[:120]
+    ITEMS[feed["url"]] = items
     dates = [i["date"] for i in items if i["date"]]
     newest = (datetime.now(timezone.utc) - max(dates)).total_seconds() / 3600 if dates else None
     return ("OK" if items else "EMPTY"), len(items), newest, ""
@@ -51,6 +55,23 @@ def main(words):
         counts[state] += 1
         age = f"newest {newest:.0f}h old" if newest is not None else "no dates"
         print(f"{state:5} {f['newspaper'][:28]:28} {f['section']:13} {n:4} stories, {age}  {f['url']}  {err}")
+    if words and not all(w.startswith("http") for w in words):     # newspaper names given: show how its stories are classified
+        maps = config.load_section_maps(sections)
+        fn.configure(sections, maps=maps)
+        for f in feeds:
+            items = ITEMS.get(f["url"], [])
+            tags = {}
+            for i in items:
+                for t in i.get("tags", []):
+                    tags[t] = tags.get(t, 0) + 1
+            print(f"DETAIL {f['newspaper']} | {f['url']}: {len(items)} stories; tags: {sorted(tags.items(), key=lambda x: -x[1])[:25]}")
+            by = {}
+            for i in items:
+                for sec in fn.classify(f, i["title"], i["summary"], i["link"], i.get("tags")):
+                    by[sec] = by.get(sec, 0) + 1
+            print(f"DETAIL   sections: {by}")
+            for i in items[:4]:
+                print(f"DETAIL   e.g. {i['link']}  tags={i.get('tags')}")
     print(f"\n{len(feeds)} feeds: {counts['OK']} OK, {counts['EMPTY']} empty, {counts['FAIL']} failed")
 
 
