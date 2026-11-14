@@ -11,6 +11,24 @@
       "section": "india",
       "url": "https://odishabytes.com/feed",
       "state": "Odisha"
+    },
+    {
+      "section": "business",
+      "url": "https://odishabytes.com/category/business/feed/",
+      "label": "Odisha Bytes (Business)",
+      "state": "Odisha"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://odishabytes.com/category/entertainment/feed/",
+      "label": "Odisha Bytes (Entertainment)",
+      "state": "Odisha"
+    },
+    {
+      "section": "sports",
+      "url": "https://odishabytes.com/category/sports/feed/",
+      "label": "Odisha Bytes (Sports)",
+      "state": "Odisha"
     }
   ],
   "section_map": {

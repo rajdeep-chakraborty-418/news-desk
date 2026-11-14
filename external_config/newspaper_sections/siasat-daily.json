@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://www.siasat.com/feed/",
       "state": "Telangana"
+    },
+    {
+      "section": "business",
+      "url": "https://www.siasat.com/category/business/feed/",
+      "label": "Siasat Daily (Business)",
+      "state": "Telangana"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.siasat.com/category/entertainment/feed/",
+      "label": "Siasat Daily (Entertainment)",
+      "state": "Telangana"
     }
   ],
   "section_map": {

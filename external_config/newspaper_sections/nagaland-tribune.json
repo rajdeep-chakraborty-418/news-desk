@@ -11,6 +11,12 @@
       "section": "india",
       "url": "https://nagalandtribune.in/feed",
       "state": "Nagaland"
+    },
+    {
+      "section": "sports",
+      "url": "https://nagalandtribune.in/category/sports/feed/",
+      "label": "Nagaland Tribune (Sports)",
+      "state": "Nagaland"
     }
   ],
   "section_map": {

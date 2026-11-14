@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://thekashmirimages.com/feed",
       "state": "Jammu and Kashmir"
+    },
+    {
+      "section": "business",
+      "url": "https://thekashmirimages.com/category/business/feed/",
+      "label": "The Kashmir Images (Business)",
+      "state": "Jammu and Kashmir"
+    },
+    {
+      "section": "sports",
+      "url": "https://thekashmirimages.com/category/sports/feed/",
+      "label": "The Kashmir Images (Sports)",
+      "state": "Jammu and Kashmir"
     }
   ],
   "section_map": {

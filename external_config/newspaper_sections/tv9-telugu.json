@@ -11,6 +11,24 @@
       "section": "india",
       "url": "https://tv9telugu.com/feed",
       "state": "Andhra Pradesh"
+    },
+    {
+      "section": "business",
+      "url": "https://tv9telugu.com/category/business/feed/",
+      "label": "TV9 Telugu (Business)",
+      "state": "Andhra Pradesh"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://tv9telugu.com/category/entertainment/feed/",
+      "label": "TV9 Telugu (Entertainment)",
+      "state": "Andhra Pradesh"
+    },
+    {
+      "section": "sports",
+      "url": "https://tv9telugu.com/category/sports/feed/",
+      "label": "TV9 Telugu (Sports)",
+      "state": "Andhra Pradesh"
     }
   ],
   "section_map": {

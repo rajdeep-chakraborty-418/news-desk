@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://theshillongtimes.com/feed/",
       "state": "Meghalaya"
+    },
+    {
+      "section": "business",
+      "url": "https://theshillongtimes.com/category/business/feed/",
+      "label": "The Shillong Times (Business)",
+      "state": "Meghalaya"
+    },
+    {
+      "section": "sports",
+      "url": "https://theshillongtimes.com/category/sports/feed/",
+      "label": "The Shillong Times (Sports)",
+      "state": "Meghalaya"
     }
   ],
   "section_map": {

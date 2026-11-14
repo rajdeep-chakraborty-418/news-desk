@@ -11,6 +11,12 @@
       "section": "india",
       "url": "https://www.heraldgoa.in/feed",
       "state": "Goa"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.heraldgoa.in/category/sports/feed/",
+      "label": "Herald Goa (Sports)",
+      "state": "Goa"
     }
   ],
   "section_map": {

@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://www.news7tamil.live/feed",
       "state": "Tamil Nadu"
+    },
+    {
+      "section": "business",
+      "url": "https://www.news7tamil.live/category/business/feed/",
+      "label": "News7 Tamil (Business)",
+      "state": "Tamil Nadu"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.news7tamil.live/category/sports/feed/",
+      "label": "News7 Tamil (Sports)",
+      "state": "Tamil Nadu"
     }
   ],
   "section_map": {

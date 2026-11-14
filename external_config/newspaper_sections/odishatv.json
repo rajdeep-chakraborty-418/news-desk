@@ -11,6 +11,12 @@
       "section": "india",
       "url": "https://www.odishatv.in/feed",
       "state": "Odisha"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.odishatv.in/category/entertainment/feed/",
+      "label": "OdishaTV (Entertainment)",
+      "state": "Odisha"
     }
   ],
   "section_map": {

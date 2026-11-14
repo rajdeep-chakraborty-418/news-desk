@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://kashmirreader.com/feed",
       "state": "Jammu and Kashmir"
+    },
+    {
+      "section": "business",
+      "url": "https://kashmirreader.com/category/business/feed/",
+      "label": "Kashmir Reader (Business)",
+      "state": "Jammu and Kashmir"
+    },
+    {
+      "section": "sports",
+      "url": "https://kashmirreader.com/category/sports/feed/",
+      "label": "Kashmir Reader (Sports)",
+      "state": "Jammu and Kashmir"
     }
   ],
   "section_map": {

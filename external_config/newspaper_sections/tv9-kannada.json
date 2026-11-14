@@ -11,6 +11,24 @@
       "section": "india",
       "url": "https://tv9kannada.com/feed",
       "state": "Karnataka"
+    },
+    {
+      "section": "business",
+      "url": "https://tv9kannada.com/category/business/feed/",
+      "label": "TV9 Kannada (Business)",
+      "state": "Karnataka"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://tv9kannada.com/category/entertainment/feed/",
+      "label": "TV9 Kannada (Entertainment)",
+      "state": "Karnataka"
+    },
+    {
+      "section": "sports",
+      "url": "https://tv9kannada.com/category/sports/feed/",
+      "label": "TV9 Kannada (Sports)",
+      "state": "Karnataka"
     }
   ],
   "section_map": {

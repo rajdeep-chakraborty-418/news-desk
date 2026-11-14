@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://telanganatoday.com/feed",
       "state": "Telangana"
+    },
+    {
+      "section": "business",
+      "url": "https://telanganatoday.com/category/business/feed/",
+      "label": "Telangana Today (Business)",
+      "state": "Telangana"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://telanganatoday.com/category/entertainment/feed/",
+      "label": "Telangana Today (Entertainment)",
+      "state": "Telangana"
     }
   ],
   "section_map": {

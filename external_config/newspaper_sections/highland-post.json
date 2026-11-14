@@ -11,6 +11,12 @@
       "section": "india",
       "url": "https://highlandpost.com/feed",
       "state": "Meghalaya"
+    },
+    {
+      "section": "sports",
+      "url": "https://highlandpost.com/category/sports/feed/",
+      "label": "Highland Post (Sports)",
+      "state": "Meghalaya"
     }
   ],
   "section_map": {

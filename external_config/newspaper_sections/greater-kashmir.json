@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://www.greaterkashmir.com/feed",
       "state": "Jammu & Kashmir"
+    },
+    {
+      "section": "business",
+      "url": "https://www.greaterkashmir.com/business/feed/",
+      "label": "Greater Kashmir (Business)",
+      "state": "Jammu & Kashmir"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.greaterkashmir.com/sports/feed/",
+      "label": "Greater Kashmir (Sports)",
+      "state": "Jammu & Kashmir"
     }
   ],
   "section_map": {

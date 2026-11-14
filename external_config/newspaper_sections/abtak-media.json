@@ -11,6 +11,24 @@
       "section": "india",
       "url": "https://www.abtakmedia.com/feed",
       "state": "Gujarat"
+    },
+    {
+      "section": "business",
+      "url": "https://www.abtakmedia.com/category/business/feed/",
+      "label": "Abtak Media (Business)",
+      "state": "Gujarat"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.abtakmedia.com/category/entertainment/feed/",
+      "label": "Abtak Media (Entertainment)",
+      "state": "Gujarat"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.abtakmedia.com/category/sports/feed/",
+      "label": "Abtak Media (Sports)",
+      "state": "Gujarat"
     }
   ],
   "section_map": {

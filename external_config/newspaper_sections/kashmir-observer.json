@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://kashmirobserver.net/feed/",
       "state": "Jammu & Kashmir"
+    },
+    {
+      "section": "business",
+      "url": "https://kashmirobserver.net/category/business/feed/",
+      "label": "Kashmir Observer (Business)",
+      "state": "Jammu & Kashmir"
+    },
+    {
+      "section": "sports",
+      "url": "https://kashmirobserver.net/category/sports/feed/",
+      "label": "Kashmir Observer (Sports)",
+      "state": "Jammu & Kashmir"
     }
   ],
   "section_map": {

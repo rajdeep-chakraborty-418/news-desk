@@ -11,6 +11,24 @@
       "section": "india",
       "url": "https://www.risingkashmir.com/feed",
       "state": "Jammu and Kashmir"
+    },
+    {
+      "section": "business",
+      "url": "https://www.risingkashmir.com/category/business/feed/",
+      "label": "Rising Kashmir (Business)",
+      "state": "Jammu and Kashmir"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.risingkashmir.com/category/entertainment/feed/",
+      "label": "Rising Kashmir (Entertainment)",
+      "state": "Jammu and Kashmir"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.risingkashmir.com/category/sports/feed/",
+      "label": "Rising Kashmir (Sports)",
+      "state": "Jammu and Kashmir"
     }
   ],
   "section_map": {

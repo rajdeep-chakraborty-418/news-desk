@@ -11,6 +11,24 @@
       "section": "india",
       "url": "https://www.lalluram.com/feed",
       "state": "Chhattisgarh"
+    },
+    {
+      "section": "business",
+      "url": "https://www.lalluram.com/category/business/feed/",
+      "label": "Lalluram (Business)",
+      "state": "Chhattisgarh"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.lalluram.com/category/entertainment/feed/",
+      "label": "Lalluram (Entertainment)",
+      "state": "Chhattisgarh"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.lalluram.com/category/sports/feed/",
+      "label": "Lalluram (Sports)",
+      "state": "Chhattisgarh"
     }
   ],
   "section_map": {

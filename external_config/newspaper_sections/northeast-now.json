@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://nenow.in/feed",
       "state": "Northeast"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://nenow.in/category/entertainment/feed/",
+      "label": "Northeast Now (Entertainment)",
+      "state": "Northeast"
+    },
+    {
+      "section": "sports",
+      "url": "https://nenow.in/category/sports/feed/",
+      "label": "Northeast Now (Sports)",
+      "state": "Northeast"
     }
   ],
   "section_map": {

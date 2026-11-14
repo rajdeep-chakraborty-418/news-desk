@@ -11,6 +11,24 @@
       "section": "india",
       "url": "https://www.pragativadi.com/feed",
       "state": "Odisha"
+    },
+    {
+      "section": "business",
+      "url": "https://www.pragativadi.com/category/business/feed/",
+      "label": "Pragativadi (Business)",
+      "state": "Odisha"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.pragativadi.com/category/entertainment/feed/",
+      "label": "Pragativadi (Entertainment)",
+      "state": "Odisha"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.pragativadi.com/category/sports/feed/",
+      "label": "Pragativadi (Sports)",
+      "state": "Odisha"
     }
   ],
   "section_map": {

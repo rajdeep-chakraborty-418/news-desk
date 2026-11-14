@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://www.yespunjab.com/feed",
       "state": "Punjab"
+    },
+    {
+      "section": "business",
+      "url": "https://www.yespunjab.com/category/business/feed/",
+      "label": "Yes Punjab (Business)",
+      "state": "Punjab"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.yespunjab.com/category/entertainment/feed/",
+      "label": "Yes Punjab (Entertainment)",
+      "state": "Punjab"
     }
   ],
   "section_map": {

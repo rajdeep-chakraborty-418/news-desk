@@ -11,6 +11,12 @@
       "section": "india",
       "url": "https://starofmysore.com/feed/",
       "state": "Karnataka"
+    },
+    {
+      "section": "sports",
+      "url": "https://starofmysore.com/category/sports/feed/",
+      "label": "Star of Mysore (Sports)",
+      "state": "Karnataka"
     }
   ],
   "section_map": {

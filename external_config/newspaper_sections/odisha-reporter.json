@@ -11,6 +11,18 @@
       "section": "india",
       "url": "https://odishareporter.in/feed",
       "state": "Odisha"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://odishareporter.in/entertainment/feed/",
+      "label": "Odisha Reporter (Entertainment)",
+      "state": "Odisha"
+    },
+    {
+      "section": "sports",
+      "url": "https://odishareporter.in/sports/feed/",
+      "label": "Odisha Reporter (Sports)",
+      "state": "Odisha"
     }
   ],
   "section_map": {

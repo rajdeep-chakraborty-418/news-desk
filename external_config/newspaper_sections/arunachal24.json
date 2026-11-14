@@ -11,6 +11,12 @@
       "section": "india",
       "url": "https://arunachal24.in/feed",
       "state": "Arunachal Pradesh"
+    },
+    {
+      "section": "sports",
+      "url": "https://arunachal24.in/category/sports/feed/",
+      "label": "Arunachal24 (Sports)",
+      "state": "Arunachal Pradesh"
     }
   ],
   "section_map": {
