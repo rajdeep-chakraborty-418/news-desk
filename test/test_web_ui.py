@@ -394,7 +394,7 @@ class WebUITest(BrowserBase):
         self.page.select_option("#range", "72"); self.page.select_option("#count", "250")
         self.page.reload(); self.page.wait_for_function("document.querySelectorAll('#range option').length > 0")
         self.assertEqual((self.page.input_value("#range"), self.page.input_value("#count")), ("72", "250"))
-        self.page.evaluate("localStorage.setItem('rcnd_range_v2', '999'); localStorage.setItem('rcnd_count_v2', '77')")
+        self.page.evaluate("localStorage.setItem('rcnd_range_v3', '999'); localStorage.setItem('rcnd_count_v3', '77')")
         self.page.reload(); self.page.wait_for_function("document.querySelectorAll('#range option').length > 0")
         self.assertEqual((self.page.input_value("#range"), self.page.input_value("#count")), ("24", "150"))
 

@@ -381,7 +381,7 @@ function render() {
   $("rcount").textContent = !total ? "0 matching articles"
     : shown.length ? `Showing ${from}–${from + shown.length - 1} of ${total} matching articles` : `0 of ${total} matching articles`;
   const quick = $("rquick"); quick.replaceChildren();
-  const blocks = [[1, 50], [51, 100], [101, 200], [201, 500], [501, 1000], [1, MAX]];
+  const blocks = [[1, 50], [51, 100], [101, 200], [201, 500], [501, 1000], [1001, 3000], [3001, 5000], [1, MAX]];
   blocks.forEach(([a, b], n) => {
     if (a > total && n < blocks.length - 1) return;                  // nothing that far down in this list
     const btn = document.createElement("button"); btn.type = "button";
@@ -494,8 +494,8 @@ async function fetchRuns() {
   // a run the cooldown gate cancelled was not a refresh
   return (d.workflow_runs || []).filter(x => x.event !== "schedule" && x.conclusion !== "cancelled").sort((a, b) => b.id - a.id);
 }
-// "_v2": the saved choices from before the defaults changed to 24 h / 1000 are ignored once
-const COUNT_KEY = "rcnd_count_v2", RANGE_KEY = "rcnd_range_v2";
+// "_v2": the saved choices from before the defaults changed to 24 h / 3000 are ignored once
+const COUNT_KEY = "rcnd_count_v3", RANGE_KEY = "rcnd_range_v3";
 // the remembered choice is used only while it is still one of the configured options
 function remembered(key, options, fallback) { try { const v = localStorage.getItem(key); if (options.map(String).includes(v)) return v; } catch (e) {} return String(fallback); }
 const getRange = () => remembered(RANGE_KEY, SETTINGS.time_ranges.map((r) => r.hours), SETTINGS.default_hours);

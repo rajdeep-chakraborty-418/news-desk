@@ -17,7 +17,7 @@
     ]
   },
   "article_counts": {
-    "default": 1000,
-    "options": [200, 300, 400, 500, 1000]
+    "default": 3000,
+    "options": [2000, 3000, 4000, 5000]
   }
 }
