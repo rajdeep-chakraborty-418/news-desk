@@ -457,10 +457,6 @@
           "url": "https://www.hindustantimes.com/feeds/rss/technology/rssfeed.xml"
         },
         {
-          "section": "science",
-          "url": "https://news.google.com/rss/search?q=site%3Ahindustantimes.com/science%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
-        },
-        {
           "section": "entertainment",
           "url": "https://www.hindustantimes.com/feeds/rss/entertainment/bollywood/rssfeed.xml"
         },
@@ -479,6 +475,58 @@
         {
           "section": "entertainment",
           "url": "https://www.hindustantimes.com/feeds/rss/entertainment/web-series/rssfeed.xml"
+        },
+        {
+          "section": "science",
+          "url": "https://news.google.com/rss/search?q=site%3Ahindustantimes.com%20(science%20OR%20ISRO%20OR%20NASA%20OR%20space%20OR%20research%20OR%20scientists)%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "nature",
+          "url": "https://news.google.com/rss/search?q=site%3Ahindustantimes.com%20(environment%20OR%20climate%20OR%20wildlife%20OR%20forest%20OR%20pollution)%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "defence",
+          "url": "https://news.google.com/rss/search?q=site%3Ahindustantimes.com%20(army%20OR%20navy%20OR%20air%20force%20OR%20defence%20OR%20military)%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "geopolitics",
+          "url": "https://news.google.com/rss/search?q=site%3Ahindustantimes.com%20(geopolitics%20OR%20diplomacy%20OR%20foreign%20ministry%20OR%20sanctions)%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "history",
+          "url": "https://news.google.com/rss/search?q=site%3Ahindustantimes.com%20(history%20OR%20heritage%20OR%20archaeology)%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "geography",
+          "url": "https://news.google.com/rss/search?q=site%3Ahindustantimes.com%20(geography%20OR%20earthquake%20OR%20cyclone%20OR%20glacier)%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.hindustantimes.com/feeds/rss/cricket/rssfeed.xml"
+        },
+        {
+          "section": "sports",
+          "url": "https://www.hindustantimes.com/feeds/rss/sports/football/rssfeed.xml"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://www.hindustantimes.com/feeds/rss/lifestyle/health/rssfeed.xml"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://www.hindustantimes.com/feeds/rss/lifestyle/fashion/rssfeed.xml"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://www.hindustantimes.com/feeds/rss/lifestyle/food/rssfeed.xml"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://www.hindustantimes.com/feeds/rss/lifestyle/travel/rssfeed.xml"
+        },
+        {
+          "section": "india",
+          "url": "https://www.hindustantimes.com/feeds/rss/education/rssfeed.xml"
         }
       ]
     },
