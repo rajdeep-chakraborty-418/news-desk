@@ -866,6 +866,107 @@
           "state": "West Bengal"
         }
       ]
+    },
+    {
+      "name": "Marca",
+      "homepage": "https://www.marca.com/",
+      "country": "Spain",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://e00-marca.uecdn.es/rss/portada.xml"
+        }
+      ]
+    },
+    {
+      "name": "ESPNcricinfo",
+      "homepage": "https://www.espncricinfo.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://www.espncricinfo.com/rss/content/story/feeds/0.xml"
+        }
+      ]
+    },
+    {
+      "name": "ESPN",
+      "homepage": "https://www.espn.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://www.espn.com/espn/rss/news"
+        }
+      ]
+    },
+    {
+      "name": "Cricbuzz",
+      "homepage": "https://www.cricbuzz.com/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://news.google.com/rss/search?q=site%3Acricbuzz.com%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        }
+      ]
+    },
+    {
+      "name": "HuffPost",
+      "homepage": "https://www.huffpost.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "world",
+          "url": "https://www.huffpost.com/section/world-news/feed"
+        },
+        {
+          "section": "entertainment",
+          "url": "https://www.huffpost.com/section/entertainment/feed"
+        },
+        {
+          "section": "lifestyle",
+          "url": "https://www.huffpost.com/section/life/feed"
+        }
+      ]
+    },
+    {
+      "name": "Bloomberg",
+      "homepage": "https://www.bloomberg.com/",
+      "country": "United States",
+      "continent": "North America",
+      "feeds": [
+        {
+          "section": "business",
+          "url": "https://feeds.bloomberg.com/markets/news.rss"
+        },
+        {
+          "section": "technology",
+          "url": "https://feeds.bloomberg.com/technology/news.rss"
+        },
+        {
+          "section": "world",
+          "url": "https://feeds.bloomberg.com/politics/news.rss",
+          "label": "Bloomberg Politics"
+        }
+      ]
+    },
+    {
+      "name": "The Bridge",
+      "homepage": "https://thebridge.in/",
+      "country": "India",
+      "continent": "Asia",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://news.google.com/rss/search?q=site%3Athebridge.in%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+        }
+      ]
     }
   ],
   "secondary": [
