@@ -35,6 +35,9 @@ def check(feed):
 
 
 def main(words):
+    detail = bool(words) and words[0] == "detail"          # "detail": every feed, with tags and classification
+    if detail:
+        words = words[1:]
     sections, feeds = config.load_all()
     if words and all(w.startswith("http") for w in words):
         feeds = [{"newspaper": "candidate", "section": "-", "url": w} for w in words]
@@ -55,7 +58,7 @@ def main(words):
         counts[state] += 1
         age = f"newest {newest:.0f}h old" if newest is not None else "no dates"
         print(f"{state:5} {f['newspaper'][:28]:28} {f['section']:13} {n:4} stories, {age}  {f['url']}  {err}")
-    if words and not all(w.startswith("http") for w in words):     # newspaper names given: show how its stories are classified
+    if detail or (words and not all(w.startswith("http") for w in words)):     # newspaper names given (or "detail"): show how its stories are classified
         maps = config.load_section_maps(sections)
         fn.configure(sections, maps=maps)
         for f in feeds:
