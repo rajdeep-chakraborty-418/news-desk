@@ -106,6 +106,7 @@ class NewspaperSectionMapTest(TestCase):
         fn.configure(sections, maps=maps)
         feed = {"category": "india", "newspaper": "Paper"}
         self.assertEqual(fn.classify(feed, "x", "", "https://p.com/videos/v1"), ["india", "other"])
+        self.assertEqual(fn.classify(feed, "x", "", "https://p.com/videos/v1", ["Sports"]), ["india", "sports"])   # a topic wins over Other
 
     def test_labels_compare_loosely(self):
         self.assertEqual(config.norm_label("India-News"), config.norm_label("india news"))

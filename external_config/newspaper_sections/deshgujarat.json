@@ -20,11 +20,11 @@
       "Gujarati",
       "Ahmedabad",
       "Surat",
-      "Gift city"
+      "Gift city",
+      "Politics"
     ],
     "world": [
       "India/World",
-      "Politics",
       "Crime",
       "scrollnews",
       "Bangladesh"
@@ -62,21 +62,6 @@
       "Technology"
     ]
   },
-  "other": [
-    "Faith",
-    "Services",
-    "Saurastra",
-    "AMC",
-    "Junagadh",
-    "Jamnagar",
-    "Lion",
-    "Fire",
-    "Electricity",
-    "Power",
-    "Railway",
-    "Western Railway",
-    "Vadodara",
-    "CBI"
-  ],
+  "other": [],
   "unmapped_default": "other"
 }

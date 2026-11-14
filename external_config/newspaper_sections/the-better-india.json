@@ -29,13 +29,8 @@
       "Brand Campaigns",
       "Watch Inspiring Videos",
       "Press Coverage",
-      "Explore all stories",
-      "Visual Stories",
       "lifestyle",
-      "Changemakers",
       "Healthcare",
-      "Governance",
-      "Wild At Heart",
       "Food",
       "Parenting",
       "Gardening"
@@ -60,21 +55,19 @@
       "Travel Stories"
     ],
     "science": [
-      "Innovation Stories",
-      "Innovation"
+      "Innovation Stories"
     ],
     "history": [
       "History Stories"
     ],
     "technology": [
-      "Technology"
+      "Technology",
+      "Innovation"
     ],
     "india": [
       "India"
     ]
   },
-  "other": [
-    "Stories"
-  ],
+  "other": [],
   "unmapped_default": "other"
 }

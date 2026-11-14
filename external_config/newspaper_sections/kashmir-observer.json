@@ -14,9 +14,6 @@
     }
   ],
   "section_map": {
-    "world": [
-      "NEWS"
-    ],
     "india": [
       "LOCAL"
     ],
@@ -34,18 +31,6 @@
       "HEALTH"
     ]
   },
-  "other": [
-    "Ladakh",
-    "Kargil",
-    "Kargil Democratic Alliance (KDA)",
-    "Volkswagen",
-    "Tariq Karra",
-    "Bear Attack",
-    "Accidental Fire",
-    "KHYEN CHYEN",
-    "Rotten Meat",
-    "Drug Peddling",
-    "S Jaishankar"
-  ],
+  "other": [],
   "unmapped_default": "other"
 }

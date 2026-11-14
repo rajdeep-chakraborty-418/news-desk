@@ -209,13 +209,10 @@
   },
   "other": [
     "Education",
-    "Elections",
-    "Trending",
     "Videos",
     "Photos",
     "Opinion",
-    "Web Stories",
-    "Times Evoke"
+    "Web Stories"
   ],
   "unmapped_default": "other"
 }

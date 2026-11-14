@@ -14,7 +14,6 @@
   ],
   "section_map": {
     "world": [
-      "Politics",
       "World"
     ],
     "entertainment": [
@@ -24,17 +23,15 @@
       "Books and Ideas"
     ],
     "india": [
-      "India"
+      "India",
+      "Politics"
     ],
     "business": [
       "Business and Economy"
     ]
   },
   "other": [
-    "The Latest",
-    "Video",
-    "The Reel",
-    "Magazine"
+    "Video"
   ],
   "unmapped_default": "other"
 }

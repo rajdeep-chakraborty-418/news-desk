@@ -40,8 +40,6 @@
       "Tech »"
     ],
     "world": [
-      "News",
-      "Politics",
       "World",
       "News Live!"
     ],
@@ -50,6 +48,9 @@
     ],
     "geopolitics": [
       "Biz Growth Summit"
+    ],
+    "india": [
+      "Politics"
     ]
   },
   "other": [

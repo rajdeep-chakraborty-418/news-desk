@@ -303,6 +303,8 @@ def mapped_sections(newspaper, link, tags):
         for key in look.get(config.norm_label(n), []):
             if key not in out:
                 out.append(key)
+    if "other" in out and len(out) > 1:       # Other is only for stories that fit no topic section
+        out.remove("other")
     return out
 
 

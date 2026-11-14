@@ -24,9 +24,7 @@
       "Kerala HC"
     ],
     "world": [
-      "Metro",
       "International",
-      "Top Stories",
       "China",
       "Donald Trump",
       "Russia"
@@ -43,22 +41,13 @@
     ],
     "technology": [
       "Sci-Tech"
-    ],
-    "lifestyle": [
-      "Home News"
     ]
   },
   "other": [
-    "Trending",
-    "Feature",
     "Editorial",
     "Opinion",
     "Timeout",
-    "Today’s Pic",
-    "BJP",
-    "housing scheme",
-    "Rahul Gandhi",
-    "juvenile"
+    "Today’s Pic"
   ],
   "unmapped_default": "other"
 }

@@ -66,9 +66,7 @@
   },
   "other": [
     "Education",
-    "Opinion",
-    "Trends",
-    "Offbeat"
+    "Opinion"
   ],
   "unmapped_default": "other"
 }

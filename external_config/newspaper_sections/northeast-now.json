@@ -14,9 +14,6 @@
     }
   ],
   "section_map": {
-    "world": [
-      "Top News"
-    ],
     "india": [
       "Northeast News",
       "Assam",
@@ -25,15 +22,10 @@
       "Nagaland",
       "National"
     ],
-    "business": [
-      "Assam Career"
-    ],
     "nature": [
       "Environment"
     ]
   },
-  "other": [
-    "Arunachal"
-  ],
+  "other": [],
   "unmapped_default": "other"
 }

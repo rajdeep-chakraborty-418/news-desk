@@ -212,8 +212,7 @@
       "Kolkata"
     ],
     "world": [
-      "World",
-      "News"
+      "World"
     ],
     "sports": [
       "Sport",
@@ -241,18 +240,12 @@
     ]
   },
   "other": [
-    "Monthly Digest",
     "Opinion",
     "Premium",
     "Editorial",
     "Cartoon",
     "Columns",
-    "Comment",
-    "Interview",
-    "Lead",
-    "Letters",
-    "Open Page",
-    "Races"
+    "Letters"
   ],
   "unmapped_default": "other"
 }

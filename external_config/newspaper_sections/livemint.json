@@ -43,10 +43,8 @@
       "Company Results"
     ],
     "world": [
-      "News",
       "World",
-      "US News",
-      "Latest news"
+      "US News"
     ],
     "india": [
       "India"
@@ -60,19 +58,8 @@
     ]
   },
   "other": [
-    "Bonds",
-    "Gold Price Today",
-    "Silver Price Today",
-    "Fuel",
-    "Petrol price today",
-    "Diesel price today",
-    "WSJ",
-    "Trends",
-    "MyMint",
     "Premium",
-    "Barron's",
-    "Opinion",
-    "Start-ups"
+    "Opinion"
   ],
   "unmapped_default": "other"
 }

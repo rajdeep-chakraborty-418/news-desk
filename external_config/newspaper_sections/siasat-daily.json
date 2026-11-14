@@ -23,7 +23,8 @@
       "Crime in Hyderabad",
       "Karnataka",
       "Narendra Modi",
-      "Telangana Congress"
+      "Telangana Congress",
+      "Politics"
     ],
     "geopolitics": [
       "Middle East",
@@ -44,12 +45,8 @@
       "Technology"
     ],
     "world": [
-      "Featured News",
       "World",
-      "Politics",
-      "Crime",
-      "Top Stories",
-      "Congress"
+      "Crime"
     ],
     "lifestyle": [
       "Lifestyle",
@@ -60,14 +57,7 @@
   "other": [
     "Photos",
     "Videos",
-    "Offbeat",
-    "Opinions",
-    "Islamic Hub",
-    "Rahul Gandhi",
-    "Lead Story",
-    "gold theft",
-    "BJP",
-    "HYDRAA"
+    "Opinions"
   ],
   "unmapped_default": "other"
 }

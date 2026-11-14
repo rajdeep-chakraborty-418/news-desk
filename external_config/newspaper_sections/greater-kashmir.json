@@ -20,16 +20,15 @@
       "Jammu",
       "Srinagar",
       "National",
-      "Jammu &amp; Kashmir"
+      "Jammu &amp; Kashmir",
+      "Politics"
     ],
     "business": [
       "Business"
     ],
     "world": [
-      "Politics",
       "World",
-      "News Shorts",
-      "Latest News"
+      "News Shorts"
     ],
     "sports": [
       "Sports"
@@ -43,27 +42,13 @@
     ]
   },
   "other": [
-    "Today’s Paper",
-    "GKSC",
-    "Bookmarks",
-    "Log Out",
     "Education",
     "Opinion",
     "Web Stories",
-    "Governance",
-    "Ladakh",
     "Videos",
     "Photos",
-    "Security",
-    "Endeavour",
     "Opinion and Editorial",
-    "Page 9",
-    "Page 11",
-    "Page 10",
-    "Page 3",
-    "Page 12",
-    "Editorial page",
-    "Pages"
+    "Editorial page"
   ],
   "unmapped_default": "other"
 }

@@ -15,7 +15,6 @@
   ],
   "section_map": {
     "world": [
-      "News",
       "World",
       "Elections",
       "Crime"
@@ -63,19 +62,10 @@
     ]
   },
   "other": [
-    "WPL",
-    "Astro",
     "Education",
-    "Results",
-    "Brand Wire",
-    "Religion and Spirituality",
-    "Trending",
-    "Offbeat",
     "Fact Check",
     "Explainers",
-    "Live Now",
     "Video",
-    "Reels",
     "Web Stories",
     "Photo Gallery",
     "Opinion"

@@ -17,7 +17,6 @@
       "Cricket",
       "Football",
       "Hockey",
-      "Magazine",
       "Account",
       "Posters",
       "Statsman",
@@ -41,7 +40,6 @@
       "Sportoon",
       "Visual Story",
       "Sportstar Conclave",
-      "Latest News",
       "Playcom",
       "Indian Football",
       "Women’s Football",
@@ -54,15 +52,13 @@
       "Bundesliga"
     ],
     "lifestyle": [
-      "Star Life",
-      "Home"
+      "Star Life"
     ],
     "entertainment": [
       "ACES Awards"
     ]
   },
   "other": [
-    "Shorts",
     "Columns",
     "Videos"
   ],

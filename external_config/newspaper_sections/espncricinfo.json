@@ -18,7 +18,6 @@
       "Series",
       "Teams",
       "Players",
-      "News",
       "Rankings",
       "IPL",
       "Test Cricket",
@@ -28,7 +27,6 @@
     ]
   },
   "other": [
-    "Features",
     "Videos",
     "Podcasts"
   ],

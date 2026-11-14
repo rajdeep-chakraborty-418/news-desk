@@ -15,7 +15,6 @@
   ],
   "section_map": {
     "world": [
-      "Breaking News",
       "NE News",
       "BreakingNews",
       "Arunachal News"
@@ -35,10 +34,7 @@
     ]
   },
   "other": [
-    "Live Blog",
-    "Sentinel Media",
-    "Education",
-    "Top Headlines"
+    "Education"
   ],
   "unmapped_default": "other"
 }

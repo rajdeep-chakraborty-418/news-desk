@@ -18,7 +18,6 @@
       "Feature Stories",
       "why they matter to climate change",
       "Species File",
-      "Uncategorized",
       "farming",
       "COP31",
       "farmers",
@@ -26,35 +25,26 @@
       "Climate disaster",
       "disaster",
       "natural disasters",
-      "Energy security",
-      "energy transition",
-      "ethanol blending",
       "Renewable Energy",
       "Crop loss",
       "farmlands",
       "Paddy",
       "exotic plants",
-      "Biodiversity finance"
+      "Biodiversity finance",
+      "Convention on Biological Diversity",
+      "UN CBD"
     ],
     "lifestyle": [
       "living alongside gaurs,"
     ],
     "business": [
-      "Disaster management"
-    ],
-    "science": [
-      "Convention on Biological Diversity"
-    ],
-    "geopolitics": [
-      "UN CBD"
+      "Energy security",
+      "energy transition",
+      "ethanol blending"
     ]
   },
   "other": [
-    "Features",
-    "Videos",
-    "Specials",
-    "Articles",
-    "Shorts"
+    "Videos"
   ],
   "unmapped_default": "other"
 }

@@ -25,10 +25,7 @@
     ],
     "world": [
       "AP News",
-      "World",
-      "News",
-      "Latest News",
-      "Congress Government"
+      "World"
     ],
     "entertainment": [
       "Entertainment",
@@ -56,13 +53,9 @@
     ]
   },
   "other": [
-    "Rewind",
     "NRI",
     "cartoon",
-    "Education Today",
-    "Rahul Gandhi",
-    "Revanth Reddy",
-    "Bhadradri Kothagudem"
+    "Education Today"
   ],
   "unmapped_default": "other"
 }
