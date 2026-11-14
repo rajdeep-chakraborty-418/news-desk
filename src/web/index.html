@@ -67,14 +67,15 @@
   .navlink:hover, .navnew:hover { color: var(--muted); }
   .reset { padding: 2px 10px; font-size: 11px; border-radius: 999px; }
   .clear { padding: 5px 12px; font-size: 13px; justify-self: start; }
-  #clist { max-height: 40vh; overflow-y: auto; display: grid; gap: 2px; padding-right: 4px; }
-  #clist label { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
-  #clist label:hover { background: var(--bg); }
-  #clist .n { margin-left: auto; color: var(--muted); font-size: 12px; }
+  #clist, #nlist { max-height: 40vh; overflow-y: auto; display: grid; gap: 2px; padding-right: 4px; }
+  #newsbox { border-top: 1px solid var(--line); }
+  #clist label, #nlist label { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
+  #clist label:hover, #nlist label:hover { background: var(--bg); }
+  #clist .n, #nlist .n { margin-left: auto; color: var(--muted); font-size: 12px; }
   @media (max-width: 900px) {
     .layout { grid-template-columns: 1fr; }
     aside { position: static; order: -1; }
-    #clist { max-height: 40vh; }
+    #clist, #nlist { max-height: 40vh; }
   }
   a.tile { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--card); border: 1px solid var(--line);
            border-radius: 10px; overflow: hidden; transition: transform .12s, box-shadow .12s; }
@@ -182,6 +183,14 @@
           <div id="clist" role="group" aria-label="Filter by country"></div>
         </div>
       </details>
+      <details id="newsbox" open>
+        <summary>Newspapers <span class="selnote" id="nselnote">All shown</span></summary>
+        <div class="sidebody">
+          <input type="search" id="nq" placeholder="Find a newspaper…" aria-label="Find a newspaper">
+          <button class="clear" id="nclear" type="button">Show all newspapers</button>
+          <div id="nlist" role="group" aria-label="Filter by newspaper"></div>
+        </div>
+      </details>
     </aside>
   </div>
   <dialog class="notice" id="cooldown" aria-labelledby="cdtitle">
@@ -200,7 +209,7 @@ const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South A
 const PRIMARY_BOOST_MS = 6 * 3600 * 1000;   // primary-source stories rank as if 6 hours newer
 const FIRST = 50;                            // the range starts as articles 1-50 and goes back to that whenever a filter changes
 let MAX = 200;                               // the most stories kept per section (news.json "max_articles"; 200 for older data)
-const state = { lm: "", generated: "", section: "", continent: "All", countries: new Set(), kinds: new Set(), q: "", cq: "", items: [], from: 1, to: FIRST };
+const state = { lm: "", generated: "", section: "", continent: "All", countries: new Set(), papers: new Set(), nq: "", kinds: new Set(), q: "", cq: "", items: [], from: 1, to: FIRST };
 const resetRange = () => { state.from = 1; state.to = FIRST; };
 const $ = (id) => document.getElementById(id);
 
@@ -302,29 +311,39 @@ function makeTile(i, n) {
   return a;
 }
 
-function renderSidebar(base) {
-  const inCont = base.filter(i => state.continent === "All" || i.continent === state.continent);
-  const counts = {};
-  for (const i of inCont) counts[i.country] = (counts[i.country] || 0) + 1;
-  for (const c of state.countries) counts[c] = counts[c] || 0;      // keep ticked countries visible
-  const cq = state.cq.trim().toLowerCase();
-  const names = Object.keys(counts).filter(n => !cq || n.toLowerCase().includes(cq))
-    .sort((a, b) => (state.countries.has(b) - state.countries.has(a)) || counts[b] - counts[a] || a.localeCompare(b));
-  const box = $("clist");
+const paperOf = (i) => i.newspaper || i.source;
+// one checklist (countries or newspapers): counts come from the stories left by every other filter
+function fillChecklist(boxId, noteId, chosen, counts, query, noun) {
+  for (const c of chosen) counts[c] = counts[c] || 0;      // keep ticked names visible
+  const q = query.trim().toLowerCase();
+  const names = Object.keys(counts).filter(n => !q || n.toLowerCase().includes(q))
+    .sort((a, b) => (chosen.has(b) - chosen.has(a)) || counts[b] - counts[a] || a.localeCompare(b));
+  const box = $(boxId);
   box.replaceChildren();
   for (const n of names) {
     const l = document.createElement("label");
-    const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = state.countries.has(n);
+    const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = chosen.has(n);
     cb.onchange = () => {
-      cb.checked ? state.countries.add(n) : state.countries.delete(n);
+      cb.checked ? chosen.add(n) : chosen.delete(n);
       resetRange(); render();
     };
     const name = document.createElement("span"); name.textContent = n;
     const num = document.createElement("span"); num.className = "n"; num.textContent = counts[n];
     l.append(cb, name, num); box.append(l);
   }
-  if (!names.length) { const e = document.createElement("div"); e.className = "selnote"; e.textContent = "No countries found."; box.append(e); }
-  $("selnote").textContent = state.countries.size ? `${state.countries.size} selected` : "All shown";
+  if (!names.length) { const e = document.createElement("div"); e.className = "selnote"; e.textContent = `No ${noun} found.`; box.append(e); }
+  $(noteId).textContent = chosen.size ? `${chosen.size} selected` : "All shown";
+}
+
+function renderSidebar(base) {
+  const inCont = base.filter(i => state.continent === "All" || i.continent === state.continent);
+  const cCounts = {}, pCounts = {};
+  for (const i of inCont) {
+    if (!state.papers.size || state.papers.has(paperOf(i))) cCounts[i.country] = (cCounts[i.country] || 0) + 1;
+    if (!state.countries.size || state.countries.has(i.country)) pCounts[paperOf(i)] = (pCounts[paperOf(i)] || 0) + 1;
+  }
+  fillChecklist("clist", "selnote", state.countries, cCounts, state.cq, "countries");
+  fillChecklist("nlist", "nselnote", state.papers, pCounts, state.nq, "newspapers");
 }
 
 function render() {
@@ -332,11 +351,12 @@ function render() {
   renderSidebar(base);
   const list = base.filter(i =>
     (state.continent === "All" || i.continent === state.continent) &&
-    (state.countries.size === 0 || state.countries.has(i.country))
+    (state.countries.size === 0 || state.countries.has(i.country)) &&
+    (state.papers.size === 0 || state.papers.has(paperOf(i)))
   ).sort((a, b) => score(b) - score(a));
 
   const total = Math.min(list.length, MAX);
-  // the range is applied last, on the list left after the section, continent, country, source-type and search filters;
+  // the range is applied last, on the list left after the section, continent, country, newspaper, source-type and search filters;
   // articles are numbered 1.. within that list
   const from = Math.min(Math.max(1, state.from | 0), MAX), to = Math.min(Math.max(from, state.to | 0), MAX);
   state.from = from; state.to = to;
@@ -404,13 +424,15 @@ function build() {
   }
   $("q").addEventListener("input", (e) => { state.q = e.target.value; resetRange(); render(); });
   $("cq").addEventListener("input", (e) => { state.cq = e.target.value; render(); });
+  $("nq").addEventListener("input", (e) => { state.nq = e.target.value; render(); });
   $("clear").onclick = () => { state.countries.clear(); state.cq = ""; $("cq").value = ""; resetRange(); render(); };
+  $("nclear").onclick = () => { state.papers.clear(); state.nq = ""; $("nq").value = ""; resetRange(); render(); };
   // Reset: back to the starting view - first section, all continents and countries, both source types, no searches,
   // no newspaper chosen, and the refresh options at their defaults (the defaults in settings.json)
   $("reset").onclick = () => {
-    state.section = SECTIONS[0][0]; state.continent = "All"; state.countries.clear(); state.kinds.clear();
-    state.q = ""; state.cq = ""; resetRange();
-    $("q").value = ""; $("cq").value = "";
+    state.section = SECTIONS[0][0]; state.continent = "All"; state.countries.clear(); state.papers.clear(); state.kinds.clear();
+    state.q = ""; state.cq = ""; state.nq = ""; resetRange();
+    $("q").value = ""; $("cq").value = ""; $("nq").value = "";
     $("fPrimary").checked = false; $("fSecondary").checked = false;
     tabs.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
     chips.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));

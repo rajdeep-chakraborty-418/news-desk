@@ -244,6 +244,25 @@ class WebUITest(BrowserBase):
         self.page.click("#clear")
         self.assertEqual(self.page.inner_text("#selnote"), "All shown")
 
+    def test_newspaper_panel_filters_together_with_the_other_selections(self):
+        self.open(); self.tab("World Desk")
+        self.assertEqual(self.page.inner_text("#nselnote"), "All shown")
+        names = [t.split("\n")[0] for t in self.page.locator("#nlist label").all_inner_texts()]
+        self.assertIn("Alpha Times", names); self.assertIn("Beta Post", names)
+        self.page.locator("#nlist label", has_text="Alpha Times").locator("input").check()
+        self.assertEqual(self.page.inner_text("#nselnote"), "1 selected")
+        before = self.tiles()
+        self.assertTrue(0 < before < 50)
+        self.assertTrue(all("Alpha Times" in t for t in self.page.locator("a.tile").all_inner_texts()))
+        self.page.locator("#clist label", has_text="France").locator("input").check()      # combines with the country filter
+        self.assertLessEqual(self.tiles(), before)
+        self.page.fill("#nq", "beta")
+        self.assertEqual(self.page.locator("#nlist label").count() >= 1, True)
+        self.page.click("#nclear")
+        self.assertEqual(self.page.inner_text("#nselnote"), "All shown")
+        self.page.click("#reset")
+        self.assertEqual(self.page.input_value("#nq"), "")
+
     def test_search_box_filters_by_text(self):
         self.open(); self.tab("World Desk")
         self.page.fill("#q", "story 12")
