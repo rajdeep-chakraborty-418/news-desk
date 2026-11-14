@@ -397,8 +397,12 @@ def main():
     print(f"Article-page images: found {got} of {tried} tried; trimmed {before - len(items)} extra stories")
 
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    generated_at = datetime.now(timezone.utc).isoformat()
+    # refresh.json is tiny: the page reads it to know when the next manual refresh is allowed without downloading news.json
+    (OUT_FILE.parent / "refresh.json").write_text(json.dumps(
+        {"refreshed_at": generated_at, "range_hours": WINDOW_HOURS, "max_articles": ARTICLE_COUNT}))
     OUT_FILE.write_text(json.dumps({
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": generated_at,
         "range_hours": WINDOW_HOURS,
         "max_articles": ARTICLE_COUNT,
         "items": items,

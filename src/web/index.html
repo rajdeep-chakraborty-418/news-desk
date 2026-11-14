@@ -98,7 +98,19 @@
   .src { font-weight: 700; color: var(--ink); }
   .pri { color: var(--accent); font-weight: 700; }
   .empty { text-align: center; color: var(--muted); padding: 60px 0; font-family: system-ui, sans-serif; grid-column: 1 / -1; }
-  .more { display: block; margin: 22px auto 0; padding: 10px 26px; }
+  .rangebar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 14px; font: 13px system-ui, sans-serif; color: var(--muted); }
+  .rangebar label { display: inline-flex; align-items: center; gap: 6px; }
+  .rangebar input[type=number] { width: 74px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--ink); font: inherit; }
+  .rangebar .quick { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+  .rangebar .quick button { padding: 3px 10px; font-size: 12px; border-radius: 999px; }
+  .rangebar .rcount { margin-left: auto; }
+  .num { z-index: 3; position: absolute; right: 8px; top: 8px; font: 700 11px system-ui, sans-serif; padding: 3px 8px; border-radius: 999px; background: rgba(0,0,0,.72); color: #fff; }
+  dialog.notice { max-width: 420px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); color: var(--ink); padding: 22px 24px; font: 15px/1.5 system-ui, sans-serif; }
+  dialog.notice::backdrop { background: rgba(0,0,0,.45); }
+  dialog.notice h3 { margin: 0 0 8px; font-size: 17px; }
+  dialog.notice p { margin: 0 0 16px; }
+  dialog.notice .when { font-weight: 600; }
+  dialog.notice button { padding: 7px 22px; }
   [hidden] { display: none !important; }
   .end { text-align: center; color: var(--muted); font: 14px system-ui, sans-serif; margin-top: 22px; }
   footer { margin-top: 36px; color: var(--muted); font: 13px system-ui, sans-serif; text-align: center; }
@@ -152,9 +164,14 @@
 
   <div class="layout">
     <div>
+      <div class="rangebar" id="rangebar" role="group" aria-label="Range of articles to show">
+        <span>Show articles</span>
+        <label>From <input type="number" id="rfrom" min="1" inputmode="numeric" aria-label="First article number"></label>
+        <label>To <input type="number" id="rto" min="1" inputmode="numeric" aria-label="Last article number"></label>
+        <span class="quick" id="rquick"></span>
+        <span class="rcount" id="rcount"></span>
+      </div>
       <main class="grid" id="grid" aria-live="polite"></main>
-      <button class="more" id="more" hidden>Show more stories</button>
-      <div class="end" id="end" hidden>No more articles available.</div>
     </div>
     <aside id="side">
       <details id="sidebox" open>
@@ -167,23 +184,29 @@
       </details>
     </aside>
   </div>
+  <dialog class="notice" id="cooldown" aria-labelledby="cdtitle">
+    <h3 id="cdtitle">Please wait for the next refresh</h3>
+    <p id="cdtext"></p>
+    <form method="dialog"><button id="cdok">OK</button></form>
+  </dialog>
   <noscript><p class="empty">Please enable JavaScript to see the headlines.</p></noscript>
 
-  <footer>Headlines, images and links belong to their respective newspapers. Click a tile to read the original story. Refreshed every 2 hours.</footer>
+  <footer>Headlines, images and links belong to their respective newspapers. Click a tile to read the original story. <span id="footnote">Headlines refresh when someone clicks Refresh.</span></footer>
 </div>
 
 <script>
 let SECTIONS = [];   // [key, label] pairs, filled from sections.json (external_config/sections.json) before the page is built
 const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
 const PRIMARY_BOOST_MS = 6 * 3600 * 1000;   // primary-source stories rank as if 6 hours newer
-const FIRST = 50, STEP = 50;                 // show 50 first, each click adds 50 ...
-let MAX = 200;                               // ... up to the number of stories kept per section (news.json "max_articles"; 200 for older data)
-const state = { lm: "", generated: "", section: "", continent: "All", countries: new Set(), kinds: new Set(), q: "", cq: "", items: [], shown: FIRST };
+const FIRST = 50;                            // the range starts as articles 1-50 and goes back to that whenever a filter changes
+let MAX = 200;                               // the most stories kept per section (news.json "max_articles"; 200 for older data)
+const state = { lm: "", generated: "", section: "", continent: "All", countries: new Set(), kinds: new Set(), q: "", cq: "", items: [], from: 1, to: FIRST };
+const resetRange = () => { state.from = 1; state.to = FIRST; };
 const $ = (id) => document.getElementById(id);
 
 const color = (sec) => `var(--c-${sec})`;
-// "Last successful refresh" is when news.json was generated; the next scheduled one is due refresh.interval_minutes later
-// (settings.json). A manual refresh or a new deployment restarts that count, and this recalculates from the new data.
+// "Last Refresh" is when news.json was generated. There is no automatic refresh: the next manual one is allowed
+// refresh.manual_cooldown_minutes later (settings.json), counted from the last refresh.
 const fmtTime = (d) => d.toLocaleString([], { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
 function inText(ms) {
   const m = Math.round(ms / 60000);
@@ -200,8 +223,8 @@ function paintSchedule() {
   const mark = Object.assign(document.createElement("span"), { textContent: failed ? "✗" : "✓", title: failed ? "Last refresh failed" : "Last refresh succeeded" });
   mark.style.color = failed ? "#c62828" : "#2e9d4f";
   last.replaceChildren(document.createTextNode("Last Refresh "), mark, document.createTextNode(" " + fmtTime(when)));
-  if (!SETTINGS || !SETTINGS.interval_minutes) { next.textContent = ""; return; }
-  next.textContent = "Next Refresh " + fmtTime(new Date(when.getTime() + SETTINGS.interval_minutes * 60000));
+  if (!SETTINGS || SETTINGS.cooldown_minutes === undefined) { next.textContent = ""; return; }
+  next.textContent = "Next Refresh " + fmtTime(new Date(when.getTime() + SETTINGS.cooldown_minutes * 60000));
 }
 
 function ago(iso) {
@@ -246,7 +269,7 @@ function attachImage(thumb, src) {
   thumb.append(img);
 }
 
-function makeTile(i) {
+function makeTile(i, n) {
   const a = document.createElement("a");
   a.className = "tile";
   a.href = i.link; a.target = "_blank"; a.rel = "noopener noreferrer";
@@ -258,6 +281,8 @@ function makeTile(i) {
   if (i.image && i.image.startsWith("https://")) attachImage(thumb, i.image);
   const badge = document.createElement("span"); badge.className = "badge"; badge.textContent = i.country;
   thumb.append(badge);
+  const num = document.createElement("span"); num.className = "num"; num.textContent = "#" + n; num.title = "Article number in this list";
+  thumb.append(num);
 
   const body = document.createElement("div"); body.className = "body";
   const meta = document.createElement("div"); meta.className = "meta";
@@ -292,7 +317,7 @@ function renderSidebar(base) {
     const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = state.countries.has(n);
     cb.onchange = () => {
       cb.checked ? state.countries.add(n) : state.countries.delete(n);
-      state.shown = FIRST; render();
+      resetRange(); render();
     };
     const name = document.createElement("span"); name.textContent = n;
     const num = document.createElement("span"); num.className = "n"; num.textContent = counts[n];
@@ -310,20 +335,38 @@ function render() {
     (state.countries.size === 0 || state.countries.has(i.country))
   ).sort((a, b) => score(b) - score(a));
 
+  const total = Math.min(list.length, MAX);
+  // the range is applied last, on the list left after the section, continent, country, source-type and search filters;
+  // articles are numbered 1.. within that list
+  const from = Math.min(Math.max(1, state.from | 0), MAX), to = Math.min(Math.max(from, state.to | 0), MAX);
+  state.from = from; state.to = to;
+  $("rfrom").value = from; $("rto").value = to;
+  $("rfrom").max = $("rto").max = MAX;
   const grid = $("grid");
   grid.replaceChildren();
-  const limit = Math.min(state.shown, MAX);
+  const shown = list.slice(0, total).slice(from - 1, to);
   if (!list.length) {
     const d = document.createElement("div"); d.className = "empty";
     d.textContent = "No stories match this filter right now.";
     grid.append(d);
+  } else if (!shown.length) {
+    const d = document.createElement("div"); d.className = "empty";
+    d.textContent = `No articles in this range: only ${total} match the current filters.`;
+    grid.append(d);
   }
-  for (const i of list.slice(0, limit)) grid.append(makeTile(i));
-
-  const canMore = list.length > limit && limit < MAX;
-  $("more").hidden = !canMore;
-  $("more").textContent = `Show more stories (${Math.min(list.length, MAX) - limit} more)`;
-  $("end").hidden = canMore || list.length === 0;
+  shown.forEach((it, k) => grid.append(makeTile(it, from + k)));
+  $("rcount").textContent = !total ? "0 matching articles"
+    : shown.length ? `Showing ${from}–${from + shown.length - 1} of ${total} matching articles` : `0 of ${total} matching articles`;
+  const quick = $("rquick"); quick.replaceChildren();
+  const blocks = [[1, 50], [51, 100], [101, 200], [201, 500], [501, 1000], [1, MAX]];
+  blocks.forEach(([a, b], n) => {
+    if (a > total && n < blocks.length - 1) return;                  // nothing that far down in this list
+    const btn = document.createElement("button"); btn.type = "button";
+    btn.textContent = n === blocks.length - 1 ? "All" : `${a}–${b}`;
+    btn.setAttribute("aria-pressed", a === from && b === to);
+    btn.onclick = () => { state.from = a; state.to = b; render(); };
+    quick.append(btn);
+  });
 }
 
 function build() {
@@ -333,7 +376,7 @@ function build() {
     b.textContent = label; b.style.setProperty("--tabc", color(key));
     b.setAttribute("aria-pressed", key === state.section);
     b.onclick = () => {
-      state.section = key; state.continent = "All"; state.shown = FIRST;
+      state.section = key; state.continent = "All"; resetRange();
       tabs.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
       $("chips").querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
       render();
@@ -345,7 +388,7 @@ function build() {
     const b = document.createElement("button");
     b.textContent = c; b.setAttribute("aria-pressed", c === state.continent);
     b.onclick = () => {
-      state.continent = c; state.shown = FIRST;
+      state.continent = c; resetRange();
       chips.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
       render();
     };
@@ -356,17 +399,17 @@ function build() {
   for (const [id, kind] of [["fPrimary", "primary"], ["fSecondary", "secondary"]]) {
     $(id).onchange = (e) => {
       e.target.checked ? state.kinds.add(kind) : state.kinds.delete(kind);
-      state.shown = FIRST; render();
+      resetRange(); render();
     };
   }
-  $("q").addEventListener("input", (e) => { state.q = e.target.value; state.shown = FIRST; render(); });
+  $("q").addEventListener("input", (e) => { state.q = e.target.value; resetRange(); render(); });
   $("cq").addEventListener("input", (e) => { state.cq = e.target.value; render(); });
-  $("clear").onclick = () => { state.countries.clear(); state.cq = ""; $("cq").value = ""; state.shown = FIRST; render(); };
+  $("clear").onclick = () => { state.countries.clear(); state.cq = ""; $("cq").value = ""; resetRange(); render(); };
   // Reset: back to the starting view - first section, all continents and countries, both source types, no searches,
   // no newspaper chosen, and the refresh options at their defaults (the defaults in settings.json)
   $("reset").onclick = () => {
     state.section = SECTIONS[0][0]; state.continent = "All"; state.countries.clear(); state.kinds.clear();
-    state.q = ""; state.cq = ""; state.shown = FIRST;
+    state.q = ""; state.cq = ""; resetRange();
     $("q").value = ""; $("cq").value = "";
     $("fPrimary").checked = false; $("fSecondary").checked = false;
     tabs.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
@@ -377,7 +420,9 @@ function build() {
     }
     render(); window.scrollTo({ top: 0 });
   };
-  $("more").onclick = () => { state.shown = Math.min(state.shown + STEP, MAX); render(); };
+  for (const id of ["rfrom", "rto"]) {                                // typed range: applied when the box loses focus or Enter is pressed
+    $(id).addEventListener("change", () => { state.from = parseInt($("rfrom").value, 10) || 1; state.to = parseInt($("rto").value, 10) || state.from; render(); });
+  }
   if (window.innerWidth <= 900) $("sidebox").open = false;   // start collapsed on phones
 }
 
@@ -421,9 +466,11 @@ async function fetchRuns() {
   const r = await fetch(API + "/runs?per_page=10", { headers: ghHeaders(), cache: "no-store" });
   if (!r.ok) throw new Error("HTTP " + r.status);
   const d = await r.json();
-  return (d.workflow_runs || []).filter(x => x.event !== "schedule").sort((a, b) => b.id - a.id);
+  // a run the cooldown gate cancelled was not a refresh
+  return (d.workflow_runs || []).filter(x => x.event !== "schedule" && x.conclusion !== "cancelled").sort((a, b) => b.id - a.id);
 }
-const COUNT_KEY = "rcnd_count", RANGE_KEY = "rcnd_range";
+// "_v2": the saved choices from before the defaults changed to 24 h / 1000 are ignored once
+const COUNT_KEY = "rcnd_count_v2", RANGE_KEY = "rcnd_range_v2";
 // the remembered choice is used only while it is still one of the configured options
 function remembered(key, options, fallback) { try { const v = localStorage.getItem(key); if (options.map(String).includes(v)) return v; } catch (e) {} return String(fallback); }
 const getRange = () => remembered(RANGE_KEY, SETTINGS.time_ranges.map((r) => r.hours), SETTINGS.default_hours);
@@ -469,7 +516,7 @@ async function trackRun(baselineId, startWaitMs) {
     }
     const mine = runs.filter(x => x.id > baselineId).pop();   // oldest run started after the click
     if (!mine) {
-      if (Date.now() - t0 > startWaitMs) { showMsg("The refresh has not started yet. If one ran a few minutes ago it may be fresh already; otherwise try again in a minute."); break; }
+      if (Date.now() - t0 > startWaitMs) { showMsg("The refresh has not started yet. It may have been declined because a refresh finished recently (see Next Refresh), or the request is still on its way; check again in a minute."); break; }
       continue;
     }
     if (mine.status === "completed") { rf.last = mine; break; }
@@ -505,10 +552,33 @@ async function sendRequest() {
   if (!r.ok) throw new Error("HTTP " + r.status);
   return window.RC_WAIT_MS || 180000;                    // the scheduler checks the relay about every 30 s
 }
+// When may the next manual refresh start? Read from refresh.json (tiny, written by every refresh) and judged by the
+// server's clock (the Date header), so a wrong clock on this device cannot get around the wait. Returns a Date or null.
+async function nextAllowed() {
+  try {
+    const r = await fetch("refresh.json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) return null;
+    const d = await r.json();
+    const done = Date.parse(d.refreshed_at);
+    if (isNaN(done) || !SETTINGS || SETTINGS.cooldown_minutes === undefined) return null;
+    const serverNow = Date.parse(r.headers.get("date") || "") || Date.now();
+    const at = done + SETTINGS.cooldown_minutes * 60000;
+    return at > serverNow ? { at: new Date(at), left: at - serverNow } : null;
+  } catch (e) { return null; }
+}
+function showCooldown(w) {
+  $("cdtext").replaceChildren(document.createTextNode("A refresh was completed recently. The next refresh is available at "),
+    Object.assign(document.createElement("span"), { className: "when", textContent: fmtTime(w.at) }),
+    document.createTextNode(" (" + inText(w.left) + "). Please try again then."));
+  const dlg = $("cooldown");
+  if (dlg.showModal) { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute("open", "");
+}
 async function startRefresh() {
   if (rf.busy) return;
   showMsg("");
   rf.busy = true; rf.note = "Starting…"; paintButton();
+  const blocked = await nextAllowed();
+  if (blocked) { rf.busy = false; rf.note = ""; paintButton(); showCooldown(blocked); return; }   // too soon: nothing is sent
   let baseline = 0;
   try { const runs = await fetchRuns(); baseline = runs.length ? runs[0].id : 0; } catch (e) {}
   let wait;
@@ -524,6 +594,10 @@ function initRefreshControls() {
   for (const r of SETTINGS.time_ranges) $("range").appendChild(new Option(r.label, r.hours));
   for (const c of SETTINGS.article_counts) $("count").appendChild(new Option(c, c));
   RELAY.topic = SETTINGS.request_topic;
+  if (SETTINGS.cooldown_minutes) {
+    const h = SETTINGS.cooldown_minutes / 60;
+    $("footnote").textContent = `Headlines refresh when someone clicks Refresh, at most once every ${Number.isInteger(h) ? h + " hours" : SETTINGS.cooldown_minutes + " minutes"}.`;
+  }
   $("count").value = getCount();
   $("count").onchange = (e) => { try { localStorage.setItem(COUNT_KEY, e.target.value); } catch (err) {} };
   $("range").value = getRange();
@@ -531,7 +605,7 @@ function initRefreshControls() {
 }
 $("refresh").onclick = startRefresh;
 syncStatus();
-setInterval(() => { if (!rf.busy) paintButton(); paintSchedule(); }, 60 * 1000);   // keep "x min ago" / "in x min" fresh
+setInterval(() => { if (!rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
 // sections.json decides the tabs (order, names) and their colours; the page cannot start without it
 async function loadSections() {
   const list = await (await fetch("sections.json?t=" + Date.now())).json();

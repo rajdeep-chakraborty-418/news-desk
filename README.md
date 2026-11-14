@@ -34,10 +34,13 @@ site/                   generated, not committed
   `also_from_sections`, and from `general` feeds when `include_general_newspapers` is true
   (`extra_keywords_for_general_newspapers` adds words for those). `place` pins the story's country
   (`{"country", "continent"}`) or takes it from the newspaper (`"newspaper"`).
-- **Settings** (`settings.json`): `refresh.interval_minutes` (how often the scheduled refresh runs),
-  `refresh.min_gap_seconds`, `refresh.request_topic`, `time_ranges` (the "Fetch stories from" choices and default) and
-  `article_counts` (the "Stories per section" choices and default). Scheduled refreshes use the defaults.
-  The cron line in `update.yml` is the one thing GitHub makes you write in the workflow itself.
+- **Settings** (`settings.json`): `refresh.manual_cooldown_minutes` (after a refresh finishes, no other refresh is
+  accepted for this long; 360 = 6 hours), `refresh.min_gap_seconds`, `refresh.request_topic`, `time_ranges` (the
+  "Fetch stories from" choices and default) and `article_counts` (the "Stories per section" choices and default).
+  **There is no automatic refresh**: the news only updates when someone clicks Refresh. The page checks the cooldown
+  first (using `refresh.json`, written by every refresh, and the server's clock) and shows a "please wait" popup; the
+  scheduler job and the workflow check it again, so it cannot be bypassed. A failed refresh does not start a cooldown.
+  A code push only redeploys the site with the headlines it already has.
 
 A mistake in these files stops the build with a message naming the file, the entry and what to fix.
 Set `NEWSDESK_CONFIG_DIR` to read the configuration from another folder.
@@ -73,4 +76,4 @@ when a feed has none; the page letterboxes odd shapes and falls back to a placeh
 
 ## Publish for free with GitHub Pages
 Public repository, Settings -> Pages -> Source: GitHub Actions, then run "Update news and deploy" once.
-GitHub may delay scheduled runs and pauses them in repositories with no activity for 60 days.
+The listener job (`scheduler.yml`) restarts itself every ~3 hours; GitHub may delay its backup schedule and pauses scheduled workflows in repositories with no activity for 60 days.

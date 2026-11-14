@@ -153,21 +153,73 @@ class WebUITest(BrowserBase):
         self.assertIn("Gazette Home", tile.inner_text())
         self.assertIn("Primary", tile.inner_text())
 
-    # ---------------------------------------------------------------- paging
-    def test_shows_50_then_more_up_to_max_articles_then_a_message(self):
+    # ---------------------------------------------------------------- article range and numbering
+    def nums(self):
+        return [int(t.lstrip("#")) for t in self.page.locator(".tile .num").all_inner_texts()]
+
+    def set_range(self, a, b):
+        # both boxes are set, then one "change" (what leaving the box or pressing Enter does)
+        self.page.evaluate("([a, b]) => { rfrom.value = a; rto.value = b; rto.dispatchEvent(new Event('change')); }", [str(a), str(b)])
+
+    def test_starts_with_articles_1_to_50_numbered(self):
         self.open(); self.tab("World Desk")
         self.assertEqual(self.tiles(), 50)
-        self.assertTrue(self.page.is_visible("#more")); self.assertTrue(self.page.is_hidden("#end"))
-        self.page.click("#more"); self.assertEqual(self.tiles(), 100)
-        self.page.click("#more"); self.assertEqual(self.tiles(), 120)       # max_articles in news.json is 120, not 130
-        self.assertTrue(self.page.is_hidden("#more"))
-        self.assertEqual(self.page.inner_text("#end"), "No more articles available.")
+        self.assertEqual(self.nums(), list(range(1, 51)))
+        self.assertEqual((self.page.input_value("#rfrom"), self.page.input_value("#rto")), ("1", "50"))
+        self.assertEqual(self.page.inner_text("#rcount"), "Showing 1–50 of 120 matching articles")   # max_articles is 120, not 130
 
-    def test_paging_resets_when_a_filter_changes(self):
-        self.open(); self.tab("World Desk"); self.page.click("#more")
-        self.assertEqual(self.tiles(), 100)
+    def test_typed_range_shows_those_numbers(self):
+        self.open(); self.tab("World Desk")
+        self.set_range(11, 20)
+        self.assertEqual(self.nums(), list(range(11, 21)))
+        self.assertEqual(self.page.inner_text("#rcount"), "Showing 11–20 of 120 matching articles")
+
+    def test_range_is_clamped_and_never_shows_more_than_exists(self):
+        self.open(); self.tab("World Desk")
+        self.set_range(100, 5000)
+        self.assertEqual(self.nums(), list(range(100, 121)))                  # up to the 120 kept
+        self.set_range(0, 0)
+        self.assertEqual((self.page.input_value("#rfrom"), self.page.input_value("#rto")), ("1", "1"))
+        self.set_range(30, 10)                                                # "to" below "from" is raised to "from"
+        self.assertEqual(self.nums(), [30])
+
+    def test_range_beyond_the_matches_says_so(self):
+        self.open(); self.tab("World Desk")
+        self.page.check("#fPrimary")                                          # 33 primary stories
+        self.set_range(40, 60)
+        self.assertEqual(self.tiles(), 0)
+        self.assertIn("only 33 match", self.page.inner_text("#grid"))
+
+    def test_quick_buttons(self):
+        self.open(); self.tab("World Desk")
+        texts = self.page.locator("#rquick button").all_inner_texts()
+        self.assertEqual(texts, ["1–50", "51–100", "101–200", "All"])         # 120 articles: nothing at 201+
+        self.page.click("#rquick button:text-is('51–100')")
+        self.assertEqual(self.nums(), list(range(51, 101)))
+        self.page.click("#rquick button:text-is('All')")
+        self.assertEqual(self.tiles(), 120)
+
+    def test_numbers_are_within_the_filtered_list_and_the_range_works_with_every_filter(self):
+        self.open(); self.tab("World Desk")
         self.page.check("#fPrimary")
         self.assertEqual(self.tiles(), 33)
+        self.assertEqual(self.nums(), list(range(1, 34)))
+        self.set_range(5, 10)
+        self.assertEqual(self.nums(), [5, 6, 7, 8, 9, 10])
+        self.page.click("#chips button:text-is('Europe')")                    # a filter change goes back to 1-50 of the new list
+        self.assertEqual((self.page.input_value("#rfrom"), self.page.input_value("#rto")), ("1", "50"))
+        self.assertEqual(self.nums(), list(range(1, self.tiles() + 1)))
+        self.page.fill("#q", "World story"); self.set_range(2, 3)
+        self.assertEqual(self.nums(), [2, 3])
+        self.assertTrue(all("World story" in t for t in self.page.locator(".tile h2").all_inner_texts()))
+
+    def test_reset_and_tab_change_return_to_1_50(self):
+        self.open(); self.tab("World Desk"); self.set_range(20, 30)
+        self.page.click("#reset")
+        self.assertEqual((self.page.input_value("#rfrom"), self.page.input_value("#rto")), ("1", "50"))
+        self.tab("World Desk"); self.set_range(20, 30); self.tab("Sports Desk")
+        self.assertEqual((self.page.input_value("#rfrom"), self.page.input_value("#rto")), ("1", "50"))
+        self.assertEqual(self.nums(), [1, 2, 3])
 
     # ---------------------------------------------------------------- filters
     def test_continent_chips(self):
@@ -323,9 +375,17 @@ class WebUITest(BrowserBase):
         self.page.select_option("#range", "72"); self.page.select_option("#count", "250")
         self.page.reload(); self.page.wait_for_function("document.querySelectorAll('#range option').length > 0")
         self.assertEqual((self.page.input_value("#range"), self.page.input_value("#count")), ("72", "250"))
-        self.page.evaluate("localStorage.setItem('rcnd_range', '999'); localStorage.setItem('rcnd_count', '77')")
+        self.page.evaluate("localStorage.setItem('rcnd_range_v2', '999'); localStorage.setItem('rcnd_count_v2', '77')")
         self.page.reload(); self.page.wait_for_function("document.querySelectorAll('#range option').length > 0")
         self.assertEqual((self.page.input_value("#range"), self.page.input_value("#count")), ("24", "150"))
+
+    def test_choices_saved_before_the_defaults_changed_are_ignored_once(self):
+        self.page.add_init_script("if (!localStorage.getItem('seeded')) { localStorage.setItem('seeded', '1'); localStorage.setItem('rcnd_range', '72'); localStorage.setItem('rcnd_count', '250'); }")
+        self.open()
+        self.assertEqual((self.page.input_value("#range"), self.page.input_value("#count")), ("24", "150"))   # old saved values not used
+        self.page.select_option("#range", "72")                                                              # a new choice is remembered again
+        self.page.reload(); self.page.wait_for_function("document.querySelectorAll('#range option').length > 0")
+        self.assertEqual(self.page.input_value("#range"), "72")
 
     def test_page_reports_when_the_configuration_cannot_load(self):
         self.page.route("**/sections.json*", lambda r: r.fulfill(status=404, body="nope"))
@@ -408,11 +468,81 @@ class WebUITest(BrowserBase):
         self.open()
         self.assertIn("Last Refresh", self.page.inner_text("#lastrefresh"))
 
-    def test_header_shows_the_next_scheduled_refresh(self):
+    def test_header_shows_the_next_manual_refresh_one_cooldown_after_the_last(self):
         self.open()
         self.page.wait_for_function("document.querySelector('#nextrefresh').innerText.startsWith('Next Refresh')")
-        text = self.page.inner_text("#nextrefresh")
-        self.assertTrue(text.startswith("Next Refresh "))
+        self.assertIn("✓", self.page.inner_text("#lastrefresh"))
+        want = self.page.evaluate("""(g) => { const d = new Date(new Date(g).getTime() + 60 * 60000);
+            return d.toLocaleString([], { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }); }""", NOW.isoformat())
+        self.assertEqual(self.page.inner_text("#nextrefresh"), "Next Refresh " + want)       # sample cooldown is 60 minutes
+        self.assertNotIn("scheduled", self.page.inner_text("#updated").lower())
+
+    # ---------------------------------------------------------------- the cooldown between manual refreshes
+    def cooldown_page(self, refreshed_minutes_ago):
+        """Opens the page with refresh.json saying the last refresh finished that long ago; returns the list of relay posts."""
+        posts = []
+        done = (datetime.now(timezone.utc) - timedelta(minutes=refreshed_minutes_ago)).isoformat()
+        self.page.route("**/refresh.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps({"refreshed_at": done})))
+        self.page.route("https://ntfy.sh/**", lambda r: (posts.append(r.request.post_data), r.fulfill(status=200, body="{}")))
+        self.page.route("https://api.github.com/**", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps({"workflow_runs": [run(5, "completed", "success")]})))
+        self.open(); self.page.wait_for_function("document.querySelector('#rstatus').innerText.startsWith('Last')")
+        return posts
+
+    def test_refresh_inside_the_cooldown_sends_nothing_and_explains(self):
+        posts = self.cooldown_page(10)                                                   # finished 10 min ago, cooldown 60
+        self.page.click("#refresh")
+        self.page.wait_for_selector("#cooldown[open]")
+        text = self.page.inner_text("#cdtext")
+        self.assertIn("next refresh is available at", text)
+        self.assertRegex(text, r"in (49|50) min")
+        self.page.click("#cdok")
+        self.page.wait_for_selector("#cooldown", state="hidden")
+        self.page.wait_for_timeout(300)
+        self.assertEqual(posts, [])                                                      # nothing was requested
+        self.assertEqual(self.dialogs, [])
+
+    def test_every_choice_of_range_and_count_is_blocked_during_the_cooldown(self):
+        posts = self.cooldown_page(10)
+        for hours, count in (("6", "50"), ("72", "250")):
+            self.page.select_option("#range", hours); self.page.select_option("#count", count)
+            self.page.click("#refresh"); self.page.wait_for_selector("#cooldown[open]")
+            self.page.click("#cdok"); self.page.wait_for_selector("#cooldown", state="hidden")
+        self.assertEqual(posts, [])
+
+    def test_refresh_after_the_cooldown_is_sent(self):
+        posts = self.cooldown_page(61)
+        self.page.click("#refresh")
+        self.page.wait_for_function("window.__n = 1", timeout=1000)
+        self.page.wait_for_timeout(500)
+        self.assertEqual(posts, ["hours=24&count=150"])
+        self.assertTrue(self.page.is_hidden("#cooldown"))
+
+    def test_the_wait_is_judged_by_the_servers_clock_not_the_devices(self):
+        posts = []
+        done = (datetime.now(timezone.utc) - timedelta(minutes=10)).isoformat()
+        far_future = (datetime.now(timezone.utc) + timedelta(days=2)).strftime("%a, %d %b %Y %H:%M:%S GMT")   # server says it is 2 days later
+        self.page.route("**/refresh.json*", lambda r: r.fulfill(status=200, content_type="application/json", headers={"Date": far_future}, body=json.dumps({"refreshed_at": done})))
+        self.page.route("https://ntfy.sh/**", lambda r: (posts.append(r.request.post_data), r.fulfill(status=200, body="{}")))
+        self.page.route("https://api.github.com/**", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps({"workflow_runs": []})))
+        self.open(); self.page.wait_for_function("!document.querySelector('#refresh').disabled")
+        self.page.click("#refresh")
+        self.page.wait_for_timeout(800)
+        self.assertEqual(posts, ["hours=24&count=150"])                                  # by the server's clock the cooldown is long over
+
+    def test_a_missing_refresh_json_does_not_block(self):
+        posts = []
+        self.page.route("https://ntfy.sh/**", lambda r: (posts.append(r.request.post_data), r.fulfill(status=200, body="{}")))
+        self.page.route("https://api.github.com/**", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps({"workflow_runs": []})))
+        self.open(); self.page.wait_for_function("!document.querySelector('#refresh').disabled")
+        self.page.click("#refresh")
+        self.page.wait_for_timeout(800)
+        self.assertEqual(len(posts), 1)
+
+    def test_a_cancelled_run_is_not_shown_as_a_failed_refresh(self):
+        self.page.route("https://api.github.com/**", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps(
+            {"workflow_runs": [run(9, "completed", "cancelled"), run(5, "completed", "success")]})))
+        self.open(); self.page.wait_for_function("document.querySelector('#rstatus').innerText.startsWith('Last')")
+        self.assertIn("✓", self.page.inner_text("#rstatus"))
         self.assertIn("✓", self.page.inner_text("#lastrefresh"))
 
 

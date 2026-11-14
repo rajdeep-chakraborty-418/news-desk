@@ -239,6 +239,8 @@ class MainRunTest(EnvTestCase):
         data = self.run_main(table, WINDOW_HOURS="72", ARTICLE_COUNT="250")
         self.assertEqual((data["range_hours"], data["max_articles"]), (72, 250))
         self.assertTrue(data["generated_at"])
+        small = json.loads((self.out.parent / "refresh.json").read_text())          # the tiny file the page reads for the cooldown
+        self.assertEqual(small, {"refreshed_at": data["generated_at"], "range_hours": 72, "max_articles": 250})
         by_link = {i["link"]: i for i in data["items"]}
         self.assertEqual(set(by_link), {"https://a.example/1", "https://shared.example/1", "https://a.example/2",
                                         "https://g.example/1", "https://f.example/1"})

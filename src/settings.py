@@ -1,13 +1,14 @@
-"""Loads and validates external_config/settings.json: how often the news refreshes and which refresh choices exist.
+"""Loads and validates external_config/settings.json: the manual-refresh rules and which refresh choices exist.
 
-  refresh.interval_minutes   how often the scheduled refresh runs (the scheduler adds no fixed cost: it waits this long)
+  refresh.manual_cooldown_minutes  after a refresh completes, no other manual refresh is accepted for this long
+                                   (there is no periodic automatic refresh: the news only updates when someone clicks Refresh)
   refresh.min_gap_seconds    at most one refresh is started per this many seconds, however many requests arrive
   refresh.request_topic      the name of the relay channel the page's Refresh button posts to (3-64 letters, digits, - or _)
   time_ranges                the "Fetch stories from" choices: default_hours and options [{hours, label}]
   article_counts             the "Stories per section" choices: default and options [number, ...]
 
-Scheduled refreshes use the default time range and the default story count.
-Command line (used by the workflow):  python3 src/settings.py gate_minutes
+A request that names no valid time range or story count uses the defaults.
+Command line (used by the workflow):  python3 src/settings.py cooldown_minutes
 """
 import json
 import re
@@ -65,7 +66,7 @@ def load_settings(directory=None):
     if default_count not in counts:
         raise ConfigError(f"settings.json: article_counts.default ({default_count}) must be one of the options ({counts})")
     return {
-        "interval_minutes": _int(refresh.get("interval_minutes"), "refresh.interval_minutes"),
+        "cooldown_minutes": _int(refresh.get("manual_cooldown_minutes"), "refresh.manual_cooldown_minutes", 0),
         "min_gap_seconds": _int(refresh.get("min_gap_seconds"), "refresh.min_gap_seconds", 0),
         "request_topic": topic,
         "time_ranges": options, "hours": tuple(hours), "default_hours": default_hours,
@@ -73,15 +74,9 @@ def load_settings(directory=None):
     }
 
 
-def gate_minutes(st):
-    """A scheduled workflow run only proceeds if the last deployment is at least this old: the interval minus a margin
-    for runs that start a little early."""
-    return max(1, st["interval_minutes"] - 18)
-
-
 def public_settings(st):
     """What the web page needs: the two choice lists, their defaults, the relay topic and the refresh interval."""
-    return {"interval_minutes": st["interval_minutes"],      # lets the page show when the next scheduled refresh is due
+    return {"cooldown_minutes": st["cooldown_minutes"],      # lets the page work out when the next manual refresh is allowed
             "time_ranges": st["time_ranges"], "default_hours": st["default_hours"],
             "article_counts": list(st["counts"]), "default_count": st["default_count"], "request_topic": st["request_topic"]}
 
@@ -91,7 +86,7 @@ if __name__ == "__main__":
         st = load_settings()
     except ConfigError as e:
         sys.exit(f"Configuration error: {e}")
-    if sys.argv[1:] == ["gate_minutes"]:
-        print(gate_minutes(st))
+    if sys.argv[1:] == ["cooldown_minutes"]:
+        print(st["cooldown_minutes"])
     else:
-        sys.exit("usage: python3 src/settings.py gate_minutes")
+        sys.exit("usage: python3 src/settings.py cooldown_minutes")

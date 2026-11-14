@@ -25,7 +25,8 @@ class UpdateWorkflowTest(TestCase):
 
     def test_triggers(self):
         on = self.wf["on"]
-        self.assertEqual(on["schedule"], [{"cron": "17 * * * *"}])
+        self.assertNotIn("schedule", on)                          # no periodic refresh
+        self.assertNotIn("cron", self.text)
         self.assertEqual(set(on["workflow_dispatch"]["inputs"]), {"hours", "count"})
         self.assertEqual(on["push"]["branches"], ["main"])
 
@@ -36,7 +37,7 @@ class UpdateWorkflowTest(TestCase):
         self.assertNotIn("|| '300'", self.text)
 
     def test_fetch_step_receives_the_chosen_values(self):
-        fetch = next(s for s in self.steps if s.get("name") == "Fetch latest headlines")
+        fetch = next(s for s in self.steps if s.get("name", "").startswith("Fetch latest headlines"))
         self.assertEqual(fetch["env"], {"WINDOW_HOURS": "${{ github.event.inputs.hours }}", "ARTICLE_COUNT": "${{ github.event.inputs.count }}"})
         self.assertEqual(fetch["run"], "python3 src/fetch_news.py")
 
@@ -44,10 +45,21 @@ class UpdateWorkflowTest(TestCase):
         runs = [s.get("run") for s in self.steps]
         self.assertLess(runs.index("python3 src/build_site.py"), runs.index("python3 src/fetch_news.py"))
 
-    def test_gate_reads_the_interval_from_settings(self):
+    def test_gate_reads_the_cooldown_from_settings_and_cancels_early_runs(self):
         gate = next(s for s in self.steps if s.get("id") == "gate")
-        self.assertIn("python3 src/settings.py gate_minutes", gate["run"])
-        self.assertNotIn("-ge 100", gate["run"])
+        self.assertIn("python3 src/settings.py cooldown_minutes", gate["run"])
+        self.assertIn("event=workflow_dispatch&status=success", gate["run"])      # only real refreshes count, not pushes
+        self.assertIn("gh run cancel", gate["run"])
+        self.assertEqual(self.wf["permissions"]["actions"], "write")
+
+    def test_a_code_push_keeps_the_current_headlines(self):
+        keep = next(s for s in self.steps if s.get("id") == "keep")
+        self.assertIn("github.event_name == 'push'", keep["if"])
+        self.assertIn("news.json", keep["run"]); self.assertIn("refresh.json", keep["run"])
+        fetch = next(s for s in self.steps if s.get("name", "").startswith("Fetch latest headlines"))
+        self.assertIn("steps.keep.outputs.kept != 'true'", fetch["if"])            # fetch only when nothing could be kept
+        names = [s.get("id") or s.get("run") for s in self.steps]
+        self.assertLess(names.index("pages"), names.index("keep"))
 
     def test_checkout_comes_before_anything_that_needs_the_code(self):
         names = [s.get("uses", s.get("name")) for s in self.steps]

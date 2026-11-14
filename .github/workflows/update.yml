@@ -1,12 +1,9 @@
 name: Update news and deploy
 
 on:
-  schedule:
-    # GitHub often delays or skips scheduled runs, so try every hour; the "gate" step below only lets a run proceed
-    # if the last deployment is old enough for refresh.interval_minutes (external_config/settings.json).
-    # (GitHub needs the cron expression itself written here; it cannot be read from a settings file.)
-    - cron: "17 * * * *"
-  workflow_dispatch:          # lets you run it by hand from the Actions tab (the page's Refresh button uses this)
+  # There is no periodic schedule: the news only refreshes when someone clicks Refresh on the page (which starts this
+  # workflow through the relay), and then at most once per refresh.manual_cooldown_minutes (external_config/settings.json).
+  workflow_dispatch:          # a refresh: the page's Refresh button uses this, and so can you from the Actions tab
     inputs:
       hours:
         description: "Only include stories from the last N hours (one of time_ranges in external_config/settings.json; empty = its default)"
@@ -16,10 +13,11 @@ on:
         description: "Stories to keep per section (one of article_counts in external_config/settings.json; empty = its default)"
         required: false
         default: ""
-  push:
+  push:                       # a code change only redeploys the site with the headlines it already has
     branches: [main]
 
 permissions:
+  actions: write              # lets the cooldown gate cancel a run that came too soon
   contents: read
   pages: write
   id-token: write
@@ -40,33 +38,48 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Gate (scheduled runs only refresh about every refresh.interval_minutes)
+      - name: Gate (a manual refresh must wait refresh.manual_cooldown_minutes after the last successful one)
         id: gate
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [ "${{ github.event_name }}" != "schedule" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
-          need=$(python3 src/settings.py gate_minutes)
-          last=$(gh api "repos/${{ github.repository }}/deployments?environment=github-pages&per_page=1" --jq '.[0].created_at' || true)
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          cooldown=$(python3 src/settings.py cooldown_minutes)
+          last=$(gh api "repos/${{ github.repository }}/actions/workflows/update.yml/runs?event=workflow_dispatch&status=success&per_page=1" --jq '.workflow_runs[0].updated_at // empty' || true)
           if [ -z "$last" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
           age=$(( ( $(date +%s) - $(date -d "$last" +%s) ) / 60 ))
-          echo "Last deployment was $age minutes ago (a scheduled run needs $need)"
-          if [ "$age" -ge "$need" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; else echo "go=false" >> "$GITHUB_OUTPUT"; echo "Too soon, skipping this run."; fi
+          echo "The last successful refresh finished $age minutes ago (the cooldown is $cooldown minutes, with 3 minutes of grace)"
+          if [ "$age" -ge $(( cooldown - 3 )) ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "go=false" >> "$GITHUB_OUTPUT"
+          echo "Too soon after the last refresh: cancelling this run."
+          gh run cancel "${{ github.run_id }}" --repo "${{ github.repository }}" || true
+          sleep 60
       - name: Build the site (page, sections, newspaper list)
         if: steps.gate.outputs.go == 'true'
         run: python3 src/build_site.py
-      - name: Fetch latest headlines
+      - uses: actions/configure-pages@v5
+        id: pages
         if: steps.gate.outputs.go == 'true'
+      - name: Keep the current headlines (a code push is not a refresh)
+        id: keep
+        if: steps.gate.outputs.go == 'true' && github.event_name == 'push'
+        continue-on-error: true
+        run: |
+          base="${{ steps.pages.outputs.base_url }}"
+          curl -fsS --retry 2 "$base/news.json" -o site/news.json
+          curl -fsS --retry 2 "$base/refresh.json" -o site/refresh.json
+          python3 -c "import json; json.load(open('site/news.json')); json.load(open('site/refresh.json'))"
+          echo "kept=true" >> "$GITHUB_OUTPUT"
+      - name: Fetch latest headlines (every refresh; also the very first deployment)
+        if: steps.gate.outputs.go == 'true' && steps.keep.outputs.kept != 'true'
         env:
           WINDOW_HOURS: ${{ github.event.inputs.hours }}
           ARTICLE_COUNT: ${{ github.event.inputs.count }}
         run: python3 src/fetch_news.py
       - name: Image check (diagnostic only)
-        if: steps.gate.outputs.go == 'true' && github.event_name != 'schedule'
+        if: steps.gate.outputs.go == 'true' && github.event_name == 'workflow_dispatch'
         continue-on-error: true
         run: python3 src/check_images.py
-      - uses: actions/configure-pages@v5
-        if: steps.gate.outputs.go == 'true'
       - uses: actions/upload-pages-artifact@v3
         if: steps.gate.outputs.go == 'true'
         with:

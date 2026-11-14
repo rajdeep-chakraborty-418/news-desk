@@ -1,6 +1,8 @@
-"""settings.py: the refresh interval, relay topic, allowed time ranges and story counts."""
+"""settings.py: the refresh cooldown, relay topic, allowed time ranges and story counts."""
 import copy
 import json
+import os
+import sys
 
 import support
 from support import SAMPLE_SETTINGS, TestCase, write_config
@@ -20,7 +22,7 @@ class SettingsTest(TestCase):
 
     def test_loads_the_sample(self):
         st = settings.load_settings(support.SAMPLE_CONFIG)
-        self.assertEqual((st["interval_minutes"], st["min_gap_seconds"], st["request_topic"]), (60, 120, "test-topic-abc"))
+        self.assertEqual((st["cooldown_minutes"], st["min_gap_seconds"], st["request_topic"]), (60, 120, "test-topic-abc"))
         self.assertEqual(st["hours"], (6, 24, 72, 168))
         self.assertEqual(st["default_hours"], 24)
         self.assertEqual(st["counts"], (50, 150, 250))
@@ -28,8 +30,8 @@ class SettingsTest(TestCase):
         self.assertEqual(st["time_ranges"][1], {"hours": 24, "label": "One day"})
 
     def test_validation(self):
-        self._bad(lambda d: d["refresh"].update(interval_minutes=0), "interval_minutes must be a whole number")
-        self._bad(lambda d: d["refresh"].update(interval_minutes="60"), "interval_minutes")
+        self._bad(lambda d: d["refresh"].update(manual_cooldown_minutes=-1), "manual_cooldown_minutes must be a whole number")
+        self._bad(lambda d: d["refresh"].update(manual_cooldown_minutes="60"), "manual_cooldown_minutes")
         self._bad(lambda d: d["refresh"].update(request_topic="a b"), "request_topic")
         self._bad(lambda d: d["refresh"].update(request_topic="ab"), "request_topic")
         self._bad(lambda d: d["time_ranges"].update(options=[]), "at least one")
@@ -54,11 +56,11 @@ class SettingsTest(TestCase):
         with self.assertRaises(config.ConfigError):
             settings.load_settings(d)
 
-    def test_gate_is_interval_minus_margin_but_at_least_one(self):
-        st = settings.load_settings(support.SAMPLE_CONFIG)
-        self.assertEqual(settings.gate_minutes(st), 42)
-        self.assertEqual(settings.gate_minutes({"interval_minutes": 5}), 1)
-        self.assertEqual(settings.gate_minutes({"interval_minutes": 118}), 100)
+    def test_cooldown_cli_value(self):
+        import subprocess
+        out = subprocess.run([sys.executable, str(support.REPO / "src" / "settings.py"), "cooldown_minutes"], capture_output=True, text=True,
+                             env={**os.environ, "NEWSDESK_CONFIG_DIR": str(support.SAMPLE_CONFIG)})
+        self.assertEqual(out.stdout.strip(), "60")
 
     def test_public_settings_for_the_page(self):
         pub = settings.public_settings(settings.load_settings(support.SAMPLE_CONFIG))
@@ -66,6 +68,6 @@ class SettingsTest(TestCase):
         self.assertEqual(pub["default_count"], 150)
         self.assertEqual(pub["request_topic"], "test-topic-abc")
         self.assertEqual(pub["time_ranges"][0], {"hours": 6, "label": "Six hours"})
-        self.assertEqual(pub["interval_minutes"], 60)       # the page shows when the next scheduled refresh is due
+        self.assertEqual(pub["cooldown_minutes"], 60)       # the page works out when the next manual refresh is allowed
         self.assertNotIn("min_gap_seconds", pub)            # server-side detail, not for the page
         json.dumps(pub)
