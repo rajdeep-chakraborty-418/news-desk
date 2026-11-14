@@ -165,6 +165,11 @@ def load_section_maps(sections, directory=None):
                 dest = look.setdefault(norm_label(n), [])
                 if key not in dest:
                     dest.append(key)
+        if "other" in keys:                      # names listed under "other" put the story in the Other section
+            for n in d.get("other") or []:
+                dest = look.setdefault(norm_label(n), [])
+                if "other" not in dest and not dest:
+                    dest.append("other")
         maps[d["newspaper"]] = look
     return maps
 

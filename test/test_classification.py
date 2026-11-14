@@ -127,6 +127,15 @@ class NewspaperSectionMapTest(TestCase):
         self.assertEqual(fn.classify(feed, "x", "", "https://p.com/opinion/story-1"), ["india"])
         self.assertEqual(fn.classify({"category": "india", "newspaper": "Other Paper"}, "x", "", "https://p.com/afl/s"), ["india"])
 
+    def test_names_under_other_put_the_story_in_other(self):
+        sections = config.load_sections(self.dir) + [dict(self.sections[0], key="other", label="Other")]
+        self.write("p.json", {"newspaper": "Paper", "section_map": {"sports": ["Sports"]}, "other": ["Videos", "Sports"]})
+        maps = config.load_section_maps(sections, self.dir)
+        self.assertEqual(maps["Paper"], {"sports": ["sports"], "videos": ["other"]})
+        fn.configure(sections, maps=maps)
+        feed = {"category": "india", "newspaper": "Paper"}
+        self.assertEqual(fn.classify(feed, "x", "", "https://p.com/videos/v1"), ["india", "other"])
+
     def test_labels_compare_loosely(self):
         self.assertEqual(config.norm_label("India-News"), config.norm_label("india news"))
         self.assertEqual(config.norm_label("Cities"), "cities")
