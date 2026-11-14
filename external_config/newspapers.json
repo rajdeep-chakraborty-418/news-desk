@@ -999,6 +999,18 @@
           "url": "https://news.google.com/rss/search?q=site%3Athebridge.in%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
         }
       ]
+    },
+    {
+      "name": "Wisden",
+      "homepage": "https://www.wisden.com/",
+      "country": "United Kingdom",
+      "continent": "Europe",
+      "feeds": [
+        {
+          "section": "sports",
+          "url": "https://www.wisden.com/feed"
+        }
+      ]
     }
   ],
   "secondary": [
