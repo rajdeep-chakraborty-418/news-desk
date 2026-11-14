@@ -2,6 +2,7 @@
 
   python3 src/check_feeds.py                 all feeds
   python3 src/check_feeds.py Marca ESPN      only feeds of newspapers whose name contains one of these words
+  python3 src/check_feeds.py https://...     try these addresses directly (to find a replacement for a broken feed)
 
 Prints one line per feed (OK / EMPTY / FAIL, how many stories it holds, the newest story's age) and a summary.
 Run by .github/workflows/check_feeds.yml, because the feeds can only be reached from GitHub's runners.
@@ -31,7 +32,9 @@ def check(feed):
 
 def main(words):
     sections, feeds = config.load_all()
-    if words:
+    if words and all(w.startswith("http") for w in words):
+        feeds = [{"newspaper": "candidate", "section": "-", "url": w} for w in words]
+    elif words:
         feeds = [f for f in feeds if any(w.lower() in f["newspaper"].lower() for w in words)]
     plain = [f for f in feeds if "news.google.com" not in f["url"]]
     google = [f for f in feeds if "news.google.com" in f["url"]]
