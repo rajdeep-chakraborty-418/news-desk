@@ -98,6 +98,90 @@
     {
       "section": "entertainment",
       "url": "https://www.thehindu.com/entertainment/dance/feeder/default.rss"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Delhi/feeder/default.rss",
+      "label": "The Hindu (Delhi)",
+      "state": "Delhi"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Mumbai/feeder/default.rss",
+      "label": "The Hindu (Mumbai)",
+      "state": "Maharashtra"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/chennai/feeder/default.rss",
+      "label": "The Hindu (Chennai)",
+      "state": "Tamil Nadu"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Hyderabad/feeder/default.rss",
+      "label": "The Hindu (Hyderabad)",
+      "state": "Telangana"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Bangalore/feeder/default.rss",
+      "label": "The Hindu (Bangalore)",
+      "state": "Karnataka"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Visakhapatnam/feeder/default.rss",
+      "label": "The Hindu (Visakhapatnam)",
+      "state": "Andhra Pradesh"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Vijayawada/feeder/default.rss",
+      "label": "The Hindu (Vijayawada)",
+      "state": "Andhra Pradesh"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Kochi/feeder/default.rss",
+      "label": "The Hindu (Kochi)",
+      "state": "Kerala"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Kolkata/feeder/default.rss",
+      "label": "The Hindu (Kolkata)",
+      "state": "West Bengal"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/puducherry/feeder/default.rss",
+      "label": "The Hindu (Puducherry)",
+      "state": "Puducherry"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Thiruvananthapuram/feeder/default.rss",
+      "label": "The Hindu (Thiruvananthapuram)",
+      "state": "Kerala"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Mangalore/feeder/default.rss",
+      "label": "The Hindu (Mangalore)",
+      "state": "Karnataka"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Coimbatore/feeder/default.rss",
+      "label": "The Hindu (Coimbatore)",
+      "state": "Tamil Nadu"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/cities/Madurai/feeder/default.rss",
+      "label": "The Hindu (Madurai)",
+      "state": "Tamil Nadu"
     }
   ],
   "section_map": {

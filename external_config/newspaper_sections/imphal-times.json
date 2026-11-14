@@ -1,0 +1,92 @@
+{
+  "newspaper": "Imphal Times",
+  "tier": "secondary",
+  "homepage": "https://www.imphaltimes.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Regional newspaper added for coverage of Manipur. Generic section map; review it.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.imphaltimes.com/feed",
+      "state": "Manipur"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "India",
+      "National",
+      "Nation",
+      "State",
+      "States",
+      "City",
+      "Cities",
+      "Politics",
+      "Regional",
+      "Local",
+      "Crime",
+      "Manipur"
+    ],
+    "world": [
+      "World",
+      "International"
+    ],
+    "sports": [
+      "Sports",
+      "Sport",
+      "Cricket",
+      "Football"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Movies",
+      "Cinema",
+      "Bollywood",
+      "Tollywood",
+      "Kollywood",
+      "Showbiz",
+      "Music",
+      "TV"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Health",
+      "Food",
+      "Fashion"
+    ],
+    "business": [
+      "Business",
+      "Economy",
+      "Finance",
+      "Markets"
+    ],
+    "technology": [
+      "Technology",
+      "Tech",
+      "Gadgets",
+      "Auto"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Environment",
+      "Wildlife",
+      "Weather"
+    ],
+    "geography": [
+      "Travel"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Editorial",
+    "Videos",
+    "Photos",
+    "Education",
+    "Jobs",
+    "Web Stories"
+  ],
+  "unmapped_default": "other"
+}

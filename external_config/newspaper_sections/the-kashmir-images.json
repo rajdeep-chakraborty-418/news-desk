@@ -1,0 +1,92 @@
+{
+  "newspaper": "The Kashmir Images",
+  "tier": "secondary",
+  "homepage": "https://thekashmirimages.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Regional newspaper added for coverage of Jammu and Kashmir. Generic section map; review it.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://thekashmirimages.com/feed",
+      "state": "Jammu and Kashmir"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "India",
+      "National",
+      "Nation",
+      "State",
+      "States",
+      "City",
+      "Cities",
+      "Politics",
+      "Regional",
+      "Local",
+      "Crime",
+      "Jammu and Kashmir"
+    ],
+    "world": [
+      "World",
+      "International"
+    ],
+    "sports": [
+      "Sports",
+      "Sport",
+      "Cricket",
+      "Football"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Movies",
+      "Cinema",
+      "Bollywood",
+      "Tollywood",
+      "Kollywood",
+      "Showbiz",
+      "Music",
+      "TV"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Health",
+      "Food",
+      "Fashion"
+    ],
+    "business": [
+      "Business",
+      "Economy",
+      "Finance",
+      "Markets"
+    ],
+    "technology": [
+      "Technology",
+      "Tech",
+      "Gadgets",
+      "Auto"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Environment",
+      "Wildlife",
+      "Weather"
+    ],
+    "geography": [
+      "Travel"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Editorial",
+    "Videos",
+    "Photos",
+    "Education",
+    "Jobs",
+    "Web Stories"
+  ],
+  "unmapped_default": "other"
+}

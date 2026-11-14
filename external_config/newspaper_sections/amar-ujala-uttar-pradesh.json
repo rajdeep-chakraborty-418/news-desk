@@ -1,0 +1,92 @@
+{
+  "newspaper": "Amar Ujala (Uttar Pradesh)",
+  "tier": "secondary",
+  "homepage": "https://www.amarujala.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Regional newspaper added for coverage of Uttar Pradesh. Generic section map; review it.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.amarujala.com/rss/uttar-pradesh.xml",
+      "state": "Uttar Pradesh"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "India",
+      "National",
+      "Nation",
+      "State",
+      "States",
+      "City",
+      "Cities",
+      "Politics",
+      "Regional",
+      "Local",
+      "Crime",
+      "Uttar Pradesh"
+    ],
+    "world": [
+      "World",
+      "International"
+    ],
+    "sports": [
+      "Sports",
+      "Sport",
+      "Cricket",
+      "Football"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Movies",
+      "Cinema",
+      "Bollywood",
+      "Tollywood",
+      "Kollywood",
+      "Showbiz",
+      "Music",
+      "TV"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Health",
+      "Food",
+      "Fashion"
+    ],
+    "business": [
+      "Business",
+      "Economy",
+      "Finance",
+      "Markets"
+    ],
+    "technology": [
+      "Technology",
+      "Tech",
+      "Gadgets",
+      "Auto"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Environment",
+      "Wildlife",
+      "Weather"
+    ],
+    "geography": [
+      "Travel"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Editorial",
+    "Videos",
+    "Photos",
+    "Education",
+    "Jobs",
+    "Web Stories"
+  ],
+  "unmapped_default": "other"
+}

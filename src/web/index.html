@@ -67,7 +67,9 @@
   .navlink:hover, .navnew:hover { color: var(--muted); }
   .reset { padding: 2px 10px; font-size: 11px; border-radius: 999px; }
   .clear { padding: 5px 12px; font-size: 13px; justify-self: start; }
-  #clist, #nlist { max-height: 40vh; overflow-y: auto; display: grid; gap: 2px; padding-right: 4px; }
+  #clist, #nlist { overflow-y: auto; display: grid; gap: 2px; padding-right: 4px; }
+  #clist { max-height: 20vh; }          /* fewer countries visible at a time ... */
+  #nlist { max-height: 56vh; }          /* ... and more newspapers */
   #newsbox { border-top: 1px solid var(--line); }
   #clist label, #nlist label { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
   #clist label:hover, #nlist label:hover { background: var(--bg); }
@@ -75,7 +77,8 @@
   @media (max-width: 900px) {
     .layout { grid-template-columns: 1fr; }
     aside { position: static; order: -1; }
-    #clist, #nlist { max-height: 40vh; }
+    #clist { max-height: 22vh; }
+    #nlist { max-height: 50vh; }
   }
   a.tile { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--card); border: 1px solid var(--line);
            border-radius: 10px; overflow: hidden; transition: transform .12s, box-shadow .12s; }
