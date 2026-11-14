@@ -71,7 +71,7 @@
         },
         {
           "section": "entertainment",
-          "url": "https://news.google.com/rss/search?q=site%3Aapnews.com/hub/entertainment%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
+          "url": "https://news.google.com/rss/search?q=site%3Aapnews.com%20(Hollywood%20OR%20film%20OR%20music%20OR%20celebrity)%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
         }
       ]
     },
@@ -458,11 +458,7 @@
         },
         {
           "section": "science",
-          "url": "https://www.hindustantimes.com/feeds/rss/science/rssfeed.xml"
-        },
-        {
-          "section": "nature",
-          "url": "https://www.hindustantimes.com/feeds/rss/environment/rssfeed.xml"
+          "url": "https://news.google.com/rss/search?q=site%3Ahindustantimes.com/science%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
         },
         {
           "section": "entertainment",
@@ -475,10 +471,6 @@
         {
           "section": "entertainment",
           "url": "https://www.hindustantimes.com/feeds/rss/entertainment/hollywood/rssfeed.xml"
-        },
-        {
-          "section": "entertainment",
-          "url": "https://www.hindustantimes.com/feeds/rss/entertainment/regional-movies/rssfeed.xml"
         },
         {
           "section": "entertainment",
@@ -538,7 +530,7 @@
         },
         {
           "section": "entertainment",
-          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/entertainment%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
+          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com%20(Bollywood%20OR%20film%20OR%20actor%20OR%20movie%20OR%20series)%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
         },
         {
           "section": "lifestyle",
@@ -551,14 +543,6 @@
         {
           "section": "technology",
           "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/technology%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
-        },
-        {
-          "section": "entertainment",
-          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/entertainment/bollywood%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
-        },
-        {
-          "section": "entertainment",
-          "url": "https://news.google.com/rss/search?q=site%3Aindianexpress.com/section/entertainment/television%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
         }
       ]
     },
@@ -626,7 +610,7 @@
         },
         {
           "section": "sports",
-          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Sports.xml"
+          "url": "https://news.google.com/rss/search?q=site%3Anytimes.com%20(NBA%20OR%20NFL%20OR%20soccer%20OR%20tennis%20OR%20baseball%20OR%20Olympics)%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
         },
         {
           "section": "entertainment",
@@ -899,7 +883,7 @@
       "feeds": [
         {
           "section": "sports",
-          "url": "https://www.espn.com/espn/rss/news"
+          "url": "https://news.google.com/rss/search?q=site%3Aespn.com%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
         }
       ]
     },
@@ -1078,22 +1062,6 @@
         {
           "section": "history",
           "url": "https://news.google.com/rss/search?q=site%3Aancient-origins.net%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
-        }
-      ]
-    },
-    {
-      "name": "Animal Planet",
-      "homepage": "https://animalplanet.com/",
-      "country": "United States",
-      "continent": "North America",
-      "feeds": [
-        {
-          "section": "geography",
-          "url": "https://news.google.com/rss/search?q=site%3Aanimalplanet.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
-        },
-        {
-          "section": "nature",
-          "url": "https://news.google.com/rss/search?q=site%3Aanimalplanet.com%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
         }
       ]
     },
@@ -1390,11 +1358,11 @@
       "feeds": [
         {
           "section": "world",
-          "url": "https://www.cbc.ca/webfeed/rss/rss-world"
+          "url": "https://news.google.com/rss/search?q=site%3Acbc.ca/news/world%20when%3A3d&hl=en-CA&gl=CA&ceid=CA:en"
         },
         {
           "section": "sports",
-          "url": "https://www.cbc.ca/webfeed/rss/rss-sports",
+          "url": "https://news.google.com/rss/search?q=site%3Acbc.ca/sports%20when%3A3d&hl=en-CA&gl=CA&ceid=CA:en",
           "label": "CBC Sports"
         }
       ]
@@ -1580,7 +1548,7 @@
       "feeds": [
         {
           "section": "sports",
-          "url": "https://www.thedailystar.net/sports/rss.xml"
+          "url": "https://news.google.com/rss/search?q=site%3Athedailystar.net/sports%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
         }
       ]
     },
@@ -1848,7 +1816,7 @@
       "feeds": [
         {
           "section": "entertainment",
-          "url": "https://www.filmcompanion.in/feed"
+          "url": "https://news.google.com/rss/search?q=site%3Afilmcompanion.in%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en"
         }
       ]
     },
@@ -1860,7 +1828,7 @@
       "feeds": [
         {
           "section": "entertainment",
-          "url": "https://www.filmfare.com/rss/news.xml"
+          "url": "https://news.google.com/rss/search?q=site%3Afilmfare.com%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
         }
       ]
     },
@@ -2059,7 +2027,7 @@
       "feeds": [
         {
           "section": "entertainment",
-          "url": "https://www.hindustantimes.com/feeds/rss/brunch/rssfeed.xml",
+          "url": "https://www.hindustantimes.com/feeds/rss/entertainment/rssfeed.xml",
           "label": "Hindustan Times Brunch"
         }
       ]
@@ -2113,7 +2081,7 @@
       "feeds": [
         {
           "section": "world",
-          "url": "https://www.hurriyetdailynews.com/rss"
+          "url": "https://www.hurriyetdailynews.com/rss/world"
         }
       ]
     },
@@ -2313,7 +2281,7 @@
       "feeds": [
         {
           "section": "bengali",
-          "url": "https://www.kolkata24x7.in/feed",
+          "url": "https://www.kolkata24x7.in/rss",
           "state": "West Bengal"
         }
       ]
@@ -2536,7 +2504,7 @@
       "feeds": [
         {
           "section": "world",
-          "url": "https://www.middleeasteye.net/rss"
+          "url": "https://news.google.com/rss/search?q=site%3Amiddleeasteye.net%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
         }
       ]
     },
@@ -2609,18 +2577,6 @@
         {
           "section": "science",
           "url": "https://www.nasa.gov/feed/"
-        }
-      ]
-    },
-    {
-      "name": "Nat Geo Traveller India",
-      "homepage": "https://natgeotraveller.in/",
-      "country": "India",
-      "continent": "Asia",
-      "feeds": [
-        {
-          "section": "geography",
-          "url": "https://news.google.com/rss/search?q=site%3Anatgeotraveller.in%20when%3A14d&hl=en-US&gl=US&ceid=US:en"
         }
       ]
     },
@@ -2851,17 +2807,6 @@
       ]
     },
     {
-      "name": "Past Horizons",
-      "homepage": "https://www.pasthorizonspr.com/",
-      "continent": "Other",
-      "feeds": [
-        {
-          "section": "history",
-          "url": "https://www.pasthorizonspr.com/index.php/feed"
-        }
-      ]
-    },
-    {
       "name": "Peru Reports",
       "homepage": "https://perureports.com/",
       "country": "Peru",
@@ -2919,7 +2864,7 @@
       "feeds": [
         {
           "section": "entertainment",
-          "url": "https://www.pinkvilla.com/feed"
+          "url": "https://www.pinkvilla.com/rss.xml"
         }
       ]
     },
@@ -3020,7 +2965,7 @@
       "feeds": [
         {
           "section": "entertainment",
-          "url": "https://www.thequint.com/stories.rss",
+          "url": "https://news.google.com/rss/search?q=site%3Athequint.com%20(entertainment%20OR%20film%20OR%20bollywood%20OR%20actor)%20when%3A3d&hl=en-IN&gl=IN&ceid=IN:en",
           "label": "The Quint Entertainment"
         }
       ]
@@ -3587,7 +3532,7 @@
       "feeds": [
         {
           "section": "world",
-          "url": "https://vietnamnews.vn/rss/politics-laws.rss"
+          "url": "https://news.google.com/rss/search?q=site%3Avietnamnews.vn%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
         }
       ]
     },
