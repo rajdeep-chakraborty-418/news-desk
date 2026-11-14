@@ -9,6 +9,7 @@ and a link to the original article.
 external_config/        everything you configure (no code)
   newspapers.json         newspapers, as "primary" and "secondary" nodes
   sections.json           the sections (tabs): names, colours, keyword rules
+  newspaper_sections/      one file per newspaper: its own sections mapped onto your sections (many-to-one, e.g. Sports, AFL, NFL -> sports)
   settings.json           refresh interval, time-range and story-count choices, relay topic
 src/                    all code
   fetch_news.py           fetches feeds, sorts stories into sections, writes site/news.json
@@ -77,3 +78,15 @@ when a feed has none; the page letterboxes odd shapes and falls back to a placeh
 ## Publish for free with GitHub Pages
 Public repository, Settings -> Pages -> Source: GitHub Actions, then run "Update news and deploy" once.
 The listener job (`scheduler.yml`) restarts itself every ~3 hours; GitHub may delay its backup schedule and pauses scheduled workflows in repositories with no activity for 60 days.
+
+## Newspaper section maps
+
+`external_config/newspaper_sections/<newspaper>.json` maps a newspaper's own sections onto your sections:
+
+```json
+{"newspaper": "Hindustan Times",
+ "section_map": {"sports": ["Sports", "Cricket", "US Sports"], "india": ["India News", "Delhi"]},
+ "other": ["Videos", "Opinion"]}
+```
+
+A story is looked up by its feed tags and by the folders in its web address (`/sports/cricket/...`). Every match adds that story to the mapped section, on top of the section of the feed it came from. Newspapers without a file behave as before. `newspapers.json` still holds the feeds. Pilot: Hindustan Times, Times of India, India Today, Deccan Herald, Firstpost.

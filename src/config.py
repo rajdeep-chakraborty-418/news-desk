@@ -131,6 +131,44 @@ def load_newspapers(sections, directory=None):
     return data
 
 
+def norm_label(text):
+    """A section name or URL piece in one comparable form: lowercase words, no punctuation, no trailing 'news'."""
+    t = re.sub(r"[^a-z0-9]+", " ", str(text).lower()).strip()
+    return re.sub(r"\s+news$", "", t) or t
+
+
+def load_section_maps(sections, directory=None):
+    """Per-newspaper section maps from external_config/newspaper_sections/*.json, as {newspaper name: {normalised source
+    section: [section keys]}}. Each file: {"newspaper", "section_map": {"<ui section key>": ["<newspaper section>", ...]},
+    "other": [...]}. Many newspaper sections may map to one section; names under "other" (or not listed) map to nothing extra.
+    A missing folder is fine (no maps)."""
+    folder = Path(directory or config_dir()) / "newspaper_sections"
+    if not folder.is_dir():
+        return {}
+    keys = {s["key"] for s in sections}
+    maps = {}
+    for path in sorted(folder.glob("*.json")):
+        try:
+            d = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            raise ConfigError(f"{path} is not valid JSON: {e}")
+        where = f"newspaper_sections/{path.name}"
+        if not isinstance(d, dict) or not isinstance(d.get("newspaper"), str) or not isinstance(d.get("section_map"), dict):
+            raise ConfigError(f'{where} must be {{"newspaper": "...", "section_map": {{...}}}}')
+        look = {}
+        for key, names in d["section_map"].items():
+            if key not in keys:
+                raise ConfigError(f"{where}: section_map names '{key}', which is not in sections.json (known: {', '.join(sorted(keys))})")
+            if not isinstance(names, list) or not all(isinstance(n, str) and n.strip() for n in names):
+                raise ConfigError(f"{where}: '{key}' must be a list of newspaper section names")
+            for n in names:
+                dest = look.setdefault(norm_label(n), [])
+                if key not in dest:
+                    dest.append(key)
+        maps[d["newspaper"]] = look
+    return maps
+
+
 def load_feeds(sections, newspapers):
     """One flat entry per feed, as the fetcher uses them (primary/secondary comes from the node the newspaper is in)."""
     feeds = []

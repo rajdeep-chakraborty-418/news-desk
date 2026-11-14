@@ -43,11 +43,13 @@ SNIPPET_LEN = 160
 # The sections and their keyword rules come from external_config/sections.json (see config.py); main() loads them.
 SECTIONS = []          # validated section definitions, in tab order
 PLACE = {}             # section key -> "newspaper" | {"country", "continent"} for sections whose stories get a fixed place
+SECTION_MAPS = {}       # newspaper name -> {normalised newspaper section: [section keys]} (external_config/newspaper_sections)
 
 
-def configure(sections, st=None):
+def configure(sections, st=None, maps=None):
     """Install the section rules and the refresh choices (settings.json; loaded from the config folder if not given)."""
-    global SECTIONS, PLACE, ALLOWED_WINDOWS, DEFAULT_WINDOW, ALLOWED_COUNTS, DEFAULT_COUNT
+    global SECTIONS, PLACE, ALLOWED_WINDOWS, DEFAULT_WINDOW, ALLOWED_COUNTS, DEFAULT_COUNT, SECTION_MAPS
+    SECTION_MAPS = maps or {}
     st = st or settings.load_settings()
     ALLOWED_WINDOWS, DEFAULT_WINDOW = st["hours"], st["default_hours"]
     ALLOWED_COUNTS, DEFAULT_COUNT = st["counts"], st["default_count"]
@@ -282,18 +284,41 @@ def parse_feed(xml_bytes):
         summary = strip_html(child_text(e, "description", "summary"))
         if len(summary) > SNIPPET_LEN:
             summary = summary[:SNIPPET_LEN].rsplit(" ", 1)[0] + "…"
-        items.append({"title": title, "link": link, "date": date, "summary": summary, "image": find_image(e)})
+        tags = [strip_html(c.text or "") for c in e if local(c.tag) == "category" and (c.text or "").strip()]
+        items.append({"title": title, "link": link, "date": date, "summary": summary, "image": find_image(e), "tags": tags})
     return items
 
 
-def classify(feed, title, summary):
+def mapped_sections(newspaper, link, tags):
+    """Sections from the newspaper's own map (external_config/newspaper_sections): the story's tags and the folders in its
+    web address (e.g. /sports/cricket/... gives 'sports' and 'cricket') are looked up as that newspaper's section names."""
+    look = SECTION_MAPS.get(newspaper)
+    if not look:
+        return []
+    names = list(tags or [])
+    if link and "news.google.com" not in link:
+        names += [p for p in urlparse(link).path.split("/")[:-1] if p]
+    out = []
+    for n in names:
+        for key in look.get(config.norm_label(n), []):
+            if key not in out:
+                out.append(key)
+    return out
+
+
+def classify(feed, title, summary, link="", tags=()):
     """Return the list of sections a story belongs to: its newspaper's own section for that feed, plus every section
     whose keyword rule matches (see config.py for the rule fields)."""
     cat = feed["category"]
     text = title + " " + summary
     sections = [cat]
+    for key in mapped_sections(feed.get("newspaper"), link, tags):
+        if key not in sections:
+            sections.append(key)
     for sec in SECTIONS:
         if sec["key"] == cat or not sec["rx"]:
+            continue
+        if sec["key"] in sections:
             continue
         if cat in sec["also_from"] and sec["rx"].search(text):
             sections.append(sec["key"])
@@ -344,7 +369,7 @@ def fetch_one(feed):
             "newspaper": feed.get("newspaper") or feed["source"],      # the paper in newspapers.json (source may be a section label)
             "primary": bool(feed.get("primary")),
             "category": feed["category"],
-            "sections": classify(feed, it["title"], it["summary"]),
+            "sections": classify(feed, it["title"], it["summary"], it["link"], it.get("tags")),
             "continent": continent,
             "country": country,
             "state": feed.get("state"),
@@ -357,7 +382,7 @@ def main():
     global WINDOW_HOURS, ARTICLE_COUNT
     try:
         sections, feeds = config.load_all()
-        configure(sections)
+        configure(sections, maps=config.load_section_maps(sections))
     except config.ConfigError as e:
         sys.exit(f"Configuration error: {e}")
     WINDOW_HOURS = window_hours()

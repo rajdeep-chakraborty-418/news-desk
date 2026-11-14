@@ -98,3 +98,45 @@ class GeoTest(TestCase):
     def test_earliest_match_wins_and_whole_words_only(self):
         self.assertEqual(geo.find_country("Talks between Delhi and Islamabad")[0], "India")
         self.assertEqual(geo.find_country("Indiana storms")[0], None)
+
+
+class NewspaperSectionMapTest(TestCase):
+    """external_config/newspaper_sections/<paper>.json: many newspaper sections -> one UI section."""
+
+    def setUp(self):
+        super().setUp()
+        import json, pathlib, tempfile
+        self.dir = pathlib.Path(tempfile.mkdtemp())
+        support.write_config(self.dir)
+        (self.dir / "newspaper_sections").mkdir()
+        self.write = lambda name, data: (self.dir / "newspaper_sections" / name).write_text(json.dumps(data))
+        self.sections = config.load_sections(self.dir)
+        self.addCleanup(configure)
+
+    def keys(self):
+        return [s["key"] for s in self.sections]
+
+    def test_many_source_sections_map_to_one(self):
+        self.write("p.json", {"newspaper": "Paper", "section_map": {"sports": ["Sports", "AFL", "NFL"]}, "other": ["Opinion"]})
+        maps = config.load_section_maps(self.sections, self.dir)
+        self.assertEqual(maps["Paper"], {"sports": ["sports"], "afl": ["sports"], "nfl": ["sports"]})
+        fn.configure(self.sections, maps=maps)
+        feed = {"category": "india", "newspaper": "Paper"}
+        self.assertEqual(fn.classify(feed, "x", "", "https://p.com/afl/story-1"), ["india", "sports"])
+        self.assertEqual(fn.classify(feed, "x", "", "https://p.com/a/b", ["NFL"]), ["india", "sports"])
+        self.assertEqual(fn.classify(feed, "x", "", "https://p.com/opinion/story-1"), ["india"])
+        self.assertEqual(fn.classify({"category": "india", "newspaper": "Other Paper"}, "x", "", "https://p.com/afl/s"), ["india"])
+
+    def test_labels_compare_loosely(self):
+        self.assertEqual(config.norm_label("India-News"), config.norm_label("india news"))
+        self.assertEqual(config.norm_label("Cities"), "cities")
+
+    def test_unknown_destination_section_is_an_error(self):
+        self.write("p.json", {"newspaper": "Paper", "section_map": {"nope": ["X"]}})
+        with self.assertRaises(config.ConfigError):
+            config.load_section_maps(self.sections, self.dir)
+
+    def test_missing_folder_means_no_maps(self):
+        import shutil
+        shutil.rmtree(self.dir / "newspaper_sections")
+        self.assertEqual(config.load_section_maps(self.sections, self.dir), {})
