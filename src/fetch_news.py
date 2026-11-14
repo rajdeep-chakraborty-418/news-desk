@@ -366,7 +366,7 @@ def fetch_one(feed):
             "image": it["image"],
             "published": (it["date"] or datetime.now(timezone.utc)).isoformat(),
             "source": feed["source"],
-            "newspaper": feed.get("newspaper") or feed["source"],      # the paper in newspapers.json (source may be a section label)
+            "newspaper": feed.get("newspaper") or feed["source"],      # the paper in legacy_newspapers.json (source may be a section label)
             "primary": bool(feed.get("primary")),
             "category": feed["category"],
             "sections": classify(feed, it["title"], it["summary"], it["link"], it.get("tags")),
@@ -379,7 +379,7 @@ def fetch_one(feed):
 
 
 def only_mapped(feeds, maps):
-    """While newspaper_sections/ has files, only the newspapers that have one are fetched (newspapers.json stays as it is).
+    """While newspaper_sections/ has files, only the newspapers that have one are fetched (legacy_newspapers.json stays as it is).
     With no files there, every newspaper is fetched as before."""
     return [f for f in feeds if f.get("newspaper") in maps] if maps else feeds
 
@@ -392,7 +392,7 @@ def main():
         configure(sections, maps=maps)
         feeds = only_mapped(feeds, maps)
         if not feeds:
-            raise config.ConfigError("newspaper_sections/ has files, but none of them matches a newspaper name in newspapers.json")
+            raise config.ConfigError("newspaper_sections/ has files, but none of them matches a newspaper name in legacy_newspapers.json")
     except config.ConfigError as e:
         sys.exit(f"Configuration error: {e}")
     WINDOW_HOURS = window_hours()

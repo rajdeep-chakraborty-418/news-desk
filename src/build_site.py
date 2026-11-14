@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Assemble the site/ folder that gets published: the page from src/web/, plus the lists the page reads at load time,
-generated from external_config/ (sections.json -> site/sections.json, newspapers.json -> site/papers.json, settings.json -> site/settings.json).
+generated from external_config/ (sections.json -> site/sections.json, legacy_newspapers.json -> site/papers.json, settings.json -> site/settings.json).
 fetch_news.py then adds site/news.json.   Usage: python3 src/build_site.py [output_dir]"""
 import json
 import shutil

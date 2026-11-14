@@ -1,4 +1,4 @@
-"""config.py: loading, validating and flattening newspapers.json / sections.json."""
+"""config.py: loading, validating and flattening legacy_newspapers.json / sections.json."""
 import copy
 import json
 

@@ -1,6 +1,6 @@
 """Finds out which sections each configured newspaper has, so they can be mapped onto our own sections.
 
-For every newspaper in newspapers.json it reads
+For every newspaper in legacy_newspapers.json it reads
   * the menu links on the newspaper's home page (the section names a reader sees),
   * the RSS addresses the home page advertises,
   * the <category> tags used by the newspaper's configured feeds (a second view of its own section names),
@@ -149,7 +149,7 @@ def discover(paper):
 
 
 def main(out="discovered_sections.json"):
-    raw = json.load(open(config.config_dir() / "newspapers.json", encoding="utf-8"))
+    raw = json.load(open(config.config_dir() / "legacy_newspapers.json", encoding="utf-8"))
     papers = [dict(n, tier=t) for t in ("primary", "secondary") for n in raw[t]]
     with ThreadPoolExecutor(max_workers=12) as pool:
         results = list(pool.map(discover, papers))

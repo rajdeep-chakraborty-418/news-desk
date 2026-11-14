@@ -69,7 +69,7 @@ def write_config(directory, sections=None, newspapers=None, settings=None):
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     (directory / "sections.json").write_text(json.dumps(sections if sections is not None else SAMPLE_SECTIONS))
-    (directory / "newspapers.json").write_text(json.dumps(newspapers if newspapers is not None else SAMPLE_NEWSPAPERS))
+    (directory / "legacy_newspapers.json").write_text(json.dumps(newspapers if newspapers is not None else SAMPLE_NEWSPAPERS))
     (directory / "settings.json").write_text(json.dumps(settings if settings is not None else SAMPLE_SETTINGS))
     return directory
 

@@ -7,7 +7,7 @@ and a link to the original article.
 ## Repository layout
 ```
 external_config/        everything you configure (no code)
-  newspapers.json         newspapers, as "primary" and "secondary" nodes
+  legacy_newspapers.json         newspapers, as "primary" and "secondary" nodes
   sections.json           the sections (tabs): names, colours, keyword rules
   newspaper_sections/      one file per newspaper: its own sections mapped onto your sections (many-to-one, e.g. Sports, AFL, NFL -> sports)
   settings.json           refresh interval, time-range and story-count choices, relay topic
@@ -26,7 +26,7 @@ site/                   generated, not committed
 ```
 
 ## Configuring
-- **Newspapers** (`newspapers.json`): `{"primary": [...], "secondary": [...]}`. Each newspaper has `name`, `homepage`,
+- **Newspapers** (`legacy_newspapers.json`): `{"primary": [...], "secondary": [...]}`. Each newspaper has `name`, `homepage`,
   optional `country` and `continent`, optional `"listed": false` (hide from the homepage dropdown) and `feeds`.
   Each feed has `section` (where its stories always appear), `url`, and optionally `label`, `state`,
   `general` (also match its stories against keyword sections), `country`, `continent`.
@@ -89,4 +89,4 @@ The listener job (`scheduler.yml`) restarts itself every ~3 hours; GitHub may de
  "other": ["Videos", "Opinion"]}
 ```
 
-A story is looked up by its feed tags and by the folders in its web address (`/sports/cricket/...`). Every match adds that story to the mapped section, on top of the section of the feed it came from. Newspapers without a file behave as before. `newspapers.json` still holds the feeds. Pilot: Hindustan Times, Times of India, India Today, Deccan Herald, Firstpost.
+A story is looked up by its feed tags and by the folders in its web address (`/sports/cricket/...`). Every match adds that story to the mapped section, on top of the section of the feed it came from. While this folder has files, only newspapers that have a file are fetched. `legacy_newspapers.json` (the old newspapers.json) still holds their feeds and homepages. Pilot: Hindustan Times, Times of India, India Today, Deccan Herald, Firstpost.

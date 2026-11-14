@@ -1,6 +1,6 @@
 """Loads and validates the two configuration files that live outside the code, in external_config/:
 
-  newspapers.json  {"primary": [newspaper, ...], "secondary": [newspaper, ...]}
+  legacy_newspapers.json  {"primary": [newspaper, ...], "secondary": [newspaper, ...]}
       newspaper = {"name", "homepage", "country"?, "continent"?, "listed"?, "feeds": [feed, ...]}
       feed      = {"section", "url", "label"?, "state"?, "general"?, "country"?, "continent"?}
   sections.json    {"sections": [section, ...]}   (the order here is the order of the tabs on the page)
@@ -101,18 +101,18 @@ def load_sections(directory=None):
 
 def load_newspapers(sections, directory=None):
     """The validated newspapers as {'primary': [...], 'secondary': [...]}."""
-    data = _read("newspapers.json", directory or config_dir())
+    data = _read("legacy_newspapers.json", directory or config_dir())
     if not isinstance(data, dict) or not isinstance(data.get("primary"), list) or not isinstance(data.get("secondary"), list):
-        raise ConfigError('newspapers.json must be {"primary": [ ... ], "secondary": [ ... ]}')
+        raise ConfigError('legacy_newspapers.json must be {"primary": [ ... ], "secondary": [ ... ]}')
     keys = {s["key"] for s in sections}
     for node in ("primary", "secondary"):
         for n, p in enumerate(data[node], 1):
-            where = f"newspapers.json {node} #{n}"
+            where = f"legacy_newspapers.json {node} #{n}"
             if not isinstance(p, dict):
                 raise ConfigError(f"{where} must be an object")
             if not isinstance(p.get("name"), str) or not p["name"].strip():
                 raise ConfigError(f"{where}: 'name' is required")
-            where = f"newspapers.json {node} '{p['name']}'"
+            where = f"legacy_newspapers.json {node} '{p['name']}'"
             if not _is_url(p.get("homepage")):
                 raise ConfigError(f"{where}: 'homepage' must be a web address starting with http:// or https://")
             if p.get("continent") is not None and p["continent"] not in CONTINENTS:

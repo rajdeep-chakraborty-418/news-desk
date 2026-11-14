@@ -1,4 +1,4 @@
-"""Checks every feed in newspapers.json: does the address answer, and does it hold stories?
+"""Checks every feed in legacy_newspapers.json: does the address answer, and does it hold stories?
 
   python3 src/check_feeds.py                 all feeds
   python3 src/check_feeds.py Marca ESPN      only feeds of newspapers whose name contains one of these words

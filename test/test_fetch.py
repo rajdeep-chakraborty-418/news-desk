@@ -97,7 +97,7 @@ class FetchOneTest(EnvTestCase):
                          ("Army exercise", "s", "Alpha Times", True, "world"))
         self.assertEqual(s["sections"], ["world", "defence"])
         self.assertEqual((s["country"], s["continent"], s["state"]), ("France", "Europe", None))
-        self.assertEqual(s["newspaper"], "Alpha Times")                     # the paper in newspapers.json, for the Newspaper Homepage page
+        self.assertEqual(s["newspaper"], "Alpha Times")                     # the paper in legacy_newspapers.json, for the Newspaper Homepage page
         self.assertTrue(s["published"].endswith("+00:00"))
 
     def test_state_is_carried(self):
