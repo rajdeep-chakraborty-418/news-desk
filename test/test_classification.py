@@ -149,3 +149,10 @@ class NewspaperSectionMapTest(TestCase):
         import shutil
         shutil.rmtree(self.dir / "newspaper_sections")
         self.assertEqual(config.load_section_maps(self.sections, self.dir), {})
+
+
+class OnlyMappedTest(TestCase):
+    def test_only_newspapers_with_a_map_are_fetched(self):
+        feeds = [{"newspaper": "A"}, {"newspaper": "B"}, {"newspaper": "A"}]
+        self.assertEqual(fn.only_mapped(feeds, {"A": {}}), [{"newspaper": "A"}, {"newspaper": "A"}])
+        self.assertEqual(fn.only_mapped(feeds, {}), feeds)

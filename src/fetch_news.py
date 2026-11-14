@@ -378,11 +378,21 @@ def fetch_one(feed):
     return out, status
 
 
+def only_mapped(feeds, maps):
+    """While newspaper_sections/ has files, only the newspapers that have one are fetched (newspapers.json stays as it is).
+    With no files there, every newspaper is fetched as before."""
+    return [f for f in feeds if f.get("newspaper") in maps] if maps else feeds
+
+
 def main():
     global WINDOW_HOURS, ARTICLE_COUNT
     try:
         sections, feeds = config.load_all()
-        configure(sections, maps=config.load_section_maps(sections))
+        maps = config.load_section_maps(sections)
+        configure(sections, maps=maps)
+        feeds = only_mapped(feeds, maps)
+        if not feeds:
+            raise config.ConfigError("newspaper_sections/ has files, but none of them matches a newspaper name in newspapers.json")
     except config.ConfigError as e:
         sys.exit(f"Configuration error: {e}")
     WINDOW_HOURS = window_hours()
