@@ -1,0 +1,60 @@
+{
+  "newspaper": "Bollywood Hungama",
+  "tier": "secondary",
+  "homepage": "https://www.bollywoodhungama.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "entertainment",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.bollywoodhungama.com/rss/news.xml"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "News",
+      "Bollywood News",
+      "Bollywood Features News",
+      "Slideshows",
+      "South Cinema",
+      "International",
+      "Movies",
+      "New Latest Movies",
+      "Upcoming Releases",
+      "Movie Release Dates",
+      "Movie Reviews",
+      "Celeb Photos",
+      "Celeb Wallpapers",
+      "Movie Stills",
+      "First Look",
+      "Movie Wallpapers",
+      "Music",
+      "Song Lyrics",
+      "Music Reviews",
+      "Celeb Interviews",
+      "OTT",
+      "Short Videos",
+      "First Day First Show",
+      "Exclusive & Specials",
+      "Movie Songs",
+      "Box Office",
+      "Box Office Collection",
+      "Analysis & Features",
+      "Overseas Box Office",
+      "100 Crore club",
+      "200 Crore club",
+      "OTT India Fest"
+    ],
+    "india": [
+      "All India LIVE Advance",
+      "National Chains LIVE Advance"
+    ]
+  },
+  "other": [
+    "Photos",
+    "Videos"
+  ],
+  "unmapped_default": "other"
+}

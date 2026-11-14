@@ -1,0 +1,18 @@
+{
+  "newspaper": "YourStory",
+  "tier": "secondary",
+  "homepage": "https://yourstory.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "technology",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "technology",
+      "url": "https://yourstory.com/feed"
+    }
+  ],
+  "section_map": {},
+  "other": [],
+  "unmapped_default": "other"
+}

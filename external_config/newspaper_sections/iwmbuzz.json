@@ -1,0 +1,48 @@
+{
+  "newspaper": "IWMBuzz",
+  "tier": "secondary",
+  "homepage": "https://www.iwmbuzz.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "entertainment",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.iwmbuzz.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Movies",
+      "Television",
+      "Music",
+      "Gaming",
+      "must read",
+      "TV News",
+      "TV Celebrities",
+      "Movie News",
+      "Children's Day",
+      "Neena Kulkarni",
+      "Bete Ka Chhath Vrat",
+      "Chhavi Pandey",
+      "Himanshu Soni",
+      "Review",
+      "Story TV",
+      "Giri Babu",
+      "Nora Fatehi",
+      "Terence Lewis",
+      "babul supriyo",
+      "Anmol TV"
+    ],
+    "technology": [
+      "Digital",
+      "Digital Editorial"
+    ],
+    "lifestyle": [
+      "Lifestyle"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

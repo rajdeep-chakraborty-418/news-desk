@@ -1,0 +1,78 @@
+{
+  "newspaper": "Livemint",
+  "tier": "secondary",
+  "homepage": "https://www.livemint.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.livemint.com/rss/news"
+    },
+    {
+      "section": "business",
+      "url": "https://www.livemint.com/rss/companies"
+    },
+    {
+      "section": "technology",
+      "url": "https://www.livemint.com/rss/technology"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Markets",
+      "Market News",
+      "Stock Markets",
+      "IPO",
+      "Mint Portfolio",
+      "US Markets",
+      "Mark to Market",
+      "Commodities",
+      "Cryptocurrency",
+      "Stock Pages",
+      "Economist",
+      "Money",
+      "Personal Finance",
+      "Insurance",
+      "Ask Mint Money",
+      "Mutual Funds",
+      "Companies",
+      "Industry",
+      "Company Results"
+    ],
+    "world": [
+      "News",
+      "World",
+      "US News",
+      "Latest news"
+    ],
+    "india": [
+      "India"
+    ],
+    "technology": [
+      "Technology",
+      "Auto"
+    ],
+    "lifestyle": [
+      "Lounge"
+    ]
+  },
+  "other": [
+    "Bonds",
+    "Gold Price Today",
+    "Silver Price Today",
+    "Fuel",
+    "Petrol price today",
+    "Diesel price today",
+    "WSJ",
+    "Trends",
+    "MyMint",
+    "Premium",
+    "Barron's",
+    "Opinion",
+    "Start-ups"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,46 @@
+{
+  "newspaper": "Kolkata24x7",
+  "tier": "secondary",
+  "homepage": "https://www.kolkata24x7.in/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "bengali",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "bengali",
+      "url": "https://www.kolkata24x7.in/rss",
+      "state": "West Bengal"
+    }
+  ],
+  "section_map": {
+    "bengali": [
+      "Live",
+      "Sports News",
+      "West Bengal",
+      "November 14, 2026 12:55 PM",
+      "Politics",
+      "Kolkata City",
+      "Bharat",
+      "Technology",
+      "Bengali Tech News",
+      "Top Stories",
+      "Business",
+      "Automobile",
+      "Automobile News",
+      "World",
+      "Breaking News",
+      "Bengali Sports News",
+      "Indian football",
+      "Bengali Business News",
+      "India",
+      "Operation Sindoor",
+      "Bengali News",
+      "Telecom News",
+      "Bengali Smartphone News",
+      "India football"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,70 @@
+{
+  "newspaper": "Sportstar",
+  "tier": "primary",
+  "homepage": "https://sportstar.thehindu.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "sports",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "sports",
+      "url": "https://sportstar.thehindu.com/feeder/default.rss"
+    }
+  ],
+  "section_map": {
+    "sports": [
+      "Cricket",
+      "Football",
+      "Hockey",
+      "Magazine",
+      "Account",
+      "Posters",
+      "Statsman",
+      "Archery",
+      "Athletics",
+      "Badminton",
+      "Basketball",
+      "Boxing",
+      "Chess",
+      "ESPORTS",
+      "Golf",
+      "Kabaddi",
+      "Motorsport",
+      "Shooting",
+      "Squash",
+      "Swimming",
+      "Table Tennis",
+      "Tennis",
+      "Volleyball",
+      "Wrestling",
+      "Sportoon",
+      "Visual Story",
+      "Sportstar Conclave",
+      "Latest News",
+      "Playcom",
+      "Indian Football",
+      "Women’s Football",
+      "Domestic",
+      "More Sports",
+      "International",
+      "IPL News",
+      "IPL",
+      "Women&#039;s Cricket",
+      "Bundesliga"
+    ],
+    "lifestyle": [
+      "Star Life",
+      "Home"
+    ],
+    "entertainment": [
+      "ACES Awards"
+    ]
+  },
+  "other": [
+    "Shorts",
+    "Columns",
+    "Videos"
+  ],
+  "unmapped_default": "other"
+}

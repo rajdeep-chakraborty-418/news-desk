@@ -1,0 +1,174 @@
+{
+  "newspaper": "The Hindu",
+  "tier": "primary",
+  "homepage": "https://www.thehindu.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/national/feeder/default.rss"
+    },
+    {
+      "section": "world",
+      "url": "https://www.thehindu.com/news/international/feeder/default.rss"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.thehindu.com/sport/feeder/default.rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.thehindu.com/entertainment/feeder/default.rss"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/national/kerala/feeder/default.rss",
+      "label": "The Hindu (Kerala)",
+      "state": "Kerala"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/national/karnataka/feeder/default.rss",
+      "label": "The Hindu (Karnataka)",
+      "state": "Karnataka"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/national/tamil-nadu/feeder/default.rss",
+      "label": "The Hindu (Tamil Nadu)",
+      "state": "Tamil Nadu"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/national/andhra-pradesh/feeder/default.rss",
+      "label": "The Hindu (Andhra Pradesh)",
+      "state": "Andhra Pradesh"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/national/telangana/feeder/default.rss",
+      "label": "The Hindu (Telangana)",
+      "state": "Telangana"
+    },
+    {
+      "section": "india",
+      "url": "https://www.thehindu.com/news/national/other-states/feeder/default.rss",
+      "label": "The Hindu (Other states)",
+      "state": "Other states"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://www.thehindu.com/life-and-style/feeder/default.rss"
+    },
+    {
+      "section": "business",
+      "url": "https://www.thehindu.com/business/feeder/default.rss"
+    },
+    {
+      "section": "technology",
+      "url": "https://www.thehindu.com/sci-tech/technology/feeder/default.rss"
+    },
+    {
+      "section": "science",
+      "url": "https://www.thehindu.com/sci-tech/science/feeder/default.rss"
+    },
+    {
+      "section": "nature",
+      "url": "https://www.thehindu.com/sci-tech/energy-and-environment/feeder/default.rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.thehindu.com/entertainment/movies/feeder/default.rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.thehindu.com/entertainment/music/feeder/default.rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.thehindu.com/entertainment/theatre/feeder/default.rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.thehindu.com/entertainment/art/feeder/default.rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.thehindu.com/entertainment/dance/feeder/default.rss"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Games",
+      "Entertainment",
+      "Art",
+      "Dance",
+      "Movies",
+      "Music",
+      "Reviews",
+      "Theatre"
+    ],
+    "nature": [
+      "Weather News",
+      "Environment"
+    ],
+    "india": [
+      "India",
+      "States",
+      "Cities",
+      "Karnataka",
+      "Keralam",
+      "Telangana",
+      "Andhra Pradesh",
+      "Tamil Nadu",
+      "Thiruvananthapuram",
+      "Kolkata"
+    ],
+    "world": [
+      "World",
+      "News"
+    ],
+    "sports": [
+      "Sport",
+      "Cricket",
+      "Football",
+      "Tennis"
+    ],
+    "technology": [
+      "Data",
+      "Technology"
+    ],
+    "lifestyle": [
+      "Health"
+    ],
+    "science": [
+      "Science"
+    ],
+    "business": [
+      "Business",
+      "Agri-Business",
+      "Economy",
+      "Industry",
+      "Markets",
+      "Budget"
+    ]
+  },
+  "other": [
+    "Monthly Digest",
+    "Opinion",
+    "Premium",
+    "Editorial",
+    "Cartoon",
+    "Columns",
+    "Comment",
+    "Interview",
+    "Lead",
+    "Letters",
+    "Open Page",
+    "Races"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,51 @@
+{
+  "newspaper": "Kashmir Observer",
+  "tier": "secondary",
+  "homepage": "https://kashmirobserver.net/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://kashmirobserver.net/feed/",
+      "state": "Jammu & Kashmir"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "NEWS"
+    ],
+    "india": [
+      "LOCAL"
+    ],
+    "business": [
+      "BUSINESS",
+      "BUSINESS NEWS",
+      "Attachment Of Property",
+      "India-US Trade"
+    ],
+    "technology": [
+      "CARS & BIKES"
+    ],
+    "lifestyle": [
+      "Food Safety",
+      "HEALTH"
+    ]
+  },
+  "other": [
+    "Ladakh",
+    "Kargil",
+    "Kargil Democratic Alliance (KDA)",
+    "Volkswagen",
+    "Tariq Karra",
+    "Bear Attack",
+    "Accidental Fire",
+    "KHYEN CHYEN",
+    "Rotten Meat",
+    "Drug Peddling",
+    "S Jaishankar"
+  ],
+  "unmapped_default": "other"
+}

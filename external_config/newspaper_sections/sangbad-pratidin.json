@@ -1,0 +1,42 @@
+{
+  "newspaper": "Sangbad Pratidin",
+  "tier": "secondary",
+  "homepage": "https://www.sangbadpratidin.in/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "bengali",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "bengali",
+      "url": "https://www.sangbadpratidin.in/feed/",
+      "state": "West Bengal"
+    }
+  ],
+  "section_map": {
+    "bengali": [
+      "মহানগর",
+      "বিনোদন",
+      "হলি বলি টলি",
+      "রাজ্য​",
+      "ক্রিকেট",
+      "খেলা",
+      "CM Suvendu Adhikari",
+      "West Bengal govt",
+      "killing",
+      "U19AsiaCup",
+      "Government Teacher",
+      "দেশ",
+      "Uttar Pradesh",
+      "Baranagar",
+      "investigation",
+      "Ananya Panday",
+      "Buxa Tiger Reserve",
+      "North Bengal",
+      "Tiger",
+      "Book Fair"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

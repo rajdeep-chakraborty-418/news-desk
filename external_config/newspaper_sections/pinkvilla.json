@@ -1,0 +1,59 @@
+{
+  "newspaper": "Pinkvilla",
+  "tier": "secondary",
+  "homepage": "https://www.pinkvilla.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "entertainment",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.pinkvilla.com/rss.xml"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "100 crore club",
+      "200 crore club",
+      "300 crore club",
+      "400 crore club",
+      "500 crore club",
+      "600 crore club",
+      "South",
+      "Hollywood",
+      "Anime",
+      "Movie Review",
+      "Exclusives",
+      "Cinema",
+      "Music",
+      "TV Series",
+      "Updates",
+      "Makeup",
+      "Awards/Badges",
+      "Box Office",
+      "Entertainment",
+      "Korean"
+    ],
+    "lifestyle": [
+      "Love & Relationships",
+      "Food & Travel",
+      "Lifestyle",
+      "Beauty",
+      "Fashion"
+    ],
+    "geography": [
+      "Food & Travel"
+    ],
+    "sports": [
+      "Sports life"
+    ],
+    "geopolitics": [
+      "Image Usage Policy"
+    ]
+  },
+  "other": [
+    "Latest"
+  ],
+  "unmapped_default": "other"
+}

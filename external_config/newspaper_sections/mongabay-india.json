@@ -1,0 +1,60 @@
+{
+  "newspaper": "Mongabay India",
+  "tier": "secondary",
+  "homepage": "https://india.mongabay.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "nature",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "nature",
+      "url": "https://india.mongabay.com/feed/"
+    }
+  ],
+  "section_map": {
+    "nature": [
+      "Short News",
+      "Feature Stories",
+      "why they matter to climate change",
+      "Species File",
+      "Uncategorized",
+      "farming",
+      "COP31",
+      "farmers",
+      "rainfall",
+      "Climate disaster",
+      "disaster",
+      "natural disasters",
+      "Energy security",
+      "energy transition",
+      "ethanol blending",
+      "Renewable Energy",
+      "Crop loss",
+      "farmlands",
+      "Paddy",
+      "exotic plants",
+      "Biodiversity finance"
+    ],
+    "lifestyle": [
+      "living alongside gaurs,"
+    ],
+    "business": [
+      "Disaster management"
+    ],
+    "science": [
+      "Convention on Biological Diversity"
+    ],
+    "geopolitics": [
+      "UN CBD"
+    ]
+  },
+  "other": [
+    "Features",
+    "Videos",
+    "Specials",
+    "Articles",
+    "Shorts"
+  ],
+  "unmapped_default": "other"
+}

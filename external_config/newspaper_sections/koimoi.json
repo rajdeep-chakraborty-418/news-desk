@@ -1,0 +1,80 @@
+{
+  "newspaper": "Koimoi",
+  "tier": "secondary",
+  "homepage": "https://www.koimoi.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "entertainment",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.koimoi.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Movies",
+      "TV Shows",
+      "Daily Box Office Update",
+      "Hits & Flops",
+      "Daily Breakdown",
+      "All Time Grossers",
+      "Highest Grossers",
+      "Power Index",
+      "Bollywood",
+      "South",
+      "Hollywood",
+      "Trailer",
+      "Music",
+      "BIGG BOSS",
+      "What To Watch",
+      "Parivarik ManuRanjan",
+      "Scene",
+      "7G Rainbow Colony 2",
+      "Dilwali Diwali",
+      "Ramayana: Rise of a Legend",
+      "Blind Game",
+      "Ghost Soldier",
+      "Godzilla Minus Zero",
+      "Student of the Year: After Dark",
+      "Black Doves",
+      "The Greatest",
+      "Dexter: Resurrection",
+      "Love Always",
+      "Akka",
+      "Entertainment News",
+      "Box Office",
+      "Down South",
+      "Bollywood Movie Reviews",
+      "Reviews",
+      "Box Office Verdict 2026",
+      "Ramayana",
+      "Udta Teer",
+      "Prahaar",
+      "Kollywood",
+      "Hollywood News",
+      "Box Office Collections",
+      "MCU",
+      "Ramayana Box Office",
+      "Scene Box Office",
+      "Nitesh Tiwari",
+      "Ranbir Kapoor",
+      "Sai Pallavi",
+      "Yash",
+      "Jailer 2",
+      "Jailer 2 Box Office",
+      "Rajinikanth",
+      "Tamil Box Office"
+    ],
+    "lifestyle": [
+      "Fashion & Lifestyle",
+      "Awkwafina: The Unlikely Cook"
+    ],
+    "business": [
+      "Lakadbaggha 2: The Monkey Business"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

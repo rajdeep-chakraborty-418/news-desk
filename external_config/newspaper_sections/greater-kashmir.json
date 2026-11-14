@@ -1,0 +1,69 @@
+{
+  "newspaper": "Greater Kashmir",
+  "tier": "secondary",
+  "homepage": "https://www.greaterkashmir.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.greaterkashmir.com/feed",
+      "state": "Jammu & Kashmir"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "Kashmir",
+      "Jammu & Kashmir",
+      "Jammu",
+      "Srinagar",
+      "National",
+      "Jammu &amp; Kashmir"
+    ],
+    "business": [
+      "Business"
+    ],
+    "world": [
+      "Politics",
+      "World",
+      "News Shorts",
+      "Latest News"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "lifestyle": [
+      "Life & Style",
+      "Health"
+    ],
+    "nature": [
+      "weather"
+    ]
+  },
+  "other": [
+    "Today’s Paper",
+    "GKSC",
+    "Bookmarks",
+    "Log Out",
+    "Education",
+    "Opinion",
+    "Web Stories",
+    "Governance",
+    "Ladakh",
+    "Videos",
+    "Photos",
+    "Security",
+    "Endeavour",
+    "Opinion and Editorial",
+    "Page 9",
+    "Page 11",
+    "Page 10",
+    "Page 3",
+    "Page 12",
+    "Editorial page",
+    "Pages"
+  ],
+  "unmapped_default": "other"
+}

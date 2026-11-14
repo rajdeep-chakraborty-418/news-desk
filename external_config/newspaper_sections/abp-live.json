@@ -1,0 +1,84 @@
+{
+  "newspaper": "ABP Live",
+  "tier": "secondary",
+  "homepage": "https://news.abplive.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://news.abplive.com/entertainment/feed",
+      "label": "ABP Live Entertainment"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "News",
+      "World",
+      "Elections",
+      "Crime"
+    ],
+    "india": [
+      "India",
+      "States",
+      "Delhi-NCR",
+      "Cities"
+    ],
+    "business": [
+      "Business",
+      "Budget"
+    ],
+    "technology": [
+      "Auto",
+      "Technology"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Celebrities News",
+      "Movies",
+      "South Cinema",
+      "Movie Review",
+      "Games",
+      "Celebrities",
+      "OTT"
+    ],
+    "sports": [
+      "Sports",
+      "FIFA World CUP 2026",
+      "Cricket",
+      "IPL",
+      "Football"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Health"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "science": [
+      "Science"
+    ]
+  },
+  "other": [
+    "WPL",
+    "Astro",
+    "Education",
+    "Results",
+    "Brand Wire",
+    "Religion and Spirituality",
+    "Trending",
+    "Offbeat",
+    "Fact Check",
+    "Explainers",
+    "Live Now",
+    "Video",
+    "Reels",
+    "Web Stories",
+    "Photo Gallery",
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

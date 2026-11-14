@@ -1,0 +1,28 @@
+{
+  "newspaper": "IDRW",
+  "tier": "secondary",
+  "homepage": "https://idrw.org/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "defence",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "defence",
+      "url": "https://idrw.org/feed/"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "India"
+    ],
+    "defence": [
+      "AFI",
+      "Idrw Team",
+      "News Beat",
+      "N & S America"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

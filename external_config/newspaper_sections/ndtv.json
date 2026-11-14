@@ -1,0 +1,74 @@
+{
+  "newspaper": "NDTV",
+  "tier": "primary",
+  "homepage": "https://www.ndtv.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://feeds.feedburner.com/ndtvnews-india-news"
+    },
+    {
+      "section": "world",
+      "url": "https://feeds.feedburner.com/ndtvnews-world-news"
+    },
+    {
+      "section": "sports",
+      "url": "https://feeds.feedburner.com/ndtvsports-latest"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://feeds.feedburner.com/ndtvmovies-latest"
+    },
+    {
+      "section": "technology",
+      "url": "https://feeds.feedburner.com/gadgets360-latest"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "India",
+      "Cities"
+    ],
+    "world": [
+      "World",
+      "Elections"
+    ],
+    "sports": [
+      "Sports",
+      "Cricket"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Movies"
+    ],
+    "business": [
+      "Business"
+    ],
+    "technology": [
+      "Technology",
+      "Auto"
+    ],
+    "science": [
+      "Science"
+    ],
+    "lifestyle": [
+      "Health",
+      "Lifestyle",
+      "Food"
+    ],
+    "geography": [
+      "Travel"
+    ]
+  },
+  "other": [
+    "Education",
+    "Opinion",
+    "Trends",
+    "Offbeat"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,30 @@
+{
+  "newspaper": "The Shillong Times",
+  "tier": "secondary",
+  "homepage": "https://theshillongtimes.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://theshillongtimes.com/feed/",
+      "state": "Meghalaya"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "News Alert"
+    ],
+    "india": [
+      "NATIONAL",
+      "REGIONAL"
+    ],
+    "business": [
+      "Economy"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

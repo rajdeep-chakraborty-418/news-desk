@@ -1,0 +1,82 @@
+{
+  "newspaper": "DeshGujarat",
+  "tier": "secondary",
+  "homepage": "https://deshgujarat.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://deshgujarat.com/feed/",
+      "state": "Gujarat"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "Gujarat",
+      "India/World",
+      "Gujarati",
+      "Ahmedabad",
+      "Surat",
+      "Gift city"
+    ],
+    "world": [
+      "India/World",
+      "Politics",
+      "Crime",
+      "scrollnews",
+      "Bangladesh"
+    ],
+    "business": [
+      "Business"
+    ],
+    "geography": [
+      "Travel",
+      "Tourism"
+    ],
+    "defence": [
+      "Aviation"
+    ],
+    "geopolitics": [
+      "Immigration"
+    ],
+    "sports": [
+      "Passport",
+      "Cricket",
+      "Indian Cricket Team"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Movies",
+      "Books",
+      "Film",
+      "Music"
+    ],
+    "lifestyle": [
+      "Recipe",
+      "Health"
+    ],
+    "technology": [
+      "Technology"
+    ]
+  },
+  "other": [
+    "Faith",
+    "Services",
+    "Saurastra",
+    "AMC",
+    "Junagadh",
+    "Jamnagar",
+    "Lion",
+    "Fire",
+    "Electricity",
+    "Power",
+    "Railway",
+    "Western Railway",
+    "Vadodara",
+    "CBI"
+  ],
+  "unmapped_default": "other"
+}

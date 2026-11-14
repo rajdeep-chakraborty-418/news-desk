@@ -1,0 +1,36 @@
+{
+  "newspaper": "The News Minute",
+  "tier": "secondary",
+  "homepage": "https://www.thenewsminute.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.thenewsminute.com/feed",
+      "label": "The News Minute Entertainment"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "Karnataka",
+      "Tamil Nadu",
+      "Andhra Pradesh"
+    ]
+  },
+  "other": [
+    "SOUTH CENTRAL",
+    "Whats Your Ism?",
+    "VIDEO",
+    "Let me explain",
+    "In Public Interest",
+    "Yen Endra Kelvi",
+    "LONG FORM",
+    "OPINION",
+    "FLIX",
+    "What's Your Ism"
+  ],
+  "unmapped_default": "other"
+}

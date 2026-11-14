@@ -1,0 +1,44 @@
+{
+  "newspaper": "The Sentinel (Assam)",
+  "tier": "secondary",
+  "homepage": "https://www.sentinelassam.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.sentinelassam.com/feed",
+      "state": "Assam"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Breaking News",
+      "NE News",
+      "BreakingNews",
+      "Arunachal News"
+    ],
+    "india": [
+      "Cities",
+      "Assam News",
+      "Sikkim News",
+      "REST OF NORTHEAST",
+      "Tripura News",
+      "Meghalaya News",
+      "Guwahati",
+      "Mizoram News"
+    ],
+    "sports": [
+      "Sports"
+    ]
+  },
+  "other": [
+    "Live Blog",
+    "Sentinel Media",
+    "Education",
+    "Top Headlines"
+  ],
+  "unmapped_default": "other"
+}

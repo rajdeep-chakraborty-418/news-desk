@@ -1,0 +1,40 @@
+{
+  "newspaper": "Scroll.in",
+  "tier": "secondary",
+  "homepage": "https://scroll.in/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://feeds.feedburner.com/ScrollinArticles.rss"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Politics",
+      "World"
+    ],
+    "entertainment": [
+      "Culture",
+      "Film and TV",
+      "Music",
+      "Books and Ideas"
+    ],
+    "india": [
+      "India"
+    ],
+    "business": [
+      "Business and Economy"
+    ]
+  },
+  "other": [
+    "The Latest",
+    "Video",
+    "The Reel",
+    "Magazine"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,36 @@
+{
+  "newspaper": "ESPNcricinfo",
+  "tier": "primary",
+  "homepage": "https://www.espncricinfo.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "sports",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "sports",
+      "url": "https://www.espncricinfo.com/rss/content/story/feeds/0.xml"
+    }
+  ],
+  "section_map": {
+    "sports": [
+      "Matches",
+      "Series",
+      "Teams",
+      "Players",
+      "News",
+      "Rankings",
+      "IPL",
+      "Test Cricket",
+      "Women's Cricket",
+      "Stats",
+      "Fantasy"
+    ]
+  },
+  "other": [
+    "Features",
+    "Videos",
+    "Podcasts"
+  ],
+  "unmapped_default": "other"
+}

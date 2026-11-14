@@ -1,0 +1,50 @@
+{
+  "newspaper": "ABP Ananda (ABP Live Bangla)",
+  "tier": "primary",
+  "homepage": "https://bengali.abplive.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "bengali",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "bengali",
+      "url": "https://bengali.abplive.com/home/feed",
+      "state": "West Bengal"
+    },
+    {
+      "section": "bengali",
+      "url": "https://bengali.abplive.com/news/kolkata/feed",
+      "state": "West Bengal"
+    },
+    {
+      "section": "bengali",
+      "url": "https://bengali.abplive.com/news/india/feed",
+      "state": "West Bengal"
+    },
+    {
+      "section": "bengali",
+      "url": "https://bengali.abplive.com/news/world/feed",
+      "state": "West Bengal"
+    },
+    {
+      "section": "bengali",
+      "url": "https://bengali.abplive.com/sports/feed",
+      "state": "West Bengal"
+    }
+  ],
+  "section_map": {
+    "bengali": [
+      "খবর",
+      "জেলার",
+      "ক্রিকেট",
+      "ব্যবসা-বাণিজ্যের",
+      "বিনোদনের",
+      "আইপিএল",
+      "খুঁটিনাটি",
+      "অপরাধ"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

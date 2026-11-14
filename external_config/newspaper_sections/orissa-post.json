@@ -1,0 +1,64 @@
+{
+  "newspaper": "Orissa Post",
+  "tier": "secondary",
+  "homepage": "https://www.orissapost.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.orissapost.com/feed/",
+      "state": "Odisha"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "State",
+      "National",
+      "Odisha Special",
+      "Odisha",
+      "India",
+      "Kerala",
+      "Kerala HC"
+    ],
+    "world": [
+      "Metro",
+      "International",
+      "Top Stories",
+      "China",
+      "Donald Trump",
+      "Russia"
+    ],
+    "business": [
+      "Business"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Horoscope"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "technology": [
+      "Sci-Tech"
+    ],
+    "lifestyle": [
+      "Home News"
+    ]
+  },
+  "other": [
+    "Trending",
+    "Feature",
+    "Editorial",
+    "Opinion",
+    "Timeout",
+    "Today’s Pic",
+    "BJP",
+    "housing scheme",
+    "Rahul Gandhi",
+    "juvenile"
+  ],
+  "unmapped_default": "other"
+}

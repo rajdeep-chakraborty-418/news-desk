@@ -1,0 +1,41 @@
+{
+  "newspaper": "Uttarbanga Sambad",
+  "tier": "secondary",
+  "homepage": "https://uttarbangasambad.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "bengali",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "bengali",
+      "url": "https://uttarbangasambad.com/feed",
+      "state": "West Bengal"
+    }
+  ],
+  "section_map": {
+    "bengali": [
+      "Top News",
+      "রাজ্য",
+      "উত্তরবঙ্গ",
+      "Crime",
+      "West Bengal Tourism",
+      "জীবনযাপন",
+      "abhishek banerjee",
+      "Tmc",
+      "Biswajit Das",
+      "Santiniketan Police Station",
+      "suvendu adhikari",
+      "জলপাইগুড়ি",
+      "chalsa",
+      "Dooars tourism meeting",
+      "Gorumara",
+      "Jalpaiguri Tourism",
+      "দক্ষিণবঙ্গ",
+      "DIG Burdwan Range",
+      "police constable injured"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,39 @@
+{
+  "newspaper": "Northeast Now",
+  "tier": "secondary",
+  "homepage": "https://nenow.in/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://nenow.in/feed",
+      "state": "Northeast"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Top News"
+    ],
+    "india": [
+      "Northeast News",
+      "Assam",
+      "Manipur",
+      "Meghalaya",
+      "Nagaland",
+      "National"
+    ],
+    "business": [
+      "Assam Career"
+    ],
+    "nature": [
+      "Environment"
+    ]
+  },
+  "other": [
+    "Arunachal"
+  ],
+  "unmapped_default": "other"
+}

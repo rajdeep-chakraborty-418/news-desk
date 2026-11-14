@@ -1,0 +1,68 @@
+{
+  "newspaper": "Telangana Today",
+  "tier": "secondary",
+  "homepage": "https://telanganatoday.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://telanganatoday.com/feed",
+      "state": "Telangana"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "Hyderabad",
+      "Telangana",
+      "India",
+      "Hyderabad News",
+      "Telangana News",
+      "Andhra Pradesh",
+      "Other States"
+    ],
+    "world": [
+      "AP News",
+      "World",
+      "News",
+      "Latest News",
+      "Congress Government"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Reviews"
+    ],
+    "sports": [
+      "Sport",
+      "Cricket",
+      "Football",
+      "IPL"
+    ],
+    "science": [
+      "Science and Tech",
+      "My Space"
+    ],
+    "technology": [
+      "Science and Tech"
+    ],
+    "business": [
+      "Business",
+      "Property"
+    ],
+    "lifestyle": [
+      "Lifestyle"
+    ]
+  },
+  "other": [
+    "Rewind",
+    "NRI",
+    "cartoon",
+    "Education Today",
+    "Rahul Gandhi",
+    "Revanth Reddy",
+    "Bhadradri Kothagudem"
+  ],
+  "unmapped_default": "other"
+}

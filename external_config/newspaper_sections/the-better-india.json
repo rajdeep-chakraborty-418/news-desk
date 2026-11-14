@@ -1,0 +1,80 @@
+{
+  "newspaper": "The Better India",
+  "tier": "secondary",
+  "homepage": "https://www.thebetterindia.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "lifestyle",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "lifestyle",
+      "url": "https://www.thebetterindia.com/feed/"
+    }
+  ],
+  "section_map": {
+    "lifestyle": [
+      "Bookmarks",
+      "Log Out",
+      "Changemakers Stories",
+      "Parenting Stories",
+      "Farming Stories",
+      "Gardening Stories",
+      "Food Stories",
+      "Education Stories",
+      "Health Care Stories",
+      "Civil Service Stories",
+      "Young Achievers Stories",
+      "Our Impact",
+      "Brand Campaigns",
+      "Watch Inspiring Videos",
+      "Press Coverage",
+      "Explore all stories",
+      "Visual Stories",
+      "lifestyle",
+      "Changemakers",
+      "Healthcare",
+      "Governance",
+      "Wild At Heart",
+      "Food",
+      "Parenting",
+      "Gardening"
+    ],
+    "nature": [
+      "Sustainability Stories",
+      "Wildlife Stories",
+      "Wildlife",
+      "Sustainability",
+      "Environment &amp; Sustainability"
+    ],
+    "business": [
+      "Startup Stories",
+      "Startup"
+    ],
+    "entertainment": [
+      "Culture Stories",
+      "Culture",
+      "Entertainment"
+    ],
+    "geography": [
+      "Travel Stories"
+    ],
+    "science": [
+      "Innovation Stories",
+      "Innovation"
+    ],
+    "history": [
+      "History Stories"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "india": [
+      "India"
+    ]
+  },
+  "other": [
+    "Stories"
+  ],
+  "unmapped_default": "other"
+}

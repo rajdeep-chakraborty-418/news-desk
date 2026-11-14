@@ -1,0 +1,42 @@
+{
+  "newspaper": "Gadgets 360",
+  "tier": "secondary",
+  "homepage": "https://www.gadgets360.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "technology",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "technology",
+      "url": "https://feeds.feedburner.com/gadgets360-latest"
+    }
+  ],
+  "section_map": {
+    "technology": [
+      "Mobiles",
+      "Laptops",
+      "Tablets",
+      "AI",
+      "Telecom",
+      "Apps",
+      "Wearables",
+      "Electric Vehicles",
+      "Deals",
+      "Smart TVs"
+    ],
+    "entertainment": [
+      "Gaming",
+      "Reviews",
+      "Entertainment"
+    ],
+    "science": [
+      "Science"
+    ],
+    "business": [
+      "Cryptocurrency"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

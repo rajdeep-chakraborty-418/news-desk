@@ -1,0 +1,24 @@
+{
+  "newspaper": "Zee 24 Ghanta (Zee Bangla)",
+  "tier": "primary",
+  "homepage": "https://zeenews.india.com/bengali",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "bengali",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "bengali",
+      "url": "https://zeenews.india.com/bengali/rss.xml",
+      "state": "West Bengal"
+    }
+  ],
+  "section_map": {
+    "bengali": [
+      "PHH",
+      "Live TV"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,73 @@
+{
+  "newspaper": "Siasat Daily",
+  "tier": "secondary",
+  "homepage": "https://www.siasat.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.siasat.com/feed/",
+      "state": "Telangana"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "Hyderabad",
+      "Telangana",
+      "India",
+      "Andhra Pradesh",
+      "Bangalore",
+      "Crime in Hyderabad",
+      "Karnataka",
+      "Narendra Modi",
+      "Telangana Congress"
+    ],
+    "geopolitics": [
+      "Middle East",
+      "Bharat Summit"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Bollywood",
+      "Hollywood"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "business": [
+      "Business"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "world": [
+      "Featured News",
+      "World",
+      "Politics",
+      "Crime",
+      "Top Stories",
+      "Congress"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Health",
+      "Food"
+    ]
+  },
+  "other": [
+    "Photos",
+    "Videos",
+    "Offbeat",
+    "Opinions",
+    "Islamic Hub",
+    "Rahul Gandhi",
+    "Lead Story",
+    "gold theft",
+    "BJP",
+    "HYDRAA"
+  ],
+  "unmapped_default": "other"
+}

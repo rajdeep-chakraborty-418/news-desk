@@ -1,0 +1,31 @@
+{
+  "newspaper": "Mid-day",
+  "tier": "secondary",
+  "homepage": "https://www.mid-day.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.mid-day.com/Resources/midday/rss/mumbai-news.xml",
+      "state": "Maharashtra"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.mid-day.com/Resources/midday/rss/entertainment.xml",
+      "label": "Mid-day Entertainment"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "Mumbai News"
+    ],
+    "entertainment": [
+      "Entertainment"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

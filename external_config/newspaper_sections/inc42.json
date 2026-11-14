@@ -1,0 +1,57 @@
+{
+  "newspaper": "Inc42",
+  "tier": "secondary",
+  "homepage": "https://inc42.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "technology",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "technology",
+      "url": "https://inc42.com/feed/"
+    }
+  ],
+  "section_map": {
+    "technology": [
+      "DATALABS",
+      "REPORTS",
+      "Fintech",
+      "Electric Vehicle",
+      "Health Tech",
+      "Edtech",
+      "Ecommerce",
+      "Enterprise Tech",
+      "Clean Tech",
+      "Consumer Internet",
+      "Agritech",
+      "JOIN INC42 PLUS",
+      "Advanced Hardware & Technology",
+      "Explore datalabs",
+      "Enterprise Services",
+      "News",
+      "In-Depth",
+      "Follow Up",
+      "Listicle",
+      "Funding Galore",
+      "Spot News",
+      "Inc42 Announcements",
+      "Inc42 Daily Brief"
+    ],
+    "business": [
+      "STARTUPS",
+      "Logistics",
+      "Retail",
+      "What The Financials",
+      "Inc42 Markets"
+    ],
+    "geography": [
+      "Travel Tech"
+    ],
+    "nature": [
+      "Startup Ecosystem"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

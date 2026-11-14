@@ -1,0 +1,59 @@
+{
+  "newspaper": "The Economic Times",
+  "tier": "secondary",
+  "homepage": "https://economictimes.indiatimes.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "business",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "business",
+      "url": "https://economictimes.indiatimes.com/rssfeedstopstories.cms"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Nifty",
+      "Markets",
+      "Masterclass",
+      "Industry",
+      "NRI",
+      "Panache",
+      "Sectoral Deep Dives",
+      "US Markets",
+      "US Markets »",
+      "Mutual Funds",
+      "Mutual Funds »",
+      "Panache »",
+      "ET Commentary",
+      "Opinion »"
+    ],
+    "lifestyle": [
+      "Sensex",
+      "Astrology",
+      "Astrology »"
+    ],
+    "technology": [
+      "Market Data",
+      "Tech",
+      "Tech »"
+    ],
+    "world": [
+      "News",
+      "Politics",
+      "World",
+      "News Live!"
+    ],
+    "entertainment": [
+      "MSME Awards"
+    ],
+    "geopolitics": [
+      "Biz Growth Summit"
+    ]
+  },
+  "other": [
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

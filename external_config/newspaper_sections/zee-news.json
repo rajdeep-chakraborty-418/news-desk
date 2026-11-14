@@ -1,0 +1,50 @@
+{
+  "newspaper": "Zee News",
+  "tier": "secondary",
+  "homepage": "https://zeenews.india.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://zeenews.india.com/rss/entertainment-news.xml",
+      "label": "Zee News Entertainment"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Live TV",
+      "Entertainment"
+    ],
+    "world": [
+      "Latest News",
+      "World"
+    ],
+    "india": [
+      "India"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "business": [
+      "Business"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Astrology"
+    ],
+    "technology": [
+      "Auto",
+      "Technology"
+    ]
+  },
+  "other": [
+    "PHH",
+    "Live Blog",
+    "photos",
+    "Education"
+  ],
+  "unmapped_default": "other"
+}

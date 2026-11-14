@@ -1,0 +1,50 @@
+{
+  "newspaper": "TV9 Bangla",
+  "tier": "primary",
+  "homepage": "https://tv9bangla.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "bengali",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "bengali",
+      "url": "https://tv9bangla.com/feed",
+      "state": "West Bengal"
+    },
+    {
+      "section": "bengali",
+      "url": "https://tv9bangla.com/rss",
+      "state": "West Bengal"
+    }
+  ],
+  "section_map": {
+    "bengali": [
+      "AQI",
+      "VIDEO",
+      "Live TV",
+      "কলকাতা",
+      "পশ্চিমবঙ্গ",
+      "দেশ",
+      "বিনোদন",
+      "খেলা-Sports News",
+      "বিশ্ব",
+      "ফুটবল",
+      "ভিডিয়ো",
+      "লাইফস্টাইল",
+      "ব্যবসা",
+      "ক্রিকেট",
+      "ফটো গ্যালারি",
+      "উত্তর ২৪ পরগনা",
+      "আধ্যাত্মিক",
+      "পূর্ব বর্ধমান",
+      "হাওড়া",
+      "পশ্চিম বর্ধমান",
+      "কোচবিহার",
+      "বীরভূম",
+      "দক্ষিণ ২৪ পরগনা"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

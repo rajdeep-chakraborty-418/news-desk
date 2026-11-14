@@ -1,0 +1,88 @@
+{
+  "newspaper": "India.com",
+  "tier": "secondary",
+  "homepage": "https://www.india.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.india.com/entertainment/feed/",
+      "label": "India.com Entertainment"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Live TV",
+      "Entertainment",
+      "Bollywood",
+      "TV",
+      "OTT"
+    ],
+    "india": [
+      "India",
+      "Uttar Pradesh",
+      "Madhya Pradesh",
+      "Karnataka",
+      "Bihar",
+      "Rajasthan",
+      "Maharashtra",
+      "Delhi",
+      "West Bengal",
+      "Tamil Nadu",
+      "Telangana",
+      "Regional"
+    ],
+    "world": [
+      "World",
+      "International"
+    ],
+    "business": [
+      "Business"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "lifestyle": [
+      "Astrology",
+      "Health",
+      "Lifestyle"
+    ],
+    "technology": [
+      "Auto",
+      "Tech"
+    ],
+    "geography": [
+      "Destinations"
+    ]
+  },
+  "other": [
+    "Latest",
+    "Viral",
+    "Photos",
+    "Women",
+    "Weekend Getaways",
+    "Explore",
+    "Articles",
+    "IFSC Code",
+    "Education",
+    "Ramayana",
+    "Bigg Boss 20",
+    "Sharad Kapoor",
+    "Sharad Kapoor viral video",
+    "Shah Rukh Khan",
+    "Scene",
+    "Suriya",
+    "Bigg Boss Season 20",
+    "Gauahar Khan",
+    "Love Gill",
+    "ScoutOP",
+    "Ranbir Kapoor",
+    "Aditya Roy Kapur",
+    "Ananya Birla",
+    "Ananya Panday"
+  ],
+  "unmapped_default": "other"
+}

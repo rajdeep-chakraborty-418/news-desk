@@ -1,0 +1,46 @@
+{
+  "newspaper": "The Print",
+  "tier": "secondary",
+  "homepage": "https://theprint.in/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Generated from the site's menu, its feed tags and its configured feeds; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://theprint.in/category/entertainment/feed/",
+      "label": "The Print Entertainment"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Entertainment",
+      "Bollywood",
+      "Indian Cinema",
+      "Indian Reality TV",
+      "200 crore films"
+    ],
+    "technology": [
+      "Artificial intelligence"
+    ],
+    "lifestyle": [
+      "Pyaar Ka Pressure Cooker"
+    ]
+  },
+  "other": [
+    "Karan Johar",
+    "Koffee with Karan",
+    "Kiara Advani",
+    "Chiranjeevi Hanuman",
+    "Rajesh Mapuskar",
+    "Bandit Queen",
+    "Honey Trehan",
+    "Phoolan Devi",
+    "Shilpa Shetty",
+    "Anirudh Ravichander",
+    "Kavya Maran",
+    "Self-respect marriages"
+  ],
+  "unmapped_default": "other"
+}
