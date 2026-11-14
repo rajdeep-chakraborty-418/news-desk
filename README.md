@@ -7,7 +7,6 @@ and a link to the original article.
 ## Repository layout
 ```
 external_config/        everything you configure (no code)
-  legacy_newspapers.json         newspapers, as "primary" and "secondary" nodes
   sections.json           the sections (tabs): names, colours, keyword rules
   newspaper_sections/      one file per newspaper: its own sections mapped onto your sections (many-to-one, e.g. Sports, AFL, NFL -> sports)
   settings.json           refresh interval, time-range and story-count choices, relay topic
@@ -26,10 +25,7 @@ site/                   generated, not committed
 ```
 
 ## Configuring
-- **Newspapers** (`legacy_newspapers.json`): `{"primary": [...], "secondary": [...]}`. Each newspaper has `name`, `homepage`,
-  optional `country` and `continent`, optional `"listed": false` (hide from the homepage dropdown) and `feeds`.
-  Each feed has `section` (where its stories always appear), `url`, and optionally `label`, `state`,
-  `general` (also match its stories against keyword sections), `country`, `continent`.
+- **Newspapers** (`newspaper_sections/<newspaper>.json`, one file each; the only list of newspapers): `newspaper`, `tier` (`primary`/`secondary`), `homepage`, optional `country`/`continent`, `feeds` (each `section`, `url`, optional `label`/`state`) and the section map below.
 - **Sections** (`sections.json`): the order here is the tab order. Each has `key`, `label` and `color` (light and dark).
   Optional keyword rules: `keywords` are matched as whole words in headline and snippet of stories from feeds in
   `also_from_sections`, and from `general` feeds when `include_general_newspapers` is true
@@ -89,4 +85,4 @@ The listener job (`scheduler.yml`) restarts itself every ~3 hours; GitHub may de
  "other": ["Videos", "Opinion"]}
 ```
 
-A story is looked up by its feed tags and by the folders in its web address (`/sports/cricket/...`). Every match adds that story to the mapped section, on top of the section of the feed it came from. While this folder has files, only newspapers that have a file are fetched. `legacy_newspapers.json` (the old newspapers.json) still holds their feeds and homepages. Pilot: Hindustan Times, Times of India, India Today, Deccan Herald, Firstpost.
+A story is looked up by its feed tags and by the folders in its web address (`/sports/cricket/...`). Every match adds that story to the mapped section, on top of the section of the feed it came from. There are no keyword rules: a story is in its feed's section plus whatever the map gives. A newspaper is on the site only if it has a file here. Pilot: Hindustan Times, Times of India, India Today, Deccan Herald. `legacy_newspapers.json` is the old, unused list.

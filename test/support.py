@@ -22,16 +22,10 @@ SAMPLE_SECTIONS = {"sections": [
     {"key": "india", "label": "India Desk", "color": {"light": "#c2570c", "dark": "#ff9a4d"},
      "place": {"country": "India", "continent": "Asia"}},
     {"key": "world", "label": "World Desk", "color": {"light": "#2a4d8f", "dark": "#7ea3f0"}},
-    {"key": "sports", "label": "Sports Desk", "color": {"light": "#1b6e5a", "dark": "#4cc3a4"},
-     "keywords": ["cricket", "football", "tennis"], "include_general_newspapers": True},
-    {"key": "showbiz", "label": "Showbiz Desk", "color": {"light": "#9b2f7a", "dark": "#e27cc0"},
-     "keywords": ["film", "actor"], "also_from_sections": ["world", "india"], "include_general_newspapers": True,
-     "extra_keywords_for_general_newspapers": ["festival", "celebrity"]},
-    {"key": "defence", "label": "Defence Desk", "color": {"light": "#4a5a2a", "dark": "#9fbf5f"},
-     "keywords": ["army", "navy", "missile"], "also_from_sections": ["world", "india"]},
-    {"key": "money", "label": "Money Desk", "color": {"light": "#6b4e16", "dark": "#d9b25f"},
-     "keywords": ["sensex", "inflation", "stock market"], "also_from_sections": ["world", "india"],
-     "include_general_newspapers": True},
+    {"key": "sports", "label": "Sports Desk", "color": {"light": "#1b6e5a", "dark": "#4cc3a4"}},
+    {"key": "showbiz", "label": "Showbiz Desk", "color": {"light": "#9b2f7a", "dark": "#e27cc0"}},
+    {"key": "defence", "label": "Defence Desk", "color": {"light": "#4a5a2a", "dark": "#9fbf5f"}},
+    {"key": "money", "label": "Money Desk", "color": {"light": "#6b4e16", "dark": "#d9b25f"}},
 ]}
 
 SAMPLE_NEWSPAPERS = {
@@ -69,7 +63,15 @@ def write_config(directory, sections=None, newspapers=None, settings=None):
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     (directory / "sections.json").write_text(json.dumps(sections if sections is not None else SAMPLE_SECTIONS))
-    (directory / "legacy_newspapers.json").write_text(json.dumps(newspapers if newspapers is not None else SAMPLE_NEWSPAPERS))
+    folder = directory / "newspaper_sections"
+    folder.mkdir(exist_ok=True)
+    data = newspapers if newspapers is not None else SAMPLE_NEWSPAPERS
+    for tier in ("primary", "secondary"):
+        for i, p in enumerate(data.get(tier, [])):
+            body = dict(p, tier=tier)
+            if "name" in body:
+                body["newspaper"] = body.pop("name")
+            (folder / f"{tier}-{i:02d}.json").write_text(json.dumps(body))
     (directory / "settings.json").write_text(json.dumps(settings if settings is not None else SAMPLE_SETTINGS))
     return directory
 

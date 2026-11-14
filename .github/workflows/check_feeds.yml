@@ -1,6 +1,6 @@
 name: Check feed addresses
 
-# Run by hand from the Actions tab: tries every feed in external_config/legacy_newspapers.json and lists the ones that fail.
+# Run by hand from the Actions tab: tries every feed in external_config/newspaper_sections/ and lists the ones that fail.
 on:
   workflow_dispatch:
     inputs:

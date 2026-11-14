@@ -1,4 +1,4 @@
-"""config.py: loading, validating and flattening legacy_newspapers.json / sections.json."""
+"""config.py: loading, validating and flattening newspaper_sections/ / sections.json."""
 import copy
 import json
 
@@ -9,17 +9,10 @@ import config
 
 
 class LoadSectionsTest(TestCase):
-    def test_loads_in_file_order_with_compiled_rules(self):
+    def test_loads_in_file_order(self):
         secs = config.load_sections(support.SAMPLE_CONFIG)
         self.assertEqual([s["key"] for s in secs], ["home", "india", "world", "sports", "showbiz", "defence", "money"])
-        sports = secs[3]
-        self.assertTrue(sports["rx"].search("A Cricket final") and not sports["rx"].search("crickets sing"))   # whole words, any case
-        self.assertTrue(sports["general"])
-        showbiz = secs[4]
-        self.assertFalse(showbiz["rx"].search("a festival"))                 # extra words only for general newspapers
-        self.assertTrue(showbiz["rx_general"].search("a festival"))
-        self.assertEqual(showbiz["also_from"], ["world", "india"])
-        self.assertIsNone(secs[2]["rx"])                                     # a section without keywords has no rule
+        self.assertEqual(set(secs[3]), {"key", "label", "color", "place"})      # no keyword rules any more
 
     def test_place_rules(self):
         secs = {s["key"]: s for s in config.load_sections(support.SAMPLE_CONFIG)}
@@ -41,8 +34,8 @@ class LoadSectionsTest(TestCase):
         self._bad(lambda s: s[0].pop("label"), "'label' is required")
         self._bad(lambda s: s[0].update(color={"light": "red", "dark": "#000000"}), "'color' must be")
         self._bad(lambda s: s[0].update(place="elsewhere"), "'place' must be")
-        self._bad(lambda s: s[3].update(keywords="cricket"), "'keywords' must be a list")
-        self._bad(lambda s: s[4].update(also_from_sections=["nope"]), "names 'nope', which is not a section")
+        self._bad(lambda s: s[3].update(keywords=["cricket"]), "'keywords' is no longer supported")
+        self._bad(lambda s: s[4].update(also_from_sections=["world"]), "'also_from_sections' is no longer supported")
 
     def test_empty_or_wrong_shape(self):
         for bad in ({"sections": []}, {"nope": 1}, []):
@@ -80,7 +73,6 @@ class LoadNewspapersTest(TestCase):
         self.assertEqual([p["name"] for p in data["secondary"]], ["Beta Post", "Gamma Wire", "Hidden Search"])
 
     def test_validation_errors_name_the_newspaper(self):
-        self._bad(lambda d: d.pop("secondary"), 'must be {"primary"')
         self._bad(lambda d: d["primary"][0].pop("name"), "'name' is required")
         self._bad(lambda d: d["primary"][0].update(homepage="alphatimes.example"), "'homepage' must be a web address")
         self._bad(lambda d: d["primary"][0].update(continent="Atlantis"), "'continent' must be one of")
@@ -129,8 +121,6 @@ class FlattenTest(TestCase):
         gazette = self.by_url["https://gazettehome.example/feed"]
         self.assertEqual(gazette["state"], "Dhaka")
         self.assertEqual((gazette["section"], gazette["category"]), ("home", "home"))
-        self.assertTrue(self.by_url["https://www.alphatimes.example/rss/world.xml"]["general"])
-        self.assertNotIn("general", self.by_url["https://betapost.example/rss"])
 
 
 class PublicListsTest(TestCase):

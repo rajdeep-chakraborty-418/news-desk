@@ -1,8 +1,23 @@
 {
   "newspaper": "Deccan Herald",
+  "tier": "primary",
   "homepage": "https://www.deccanherald.com/",
+  "country": "India",
+  "continent": "Asia",
   "focus": "general",
   "note": "State and city tags (Karnataka, Tamil Nadu...) are Indian news.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://prod-qt-images.s3.amazonaws.com/production/deccanherald/feed.xml",
+      "general": true
+    },
+    {
+      "section": "india",
+      "url": "https://www.deccanherald.com/feed",
+      "label": "Deccan Herald"
+    }
+  ],
   "section_map": {
     "india": [
       "India",

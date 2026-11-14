@@ -1,8 +1,33 @@
 {
   "newspaper": "India Today",
+  "tier": "primary",
   "homepage": "https://www.indiatoday.in/",
+  "country": "India",
+  "continent": "Asia",
   "focus": "general",
   "note": "Menu items that are people or topics (PM Modi, Donald Trump...) are not sections and were skipped.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.indiatoday.in/rss/1206514"
+    },
+    {
+      "section": "world",
+      "url": "https://www.indiatoday.in/rss/1206577"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.indiatoday.in/rss/1206550"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.indiatoday.in/rss/1206513"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.indiatoday.in/rss/1206589"
+    }
+  ],
   "section_map": {
     "india": [
       "India",

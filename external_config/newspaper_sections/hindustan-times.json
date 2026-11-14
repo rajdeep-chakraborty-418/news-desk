@@ -1,8 +1,163 @@
 {
   "newspaper": "Hindustan Times",
+  "tier": "primary",
   "homepage": "https://www.hindustantimes.com/",
+  "country": "India",
+  "continent": "Asia",
   "focus": "general",
   "note": "Built from the site menu, the feed tags and the configured feeds. Regional-language editions (Bangla, Telugu) are Indian news, so they go to India.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml"
+    },
+    {
+      "section": "world",
+      "url": "https://www.hindustantimes.com/feeds/rss/world-news/rssfeed.xml"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.hindustantimes.com/feeds/rss/sports/rssfeed.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.hindustantimes.com/feeds/rss/entertainment/rssfeed.xml"
+    },
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/cities/mumbai-news/rssfeed.xml",
+      "label": "Hindustan Times (Mumbai)",
+      "state": "Maharashtra"
+    },
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/cities/delhi-news/rssfeed.xml",
+      "label": "Hindustan Times (Delhi)",
+      "state": "Delhi"
+    },
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/cities/bengaluru-news/rssfeed.xml",
+      "label": "Hindustan Times (Bengaluru)",
+      "state": "Karnataka"
+    },
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/cities/kolkata-news/rssfeed.xml",
+      "label": "Hindustan Times (Kolkata)",
+      "state": "West Bengal"
+    },
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/cities/chandigarh-news/rssfeed.xml",
+      "label": "Hindustan Times (Chandigarh)",
+      "state": "Chandigarh"
+    },
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/cities/lucknow-news/rssfeed.xml",
+      "label": "Hindustan Times (Lucknow)",
+      "state": "Uttar Pradesh"
+    },
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/cities/pune-news/rssfeed.xml",
+      "label": "Hindustan Times (Pune)",
+      "state": "Maharashtra"
+    },
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/cities/patna-news/rssfeed.xml",
+      "label": "Hindustan Times (Patna)",
+      "state": "Bihar"
+    },
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/cities/ranchi-news/rssfeed.xml",
+      "label": "Hindustan Times (Ranchi)",
+      "state": "Jharkhand"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://www.hindustantimes.com/feeds/rss/lifestyle/rssfeed.xml"
+    },
+    {
+      "section": "business",
+      "url": "https://www.hindustantimes.com/feeds/rss/business/rssfeed.xml"
+    },
+    {
+      "section": "technology",
+      "url": "https://www.hindustantimes.com/feeds/rss/technology/rssfeed.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.hindustantimes.com/feeds/rss/entertainment/bollywood/rssfeed.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.hindustantimes.com/feeds/rss/entertainment/tv/rssfeed.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.hindustantimes.com/feeds/rss/entertainment/hollywood/rssfeed.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.hindustantimes.com/feeds/rss/entertainment/music/rssfeed.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.hindustantimes.com/feeds/rss/entertainment/web-series/rssfeed.xml"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.hindustantimes.com/feeds/rss/cricket/rssfeed.xml"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.hindustantimes.com/feeds/rss/sports/football/rssfeed.xml"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://www.hindustantimes.com/feeds/rss/lifestyle/health/rssfeed.xml"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://www.hindustantimes.com/feeds/rss/lifestyle/fashion/rssfeed.xml"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://www.hindustantimes.com/feeds/rss/lifestyle/food/rssfeed.xml"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://www.hindustantimes.com/feeds/rss/lifestyle/travel/rssfeed.xml"
+    },
+    {
+      "section": "india",
+      "url": "https://www.hindustantimes.com/feeds/rss/education/rssfeed.xml"
+    },
+    {
+      "section": "other",
+      "url": "https://www.hindustantimes.com/feeds/rss/education/rssfeed.xml",
+      "label": "Hindustan Times Education"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.hindustantimes.com/feeds/rss/cricket/rssfeed.xml",
+      "label": "Hindustan Times Cricket"
+    },
+    {
+      "section": "other",
+      "url": "https://www.hindustantimes.com/feeds/rss/trending/rssfeed.xml",
+      "label": "Hindustan Times Trending"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.hindustantimes.com/feeds/rss/books/rssfeed.xml",
+      "label": "Hindustan Times Books"
+    }
+  ],
   "section_map": {
     "india": [
       "India News",

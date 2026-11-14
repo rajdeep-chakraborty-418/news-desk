@@ -1,8 +1,95 @@
 {
   "newspaper": "Times of India",
+  "tier": "primary",
   "homepage": "https://timesofindia.indiatimes.com/",
+  "country": "India",
+  "continent": "Asia",
   "focus": "general",
   "note": "Every city page (about 65) is Indian news, so all map to India. The site menu was scanned; the top-level section names (Business, Tech, Life & Style...) come from the site's known navigation.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128936835.cms"
+    },
+    {
+      "section": "world",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/296589292.cms"
+    },
+    {
+      "section": "sports",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/4719148.cms"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/1081479906.cms"
+    },
+    {
+      "section": "india",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128839596.cms",
+      "label": "Times of India (Delhi)",
+      "state": "Delhi"
+    },
+    {
+      "section": "india",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128833038.cms",
+      "label": "Times of India (Bengaluru)",
+      "state": "Karnataka"
+    },
+    {
+      "section": "india",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128816011.cms",
+      "label": "Times of India (Hyderabad)",
+      "state": "Telangana"
+    },
+    {
+      "section": "india",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128672765.cms",
+      "label": "Times of India (Chennai)",
+      "state": "Tamil Nadu"
+    },
+    {
+      "section": "india",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128830821.cms",
+      "label": "Times of India (Kolkata)",
+      "state": "West Bengal"
+    },
+    {
+      "section": "india",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128838597.cms",
+      "label": "Times of India (Mumbai)",
+      "state": "Maharashtra"
+    },
+    {
+      "section": "india",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128821153.cms",
+      "label": "Times of India (Ahmedabad)",
+      "state": "Gujarat"
+    },
+    {
+      "section": "india",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128821991.cms",
+      "label": "Times of India (Pune)",
+      "state": "Maharashtra"
+    },
+    {
+      "section": "india",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128819658.cms",
+      "label": "Times of India (Lucknow)",
+      "state": "Uttar Pradesh"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/2886704.cms"
+    },
+    {
+      "section": "business",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/1898055.cms"
+    },
+    {
+      "section": "technology",
+      "url": "https://timesofindia.indiatimes.com/rssfeeds/66949542.cms"
+    }
+  ],
   "section_map": {
     "india": [
       "India",

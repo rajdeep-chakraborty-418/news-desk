@@ -307,23 +307,13 @@ def mapped_sections(newspaper, link, tags):
 
 
 def classify(feed, title, summary, link="", tags=()):
-    """Return the list of sections a story belongs to: its newspaper's own section for that feed, plus every section
-    whose keyword rule matches (see config.py for the rule fields)."""
+    """Return the list of sections a story belongs to: the section of the feed it came from, plus every section its
+    newspaper's map (external_config/newspaper_sections) gives for the story's tags and web address. No keyword guessing."""
     cat = feed["category"]
-    text = title + " " + summary
     sections = [cat]
     for key in mapped_sections(feed.get("newspaper"), link, tags):
         if key not in sections:
             sections.append(key)
-    for sec in SECTIONS:
-        if sec["key"] == cat or not sec["rx"]:
-            continue
-        if sec["key"] in sections:
-            continue
-        if cat in sec["also_from"] and sec["rx"].search(text):
-            sections.append(sec["key"])
-        elif feed.get("general") and sec["general"] and sec["rx_general"].search(text):
-            sections.append(sec["key"])
     return sections
 
 
@@ -366,7 +356,7 @@ def fetch_one(feed):
             "image": it["image"],
             "published": (it["date"] or datetime.now(timezone.utc)).isoformat(),
             "source": feed["source"],
-            "newspaper": feed.get("newspaper") or feed["source"],      # the paper in legacy_newspapers.json (source may be a section label)
+            "newspaper": feed.get("newspaper") or feed["source"],      # the paper in its newspaper_sections file (source may be a section label)
             "primary": bool(feed.get("primary")),
             "category": feed["category"],
             "sections": classify(feed, it["title"], it["summary"], it["link"], it.get("tags")),
@@ -378,21 +368,11 @@ def fetch_one(feed):
     return out, status
 
 
-def only_mapped(feeds, maps):
-    """While newspaper_sections/ has files, only the newspapers that have one are fetched (legacy_newspapers.json stays as it is).
-    With no files there, every newspaper is fetched as before."""
-    return [f for f in feeds if f.get("newspaper") in maps] if maps else feeds
-
-
 def main():
     global WINDOW_HOURS, ARTICLE_COUNT
     try:
         sections, feeds = config.load_all()
-        maps = config.load_section_maps(sections)
-        configure(sections, maps=maps)
-        feeds = only_mapped(feeds, maps)
-        if not feeds:
-            raise config.ConfigError("newspaper_sections/ has files, but none of them matches a newspaper name in legacy_newspapers.json")
+        configure(sections, maps=config.load_section_maps(sections))
     except config.ConfigError as e:
         sys.exit(f"Configuration error: {e}")
     WINDOW_HOURS = window_hours()

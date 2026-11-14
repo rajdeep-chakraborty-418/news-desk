@@ -95,9 +95,9 @@ class FetchOneTest(EnvTestCase):
         s = out[0]
         self.assertEqual((s["title"], s["summary"], s["source"], s["primary"], s["category"]),
                          ("Army exercise", "s", "Alpha Times", True, "world"))
-        self.assertEqual(s["sections"], ["world", "defence"])
+        self.assertEqual(s["sections"], ["world"])
         self.assertEqual((s["country"], s["continent"], s["state"]), ("France", "Europe", None))
-        self.assertEqual(s["newspaper"], "Alpha Times")                     # the paper in legacy_newspapers.json, for the Newspaper Homepage page
+        self.assertEqual(s["newspaper"], "Alpha Times")                     # the paper in its newspaper_sections file, for the Newspaper Homepage page
         self.assertTrue(s["published"].endswith("+00:00"))
 
     def test_state_is_carried(self):
@@ -251,8 +251,8 @@ class MainRunTest(EnvTestCase):
         self.assertEqual(by_link["https://a.example/2"]["source"], "Alpha Times (World)")           # a feed label ...
         self.assertEqual(by_link["https://a.example/2"]["newspaper"], "Alpha Times")                # ... still maps to its newspaper
         self.assertEqual(shared_item["image"], "https://img.example/shared.jpg")
-        self.assertEqual(shared_item["sections"], ["defence", "india", "world"])
-        self.assertEqual(by_link["https://a.example/2"]["sections"], ["world", "sports"])      # general feed + keyword
+        self.assertEqual(shared_item["sections"], ["india", "world"])
+        self.assertEqual(by_link["https://a.example/2"]["sections"], ["world"])      # the feed's own section only
         self.assertEqual(by_link["https://a.example/1"]["country"], "India")                    # pinned by the India section
         self.assertEqual(by_link["https://g.example/1"]["country"], "Bangladesh")               # taken from the newspaper
         self.assertEqual(by_link["https://g.example/1"]["state"], "Dhaka")

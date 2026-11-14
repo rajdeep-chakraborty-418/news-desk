@@ -1,15 +1,14 @@
 """Loads and validates the two configuration files that live outside the code, in external_config/:
 
-  legacy_newspapers.json  {"primary": [newspaper, ...], "secondary": [newspaper, ...]}
-      newspaper = {"name", "homepage", "country"?, "continent"?, "listed"?, "feeds": [feed, ...]}
-      feed      = {"section", "url", "label"?, "state"?, "general"?, "country"?, "continent"?}
+  newspaper_sections/<newspaper>.json   one file per newspaper (the only list of newspapers)
+      {"newspaper", "tier": "primary"|"secondary", "homepage", "country"?, "continent"?, "listed"?, "feeds": [feed, ...],
+       "section_map": {"<our section>": ["<its own section>", ...]}, "other": [...]}
+      feed      = {"section", "url", "label"?, "state"?, "country"?, "continent"?}
   sections.json    {"sections": [section, ...]}   (the order here is the order of the tabs on the page)
-      section   = {"key", "label", "color": {"light", "dark"}, "keywords"?, "also_from_sections"?,
-                   "include_general_newspapers"?, "extra_keywords_for_general_newspapers"?, "place"?}
+      section   = {"key", "label", "color": {"light", "dark"}, "place"?}
 
-A feed's "section" is where its stories always appear. Keyword rules let stories from other feeds land in a section too:
-"keywords" are matched (whole words, any case) in the headline and snippet of stories from feeds in "also_from_sections",
-and from feeds flagged "general" when "include_general_newspapers" is true (those also use the extra keywords).
+A feed's "section" is where its stories always appear. A story also appears in every section that its newspaper's file in
+newspaper_sections/ maps its own section to (see load_section_maps); there are no keyword rules.
 "place" decides the story's country: omitted = detected from the text, "newspaper" = the newspaper's own country,
 or a fixed {"country", "continent"}.
 
@@ -44,23 +43,12 @@ def _read(name, directory):
         raise ConfigError(f"{path} is not valid JSON: {e}")
 
 
-def _word_re(words):
-    return re.compile(r"\b(?:" + "|".join(re.escape(w) for w in words) + r")\b", re.I) if words else None
-
-
 def _is_url(v):
     return isinstance(v, str) and re.match(r"^https?://[^\s/]+", v) is not None
 
 
-def _words(sec, field, where):
-    v = sec.get(field, [])
-    if not isinstance(v, list) or not all(isinstance(w, str) and w.strip() for w in v):
-        raise ConfigError(f"{where}: '{field}' must be a list of words")
-    return v
-
-
 def load_sections(directory=None):
-    """The validated list of sections, in tab order. Each gets compiled patterns under 'rx' and 'rx_general'."""
+    """The validated list of sections, in tab order. """
     data = _read("sections.json", directory or config_dir())
     items = data.get("sections") if isinstance(data, dict) else None
     if not isinstance(items, list) or not items:
@@ -85,49 +73,53 @@ def load_sections(directory=None):
         place = s.get("place")
         if place not in (None, "newspaper") and not (isinstance(place, dict) and place.get("country") and place.get("continent")):
             raise ConfigError(f"{where}: 'place' must be \"newspaper\" or {{\"country\": ..., \"continent\": ...}}")
-        kw, extra = _words(s, "keywords", where), _words(s, "extra_keywords_for_general_newspapers", where)
-        frm = s.get("also_from_sections", [])
-        if not isinstance(frm, list):
-            raise ConfigError(f"{where}: 'also_from_sections' must be a list of section keys")
-        out.append({"key": key, "label": s["label"].strip(), "color": color, "place": place, "keywords": kw,
-                    "also_from": list(frm), "general": bool(s.get("include_general_newspapers", False)),
-                    "rx": _word_re(kw), "rx_general": _word_re(kw + extra)})
-    for s in out:
-        for k in s["also_from"]:
-            if k not in seen:
-                raise ConfigError(f"sections.json section '{s['key']}': 'also_from_sections' names '{k}', which is not a section")
+        for old in ("keywords", "also_from_sections", "include_general_newspapers", "extra_keywords_for_general_newspapers"):
+            if old in s:
+                raise ConfigError(f"{where}: '{old}' is no longer supported (keyword rules were removed; use newspaper_sections/ maps)")
+        out.append({"key": key, "label": s["label"].strip(), "color": color, "place": place})
     return out
 
 
 def load_newspapers(sections, directory=None):
-    """The validated newspapers as {'primary': [...], 'secondary': [...]}."""
-    data = _read("legacy_newspapers.json", directory or config_dir())
-    if not isinstance(data, dict) or not isinstance(data.get("primary"), list) or not isinstance(data.get("secondary"), list):
-        raise ConfigError('legacy_newspapers.json must be {"primary": [ ... ], "secondary": [ ... ]}')
+    """The validated newspapers as {'primary': [...], 'secondary': [...]}, read from external_config/newspaper_sections/*.json
+    (one file per newspaper: name, tier, homepage, feeds and its section map). Nothing else lists newspapers."""
+    folder = Path(directory or config_dir()) / "newspaper_sections"
+    files = sorted(folder.glob("*.json")) if folder.is_dir() else []
+    if not files:
+        raise ConfigError(f"{folder} has no newspaper files; add one JSON file per newspaper")
     keys = {s["key"] for s in sections}
-    for node in ("primary", "secondary"):
-        for n, p in enumerate(data[node], 1):
-            where = f"legacy_newspapers.json {node} #{n}"
-            if not isinstance(p, dict):
-                raise ConfigError(f"{where} must be an object")
-            if not isinstance(p.get("name"), str) or not p["name"].strip():
-                raise ConfigError(f"{where}: 'name' is required")
-            where = f"legacy_newspapers.json {node} '{p['name']}'"
-            if not _is_url(p.get("homepage")):
-                raise ConfigError(f"{where}: 'homepage' must be a web address starting with http:// or https://")
-            if p.get("continent") is not None and p["continent"] not in CONTINENTS:
-                raise ConfigError(f"{where}: 'continent' must be one of {', '.join(CONTINENTS)}")
-            feeds = p.get("feeds")
-            if not isinstance(feeds, list) or not feeds:
-                raise ConfigError(f"{where}: needs at least one entry in 'feeds'")
-            for f in feeds:
-                if not isinstance(f, dict) or not _is_url(f.get("url")):
-                    raise ConfigError(f"{where}: every feed needs a 'url' starting with http:// or https://")
-                if f.get("section") not in keys:
-                    raise ConfigError(f"{where}: feed {f.get('url')} has section {f.get('section')!r}, which is not in sections.json "
-                                      f"(known: {', '.join(sorted(keys))})")
-                if f.get("continent") is not None and f["continent"] not in CONTINENTS:
-                    raise ConfigError(f"{where}: feed {f['url']} has an unknown continent {f['continent']!r}")
+    data = {"primary": [], "secondary": []}
+    for path in files:
+        try:
+            p = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            raise ConfigError(f"{path} is not valid JSON: {e}")
+        where = f"newspaper_sections/{path.name}"
+        if not isinstance(p, dict):
+            raise ConfigError(f"{where} must be an object")
+        if not isinstance(p.get("newspaper"), str) or not p["newspaper"].strip():
+            raise ConfigError(f"{where}: 'name' is required (key \"newspaper\")")
+        where = f"newspaper_sections/{path.name} '{p['newspaper']}'"
+        tier = p.get("tier", "primary")
+        if tier not in ("primary", "secondary"):
+            raise ConfigError(f"{where}: 'tier' must be \"primary\" or \"secondary\"")
+        if not _is_url(p.get("homepage")):
+            raise ConfigError(f"{where}: 'homepage' must be a web address starting with http:// or https://")
+        if p.get("continent") is not None and p["continent"] not in CONTINENTS:
+            raise ConfigError(f"{where}: 'continent' must be one of {', '.join(CONTINENTS)}")
+        feeds = p.get("feeds")
+        if not isinstance(feeds, list) or not feeds:
+            raise ConfigError(f"{where}: needs at least one entry in 'feeds'")
+        for f in feeds:
+            if not isinstance(f, dict) or not _is_url(f.get("url")):
+                raise ConfigError(f"{where}: every feed needs a 'url' starting with http:// or https://")
+            if f.get("section") not in keys:
+                raise ConfigError(f"{where}: feed {f.get('url')} has section {f.get('section')!r}, which is not in sections.json "
+                                  f"(known: {', '.join(sorted(keys))})")
+            if f.get("continent") is not None and f["continent"] not in CONTINENTS:
+                raise ConfigError(f"{where}: feed {f['url']} has an unknown continent {f['continent']!r}")
+        entry = {k: p[k] for k in ("homepage", "country", "continent", "listed", "feeds") if k in p}
+        data[tier].append(dict(entry, name=p["newspaper"]))
     return data
 
 
@@ -153,7 +145,8 @@ def load_section_maps(sections, directory=None):
         except json.JSONDecodeError as e:
             raise ConfigError(f"{path} is not valid JSON: {e}")
         where = f"newspaper_sections/{path.name}"
-        if not isinstance(d, dict) or not isinstance(d.get("newspaper"), str) or not isinstance(d.get("section_map"), dict):
+        d.setdefault("section_map", {})
+        if not isinstance(d, dict) or not isinstance(d.get("newspaper"), str) or not isinstance(d["section_map"], dict):
             raise ConfigError(f'{where} must be {{"newspaper": "...", "section_map": {{...}}}}')
         look = {}
         for key, names in d["section_map"].items():
@@ -186,8 +179,6 @@ def load_feeds(sections, newspapers):
                         "url": f["url"], "primary": node == "primary"}
                 if f.get("state"):
                     feed["state"] = f["state"]
-                if f.get("general"):
-                    feed["general"] = True
                 feeds.append(feed)
     return feeds
 

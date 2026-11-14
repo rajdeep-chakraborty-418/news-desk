@@ -25,45 +25,17 @@ class ClassifyTest(TestCase):
         self.assertEqual(fn.classify({"category": "india"}, "Nothing special", ""), ["india"])
         self.assertEqual(fn.classify({"category": "sports"}, "Budget talks", ""), ["sports"])
 
-    def test_also_from_sections_matches_keywords_in_title_or_summary(self):
-        self.assertEqual(fn.classify({"category": "world"}, "Army chief warns", ""), ["world", "defence"])
-        self.assertEqual(fn.classify({"category": "india"}, "Quiet", "the navy was out"), ["india", "defence"])
-        self.assertEqual(fn.classify({"category": "world"}, "Sensex and inflation", ""), ["world", "money"])
+    def test_no_keyword_guessing(self):
+        for text in ("Army chief warns", "Sensex and inflation", "Cricket final tonight", "A film festival"):
+            self.assertEqual(fn.classify({"category": "world", "general": True}, text, "the navy actor"), ["world"])
 
-    def test_a_section_not_listed_in_also_from_is_not_matched(self):
-        self.assertEqual(fn.classify({"category": "home"}, "army and sensex", ""), ["home"])
-        self.assertEqual(fn.classify({"category": "sports"}, "army", ""), ["sports"])
-
-    def test_general_newspapers_get_keyword_sections_without_also_from(self):
-        self.assertEqual(fn.classify({"category": "home", "general": True}, "Cricket final tonight", ""), ["home", "sports"])
-        self.assertEqual(fn.classify({"category": "home", "general": True}, "Sensex rallies", ""), ["home", "money"])
-        self.assertEqual(fn.classify({"category": "home"}, "Cricket final tonight", ""), ["home"])      # not general
-
-    def test_sections_without_the_general_flag_ignore_general_newspapers(self):
-        self.assertEqual(fn.classify({"category": "home", "general": True}, "The army marched", ""), ["home"])
-
-    def test_extra_keywords_apply_only_to_general_newspapers(self):
-        self.assertIn("showbiz", fn.classify({"category": "home", "general": True}, "Film festival opens", ""))
-        self.assertNotIn("showbiz", fn.classify({"category": "world"}, "Celebrity festival opens", ""))
-        self.assertIn("showbiz", fn.classify({"category": "world"}, "An actor speaks", ""))
-
-    def test_matching_is_whole_word_and_case_insensitive(self):
-        self.assertEqual(fn.classify({"category": "world"}, "ARMY exercise", ""), ["world", "defence"])
-        self.assertEqual(fn.classify({"category": "world"}, "armyworm outbreak", ""), ["world"])
-        self.assertEqual(fn.classify({"category": "world"}, "STOCK MARKET slides", ""), ["world", "money"])
-
-    def test_order_follows_sections_json(self):
-        self.assertEqual(fn.classify({"category": "world"}, "army actor sensex", ""), ["world", "showbiz", "defence", "money"])
-
-    def test_changing_sections_json_changes_the_result(self):
+    def test_sections_json_no_longer_accepts_keyword_rules(self):
         data = copy.deepcopy(SAMPLE_SECTIONS)
-        data["sections"].append({"key": "food", "label": "Food", "color": {"light": "#111111", "dark": "#eeeeee"},
-                                 "keywords": ["recipe"], "also_from_sections": ["world"]})
-        data["sections"] = [s for s in data["sections"] if s["key"] != "defence"]
-        for s in data["sections"]:
-            s["also_from_sections"] = [k for k in s.get("also_from_sections", []) if k != "defence"]
-        configure(data)
-        self.assertEqual(fn.classify({"category": "world"}, "A winter recipe, and the army", ""), ["world", "food"])
+        data["sections"][3]["keywords"] = ["cricket"]
+        import pathlib, tempfile
+        d = support.write_config(pathlib.Path(tempfile.mkdtemp()), sections=data)
+        with self.assertRaises(config.ConfigError):
+            config.load_sections(d)
 
 
 class PlaceTest(TestCase):
@@ -108,7 +80,6 @@ class NewspaperSectionMapTest(TestCase):
         import json, pathlib, tempfile
         self.dir = pathlib.Path(tempfile.mkdtemp())
         support.write_config(self.dir)
-        (self.dir / "newspaper_sections").mkdir()
         self.write = lambda name, data: (self.dir / "newspaper_sections" / name).write_text(json.dumps(data))
         self.sections = config.load_sections(self.dir)
         self.addCleanup(configure)
@@ -149,10 +120,6 @@ class NewspaperSectionMapTest(TestCase):
         import shutil
         shutil.rmtree(self.dir / "newspaper_sections")
         self.assertEqual(config.load_section_maps(self.sections, self.dir), {})
+        with self.assertRaises(config.ConfigError):                      # and without files there are no newspapers at all
+            config.load_newspapers(self.sections, self.dir)
 
-
-class OnlyMappedTest(TestCase):
-    def test_only_newspapers_with_a_map_are_fetched(self):
-        feeds = [{"newspaper": "A"}, {"newspaper": "B"}, {"newspaper": "A"}]
-        self.assertEqual(fn.only_mapped(feeds, {"A": {}}), [{"newspaper": "A"}, {"newspaper": "A"}])
-        self.assertEqual(fn.only_mapped(feeds, {}), feeds)
