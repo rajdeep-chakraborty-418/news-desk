@@ -154,6 +154,10 @@ def main(out="discovered_sections.json"):
     with ThreadPoolExecutor(max_workers=12) as pool:
         results = list(pool.map(discover, papers))
     json.dump(results, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    for r in results:      # one compact line per newspaper, so the result can be read from the workflow log
+        print("DISC|" + json.dumps({"n": r["name"], "t": r["tier"], "e": r["error"][:60],
+              "m": [[m["text"], urlparse(m["url"]).path] for m in r["menu"]], "r": [x["url"] for x in r["rss"]][:6],
+              "c": r["feed_categories"][:20]}, ensure_ascii=False, separators=(",", ":")))
     ok = sum(1 for r in results if r["menu"])
     print(f"{len(results)} newspapers; {ok} with menu links; "
           f"{sum(1 for r in results if r['error'])} home pages unreachable; {sum(1 for r in results if r['feed_categories'])} with feed categories")
