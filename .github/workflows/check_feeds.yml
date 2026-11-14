@@ -1,0 +1,27 @@
+name: Check feed addresses
+
+# Run by hand from the Actions tab: tries every feed in external_config/newspapers.json and lists the ones that fail.
+on:
+  workflow_dispatch:
+    inputs:
+      names:
+        description: "Only newspapers whose name contains one of these words (space separated); empty = all"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check the feeds
+        env:
+          NAMES: ${{ inputs.names }}
+        run: python3 src/check_feeds.py $NAMES
