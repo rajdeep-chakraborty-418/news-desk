@@ -1,0 +1,24 @@
+name: Discover newspaper sections
+
+# Run by hand from the Actions tab: reads every newspaper's home-page menu and feed categories and publishes the result
+# as a downloadable file (discovered_sections.json) so the newspapers' own sections can be mapped onto ours.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: cd src && python3 discover_sections.py ../discovered_sections.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: discovered-sections
+          path: discovered_sections.json
