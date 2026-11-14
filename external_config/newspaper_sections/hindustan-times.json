@@ -1,0 +1,83 @@
+{
+  "newspaper": "Hindustan Times",
+  "homepage": "https://www.hindustantimes.com/",
+  "focus": "general",
+  "note": "Built from the site menu, the feed tags and the configured feeds. Regional-language editions (Bangla, Telugu) are Indian news, so they go to India.",
+  "section_map": {
+    "india": [
+      "India News",
+      "Cities",
+      "Delhi",
+      "Mumbai",
+      "Bengaluru",
+      "Gurugram",
+      "Noida",
+      "Elections",
+      "Bangla News",
+      "Telugu News"
+    ],
+    "world": [
+      "World News",
+      "US News",
+      "NRI"
+    ],
+    "sports": [
+      "Sports",
+      "Cricket",
+      "HT Cricket",
+      "Live Cricket Score",
+      "Cricket Players",
+      "Cricket Schedule",
+      "ICC Rankings",
+      "US Sports"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "HT Games",
+      "US Streamers",
+      "Brunch"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Astrology"
+    ],
+    "business": [
+      "Business"
+    ],
+    "technology": [
+      "Technology",
+      "Product Hub"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Weather"
+    ],
+    "defence": [
+      "Defence"
+    ],
+    "geopolitics": [
+      "Geopolitics"
+    ],
+    "history": [
+      "History"
+    ],
+    "geography": [
+      "Geography"
+    ]
+  },
+  "other": [
+    "HTLS 2026",
+    "Trending",
+    "Videos",
+    "Photos",
+    "Opinion",
+    "Analysis",
+    "Daily Digest",
+    "For You",
+    "Genesis",
+    "Education"
+  ],
+  "unmapped_default": "other"
+}

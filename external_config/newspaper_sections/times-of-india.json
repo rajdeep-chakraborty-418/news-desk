@@ -1,0 +1,134 @@
+{
+  "newspaper": "Times of India",
+  "homepage": "https://timesofindia.indiatimes.com/",
+  "focus": "general",
+  "note": "Every city page (about 65) is Indian news, so all map to India. The site menu was scanned; the top-level section names (Business, Tech, Life & Style...) come from the site's known navigation.",
+  "section_map": {
+    "india": [
+      "India",
+      "City",
+      "Crime News",
+      "Agartala",
+      "Agra",
+      "Ahmedabad",
+      "Ajmer",
+      "Amaravati",
+      "Amritsar",
+      "Bareilly",
+      "Bengaluru",
+      "Bhopal",
+      "Bhubaneswar",
+      "Chandigarh",
+      "Chennai",
+      "Chhatrapati Sambhajinagar",
+      "Coimbatore",
+      "Cuttack",
+      "Dehradun",
+      "Delhi",
+      "Erode",
+      "Faridabad",
+      "Ghaziabad",
+      "Goa",
+      "Gurgaon",
+      "Guwahati",
+      "Hubballi",
+      "Hyderabad",
+      "Imphal",
+      "Indore",
+      "Itanagar",
+      "Jaipur",
+      "Jammu",
+      "Jamshedpur",
+      "Jodhpur",
+      "Kanpur",
+      "Kochi",
+      "Kohima",
+      "Kolhapur",
+      "Kolkata",
+      "Kozhikode",
+      "Lucknow",
+      "Ludhiana",
+      "Madurai",
+      "Mangaluru",
+      "Meerut",
+      "Mumbai",
+      "Mumbai Region",
+      "Mysuru",
+      "Nagpur",
+      "Nashik",
+      "Navi Mumbai",
+      "Noida",
+      "Patna",
+      "Prayagraj",
+      "Puducherry",
+      "Pune",
+      "Raipur",
+      "Rajkot",
+      "Ranchi",
+      "Salem",
+      "Shillong",
+      "Shimla",
+      "Srinagar",
+      "Surat",
+      "Thane",
+      "Thiruvananthapuram",
+      "Trichy",
+      "Udaipur",
+      "Vadodara"
+    ],
+    "world": [
+      "World",
+      "NRI"
+    ],
+    "sports": [
+      "Sports",
+      "Cricket"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Bollywood",
+      "TV",
+      "Movies"
+    ],
+    "lifestyle": [
+      "Life & Style",
+      "Lifestyle",
+      "Astrology",
+      "Health & Fitness",
+      "Food",
+      "Relationships"
+    ],
+    "business": [
+      "Business",
+      "Economy",
+      "Personal Finance"
+    ],
+    "technology": [
+      "Tech",
+      "Gadgets",
+      "Auto"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Environment",
+      "Weather"
+    ],
+    "geography": [
+      "Travel",
+      "Flight Price Tracker"
+    ]
+  },
+  "other": [
+    "Education",
+    "Elections",
+    "Trending",
+    "Videos",
+    "Photos",
+    "Opinion",
+    "Web Stories",
+    "Times Evoke"
+  ],
+  "unmapped_default": "other"
+}

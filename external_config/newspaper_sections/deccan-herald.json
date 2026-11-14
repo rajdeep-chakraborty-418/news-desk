@@ -1,0 +1,51 @@
+{
+  "newspaper": "Deccan Herald",
+  "homepage": "https://www.deccanherald.com/",
+  "focus": "general",
+  "note": "State and city tags (Karnataka, Tamil Nadu...) are Indian news.",
+  "section_map": {
+    "india": [
+      "India",
+      "Karnataka",
+      "Bengaluru",
+      "Politics",
+      "Tamil Nadu",
+      "Uttar Pradesh",
+      "Delhi",
+      "Telangana",
+      "Assam",
+      "Mangaluru"
+    ],
+    "world": [
+      "World",
+      "News Shots"
+    ],
+    "sports": [
+      "Sports",
+      "Cricket"
+    ],
+    "entertainment": [
+      "Entertainment"
+    ],
+    "lifestyle": [
+      "Health",
+      "Features"
+    ],
+    "business": [
+      "Business"
+    ],
+    "technology": [
+      "Technology"
+    ]
+  },
+  "other": [
+    "Premium",
+    "Opinion",
+    "Video",
+    "Karunadotsava",
+    "Education",
+    "DH Brandspot",
+    "Go Ad Lite"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,80 @@
+{
+  "newspaper": "India Today",
+  "homepage": "https://www.indiatoday.in/",
+  "focus": "general",
+  "note": "Menu items that are people or topics (PM Modi, Donald Trump...) are not sections and were skipped.",
+  "section_map": {
+    "india": [
+      "India",
+      "South",
+      "Cities",
+      "Law Today",
+      "Delhi AQI"
+    ],
+    "world": [
+      "Global"
+    ],
+    "sports": [
+      "All Sports",
+      "Cricket",
+      "Football",
+      "Live Score"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Movies",
+      "Bollywood",
+      "Hollywood",
+      "Television",
+      "OTT",
+      "Latest Reviews",
+      "Live TV",
+      "Horoscopes",
+      "Mo"
+    ],
+    "lifestyle": [
+      "Life+Style",
+      "Health",
+      "Puzzles"
+    ],
+    "business": [
+      "All Business News",
+      "IPO",
+      "Personal Finance",
+      "Companies",
+      "Gold Price",
+      "Silver Price"
+    ],
+    "technology": [
+      "Technology",
+      "Auto",
+      "It's Viral"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Environment",
+      "Weather",
+      "Air Pollution"
+    ],
+    "history": [
+      "History of It"
+    ]
+  },
+  "other": [
+    "Magazine",
+    "Latest Edition",
+    "Insight",
+    "Primetime",
+    "Sunday Special",
+    "DIU",
+    "Opinion",
+    "Videos",
+    "Short Videos",
+    "Fact Check",
+    "Influencer Hub",
+    "Education"
+  ],
+  "unmapped_default": "other"
+}
