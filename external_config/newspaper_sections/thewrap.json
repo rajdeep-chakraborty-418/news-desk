@@ -1,0 +1,75 @@
+{
+  "newspaper": "TheWrap",
+  "tier": "secondary",
+  "homepage": "https://www.thewrap.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.thewrap.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Streaming",
+      "Media News",
+      "Movies",
+      "Movie News",
+      "Box Office",
+      "Awards",
+      "Awards Tracker",
+      "Awards Coverage",
+      "TheWrap Emmy Magazines",
+      "TheWrap Oscar Magazines",
+      "Deals & M&A",
+      "TheGrill",
+      "WaxWord",
+      "Steve Pond",
+      "The Media Front",
+      "Inside the Ratings",
+      "Creatorverse",
+      "Culture",
+      "Politics",
+      "Music",
+      "Theater",
+      "TV",
+      "TV Shows",
+      "dc studios",
+      "Jeremy Latcham",
+      "Superman",
+      "FAA",
+      "Markwayne Mullin",
+      "Nationwide Ground Stop",
+      "Film Studios",
+      "Creature Commandos",
+      "DC Comics",
+      "Lanterns",
+      "Peter Safran",
+      "supergirl",
+      "The Suicide Squad"
+    ],
+    "technology": [
+      "Data Analysis",
+      "Tech",
+      "AI Creator Day"
+    ],
+    "business": [
+      "Trade Secrets"
+    ],
+    "lifestyle": [
+      "WrapStyle",
+      "Fashion"
+    ],
+    "geopolitics": [
+      "Power Women Summit",
+      "Peacemaker"
+    ]
+  },
+  "other": [
+    "Columns"
+  ],
+  "unmapped_default": "other"
+}

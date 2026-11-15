@@ -1,0 +1,60 @@
+{
+  "newspaper": "The Manila Times",
+  "tier": "secondary",
+  "homepage": "https://www.manilatimes.net/",
+  "country": "Philippines",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.manilatimes.net/news/feed/"
+    }
+  ],
+  "section_map": {
+    "geography": [
+      "REGIONS"
+    ],
+    "world": [
+      "WORLD",
+      "Nation"
+    ],
+    "business": [
+      "BUSINESS",
+      "BUSINESS FORUM",
+      "MARKET OVERVIEW",
+      "Stock Watch",
+      "Agribusiness",
+      "Sunday Business & IT"
+    ],
+    "sports": [
+      "SPORTS"
+    ],
+    "entertainment": [
+      "ENTERTAINMENT"
+    ],
+    "lifestyle": [
+      "LIFESTYLE"
+    ],
+    "nature": [
+      "WEATHER",
+      "Green Industries"
+    ],
+    "technology": [
+      "TMT DIGITAL EDITION",
+      "Science & Technology",
+      "Sunday Business & IT"
+    ],
+    "science": [
+      "Science & Technology"
+    ]
+  },
+  "other": [
+    "OPINION",
+    "THE SUNDAY TIMES",
+    "VIDEOS",
+    "PHOTOS"
+  ],
+  "unmapped_default": "other"
+}

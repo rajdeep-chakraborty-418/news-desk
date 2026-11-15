@@ -1,0 +1,37 @@
+{
+  "newspaper": "Peru Reports",
+  "tier": "secondary",
+  "homepage": "https://perureports.com/",
+  "country": "Peru",
+  "continent": "South America",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://perureports.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Peru",
+      "crime",
+      "El Salvador",
+      "presidential elections",
+      "2026 Elections"
+    ],
+    "business": [
+      "Business",
+      "investment"
+    ],
+    "nature": [
+      "Carbon credits",
+      "Climate",
+      "conservation"
+    ]
+  },
+  "other": [
+    "Analysis"
+  ],
+  "unmapped_default": "other"
+}

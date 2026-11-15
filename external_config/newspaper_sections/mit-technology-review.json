@@ -1,0 +1,44 @@
+{
+  "newspaper": "MIT Technology Review",
+  "tier": "secondary",
+  "homepage": "https://www.technologyreview.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "technology",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "technology",
+      "url": "https://www.technologyreview.com/feed/"
+    }
+  ],
+  "section_map": {
+    "technology": [
+      "The Impossible issue",
+      "App",
+      "The Download",
+      "Summary",
+      "AI",
+      "Artificial intelligence",
+      "The Checkup",
+      "nvidia",
+      "The Spark",
+      "sponsored",
+      "The Algorithm"
+    ],
+    "lifestyle": [
+      "Biotechnology and health"
+    ],
+    "business": [
+      "Business"
+    ],
+    "nature": [
+      "Climate change and energy"
+    ],
+    "science": [
+      "Engineering"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

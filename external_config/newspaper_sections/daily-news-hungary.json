@@ -1,0 +1,82 @@
+{
+  "newspaper": "Daily News Hungary",
+  "tier": "secondary",
+  "homepage": "https://dailynewshungary.com/",
+  "country": "Hungary",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://dailynewshungary.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Politics",
+      "Hungarian politics",
+      "Budapest",
+      "Crime",
+      "Special Hungary",
+      "Castles in Hungary",
+      "World",
+      "Europe",
+      "Global news",
+      "Hungary",
+      "Hungarian government",
+      "Magyar government",
+      "Orbán government",
+      "Austria",
+      "Asia"
+    ],
+    "geopolitics": [
+      "Foreign affairs",
+      "Migration",
+      "Diplomacy"
+    ],
+    "business": [
+      "Business",
+      "Economy",
+      "Finance",
+      "Labour market",
+      "Real estate"
+    ],
+    "technology": [
+      "Artificial intelligence"
+    ],
+    "nature": [
+      "Energy",
+      "Weather"
+    ],
+    "geography": [
+      "Travel",
+      "Tourism"
+    ],
+    "sports": [
+      "Public transport",
+      "Sport"
+    ],
+    "science": [
+      "Hungarian gastronomy"
+    ],
+    "lifestyle": [
+      "Hungarian drinks",
+      "Wine",
+      "Life",
+      "Health"
+    ],
+    "entertainment": [
+      "Culture",
+      "Art",
+      "Movie",
+      "Entertainment"
+    ],
+    "history": [
+      "World history",
+      "Hungarian history"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,49 @@
+{
+  "newspaper": "Breaking Defense",
+  "tier": "secondary",
+  "homepage": "https://breakingdefense.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "defence",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "defence",
+      "url": "https://breakingdefense.com/feed/"
+    }
+  ],
+  "section_map": {
+    "defence": [
+      "Special Features",
+      "Europe Edition",
+      "Air",
+      "Land",
+      "Networks",
+      "Pentagon",
+      "Global",
+      "Naval Warfare",
+      "Navy",
+      "Air Warfare",
+      "Air Force",
+      "Land Warfare",
+      "Army",
+      "Naval Submarine League 2026",
+      "Drones",
+      "Networks & Digital Warfare",
+      "Virginia-class submarine",
+      "UK",
+      "AUKUS"
+    ],
+    "science": [
+      "Space",
+      "Space Force"
+    ],
+    "technology": [
+      "cyber security",
+      "technology",
+      "artificial intelligence AI"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

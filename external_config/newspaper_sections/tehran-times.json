@@ -1,0 +1,39 @@
+{
+  "newspaper": "Tehran Times",
+  "tier": "secondary",
+  "homepage": "https://www.tehrantimes.com/",
+  "country": "Iran",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.tehrantimes.com/rss"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Society",
+      "Politics",
+      "International"
+    ],
+    "business": [
+      "Economy"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "entertainment": [
+      "Culture"
+    ],
+    "geography": [
+      "Tourism"
+    ]
+  },
+  "other": [
+    "Photo",
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

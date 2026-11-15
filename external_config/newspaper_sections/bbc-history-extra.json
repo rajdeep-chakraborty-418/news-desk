@@ -1,0 +1,56 @@
+{
+  "newspaper": "BBC History Extra",
+  "tier": "secondary",
+  "homepage": "https://www.historyextra.com/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "history",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "history",
+      "url": "https://www.historyextra.com/feed/"
+    }
+  ],
+  "section_map": {
+    "history": [
+      "Join our Academy",
+      "Period",
+      "Ancient Egypt",
+      "Roman",
+      "Viking",
+      "Anglo-Saxon",
+      "Medieval",
+      "Tudor",
+      "Elizabethan",
+      "Georgian",
+      "Victorian",
+      "Women's history",
+      "Member discounts",
+      "HistoryExtra Mag",
+      "Academy",
+      "The story of the Bayeux Tapestry",
+      "A-Z of Medieval Life",
+      "Royal women, with Kate Williams",
+      "The world of the Georgians",
+      "Membership",
+      "General History",
+      "Fascism",
+      "Soldiers",
+      "Stuart",
+      "Quiz",
+      "Evergreen",
+      "Roman rulers",
+      "Roman women",
+      "Historical people",
+      "Tudor kings and queens"
+    ],
+    "defence": [
+      "Second World War"
+    ]
+  },
+  "other": [
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

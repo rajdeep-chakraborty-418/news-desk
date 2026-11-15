@@ -1,0 +1,71 @@
+{
+  "newspaper": "Balkan Insight",
+  "tier": "secondary",
+  "homepage": "https://balkaninsight.com/",
+  "continent": "Europe",
+  "focus": "geopolitics",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://balkaninsight.com/feed/"
+    }
+  ],
+  "section_map": {
+    "geopolitics": [
+      "Albania",
+      "Bosnia and Herzegovina",
+      "Kosovo",
+      "Montenegro",
+      "North Macedonia",
+      "Balkan Migrant Route",
+      "Balkan Media Watch",
+      "Engaged Citizens Reporting",
+      "Focus on Far Right",
+      "Reporting Democracy",
+      "Profiles",
+      "Balkan Insight",
+      "Aleksandar Vucic",
+      "Albania - Premium Only",
+      "Edi Rama"
+    ],
+    "world": [
+      "Bulgaria",
+      "Croatia",
+      "Greece",
+      "Moldova",
+      "Romania",
+      "Serbia",
+      "Turkey",
+      "Balkan Transitional Justice",
+      "Bulgaria-North Macedonia dispute",
+      "China in the Balkans",
+      "Focus on Ukraine",
+      "Focus on Gender Justice",
+      "Russia in the Balkans",
+      "Serbia-Kosovo Relations",
+      "Turkey and the Balkans",
+      "Serbia elections 2026",
+      "Serbia - Premium Only",
+      "European Union",
+      "Poland"
+    ],
+    "technology": [
+      "Digital Rights",
+      "Open Data and E-Governance"
+    ],
+    "nature": [
+      "Environment",
+      "Environment and Climate Crisis"
+    ],
+    "business": [
+      "Paper Trail: Investigations"
+    ]
+  },
+  "other": [
+    "Premium",
+    "Opinions",
+    "Analysis"
+  ],
+  "unmapped_default": "other"
+}

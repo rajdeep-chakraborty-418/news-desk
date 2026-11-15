@@ -1,0 +1,64 @@
+{
+  "newspaper": "IndieWire",
+  "tier": "secondary",
+  "homepage": "https://www.indiewire.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.indiewire.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Got a Tip?",
+      "Film",
+      "Awards",
+      "Future of Filmmaking",
+      "Filmmaker Toolkit",
+      "General News",
+      "Festivals",
+      "Box Office",
+      "Trailers",
+      "Criticism",
+      "Movies",
+      "Shows",
+      "Our Oscar Predictions",
+      "Thompson on Hollywood",
+      "Consider This",
+      "Craft Considerations",
+      "Deep Dive",
+      "The Craft",
+      "Best Of",
+      "Animation",
+      "IndieWire's Future of Filmmaking",
+      "Toolkit",
+      "Screen Talk",
+      "In Review by David Ehrlich",
+      "The Lead Up by Marcus Jones",
+      "How to Pitch IndieWire",
+      "Netflix",
+      "Reviews",
+      "TV",
+      "Bitter Christmas",
+      "Pedro Almodóvar",
+      "Christopher Nolan",
+      "The Odyssey",
+      "Top of the Line",
+      "IndieWire Honors",
+      "IndieWire Honors 2026"
+    ],
+    "business": [
+      "Business",
+      "Industry"
+    ]
+  },
+  "other": [
+    "Video",
+    "Analysis"
+  ],
+  "unmapped_default": "other"
+}

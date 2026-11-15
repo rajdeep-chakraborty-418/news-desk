@@ -1,0 +1,80 @@
+{
+  "newspaper": "ScienceDaily",
+  "tier": "secondary",
+  "homepage": "https://www.sciencedaily.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "science",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "science",
+      "url": "https://www.sciencedaily.com/rss/all.xml"
+    }
+  ],
+  "section_map": {
+    "lifestyle": [
+      "Health & Medicine",
+      "Living Well",
+      "Parenting",
+      "Nutrition",
+      "Fitness",
+      "Agriculture and Food"
+    ],
+    "science": [
+      "Health & Medicine",
+      "Mind & Brain",
+      "Space & Time",
+      "Computers & Math",
+      "Science & Society",
+      "Education & Learning",
+      "Allergy",
+      "Cancer",
+      "Cold and Flu",
+      "Diabetes",
+      "Heart Disease",
+      "ADD and ADHD",
+      "Alzheimer's",
+      "Headaches",
+      "Intelligence",
+      "Psychology",
+      "Child Development",
+      "Stress",
+      "Chemistry",
+      "Nanotechnology",
+      "Physics",
+      "Black Holes",
+      "Dark Matter",
+      "Solar System",
+      "Space Telescopes",
+      "Mathematics",
+      "Quantum Computers",
+      "Virtual Reality",
+      "Biology"
+    ],
+    "nature": [
+      "Matter & Energy",
+      "Plants & Animals",
+      "Earth & Climate",
+      "Solar Energy",
+      "Extrasolar Planets",
+      "Agriculture and Food"
+    ],
+    "history": [
+      "Fossils & Ruins",
+      "Fossil Fuels"
+    ],
+    "world": [
+      "Science & Society"
+    ],
+    "business": [
+      "Business & Industry"
+    ],
+    "technology": [
+      "Artificial Intelligence",
+      "Robotics"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,38 @@
+{
+  "newspaper": "Us Weekly",
+  "tier": "secondary",
+  "homepage": "https://www.usmagazine.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.usmagazine.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Celebrity News",
+      "Entertainment",
+      "Reality TV",
+      "Games",
+      "Hot Pics",
+      "Celebrity Moms",
+      "Crime News"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Shopping"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "technology": [
+      "Digital Edition"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

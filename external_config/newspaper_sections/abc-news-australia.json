@@ -1,0 +1,87 @@
+{
+  "newspaper": "ABC News Australia",
+  "tier": "secondary",
+  "homepage": "https://www.abc.net.au/",
+  "country": "Australia",
+  "continent": "Oceania",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.abc.net.au/news/feed/45910/rss.xml"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.abc.net.au/news/feed/1534/rss.xml"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Politics",
+      "World",
+      "Elections",
+      "Local news",
+      "Government and Politics",
+      "Federal Government",
+      "World Politics",
+      "State and Territory Government",
+      "State and Territory Parliament"
+    ],
+    "business": [
+      "Business",
+      "Personal Finance",
+      "Housing Construction Industry"
+    ],
+    "sports": [
+      "Sport",
+      "Football",
+      "Tennis",
+      "Cricket",
+      "Australian Rules Football"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Health",
+      "Relationships & Family",
+      "Food & Recipes"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "TV & Movies",
+      "Books",
+      "Music",
+      "Pop Culture",
+      "Arts",
+      "Arts, Culture and Entertainment"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Environment",
+      "Climate Change",
+      "Renewable Energy"
+    ],
+    "geopolitics": [
+      "Unrest, Conflict and War",
+      "Foreign Affairs",
+      "Environmental Policy",
+      "Housing Policy"
+    ],
+    "defence": [
+      "Unrest, Conflict and War",
+      "Terrorism",
+      "War"
+    ],
+    "technology": [
+      "AI",
+      "Social Media"
+    ]
+  },
+  "other": [
+    "Analysis",
+    "Quizzes"
+  ],
+  "unmapped_default": "other"
+}

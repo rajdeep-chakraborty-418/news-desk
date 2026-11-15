@@ -1,0 +1,65 @@
+{
+  "newspaper": "Al-Monitor",
+  "tier": "secondary",
+  "homepage": "https://www.al-monitor.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "geopolitics",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.al-monitor.com/rss"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Politics & Security",
+      "Turkey",
+      "Syria",
+      "Saudi Arabia",
+      "Iran",
+      "United Arab Emirates",
+      "Palestine",
+      "Lebanon",
+      "Israel",
+      "Egypt",
+      "China",
+      "United States",
+      "Russia",
+      "Qatar",
+      "Oman",
+      "Iraq",
+      "Jordan",
+      "Algeria",
+      "Bahrain",
+      "Kuwait",
+      "Libya",
+      "Morocco",
+      "Sudan",
+      "Tunisia",
+      "Yemen",
+      "Somalia",
+      "Hormuz LNG rebounds, Qatar lags",
+      "Iran threatens bases in Europe",
+      "AL-MONITOR Live New York",
+      "Syria's Sharaa in Washington",
+      "AL-MONITOR LIVE: New York"
+    ],
+    "entertainment": [
+      "Culture"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "business": [
+      "Economy & Business"
+    ],
+    "geopolitics": [
+      "Explore",
+      "Dana Awartani revives lost mosaics"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

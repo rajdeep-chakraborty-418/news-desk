@@ -1,0 +1,33 @@
+{
+  "newspaper": "The Local",
+  "tier": "secondary",
+  "homepage": "https://www.thelocal.com/",
+  "country": "Sweden",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.thelocal.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Germany",
+      "France",
+      "Sweden",
+      "Italy",
+      "Spain",
+      "Denmark",
+      "Switzerland",
+      "Austria",
+      "Norway"
+    ],
+    "business": [
+      "Corporate Access"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

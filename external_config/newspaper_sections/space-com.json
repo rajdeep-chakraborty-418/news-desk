@@ -1,0 +1,72 @@
+{
+  "newspaper": "Space.com",
+  "tier": "secondary",
+  "homepage": "https://www.space.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "science",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "science",
+      "url": "https://www.space.com/feeds/all"
+    }
+  ],
+  "section_map": {
+    "science": [
+      "Black Friday 2026",
+      "Launches & Spacecraft",
+      "Private spaceflight",
+      "Human spaceflight",
+      "Missions",
+      "International Space Station",
+      "Space Shuttle",
+      "Apollo",
+      "Artemis",
+      "Voyager",
+      "Asteroid & Comet Missions",
+      "Mars rovers",
+      "New Horizons",
+      "Satellites",
+      "Astronomy",
+      "Solar System",
+      "The Sun",
+      "Asteroids",
+      "Mars",
+      "Comets",
+      "Mercury",
+      "Jupiter",
+      "Saturn",
+      "Pluto",
+      "Venus",
+      "Neptune",
+      "Uranus",
+      "The Moon",
+      "Live 4K video from space",
+      "Stargazing",
+      "Skywatching Kit",
+      "Black Holes",
+      "Meteors & Meteor Showers",
+      "Stars",
+      "Solar Eclipses",
+      "Eclipses"
+    ],
+    "geography": [
+      "Space Exploration"
+    ],
+    "nature": [
+      "Exoplanets",
+      "Dwarf Planets",
+      "The Earth",
+      "Climate Change",
+      "Weather"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Space Movies & Shows",
+      "Space Games"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

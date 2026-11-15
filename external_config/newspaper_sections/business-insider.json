@@ -1,0 +1,94 @@
+{
+  "newspaper": "Business Insider",
+  "tier": "secondary",
+  "homepage": "https://www.businessinsider.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "business",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "business",
+      "url": "https://feeds.businessinsider.com/custom/all"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Business",
+      "Level Up",
+      "Watch",
+      "Listen",
+      "Economy",
+      "Finance",
+      "Retail",
+      "Media",
+      "Real Estate",
+      "Small Business",
+      "The Better Work Project",
+      "Personal Finance",
+      "Enterprise",
+      "Startups",
+      "Stocks",
+      "Indices",
+      "Commodities",
+      "Crypto",
+      "Currencies",
+      "ETFs",
+      "Education",
+      "Kitchen",
+      "nvidia",
+      "jensen-huang",
+      "essay",
+      "flight-delays",
+      "flight-disruptions",
+      "freelancer-le",
+      "jensen-scandal",
+      "ukraine",
+      "airlines"
+    ],
+    "technology": [
+      "Tech",
+      "AI"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Food",
+      "Health",
+      "Parenting",
+      "Style",
+      "Pets",
+      "parenting-freelancer"
+    ],
+    "defence": [
+      "Military & Defense"
+    ],
+    "world": [
+      "Community",
+      "Law",
+      "Politics"
+    ],
+    "geopolitics": [
+      "Strategy"
+    ],
+    "science": [
+      "Science",
+      "Innovation"
+    ],
+    "sports": [
+      "Transportation"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Culture",
+      "Streaming"
+    ],
+    "geography": [
+      "Travel",
+      "travel-chaos"
+    ]
+  },
+  "other": [
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

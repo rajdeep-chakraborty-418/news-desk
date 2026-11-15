@@ -1,0 +1,47 @@
+{
+  "newspaper": "Al Jazeera",
+  "tier": "primary",
+  "homepage": "https://www.aljazeera.com/",
+  "country": "Qatar",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.aljazeera.com/xml/rss/all.xml"
+    }
+  ],
+  "section_map": {
+    "geopolitics": [
+      "Middle East"
+    ],
+    "world": [
+      "Africa",
+      "Asia",
+      "US & Canada",
+      "Latin America",
+      "Europe",
+      "Asia Pacific",
+      "News Analysis"
+    ],
+    "sports": [
+      "Sport"
+    ],
+    "business": [
+      "Economy"
+    ],
+    "nature": [
+      "Climate Crisis"
+    ],
+    "geography": [
+      "Travel"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Video",
+    "Sponsored Content"
+  ],
+  "unmapped_default": "other"
+}

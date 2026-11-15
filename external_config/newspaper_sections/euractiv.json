@@ -1,0 +1,66 @@
+{
+  "newspaper": "Euractiv",
+  "tier": "secondary",
+  "homepage": "https://www.euractiv.com/",
+  "continent": "Europe",
+  "focus": "geopolitics",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.euractiv.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Politics",
+      "Global Europe",
+      "Social Europe",
+      "Ukraine",
+      "Russia",
+      "Across Europe",
+      "Vladimir Putin",
+      "Volodymyr Zelenskyy",
+      "European Commission",
+      "European Parliament",
+      "Italy",
+      "United States (USA)",
+      "Poland",
+      "Donald Trump"
+    ],
+    "business": [
+      "Economy",
+      "Startups"
+    ],
+    "technology": [
+      "Technology",
+      "Artificial Intelligence (AI)",
+      "Tech Sovereignty"
+    ],
+    "lifestyle": [
+      "Agrifood",
+      "Health"
+    ],
+    "nature": [
+      "Energy & Environment",
+      "Climate"
+    ],
+    "defence": [
+      "Defence",
+      "NATO",
+      "Ukraine War"
+    ],
+    "sports": [
+      "Transport"
+    ],
+    "geopolitics": [
+      "COP31",
+      "Platforms",
+      "Ursula von der Leyen"
+    ]
+  },
+  "other": [
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

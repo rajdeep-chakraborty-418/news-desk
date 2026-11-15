@@ -1,0 +1,31 @@
+{
+  "newspaper": "TMZ",
+  "tier": "secondary",
+  "homepage": "https://www.tmz.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.tmz.com/rss.xml"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Got A Tip?",
+      "Deals",
+      "TMZ",
+      "TMZ Live"
+    ],
+    "sports": [
+      "Sports",
+      "TMZ Sports"
+    ]
+  },
+  "other": [
+    "Photos"
+  ],
+  "unmapped_default": "other"
+}

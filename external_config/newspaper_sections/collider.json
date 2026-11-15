@@ -1,0 +1,62 @@
+{
+  "newspaper": "Collider",
+  "tier": "secondary",
+  "homepage": "https://collider.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://collider.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Movies",
+      "Movie News",
+      "Movie Features",
+      "TV News",
+      "TV Features",
+      "Music",
+      "Gaming",
+      "Streaming Guides",
+      "Netflix",
+      "Amazon",
+      "Disney+",
+      "Max",
+      "Hulu",
+      "Apple TV+",
+      "Reality TV",
+      "Reviews",
+      "FYC",
+      "Trailers",
+      "Got A Pitch?",
+      "2026 Movie Releases",
+      "What to Watch",
+      "Action",
+      "Saturday Night Live UK",
+      "Saturday Night Live",
+      "Peacock",
+      "Lorne Michaels",
+      "Jessica Chastain",
+      "Heartland",
+      "Thriller",
+      "Shia LaBeouf",
+      "Eagle Eye",
+      "Watch Dogs",
+      "Tubi",
+      "Rivals",
+      "Bella Maclean",
+      "Rampart"
+    ],
+    "nature": [
+      "Collider Signature"
+    ]
+  },
+  "other": [
+    "Videos"
+  ],
+  "unmapped_default": "other"
+}

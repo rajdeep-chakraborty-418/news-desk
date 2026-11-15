@@ -1,0 +1,53 @@
+{
+  "newspaper": "Nature",
+  "tier": "secondary",
+  "homepage": "https://www.nature.com/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "science",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "science",
+      "url": "https://www.nature.com/nature.rss"
+    }
+  ],
+  "section_map": {
+    "science": [
+      "Saved research",
+      "News & Comment",
+      "Latest Research articles",
+      "Collections",
+      "Research articles",
+      "Research Analysis",
+      "Current issue",
+      "Browse issues",
+      "Subjects",
+      "Journal Staff",
+      "Editors",
+      "Journal Information",
+      "Journal Metrics",
+      "Our publishing models",
+      "Editorial Values Statement",
+      "Journalistic Principles",
+      "Send a news tip",
+      "For Authors",
+      "For Referees",
+      "Open access funding",
+      "Explore articles by subject"
+    ],
+    "entertainment": [
+      "Latest Reviews & Analysis",
+      "Books & Culture",
+      "Awards"
+    ],
+    "history": [
+      "History of Nature"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Videos"
+  ],
+  "unmapped_default": "other"
+}

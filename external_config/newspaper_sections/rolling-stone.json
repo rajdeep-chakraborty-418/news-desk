@@ -1,0 +1,62 @@
+{
+  "newspaper": "Rolling Stone",
+  "tier": "secondary",
+  "homepage": "https://www.rollingstone.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.rollingstone.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Got A Tip?",
+      "Manage Account",
+      "Manage Print Account",
+      "Music",
+      "Politics",
+      "TV & Movies",
+      "Culture",
+      "Lists",
+      "Album Reviews",
+      "Live Reviews",
+      "Artists You Need To Know",
+      "Songs You Need To Know",
+      "RS Country",
+      "RS Latin",
+      "Recaps",
+      "Reviews",
+      "Video Shorts",
+      "RS LIVE",
+      "Creators",
+      "RS Gaming",
+      "RS Films",
+      "RS Essentials",
+      "RS Audio Awards",
+      "Gift Guides",
+      "Music News",
+      "RS Recommends",
+      "noads",
+      "TV & Movies News",
+      "TV & Movies Features",
+      "Civil Rights",
+      "Disability",
+      "Music Lists",
+      "The Hunger Games",
+      "Politics Features",
+      "Chris Van Hollen",
+      "Chuck Schumer",
+      "controversy",
+      "NPR Tiny Desk",
+      "Robyn",
+      "Music Features",
+      "book excerpt"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

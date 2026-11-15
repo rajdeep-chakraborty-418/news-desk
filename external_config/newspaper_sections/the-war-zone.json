@@ -1,0 +1,84 @@
+{
+  "newspaper": "The War Zone",
+  "tier": "secondary",
+  "homepage": "https://www.twz.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "defence",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "defence",
+      "url": "https://www.twz.com/feed"
+    }
+  ],
+  "section_map": {
+    "defence": [
+      "News & Features",
+      "Air",
+      "Sea",
+      "Land",
+      "Nuclear",
+      "Bunker Talk",
+      "Cyber Warfare",
+      "Espionage",
+      "Procurement",
+      "Terrorism",
+      "Around The Globe",
+      "Continuity Of Government",
+      "Bunkers & Installations",
+      "Air Forces",
+      "Airships & Blimps",
+      "Military Aviation History",
+      "Naval Aviation",
+      "Fighters",
+      "Attack",
+      "Aggressors",
+      "Navies",
+      "Naval History",
+      "Amphibious Operations",
+      "Carriers",
+      "Big Deck Amphibious Assault Ships",
+      "Amphibious Assault Ships",
+      "Sea Bases",
+      "Cruisers",
+      "Destroyers",
+      "Armies",
+      "Land Warfare History",
+      "Tanks",
+      "Unmanned Ground Vehicles",
+      "Artillery",
+      "Tactical Ballistic Missiles",
+      "MRBMs/IRBMs",
+      "Anti-Aircraft Artillery (AAA)",
+      "U.S. Air Force",
+      "Drones",
+      "Europe",
+      "U.S. Navy",
+      "Unmanned",
+      "Trainers",
+      "Ukraine",
+      "Air Force Munitions",
+      "Small Arms",
+      "Bombers",
+      "Russia"
+    ],
+    "science": [
+      "Space",
+      "U.S. Space Force"
+    ],
+    "technology": [
+      "Artificial Intelligence",
+      "Armored Vehicles",
+      "Light Vehicles"
+    ],
+    "history": [
+      "History"
+    ],
+    "nature": [
+      "U.S. Marine Corps"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

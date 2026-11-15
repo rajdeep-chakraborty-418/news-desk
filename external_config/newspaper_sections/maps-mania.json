@@ -1,0 +1,59 @@
+{
+  "newspaper": "Maps Mania",
+  "tier": "secondary",
+  "homepage": "https://googlemapsmania.blogspot.com/",
+  "continent": "Other",
+  "focus": "geography",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "geography",
+      "url": "https://googlemapsmania.blogspot.com/feeds/posts/default"
+    }
+  ],
+  "section_map": {
+    "geography": [
+      "Maps",
+      "Geography",
+      "Mapping",
+      "Travel",
+      "GIS",
+      "Street View",
+      "Google Maps",
+      "UK",
+      "Japan",
+      "Poland",
+      "30DayMapChallenge",
+      "USA",
+      "elections",
+      "London",
+      "France",
+      "driving directions",
+      "toponym",
+      "Warsaw"
+    ],
+    "history": [
+      "Historical Maps",
+      "history maps",
+      "archaeology"
+    ],
+    "technology": [
+      "Data Visualization"
+    ],
+    "entertainment": [
+      "games",
+      "Art",
+      "music"
+    ],
+    "science": [
+      "astronomy"
+    ],
+    "nature": [
+      "weather",
+      "animal tracking",
+      "environment"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

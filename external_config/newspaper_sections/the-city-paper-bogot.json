@@ -1,0 +1,58 @@
+{
+  "newspaper": "The City Paper Bogotá",
+  "tier": "secondary",
+  "homepage": "https://thecitypaperbogota.com/",
+  "country": "Colombia",
+  "continent": "South America",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://thecitypaperbogota.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Global",
+      "Bogota",
+      "Colombia",
+      "Community",
+      "Colombian",
+      "American",
+      "French",
+      "Italian",
+      "Latin American",
+      "Spanish",
+      "Pacific",
+      "Juanes – World Tour 2026",
+      "Crime and Security",
+      "U.S relations"
+    ],
+    "lifestyle": [
+      "Living",
+      "Seafood"
+    ],
+    "entertainment": [
+      "Culture",
+      "Dance",
+      "Film",
+      "Literature",
+      "Music",
+      "Theatre",
+      "Visual Art"
+    ],
+    "geography": [
+      "Travel",
+      "Tourism"
+    ],
+    "business": [
+      "Business",
+      "Finance"
+    ]
+  },
+  "other": [
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

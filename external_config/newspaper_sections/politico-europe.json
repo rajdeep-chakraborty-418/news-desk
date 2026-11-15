@@ -1,0 +1,93 @@
+{
+  "newspaper": "Politico Europe",
+  "tier": "secondary",
+  "homepage": "https://www.politico.eu/",
+  "country": "Belgium",
+  "continent": "Europe",
+  "focus": "geopolitics",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.politico.eu/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "France",
+      "Spain",
+      "Paris Influence",
+      "Berlin Playbook",
+      "Brussels Playbook",
+      "Brussels Playbook Capitals",
+      "Global Playbook",
+      "Global Security",
+      "London Influence",
+      "London Playbook",
+      "Madrid Playbook",
+      "Playbook Paris",
+      "Westminster Insider",
+      "Politics at Sam and Anne's",
+      "Politics",
+      "Elections",
+      "Kremlin"
+    ],
+    "nature": [
+      "Agriculture and Food",
+      "Energy and Climate",
+      "Energy and Climate UK",
+      "Sustainability"
+    ],
+    "lifestyle": [
+      "Agriculture and Food",
+      "Health Care"
+    ],
+    "geopolitics": [
+      "Central Banker",
+      "Competition and Industrial Policy",
+      "Energie & Klima DE",
+      "Gesundheit",
+      "Mobility",
+      "Dimanchissime",
+      "EU Influence",
+      "Forecast",
+      "Global Policy Lab: Living Cities",
+      "Le Weekly",
+      "Sunday Crunch",
+      "Power & Policy",
+      "Security",
+      "Negotiations",
+      "Sanctions",
+      "Foreign policy",
+      "Playbook",
+      "Foreign Affairs",
+      "Crisis",
+      "Genocide",
+      "Regulation",
+      "Rights"
+    ],
+    "technology": [
+      "Cybersecurity and Data Protection",
+      "Technology",
+      "Tech France",
+      "Technologie & KI",
+      "Technology UK"
+    ],
+    "defence": [
+      "Defense",
+      "War",
+      "Military",
+      "Weapons",
+      "War in Ukraine"
+    ],
+    "business": [
+      "Financial Services",
+      "Financial Services UK",
+      "Industrie & Handel DE",
+      "Trade",
+      "Trade UK"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

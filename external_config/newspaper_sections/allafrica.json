@@ -1,0 +1,64 @@
+{
+  "newspaper": "AllAfrica",
+  "tier": "secondary",
+  "homepage": "https://allafrica.com/",
+  "continent": "Africa",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "African Development Bank",
+      "AllAfrica Women's Agenda",
+      "Africa Day At COP31",
+      "East Africa",
+      "West Africa",
+      "Nigeria",
+      "Central Africa",
+      "Southern Africa",
+      "Africa",
+      "International Organizations and Africa",
+      "Rwanda",
+      "Namibia",
+      "Ethiopia",
+      "Kenya"
+    ],
+    "geopolitics": [
+      "Carnegie: Peacebuilding Coverage",
+      "Conflict",
+      "Conflict, Peace and Security"
+    ],
+    "business": [
+      "Corporate Council on Africa",
+      "Business"
+    ],
+    "science": [
+      "PMI Science",
+      "Health and Medicine"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Arts, Culture and Entertainment"
+    ],
+    "lifestyle": [
+      "Health",
+      "Food and Agriculture",
+      "Health and Medicine"
+    ],
+    "nature": [
+      "Food and Agriculture",
+      "Environment",
+      "Climate"
+    ],
+    "sports": [
+      "Sport"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

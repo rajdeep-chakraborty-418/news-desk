@@ -1,0 +1,41 @@
+{
+  "newspaper": "Xinhua",
+  "tier": "secondary",
+  "homepage": "https://english.news.cn/",
+  "country": "China",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "http://www.news.cn/english/rss/worldrss.xml"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "China",
+      "World",
+      "GLOBALink",
+      "Biz China Weekly",
+      "Asia & Pacific",
+      "Europe",
+      "Africa",
+      "North America"
+    ],
+    "entertainment": [
+      "Culture & Lifestyle"
+    ],
+    "lifestyle": [
+      "Culture & Lifestyle"
+    ],
+    "sports": [
+      "Sports"
+    ]
+  },
+  "other": [
+    "Video & Live",
+    "Photos"
+  ],
+  "unmapped_default": "other"
+}

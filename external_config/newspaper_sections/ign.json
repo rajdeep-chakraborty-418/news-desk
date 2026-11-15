@@ -1,0 +1,66 @@
+{
+  "newspaper": "IGN",
+  "tier": "secondary",
+  "homepage": "https://www.ign.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://feeds.ign.com/ign/all"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Daily Games",
+      "Entertainment",
+      "Reviews",
+      "Editor's Choice",
+      "Game Reviews",
+      "Movie Reviews",
+      "TV Show Reviews",
+      "Tech Reviews",
+      "PlayStation",
+      "Xbox",
+      "Nintendo",
+      "Movies",
+      "Comics",
+      "GTA 5 Cheats",
+      "Red Dead Redemption 2",
+      "IGN Shorts",
+      "IGN Daily Games",
+      "Playlist",
+      "Audible 2026",
+      "METRO 2039",
+      "Preorders",
+      "Video Game Trailers",
+      "Movie Trailers",
+      "TV Trailers",
+      "Best Tech for Gaming",
+      "Universal Studios Hollywood Hub",
+      "Rewards"
+    ],
+    "technology": [
+      "Tech",
+      "Cyberpunk 2077"
+    ],
+    "sports": [
+      "Final Fantasy Resonance"
+    ],
+    "geography": [
+      "Interactive Maps"
+    ],
+    "business": [
+      "Star Wars Zero Company"
+    ],
+    "science": [
+      "Discover Universal Orlando Resort"
+    ]
+  },
+  "other": [
+    "Columns"
+  ],
+  "unmapped_default": "other"
+}

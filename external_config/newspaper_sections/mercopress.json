@@ -1,0 +1,62 @@
+{
+  "newspaper": "MercoPress",
+  "tier": "secondary",
+  "homepage": "https://en.mercopress.com/",
+  "country": "Uruguay",
+  "continent": "South America",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://en.mercopress.com/rss"
+    }
+  ],
+  "section_map": {
+    "nature": [
+      "Agriculture",
+      "Energy & Oil",
+      "Environment"
+    ],
+    "business": [
+      "Economy",
+      "Investments",
+      "Real Estate",
+      "Economy, Politics, Paraguay"
+    ],
+    "entertainment": [
+      "Entertainment"
+    ],
+    "lifestyle": [
+      "Health & Science"
+    ],
+    "science": [
+      "Health & Science"
+    ],
+    "world": [
+      "Politics",
+      "Argentina",
+      "Brazil",
+      "Chile",
+      "International",
+      "Latin America",
+      "Pacific Alliance",
+      "Paraguay",
+      "United States",
+      "Uruguay",
+      "Venezuela",
+      "Politics, International, Latin America",
+      "Politics, Tourism, United States",
+      "Tourism, United States",
+      "Politics, Brazil, International",
+      "Economy, Politics, Paraguay"
+    ],
+    "geography": [
+      "Tourism",
+      "Politics, Tourism, United States",
+      "Tourism, United States"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

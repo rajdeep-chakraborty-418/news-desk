@@ -1,0 +1,36 @@
+{
+  "newspaper": "Eater",
+  "tier": "secondary",
+  "homepage": "https://www.eater.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "lifestyle",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "lifestyle",
+      "url": "https://www.eater.com/rss/index.xml"
+    }
+  ],
+  "section_map": {
+    "lifestyle": [
+      "Restaurant News",
+      "Dining Out",
+      "Add to Cart",
+      "Buy This Thing",
+      "Eater at Home",
+      "Shopping Guides",
+      "World's 50 Best Restaurants"
+    ],
+    "entertainment": [
+      "Culture",
+      "Awards Season"
+    ],
+    "geography": [
+      "Travel",
+      "Holiday Gift Guides"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

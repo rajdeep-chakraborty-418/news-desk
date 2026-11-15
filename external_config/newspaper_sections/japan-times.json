@@ -1,0 +1,78 @@
+{
+  "newspaper": "Japan Times",
+  "tier": "secondary",
+  "homepage": "https://www.japantimes.co.jp/",
+  "country": "Japan",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.japantimes.co.jp/feed/"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.japantimes.co.jp/culture/feed/",
+      "label": "Japan Times Culture"
+    }
+  ],
+  "section_map": {
+    "technology": [
+      "Digital",
+      "Tech"
+    ],
+    "world": [
+      "Politics",
+      "Society",
+      "Crime & Legal",
+      "WORLD",
+      "ASIA PACIFIC"
+    ],
+    "science": [
+      "Science & Health"
+    ],
+    "lifestyle": [
+      "Science & Health",
+      "LIFE",
+      "Food & Drink",
+      "Style & Design",
+      "Lifestyle"
+    ],
+    "history": [
+      "History"
+    ],
+    "business": [
+      "BUSINESS",
+      "Companies",
+      "Economy",
+      "Markets"
+    ],
+    "sports": [
+      "SPORTS",
+      "Soccer",
+      "Basketball",
+      "Tennis",
+      "Olympics"
+    ],
+    "nature": [
+      "Environment",
+      "CLIMATE CHANGE",
+      "Energy",
+      "SUSTAINABILITY",
+      "WILDLIFE",
+      "EARTH SCIENCE"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "entertainment": [
+      "CULTURE"
+    ]
+  },
+  "other": [
+    "OPINION",
+    "Editorials"
+  ],
+  "unmapped_default": "other"
+}

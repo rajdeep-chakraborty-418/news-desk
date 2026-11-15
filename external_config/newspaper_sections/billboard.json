@@ -1,0 +1,77 @@
+{
+  "newspaper": "Billboard",
+  "tier": "secondary",
+  "homepage": "https://www.billboard.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.billboard.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Charts",
+      "Music",
+      "Awards",
+      "Manage Account",
+      "Account",
+      "Hot 100",
+      "Chart Beat",
+      "Global News",
+      "Español",
+      "Legal News",
+      "Billboard Hot 100™",
+      "Billboard 200™",
+      "Global 200",
+      "Hits Of The World™",
+      "Songs Of The Summer",
+      "Year-End Charts",
+      "Decade-End Charts",
+      "21st Century Charts",
+      "Music News",
+      "Pop",
+      "R&B/Hip-Hop",
+      "Latin",
+      "Rock",
+      "Concerts",
+      "Culture",
+      "Politics",
+      "TV/Film",
+      "Media",
+      "Lists",
+      "Touring",
+      "Product Recommendations",
+      "NOADS",
+      "how to watch",
+      "streaming",
+      "Deen Castronovo",
+      "genre rock",
+      "journey",
+      "Steve Murphy",
+      "billboard pro",
+      "conferences",
+      "Events",
+      "festivals"
+    ],
+    "lifestyle": [
+      "Mental Health",
+      "Lifestyle"
+    ],
+    "business": [
+      "Business News",
+      "Business"
+    ],
+    "sports": [
+      "UFC"
+    ]
+  },
+  "other": [
+    "Video",
+    "Photos"
+  ],
+  "unmapped_default": "other"
+}

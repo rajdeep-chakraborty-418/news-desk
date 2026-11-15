@@ -1,0 +1,26 @@
+{
+  "newspaper": "USGS Earthquakes",
+  "tier": "secondary",
+  "homepage": "https://earthquake.usgs.gov/earthquakes/map/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "geography",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "geography",
+      "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.atom"
+    }
+  ],
+  "section_map": {
+    "geography": [
+      "us",
+      "Magnitude 6"
+    ],
+    "history": [
+      "Past Week"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

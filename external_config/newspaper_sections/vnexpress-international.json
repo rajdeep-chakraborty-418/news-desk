@@ -1,0 +1,65 @@
+{
+  "newspaper": "VnExpress International",
+  "tier": "secondary",
+  "homepage": "https://e.vnexpress.net/",
+  "country": "Vietnam",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://e.vnexpress.net/rss/news.rss"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Politics",
+      "Crime",
+      "World"
+    ],
+    "nature": [
+      "Environment"
+    ],
+    "science": [
+      "Brainteaser",
+      "Vietnam innovation"
+    ],
+    "business": [
+      "Business",
+      "Property",
+      "Markets",
+      "Companies",
+      "Economy",
+      "Money"
+    ],
+    "technology": [
+      "DataSpeaks",
+      "Tech",
+      "Tech news"
+    ],
+    "geography": [
+      "Travel",
+      "Places"
+    ],
+    "lifestyle": [
+      "Food",
+      "Life",
+      "Vogue",
+      "Wellness"
+    ],
+    "entertainment": [
+      "Arts",
+      "Celebrities"
+    ],
+    "sports": [
+      "Sports",
+      "Football",
+      "Boxing",
+      "Tennis",
+      "Other sports"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

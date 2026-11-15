@@ -1,0 +1,60 @@
+{
+  "newspaper": "New Scientist",
+  "tier": "secondary",
+  "homepage": "https://www.newscientist.com/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "science",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "science",
+      "url": "https://www.newscientist.com/feed/home/"
+    }
+  ],
+  "section_map": {
+    "science": [
+      "Curiosity Engine",
+      "Tours",
+      "Space",
+      "Physics",
+      "Mind",
+      "Humans",
+      "Mathematics",
+      "Chemistry",
+      "Society",
+      "Subscriber benefits",
+      "El Niño",
+      "Quantum physics",
+      "Bacteria",
+      "Cosmology",
+      "CRISPR",
+      "Psychology",
+      "Quantum computing"
+    ],
+    "entertainment": [
+      "Culture",
+      "Games",
+      "Books"
+    ],
+    "lifestyle": [
+      "Health",
+      "Life"
+    ],
+    "technology": [
+      "Technology",
+      "Robotics"
+    ],
+    "nature": [
+      "Environment",
+      "Earth",
+      "Ecology",
+      "Animals",
+      "extreme weather"
+    ]
+  },
+  "other": [
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

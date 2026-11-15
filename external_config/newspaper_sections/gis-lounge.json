@@ -1,0 +1,43 @@
+{
+  "newspaper": "GIS Lounge",
+  "tier": "secondary",
+  "homepage": "https://www.gislounge.com/",
+  "continent": "Other",
+  "focus": "geography",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "geography",
+      "url": "https://www.gislounge.com/feed/"
+    }
+  ],
+  "section_map": {
+    "geography": [
+      "Physical Geography",
+      "Human Geography",
+      "Introduction to GIS",
+      "GIS Articles",
+      "GIS Tutorials",
+      "GIS Conferences",
+      "Maps",
+      "Geography Printables",
+      "Spatial Analysis",
+      "Geography and GIS Glossary",
+      "Maps and Cartography",
+      "Highest Point in Every U.S. State",
+      "Why Do Squirrels Lie Flat?",
+      "United States",
+      "Geomorphology",
+      "Geography Basics",
+      "GIS and Geospatial Technologies",
+      "GIS Data",
+      "Political Geography",
+      "Biogeography"
+    ],
+    "technology": [
+      "GIS and Geospatial Technologies"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,57 @@
+{
+  "newspaper": "CNA",
+  "tier": "secondary",
+  "homepage": "https://www.channelnewsasia.com/",
+  "country": "Singapore",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.channelnewsasia.com/rssfeeds/8395986"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Singapore",
+      "Asia",
+      "World",
+      "East Asia",
+      "Singapore Parliament",
+      "News Reports",
+      "Asia ,World",
+      "Singapore ,Asia",
+      "World ,Asia ,East Asia"
+    ],
+    "nature": [
+      "Sustainability"
+    ],
+    "business": [
+      "Business",
+      "Business Blueprint"
+    ],
+    "sports": [
+      "Sport"
+    ],
+    "entertainment": [
+      "Live TV",
+      "Documentaries & Shows",
+      "TV Schedule",
+      "Radio Schedule",
+      "Entertainment"
+    ],
+    "lifestyle": [
+      "Mental Health Matters",
+      "Wellness",
+      "Living",
+      "Style & Beauty",
+      "Health Matters"
+    ],
+    "geography": [
+      "Travel"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,46 @@
+{
+  "newspaper": "Fortune",
+  "tier": "secondary",
+  "homepage": "https://fortune.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "business",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "business",
+      "url": "https://fortune.com/feed/"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Fortune 500",
+      "Finance",
+      "Leadership",
+      "Multimedia",
+      "Business",
+      "Success",
+      "Retail"
+    ],
+    "technology": [
+      "Tech"
+    ],
+    "lifestyle": [
+      "Lifestyle"
+    ],
+    "geography": [
+      "Travel & Leisure"
+    ],
+    "science": [
+      "Innovation"
+    ],
+    "world": [
+      "North America"
+    ],
+    "entertainment": [
+      "Arts & Entertainment"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

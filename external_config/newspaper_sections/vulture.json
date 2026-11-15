@@ -1,0 +1,71 @@
+{
+  "newspaper": "Vulture",
+  "tier": "secondary",
+  "homepage": "https://www.vulture.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://feeds.feedburner.com/nymag/vulture"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "TV Recaps",
+      "Movies",
+      "Comedy",
+      "Music",
+      "What to Stream",
+      "Books",
+      "Theater",
+      "Art",
+      "Reality",
+      "Criticism",
+      "Recaps",
+      "The Gilded Age",
+      "Dancing With the Stars",
+      "Love Is Blind",
+      "Dexter",
+      "The Great British Baking Show",
+      "Do You Caramel",
+      "Cupertino",
+      "Southern Charm",
+      "The Traitors New Blood",
+      "The Lowdown",
+      "Survivor",
+      "We Don’t Need to Reboot DC Again",
+      "How the Yellowjackets Said Goodbye",
+      "Nik Cohn Has a Few Regrets",
+      "Russell Brand Was an ‘Open Secret’",
+      "Rosamund Pike Doesn’t Flinch",
+      "The University of Milo Cramer",
+      "6 New Books to Read This November",
+      "vulture homepage lede",
+      "tv",
+      "vulture section lede",
+      "review",
+      "oscars 2027",
+      "awards season",
+      "q&a",
+      "paywall exclude",
+      "vulture cinematrix",
+      "cinematrix",
+      "games",
+      "vulture games",
+      "daily cinematrix",
+      "theater review",
+      "theater reviews"
+    ],
+    "sports": [
+      "Movies Fantasy League"
+    ],
+    "defence": [
+      "War"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

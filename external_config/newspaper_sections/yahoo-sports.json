@@ -1,0 +1,69 @@
+{
+  "newspaper": "Yahoo Sports",
+  "tier": "primary",
+  "homepage": "https://sports.yahoo.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "sports",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "sports",
+      "url": "https://sports.yahoo.com/rss/"
+    }
+  ],
+  "section_map": {
+    "sports": [
+      "NFL",
+      "NBA",
+      "MLB",
+      "NHL",
+      "Fantasy",
+      "Betting",
+      "WNBA",
+      "Golf",
+      "Tennis",
+      "MMA",
+      "Racing",
+      "Soccer",
+      "Horse Racing",
+      "Lacrosse",
+      "Swimming",
+      "College Sports",
+      "Daily Draw",
+      "Collectibles",
+      "Sports Business",
+      "IFL",
+      "Combat",
+      "Boxing",
+      "Wrestling",
+      "Women's Sports",
+      "Olympics",
+      "Cycling",
+      "UFL",
+      "Watch",
+      "GameChannel",
+      "The Craic with Petesy Carroll",
+      "The Uncrowned Wrestling Show",
+      "Inside Boxing",
+      "The Uncrowned Beat",
+      "sports",
+      "college",
+      "high-school",
+      "cricket",
+      "Sports :: Sports Columns",
+      "General",
+      "News All",
+      "rugby",
+      "UFC",
+      "Alex Pereira",
+      "Ciryl Gane",
+      "Josh Hokit"
+    ],
+    "entertainment": [
+      "The Ariel Helwani Show"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

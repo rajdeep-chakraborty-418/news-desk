@@ -1,0 +1,40 @@
+{
+  "newspaper": "Ecuador Times",
+  "tier": "secondary",
+  "homepage": "https://www.ecuadortimes.net/",
+  "country": "Ecuador",
+  "continent": "South America",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.ecuadortimes.net/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "National>Local Politics",
+      "Politics",
+      "National>Society",
+      "World>Politics"
+    ],
+    "business": [
+      "Economy"
+    ],
+    "entertainment": [
+      "National>Entertainment"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "geography": [
+      "National>Ecuador Insights>Tourism"
+    ],
+    "science": [
+      "Gastronomy"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

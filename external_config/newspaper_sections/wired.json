@@ -1,0 +1,54 @@
+{
+  "newspaper": "Wired",
+  "tier": "secondary",
+  "homepage": "https://www.wired.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "technology",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "technology",
+      "url": "https://www.wired.com/feed/rss"
+    }
+  ],
+  "section_map": {
+    "technology": [
+      "SECURITY",
+      "POLITICS",
+      "THE BIG STORY",
+      "The Big Interview",
+      "WIRED Insider",
+      "Livestreams",
+      "Gear News",
+      "Jensen Huang’s $470 Billion Affair",
+      "Welcome to Weed Island",
+      "WIRED Ghost Stories",
+      "Gear",
+      "Gear / Deals",
+      "Gear / Buying Guides",
+      "Security / Security News",
+      "Gear / Products"
+    ],
+    "business": [
+      "BUSINESS"
+    ],
+    "science": [
+      "SCIENCE",
+      "Inside WIRED’s Brain Week",
+      "Science / Space"
+    ],
+    "entertainment": [
+      "CULTURE",
+      "Gear / Reviews",
+      "Culture / TV"
+    ],
+    "nature": [
+      "Climate Change Abolishes Ice"
+    ]
+  },
+  "other": [
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

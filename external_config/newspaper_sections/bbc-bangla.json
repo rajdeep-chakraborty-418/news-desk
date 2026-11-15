@@ -1,0 +1,18 @@
+{
+  "newspaper": "BBC Bangla",
+  "tier": "secondary",
+  "homepage": "https://www.bbc.com/bengali",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "bengali",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "bengali",
+      "url": "https://feeds.bbci.co.uk/bengali/rss.xml"
+    }
+  ],
+  "section_map": {},
+  "other": [],
+  "unmapped_default": "other"
+}

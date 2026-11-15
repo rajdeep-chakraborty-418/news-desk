@@ -1,0 +1,34 @@
+{
+  "newspaper": "ANSA English",
+  "tier": "secondary",
+  "homepage": "https://www.ansa.it/",
+  "country": "Italy",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.ansa.it/english/news/english_nr_rss.xml"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "ANSA China 中国",
+      "ANSA India"
+    ],
+    "business": [
+      "ANSA Corporate"
+    ],
+    "science": [
+      "Scienza"
+    ],
+    "lifestyle": [
+      "Lifestyle"
+    ]
+  },
+  "other": [
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

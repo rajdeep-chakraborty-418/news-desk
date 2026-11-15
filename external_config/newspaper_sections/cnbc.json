@@ -1,0 +1,85 @@
+{
+  "newspaper": "CNBC",
+  "tier": "primary",
+  "homepage": "https://www.cnbc.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.cnbc.com/id/100727362/device/rss/rss.html"
+    },
+    {
+      "section": "world",
+      "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html"
+    },
+    {
+      "section": "business",
+      "url": "https://www.cnbc.com/id/10001147/device/rss/rss.html"
+    },
+    {
+      "section": "technology",
+      "url": "https://www.cnbc.com/id/19854910/device/rss/rss.html"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Markets",
+      "Pre-Markets",
+      "U.S. Markets",
+      "Prediction Markets",
+      "Cryptocurrency",
+      "Futures & Commodities",
+      "Business",
+      "Economy",
+      "Finance",
+      "Real Estate",
+      "Industrials",
+      "Retail",
+      "Wealth",
+      "Small Business",
+      "Investing",
+      "Personal Finance",
+      "Financial Advisors",
+      "Earnings"
+    ],
+    "lifestyle": [
+      "Health & Science",
+      "Life"
+    ],
+    "science": [
+      "Health & Science"
+    ],
+    "nature": [
+      "Energy",
+      "Climate"
+    ],
+    "sports": [
+      "Transportation",
+      "Sports"
+    ],
+    "technology": [
+      "Tech",
+      "Cybersecurity",
+      "AI",
+      "Internet",
+      "Social Media",
+      "Tech Guide"
+    ],
+    "world": [
+      "Politics & Policy",
+      "White House"
+    ],
+    "geopolitics": [
+      "Politics & Policy",
+      "Policy"
+    ],
+    "defence": [
+      "Defense"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

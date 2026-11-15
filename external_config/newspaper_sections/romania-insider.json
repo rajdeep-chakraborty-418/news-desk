@@ -1,0 +1,60 @@
+{
+  "newspaper": "Romania Insider",
+  "tier": "secondary",
+  "homepage": "https://www.romania-insider.com/",
+  "country": "Romania",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.romania-insider.com/feed"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Business",
+      "Economy",
+      "Real Estate",
+      "Property",
+      "Macro",
+      "Capital Markets",
+      "Finance"
+    ],
+    "world": [
+      "Politics",
+      "Society",
+      "Justice"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Life"
+    ],
+    "sports": [
+      "Sports",
+      "Transport"
+    ],
+    "technology": [
+      "Tech"
+    ],
+    "entertainment": [
+      "Culture",
+      "Entertainment"
+    ],
+    "nature": [
+      "Energy",
+      "Environment"
+    ],
+    "defence": [
+      "Defense"
+    ]
+  },
+  "other": [
+    "Events"
+  ],
+  "unmapped_default": "other"
+}

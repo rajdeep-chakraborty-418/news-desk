@@ -1,0 +1,60 @@
+{
+  "newspaper": "Defense News",
+  "tier": "secondary",
+  "homepage": "https://www.defensenews.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "defence",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "defence",
+      "url": "https://www.defensenews.com/arc/outboundfeeds/rss/?outputType=xml"
+    }
+  ],
+  "section_map": {
+    "defence": [
+      "Air",
+      "Land",
+      "Naval",
+      "Pentagon",
+      "Training & Sim",
+      "Unmanned",
+      "Global",
+      "Asia Pacific",
+      "Europe",
+      "Mideast Africa",
+      "The Americas",
+      "Outlook",
+      "Press Releases",
+      "Thought Leadership",
+      "Native",
+      "Coverage: AUSA Annual",
+      "Daily News Roundup",
+      "dn dnr",
+      "AUSA",
+      "Military Featured",
+      "Air Warfare",
+      "MilTech",
+      "Defense News Weekly",
+      "Defense News Weekly Episodes",
+      "counter UAS"
+    ],
+    "business": [
+      "Budget",
+      "Industry",
+      "Money Minute"
+    ],
+    "science": [
+      "Space"
+    ],
+    "geopolitics": [
+      "Middle East"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,36 @@
+{
+  "newspaper": "Army Technology",
+  "tier": "secondary",
+  "homepage": "https://www.army-technology.com/",
+  "continent": "Europe",
+  "focus": "defence",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "defence",
+      "url": "https://www.army-technology.com/feed/"
+    }
+  ],
+  "section_map": {
+    "defence": [
+      "Land Systems",
+      "Air Systems",
+      "Naval Systems",
+      "Weapons",
+      "Defence News",
+      "Military Training",
+      "Unmanned Systems",
+      "Procurement",
+      "Analyst Comment"
+    ],
+    "technology": [
+      "Cyber & Space",
+      "Vehicles"
+    ],
+    "science": [
+      "Cyber & Space"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

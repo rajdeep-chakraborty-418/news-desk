@@ -1,0 +1,131 @@
+{
+  "newspaper": "The Guardian",
+  "tier": "primary",
+  "homepage": "https://www.theguardian.com/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.theguardian.com/world/rss"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.theguardian.com/sport/rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.theguardian.com/culture/rss"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://www.theguardian.com/lifeandstyle/rss"
+    },
+    {
+      "section": "business",
+      "url": "https://www.theguardian.com/uk/business/rss"
+    },
+    {
+      "section": "technology",
+      "url": "https://www.theguardian.com/technology/rss"
+    },
+    {
+      "section": "science",
+      "url": "https://www.theguardian.com/science/rss"
+    },
+    {
+      "section": "nature",
+      "url": "https://www.theguardian.com/environment/rss"
+    },
+    {
+      "section": "history",
+      "url": "https://www.theguardian.com/science/archaeology/rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.theguardian.com/film/rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.theguardian.com/music/rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.theguardian.com/tv-and-radio/rss"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.theguardian.com/stage/rss"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "US edition",
+      "UK edition",
+      "Australia edition",
+      "Europe edition",
+      "International edition",
+      "US news",
+      "US politics",
+      "World news",
+      "Ukraine",
+      "UK news",
+      "China",
+      "Europe",
+      "Donald Trump"
+    ],
+    "sports": [
+      "Sport",
+      "Soccer",
+      "NFL",
+      "Tennis",
+      "MLB",
+      "NBA",
+      "NHL",
+      "F1",
+      "Golf",
+      "Football"
+    ],
+    "entertainment": [
+      "Culture",
+      "Film",
+      "Books",
+      "Music"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Wellness",
+      "Life and style",
+      "Fashion"
+    ],
+    "nature": [
+      "Climate crisis",
+      "Environment"
+    ],
+    "geopolitics": [
+      "Middle East",
+      "US immigration"
+    ],
+    "business": [
+      "Business"
+    ],
+    "technology": [
+      "Tech",
+      "Technology",
+      "AI (artificial intelligence)",
+      "Computing"
+    ],
+    "science": [
+      "Science"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Columnists",
+    "Letters",
+    "Cartoons"
+  ],
+  "unmapped_default": "other"
+}

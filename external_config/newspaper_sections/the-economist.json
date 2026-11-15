@@ -1,0 +1,47 @@
+{
+  "newspaper": "The Economist",
+  "tier": "secondary",
+  "homepage": "https://www.economist.com/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "business",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "business",
+      "url": "https://www.economist.com/finance-and-economics/rss.xml"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "World",
+      "Europe",
+      "Asia",
+      "United States",
+      "Middle East & Africa",
+      "China",
+      "Britain",
+      "International"
+    ],
+    "business": [
+      "Business & Economics",
+      "Finance & Economics"
+    ],
+    "science": [
+      "Science & Technology"
+    ],
+    "technology": [
+      "Science & Technology"
+    ],
+    "entertainment": [
+      "Culture"
+    ],
+    "geopolitics": [
+      "Middle East & Africa"
+    ]
+  },
+  "other": [
+    "Obituary"
+  ],
+  "unmapped_default": "other"
+}

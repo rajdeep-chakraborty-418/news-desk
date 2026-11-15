@@ -1,0 +1,60 @@
+{
+  "newspaper": "Jerusalem Post",
+  "tier": "secondary",
+  "homepage": "https://www.jpost.com/",
+  "country": "Israel",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.jpost.com/rss/rssfeedsfrontpage.aspx"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "ISRAEL NEWS",
+      "WORLD NEWS",
+      "US POLITICS",
+      "LAW",
+      "Jerusalem Report",
+      "Israel Election 2026",
+      "Middle Israel: Who lost America?"
+    ],
+    "geopolitics": [
+      "MIDDLE EAST"
+    ],
+    "business": [
+      "BUSINESS & INNOVATION",
+      "Israel Real Estate"
+    ],
+    "science": [
+      "BUSINESS & INNOVATION",
+      "SCIENCE"
+    ],
+    "technology": [
+      "JPOST DIGITAL LIBRARY"
+    ],
+    "nature": [
+      "ENVIRONMENT & CLIMATE CHANGE",
+      "Environment"
+    ],
+    "lifestyle": [
+      "FOOD & RECIPES",
+      "Health",
+      "Health & Wellness",
+      "Where Jerusalem meets luxury"
+    ],
+    "history": [
+      "HISTORY"
+    ]
+  },
+  "other": [
+    "OPINION",
+    "Videos",
+    "Premium",
+    "JPost Videos"
+  ],
+  "unmapped_default": "other"
+}

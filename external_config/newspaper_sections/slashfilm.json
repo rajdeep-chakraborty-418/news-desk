@@ -1,0 +1,73 @@
+{
+  "newspaper": "Slashfilm",
+  "tier": "secondary",
+  "homepage": "https://www.slashfilm.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.slashfilm.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Movie News",
+      "TV News",
+      "MOVIES",
+      "Animation",
+      "Comedy",
+      "Documentary",
+      "Drama",
+      "Horror",
+      "Thriller",
+      "Romance",
+      "Superhero",
+      "Anime",
+      "TRAILERS",
+      "REVIEWS",
+      "Movie Reviews",
+      "TV Reviews",
+      "EXCLUSIVES",
+      "Reviews Policy",
+      "Action & Adventure Movies",
+      "Drama Movies",
+      "Drama Shows",
+      "Action & Adventure Shows",
+      "Thriller Movies",
+      "Superhero Movies",
+      "Romance Movies",
+      "Science Fiction Movies",
+      "Thriller Shows",
+      "Cartoon Shows",
+      "Superhero Shows",
+      "Comedy Shows",
+      "Comedy Movies",
+      "Science Fiction Shows",
+      "Horror Movies"
+    ],
+    "geography": [
+      "Action and Adventure"
+    ],
+    "sports": [
+      "Fantasy",
+      "Fantasy Movies",
+      "Fantasy Shows"
+    ],
+    "history": [
+      "History"
+    ],
+    "science": [
+      "Science Fiction"
+    ],
+    "geopolitics": [
+      "No-AI Writing Policy"
+    ]
+  },
+  "other": [
+    "Cartoons"
+  ],
+  "unmapped_default": "other"
+}

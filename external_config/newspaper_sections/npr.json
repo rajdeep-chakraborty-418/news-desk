@@ -1,0 +1,74 @@
+{
+  "newspaper": "NPR",
+  "tier": "secondary",
+  "homepage": "https://www.npr.org/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://feeds.npr.org/1004/rss.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://feeds.npr.org/1008/rss.xml",
+      "label": "NPR Arts & Life"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://feeds.npr.org/1039/rss.xml",
+      "label": "NPR Music"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "National",
+      "World",
+      "Politics",
+      "Elections",
+      "The Americas"
+    ],
+    "business": [
+      "Business"
+    ],
+    "lifestyle": [
+      "Health",
+      "Food",
+      "Life Kit"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Climate",
+      "Weather"
+    ],
+    "entertainment": [
+      "Culture",
+      "Books",
+      "Movies",
+      "Television",
+      "Pop Culture",
+      "Art & Design",
+      "Performing Arts",
+      "Gaming",
+      "Music",
+      "Music Features",
+      "Music Reviews"
+    ],
+    "technology": [
+      "It's Been a Minute"
+    ],
+    "sports": [
+      "Transportation"
+    ]
+  },
+  "other": [
+    "Weekend Edition Saturday",
+    "Weekend Edition Sunday",
+    "Analysis"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,60 @@
+{
+  "newspaper": "RNZ",
+  "tier": "secondary",
+  "homepage": "https://www.rnz.co.nz/",
+  "country": "New Zealand",
+  "continent": "Oceania",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.rnz.co.nz/rss/world.xml"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.rnz.co.nz/rss/sport.xml"
+    },
+    {
+      "section": "world",
+      "url": "https://www.rnz.co.nz/rss/pacific.xml",
+      "label": "RNZ Pacific"
+    }
+  ],
+  "section_map": {
+    "lifestyle": [
+      "Life",
+      "Health"
+    ],
+    "entertainment": [
+      "Radio",
+      "Browse all series and films"
+    ],
+    "geography": [
+      "A Place Called Te Awamutu"
+    ],
+    "world": [
+      "Pacific Dark",
+      "Crimes NZ",
+      "Politics",
+      "World",
+      "Crime and Justice"
+    ],
+    "sports": [
+      "Sport"
+    ],
+    "business": [
+      "Business",
+      "Personal finance"
+    ],
+    "history": [
+      "Untold Pacific History",
+      "The Bones of Our Past"
+    ]
+  },
+  "other": [
+    "Video",
+    "Ngā ataata/Video"
+  ],
+  "unmapped_default": "other"
+}

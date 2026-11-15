@@ -1,0 +1,48 @@
+{
+  "newspaper": "The Slovak Spectator",
+  "tier": "secondary",
+  "homepage": "https://spectator.sme.sk/",
+  "country": "Slovakia",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://spectator.sme.sk/rss"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Business",
+      "Economy"
+    ],
+    "world": [
+      "Politics",
+      "Society",
+      "Slovakia News"
+    ],
+    "entertainment": [
+      "Culture",
+      "Culture & lifestyle"
+    ],
+    "sports": [
+      "Sports",
+      "Sport"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "nature": [
+      "Environment"
+    ],
+    "lifestyle": [
+      "Health",
+      "Culture & lifestyle"
+    ]
+  },
+  "other": [
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

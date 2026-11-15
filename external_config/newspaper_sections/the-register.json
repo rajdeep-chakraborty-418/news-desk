@@ -1,0 +1,63 @@
+{
+  "newspaper": "The Register",
+  "tier": "secondary",
+  "homepage": "https://www.theregister.com/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "technology",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "technology",
+      "url": "https://www.theregister.com/headlines.atom"
+    }
+  ],
+  "section_map": {
+    "technology": [
+      "Cyber-crime",
+      "Patches",
+      "CSO",
+      "Edge and IoT",
+      "Channel",
+      "SaaS",
+      "Systems",
+      "Storage",
+      "Networks",
+      "HPC",
+      "Personal Tech",
+      "Public Sector",
+      "Applications",
+      "Databases",
+      "DevOps",
+      "Virtualization",
+      "Supercomputing",
+      "BOFH",
+      "Legal",
+      "Site News",
+      "Supercomputing Month 2026",
+      "Nvidia GTC Berlin 2026",
+      "Cybersecurity Month 2026",
+      "VMware Explore 2026",
+      "Cloud Infrastructure Month 2026",
+      "Agentic AI",
+      "The Future of the Datacenter",
+      "AWS:Reinvent",
+      "Nvidia GTC",
+      "Computex 2026",
+      "AI Infrastructure Month 2026",
+      "security",
+      "ai and ml",
+      "software",
+      "os platforms",
+      "offbeat",
+      "off-prem"
+    ],
+    "science": [
+      "Research"
+    ]
+  },
+  "other": [
+    "Columnists"
+  ],
+  "unmapped_default": "other"
+}

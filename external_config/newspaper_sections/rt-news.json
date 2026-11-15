@@ -1,0 +1,67 @@
+{
+  "newspaper": "RTÉ News",
+  "tier": "secondary",
+  "homepage": "https://www.rte.ie/",
+  "country": "Ireland",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.rte.ie/news/rss/news-headlines.xml"
+    }
+  ],
+  "section_map": {
+    "sports": [
+      "Sport",
+      "Rugby",
+      "Soccer"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Culture",
+      "RTÉ Games",
+      "TV",
+      "Radio",
+      "RTÉ Radio 1",
+      "RTÉ Supporting the Arts",
+      "🎮 Games",
+      "Television"
+    ],
+    "business": [
+      "Business"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "RTÉ Food",
+      "RTÉ Recipes"
+    ],
+    "nature": [
+      "Weather",
+      "RTÉ Weather"
+    ],
+    "science": [
+      "Brainstorm",
+      "RTÉ Brainstorm",
+      "🧪 Science Week"
+    ],
+    "history": [
+      "History"
+    ],
+    "world": [
+      "RTÉ News",
+      "Century Ireland",
+      "US",
+      "Dublin",
+      "World",
+      "Europe",
+      "Politics",
+      "Ireland"
+    ]
+  },
+  "other": [
+    "Analysis and Comment"
+  ],
+  "unmapped_default": "other"
+}

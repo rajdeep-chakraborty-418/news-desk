@@ -1,0 +1,49 @@
+{
+  "newspaper": "The New Arab",
+  "tier": "secondary",
+  "homepage": "https://www.newarab.com/",
+  "country": "United Kingdom",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.newarab.com/rss"
+    }
+  ],
+  "section_map": {
+    "geopolitics": [
+      "Middle East"
+    ],
+    "world": [
+      "North Africa",
+      "World",
+      "Politics",
+      "Society",
+      "Gaza",
+      "Syria",
+      "Iran",
+      "MENA"
+    ],
+    "business": [
+      "Economy"
+    ],
+    "entertainment": [
+      "Culture"
+    ],
+    "sports": [
+      "Sport",
+      "Sports"
+    ],
+    "nature": [
+      "Environment",
+      "Energy"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Explainer"
+  ],
+  "unmapped_default": "other"
+}

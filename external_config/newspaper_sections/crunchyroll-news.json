@@ -1,0 +1,22 @@
+{
+  "newspaper": "Crunchyroll News",
+  "tier": "secondary",
+  "homepage": "https://www.crunchyroll.com/news",
+  "country": "Japan",
+  "continent": "Asia",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://cr-news-api-service.prd.crunchyrollsvc.com/v1/en-US/rss"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Announcements"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

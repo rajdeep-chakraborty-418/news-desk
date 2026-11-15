@@ -1,0 +1,122 @@
+{
+  "newspaper": "New York Times",
+  "tier": "primary",
+  "homepage": "https://www.nytimes.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Arts.xml"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Style.xml"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Well.xml"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Travel.xml"
+    },
+    {
+      "section": "business",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Business.xml"
+    },
+    {
+      "section": "technology",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"
+    },
+    {
+      "section": "science",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Science.xml"
+    },
+    {
+      "section": "nature",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Climate.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Movies.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Music.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Television.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "U.S.",
+      "World",
+      "Politics",
+      "New York",
+      "Politics and Government",
+      "United States",
+      "Trump, Donald J",
+      "France",
+      "China",
+      "Russia"
+    ],
+    "business": [
+      "Business",
+      "Real Estate"
+    ],
+    "entertainment": [
+      "Arts",
+      "Games",
+      "Movies",
+      "Pop and Rock Music",
+      "Theater"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Cooking",
+      "Health",
+      "Style",
+      "Food",
+      "Fashion and Apparel"
+    ],
+    "technology": [
+      "Technology",
+      "Artificial Intelligence"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Climate"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "geography": [
+      "Travel",
+      "Travel and Vacations"
+    ],
+    "geopolitics": [
+      "United States International Relations",
+      "International Relations"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Audio"
+  ],
+  "unmapped_default": "other"
+}

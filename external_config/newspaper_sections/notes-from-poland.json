@@ -1,0 +1,38 @@
+{
+  "newspaper": "Notes from Poland",
+  "tier": "secondary",
+  "homepage": "https://notesfrompoland.com/",
+  "country": "Poland",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://notesfrompoland.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Law",
+      "Ukraine",
+      "Russia",
+      "Politics",
+      "Society"
+    ],
+    "defence": [
+      "Defence"
+    ],
+    "business": [
+      "Business"
+    ],
+    "lifestyle": [
+      "health ministry"
+    ]
+  },
+  "other": [
+    "Education",
+    "higher education"
+  ],
+  "unmapped_default": "other"
+}

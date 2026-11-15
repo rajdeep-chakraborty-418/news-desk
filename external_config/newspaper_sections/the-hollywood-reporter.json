@@ -1,0 +1,64 @@
+{
+  "newspaper": "The Hollywood Reporter",
+  "tier": "secondary",
+  "homepage": "https://www.hollywoodreporter.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.hollywoodreporter.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Got a tip?",
+      "Music",
+      "Awards",
+      "International",
+      "Charts",
+      "Lists",
+      "THR Cover Stories",
+      "Culture & Politics",
+      "Obituaries",
+      "LA/Local",
+      "Box Office",
+      "Reviews",
+      "Premiere Dates",
+      "Ratings",
+      "The Fien Print",
+      "THR, Esq",
+      "Movie News",
+      "Movies",
+      "TV",
+      "TV News",
+      "East of Eden",
+      "Events",
+      "You Can See Everything",
+      "Dining",
+      "Florence Pugh",
+      "Fred Astaire",
+      "Mike Nichols",
+      "David Leitch",
+      "Ebenezer",
+      "Godzilla Minus Zero"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Lifestyle News"
+    ],
+    "business": [
+      "Business",
+      "THR Investigates"
+    ],
+    "world": [
+      "Culture & Politics"
+    ]
+  },
+  "other": [
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

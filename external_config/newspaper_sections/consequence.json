@@ -1,0 +1,70 @@
+{
+  "newspaper": "Consequence",
+  "tier": "secondary",
+  "homepage": "https://consequence.net/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://consequence.net/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Music",
+      "TV & Movies",
+      "Heavy",
+      "My Content",
+      "My Saved Articles",
+      "Reviews",
+      "Heavy Consequence",
+      "Consequence Latino",
+      "Music News",
+      "Music Features",
+      "Music Lists",
+      "Music Reviews",
+      "Music Interviews",
+      "Music Editorials",
+      "Music Instruments and Gear",
+      "Tour Dates",
+      "Festival News and Rumors",
+      "Concert Reviews",
+      "Festival Reviews",
+      "Photo Galleries",
+      "TV & Movie News",
+      "TV & Movie Features",
+      "TV & Movie Lists",
+      "TV & Movie Reviews",
+      "TV & Movie Interviews",
+      "TV & Movie Editorials",
+      "Pop Culture",
+      "Pop Culture News",
+      "Comedy News",
+      "Pop Culture Features",
+      "Pop Culture Lists",
+      "Pop Culture Editorials",
+      "Pop Culture Interviews",
+      "Exclusive Features",
+      "Heavy Music News",
+      "New Music Releases",
+      "Classic Rock",
+      "News Bites",
+      "Hard Rock",
+      "Heavy Metal",
+      "Pop",
+      "Coachella Music Festival",
+      "Heavy New Music",
+      "Alternative Rock",
+      "Alternative Metal",
+      "Hardcore"
+    ],
+    "technology": [
+      "Tech News"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

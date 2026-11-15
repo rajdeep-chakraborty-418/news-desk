@@ -1,0 +1,50 @@
+{
+  "newspaper": "GameSpot",
+  "tier": "secondary",
+  "homepage": "https://www.gamespot.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.gamespot.com/feeds/mashup/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Games",
+      "Reviews",
+      "Guides",
+      "PC",
+      "PlayStation",
+      "Xbox",
+      "Nintendo",
+      "Movies",
+      "TV",
+      "Deals",
+      "Gaming",
+      "Gaming,News",
+      "Deals,Gaming,Shopping",
+      "Tabletop & TCGs,TV",
+      "Entertainment,Gaming,Movies"
+    ],
+    "sports": [
+      "Esports"
+    ],
+    "technology": [
+      "Mobile"
+    ],
+    "world": [
+      "Gaming,News"
+    ],
+    "lifestyle": [
+      "Deals,Gaming,Shopping"
+    ]
+  },
+  "other": [
+    "Videos"
+  ],
+  "unmapped_default": "other"
+}

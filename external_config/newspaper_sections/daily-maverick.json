@@ -1,0 +1,61 @@
+{
+  "newspaper": "Daily Maverick",
+  "tier": "secondary",
+  "homepage": "https://www.dailymaverick.co.za/",
+  "country": "South Africa",
+  "continent": "Africa",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.dailymaverick.co.za/dmrss/"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Business",
+      "Business Maverick,Maverick News",
+      "Business Maverick"
+    ],
+    "world": [
+      "Maverick News",
+      "Politics",
+      "Social Justice",
+      "International News",
+      "Johannesburg",
+      "World",
+      "Business Maverick,Maverick News",
+      "Maverick News,Sport",
+      "Johannesburg,Maverick News",
+      "Sport,Maverick News"
+    ],
+    "nature": [
+      "Earth",
+      "Maverick Earth"
+    ],
+    "sports": [
+      "Sport",
+      "Maverick News,Sport",
+      "DM168,Sport",
+      "Sport,Maverick News"
+    ],
+    "lifestyle": [
+      "Maverick Life",
+      "TGIFood"
+    ],
+    "entertainment": [
+      "Books"
+    ]
+  },
+  "other": [
+    "Analysis",
+    "Opinionistas",
+    "Editorials",
+    "Cartoons",
+    "Crosswords",
+    "Maverick Citizen,Opinionistas",
+    "Newsletters,Newsdeck"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,72 @@
+{
+  "newspaper": "Premium Times",
+  "tier": "secondary",
+  "homepage": "https://www.premiumtimesng.com/",
+  "country": "Nigeria",
+  "continent": "Africa",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.premiumtimesng.com/feed"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.premiumtimesng.com/category/sports/feed"
+    }
+  ],
+  "section_map": {
+    "geopolitics": [
+      "Foreign"
+    ],
+    "business": [
+      "Business",
+      "Financial Inclusion",
+      "Business Specials",
+      "Trade Insights",
+      "Revenue",
+      "Special Reports and Investigations",
+      "Special Reports/Investigations"
+    ],
+    "world": [
+      "News Reports",
+      "News Report",
+      "Nigeria",
+      "Tanzania"
+    ],
+    "technology": [
+      "Analysis and Data"
+    ],
+    "lifestyle": [
+      "Health",
+      "Health Specials",
+      "Arts/Life",
+      "Lifestyle"
+    ],
+    "nature": [
+      "Agriculture"
+    ],
+    "entertainment": [
+      "Arts/Life",
+      "Arts/Books",
+      "Music"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "sports": [
+      "Sports",
+      "Football",
+      "Sports Features"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Analysis",
+    "Columns",
+    "Editorial",
+    "PREMIUM TIMES"
+  ],
+  "unmapped_default": "other"
+}

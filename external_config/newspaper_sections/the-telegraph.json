@@ -1,0 +1,96 @@
+{
+  "newspaper": "The Telegraph",
+  "tier": "secondary",
+  "homepage": "https://www.telegraph.co.uk/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.telegraph.co.uk/rss.xml"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Iran: The Latest",
+      "Donald Trump",
+      "Israel",
+      "Ukraine",
+      "UK news",
+      "Politics",
+      "World",
+      "structure:apple-news-free",
+      "structure:us-content",
+      "topics:in-the-news/premier-league-live",
+      "topics:places/africa",
+      "structure:news/world-news"
+    ],
+    "entertainment": [
+      "Royals",
+      "Entertainment"
+    ],
+    "sports": [
+      "Sports",
+      "Sport",
+      "Football",
+      "Rugby Union",
+      "Cricket",
+      "F1",
+      "Golf",
+      "Tennis",
+      "Racing",
+      "Women's Sport",
+      "Cycling",
+      "Boxing",
+      "structure:sport",
+      "structure:football",
+      "structure:football/football-live-blog",
+      "structure:rugby-union"
+    ],
+    "geography": [
+      "Travel",
+      "topics:places/africa"
+    ],
+    "lifestyle": [
+      "Health",
+      "Life",
+      "Health news",
+      "Global Health Security",
+      "structure:global-health-security"
+    ],
+    "business": [
+      "Business",
+      "Economy",
+      "Companies",
+      "Markets",
+      "Money",
+      "Property",
+      "Tax",
+      "topics:things/uk-economy",
+      "structure:business",
+      "topics:things/global-economy"
+    ],
+    "defence": [
+      "Defence"
+    ],
+    "science": [
+      "Science",
+      "structure:science-and-disease"
+    ],
+    "nature": [
+      "Environment"
+    ],
+    "technology": [
+      "Tech"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Puzzles",
+    "Education",
+    "topics:events/premier-league"
+  ],
+  "unmapped_default": "other"
+}

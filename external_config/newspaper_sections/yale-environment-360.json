@@ -1,0 +1,18 @@
+{
+  "newspaper": "Yale Environment 360",
+  "tier": "secondary",
+  "homepage": "https://e360.yale.edu/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "nature",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "nature",
+      "url": "https://e360.yale.edu/feed.xml"
+    }
+  ],
+  "section_map": {},
+  "other": [],
+  "unmapped_default": "other"
+}

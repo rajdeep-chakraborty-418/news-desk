@@ -1,0 +1,62 @@
+{
+  "newspaper": "Egypt Independent",
+  "tier": "secondary",
+  "homepage": "https://www.egyptindependent.com/",
+  "country": "Egypt",
+  "continent": "Africa",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.egyptindependent.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Egypt",
+      "World",
+      "Africa",
+      "europe",
+      "US",
+      "Asia",
+      "Britain",
+      "UK",
+      "UK airbase",
+      "Donald Trump",
+      "Trump administration",
+      "US congress",
+      "US President",
+      "Houthis"
+    ],
+    "geopolitics": [
+      "Middle East"
+    ],
+    "business": [
+      "Business"
+    ],
+    "science": [
+      "Science"
+    ],
+    "entertainment": [
+      "Culture"
+    ],
+    "lifestyle": [
+      "Life & Style"
+    ],
+    "sports": [
+      "Is it still soccer?"
+    ],
+    "geography": [
+      "Travel",
+      "tourism"
+    ],
+    "defence": [
+      "US Air Force"
+    ]
+  },
+  "other": [
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

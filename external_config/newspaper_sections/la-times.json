@@ -1,0 +1,59 @@
+{
+  "newspaper": "LA Times",
+  "tier": "secondary",
+  "homepage": "https://www.latimes.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.latimes.com/entertainment-arts/rss2.0.xml",
+      "label": "LA Times Entertainment"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "California",
+      "Politics",
+      "World & Nation"
+    ],
+    "science": [
+      "Science & Medicine"
+    ],
+    "business": [
+      "Business",
+      "Real Estate"
+    ],
+    "technology": [
+      "Technology & the Internet"
+    ],
+    "nature": [
+      "Climate & Environment"
+    ],
+    "entertainment": [
+      "Entertainment & Arts",
+      "Books",
+      "Hollywood Inc.",
+      "The Envelope (Awards)",
+      "Movies",
+      "Music",
+      "Television"
+    ],
+    "lifestyle": [
+      "Food",
+      "101 Best Restaurants in L.A.",
+      "Recipes",
+      "Lifestyle"
+    ],
+    "geography": [
+      "Travel & Experiences"
+    ]
+  },
+  "other": [
+    "Weekend",
+    "Obituaries"
+  ],
+  "unmapped_default": "other"
+}

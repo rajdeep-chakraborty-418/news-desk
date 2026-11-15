@@ -1,0 +1,73 @@
+{
+  "newspaper": "Hungary Today",
+  "tier": "secondary",
+  "homepage": "https://hungarytoday.hu/",
+  "country": "Hungary",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://hungarytoday.hu/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Politics",
+      "Domestic Politics",
+      "Society",
+      "Crime",
+      "Budapest",
+      "Budapest Metro",
+      "World Diabetes Day"
+    ],
+    "geopolitics": [
+      "Foreign politics"
+    ],
+    "lifestyle": [
+      "Health",
+      "Lifestyle",
+      "Food",
+      "health screenings"
+    ],
+    "nature": [
+      "Environment"
+    ],
+    "business": [
+      "Economy",
+      "Finance",
+      "Industry"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "entertainment": [
+      "Culture",
+      "Arts",
+      "Films",
+      "Music",
+      "Celebrities"
+    ],
+    "history": [
+      "History"
+    ],
+    "science": [
+      "Science"
+    ],
+    "sports": [
+      "Sport",
+      "Football",
+      "Water Sports",
+      "csaba dömötör"
+    ],
+    "geography": [
+      "Travel"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Gallery"
+  ],
+  "unmapped_default": "other"
+}

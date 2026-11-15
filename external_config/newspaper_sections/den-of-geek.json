@@ -1,0 +1,30 @@
+{
+  "newspaper": "Den of Geek",
+  "tier": "secondary",
+  "homepage": "https://www.denofgeek.com/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.denofgeek.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Movies",
+      "Games",
+      "Comics",
+      "Books",
+      "Collectibles",
+      "MSN",
+      "TV"
+    ]
+  },
+  "other": [
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

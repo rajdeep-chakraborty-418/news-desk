@@ -1,0 +1,37 @@
+{
+  "newspaper": "Hürriyet Daily News",
+  "tier": "secondary",
+  "homepage": "https://www.hurriyetdailynews.com/",
+  "country": "Turkey",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.hurriyetdailynews.com/rss/world"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Economy"
+    ],
+    "world": [
+      "World"
+    ],
+    "entertainment": [
+      "Arts & Life"
+    ],
+    "lifestyle": [
+      "Arts & Life"
+    ],
+    "sports": [
+      "Sports"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Photo"
+  ],
+  "unmapped_default": "other"
+}

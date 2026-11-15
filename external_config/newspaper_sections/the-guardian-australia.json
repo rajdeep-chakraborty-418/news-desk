@@ -1,0 +1,84 @@
+{
+  "newspaper": "The Guardian Australia",
+  "tier": "secondary",
+  "homepage": "https://www.theguardian.com/au",
+  "country": "Australia",
+  "continent": "Oceania",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.theguardian.com/australia-news/rss"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "US edition",
+      "UK edition",
+      "Australia edition",
+      "Europe edition",
+      "International edition",
+      "US news",
+      "US politics",
+      "World news",
+      "Ukraine",
+      "Australia news",
+      "New South Wales",
+      "Australian politics",
+      "New South Wales politics",
+      "Reserve Bank of Australia",
+      "Sydney",
+      "Australian police and policing",
+      "One Nation",
+      "Victorian politics"
+    ],
+    "sports": [
+      "Sport",
+      "Soccer",
+      "NFL",
+      "Tennis",
+      "MLB",
+      "NBA",
+      "NHL",
+      "F1",
+      "Golf"
+    ],
+    "entertainment": [
+      "Culture",
+      "Film",
+      "Books",
+      "Music"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Wellness"
+    ],
+    "nature": [
+      "Climate crisis",
+      "Environment",
+      "Environmental activism"
+    ],
+    "geopolitics": [
+      "Middle East",
+      "US immigration"
+    ],
+    "business": [
+      "Business",
+      "Australian economy"
+    ],
+    "technology": [
+      "Tech"
+    ],
+    "science": [
+      "Science"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Columnists",
+    "Letters",
+    "Cartoons"
+  ],
+  "unmapped_default": "other"
+}

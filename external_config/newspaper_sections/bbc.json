@@ -1,0 +1,85 @@
+{
+  "newspaper": "BBC",
+  "tier": "primary",
+  "homepage": "https://www.bbc.com/news",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "http://feeds.bbci.co.uk/news/world/rss.xml"
+    },
+    {
+      "section": "india",
+      "url": "http://feeds.bbci.co.uk/news/world/asia/india/rss.xml"
+    },
+    {
+      "section": "sports",
+      "url": "http://feeds.bbci.co.uk/sport/rss.xml"
+    },
+    {
+      "section": "entertainment",
+      "url": "http://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml"
+    },
+    {
+      "section": "lifestyle",
+      "url": "http://feeds.bbci.co.uk/news/health/rss.xml"
+    },
+    {
+      "section": "business",
+      "url": "http://feeds.bbci.co.uk/news/business/rss.xml"
+    },
+    {
+      "section": "technology",
+      "url": "http://feeds.bbci.co.uk/news/technology/rss.xml"
+    },
+    {
+      "section": "science",
+      "url": "http://feeds.bbci.co.uk/news/science_and_environment/rss.xml"
+    }
+  ],
+  "section_map": {
+    "sports": [
+      "Sport"
+    ],
+    "business": [
+      "Business"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "lifestyle": [
+      "Health"
+    ],
+    "entertainment": [
+      "Culture",
+      "Arts"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "nature": [
+      "Earth",
+      "Weather"
+    ],
+    "world": [
+      "US & Canada",
+      "UK",
+      "Africa",
+      "Asia",
+      "Australia",
+      "Europe",
+      "Latin America"
+    ],
+    "geopolitics": [
+      "Middle East"
+    ]
+  },
+  "other": [
+    "Audio",
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

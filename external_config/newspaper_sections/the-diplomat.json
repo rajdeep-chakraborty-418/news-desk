@@ -1,0 +1,48 @@
+{
+  "newspaper": "The Diplomat",
+  "tier": "secondary",
+  "homepage": "https://thediplomat.com/",
+  "continent": "Asia",
+  "focus": "geopolitics",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://thediplomat.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Central Asia",
+      "East Asia",
+      "South Asia",
+      "Southeast Asia",
+      "China Power",
+      "Crossroads Asia",
+      "Tokyo Report",
+      "Trans-Pacific View"
+    ],
+    "nature": [
+      "Oceania"
+    ],
+    "geopolitics": [
+      "ASEAN Beat",
+      "Flashpoints",
+      "The Debate",
+      "The Koreas",
+      "The Pulse",
+      "Photo Essays",
+      "Subscriptions"
+    ],
+    "defence": [
+      "Asia Defense"
+    ],
+    "business": [
+      "Pacific Money"
+    ]
+  },
+  "other": [
+    "Videos"
+  ],
+  "unmapped_default": "other"
+}

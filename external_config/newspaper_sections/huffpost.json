@@ -1,0 +1,71 @@
+{
+  "newspaper": "HuffPost",
+  "tier": "primary",
+  "homepage": "https://www.huffpost.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.huffpost.com/section/world-news/feed"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://www.huffpost.com/section/entertainment/feed"
+    },
+    {
+      "section": "lifestyle",
+      "url": "https://www.huffpost.com/section/life/feed"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "U.S. News",
+      "World News",
+      "Crime",
+      "Politics"
+    ],
+    "business": [
+      "Business",
+      "Money"
+    ],
+    "nature": [
+      "Environment"
+    ],
+    "lifestyle": [
+      "Health",
+      "Life",
+      "Wellness",
+      "Food & Drink",
+      "Style & Beauty",
+      "Family",
+      "Relationships",
+      "Work/Life",
+      "Shopping"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Culture & Arts",
+      "Celebrity",
+      "TV & Film",
+      "Games",
+      "Horoscopes"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "technology": [
+      "Tech"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

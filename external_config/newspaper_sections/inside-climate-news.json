@@ -1,0 +1,60 @@
+{
+  "newspaper": "Inside Climate News",
+  "tier": "secondary",
+  "homepage": "https://insideclimatenews.org/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "nature",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "nature",
+      "url": "https://insideclimatenews.org/feed/"
+    }
+  ],
+  "section_map": {
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Politics",
+      "Clean Energy",
+      "ICN Local",
+      "Projects",
+      "Whistleblowers",
+      "Ways to Give",
+      "Documents",
+      "ICN Texas",
+      "ICN Pennsylvania",
+      "ICN Alabama",
+      "ICN Florida",
+      "Climate Change",
+      "Environmental Justice",
+      "democrats",
+      "Election 2026",
+      "House of Representatives",
+      "Montana",
+      "Sam Forstag",
+      "gas power plants",
+      "Georgia",
+      "Georgia Power",
+      "natural gas",
+      "natural gas power plant",
+      "Power Plant"
+    ],
+    "world": [
+      "Justice & Health"
+    ],
+    "lifestyle": [
+      "Justice & Health"
+    ],
+    "history": [
+      "Fossil Fuels"
+    ],
+    "entertainment": [
+      "E-Books"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

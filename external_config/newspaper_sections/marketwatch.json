@@ -1,0 +1,36 @@
+{
+  "newspaper": "MarketWatch",
+  "tier": "secondary",
+  "homepage": "https://www.marketwatch.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "business",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "business",
+      "url": "http://feeds.marketwatch.com/marketwatch/topstories/"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Markets",
+      "Personal Finance",
+      "Economy",
+      "Real Estate",
+      "Retirement",
+      "Investing",
+      "Companies",
+      "Commodities",
+      "Crypto",
+      "Mutual Funds",
+      "Earnings",
+      "Banking"
+    ],
+    "technology": [
+      "Technology"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

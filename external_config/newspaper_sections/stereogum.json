@@ -1,0 +1,77 @@
+{
+  "newspaper": "Stereogum",
+  "tier": "secondary",
+  "homepage": "https://www.stereogum.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.stereogum.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "New Music",
+      "Reviews",
+      "Lists",
+      "The Number Ones",
+      "The Alternative Number Ones",
+      "Say What's Real: The Month In Rap",
+      "Sounding Board",
+      "Band To Watch",
+      "We've Got A File On You",
+      "Footnotes",
+      "80 For 80",
+      "Under The Influence",
+      "Tracking Down",
+      "Cover Story",
+      "Album Of The Week",
+      "Premature Evaluation",
+      "The Anniversary",
+      "Concert Review",
+      "Merch Review",
+      "Movie Review",
+      "TV Review",
+      "The 5 Best Songs Of The Week",
+      "10 Best Songs",
+      "Ultimate Playlist",
+      "Counting Down",
+      "Album List",
+      "Best New Artists",
+      "Song Of The Summer",
+      "Gummy Awards",
+      "Year In Review",
+      "Gift Subscriptions",
+      "Tip Jar",
+      "U2",
+      "Rosalía",
+      "The Edge",
+      "LL Cool J",
+      "Bono",
+      "Dolly Parton",
+      "Kent Wells",
+      "Armand Hammer",
+      "Deloyd Elze",
+      "Kristin Hersh",
+      "Palehound",
+      "Quiet Light",
+      "Dance Hall Crashers",
+      "Dicky Barrett",
+      "Goldfinger",
+      "Madness"
+    ],
+    "lifestyle": [
+      "Ugly Beauty: The Month In Jazz"
+    ],
+    "history": [
+      "Oral History"
+    ]
+  },
+  "other": [
+    "Columns"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,58 @@
+{
+  "newspaper": "Bon Appétit",
+  "tier": "secondary",
+  "homepage": "https://www.bonappetit.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "lifestyle",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "lifestyle",
+      "url": "https://www.bonappetit.com/feed/rss"
+    }
+  ],
+  "section_map": {
+    "lifestyle": [
+      "Recipes",
+      "Drinks",
+      "Cooking",
+      "Shopping",
+      "Restaurants",
+      "Thanksgiving",
+      "Culinary Getaways",
+      "Blueberry Protein Pancakes",
+      "Our Best Thanksgiving Yet",
+      "Gravy-Braised Turkey",
+      "A Beautiful Cabbage Galette",
+      "Collard Greens Vinaigrette",
+      "Cranberry Meringue Pie",
+      "Maple Pumpkin Overnight Oats",
+      "Pecan Cream Pie",
+      "Sausage-and-Herb Stuffing",
+      "Hot Honey Brussels Sprouts",
+      "4th Date Anchovy-Garlic Pasta",
+      "Sticky Miso Chicken",
+      "Pork and Bok Choy Stir-Fry",
+      "Broiled Salmon Teriyaki",
+      "Chickpea Saag",
+      "Brussels Sprout Pasta",
+      "47 Recipes to Make This Fall",
+      "Behind the Hype",
+      "On The Line",
+      "Test Kitchen Talks",
+      "Our 5 Favorite Party Appetizers",
+      "Shopping / Best Of",
+      "Shopping / Reviews",
+      "promotions"
+    ],
+    "entertainment": [
+      "Culture",
+      "Shopping / Reviews"
+    ]
+  },
+  "other": [
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

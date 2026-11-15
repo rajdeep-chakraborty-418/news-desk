@@ -1,0 +1,73 @@
+{
+  "newspaper": "Phys.org",
+  "tier": "secondary",
+  "homepage": "https://phys.org/",
+  "continent": "Other",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "history",
+      "url": "https://phys.org/rss-feed/science-news/archaeology-fossils/",
+      "label": "Archaeology News (Phys.org)"
+    },
+    {
+      "section": "geography",
+      "url": "https://phys.org/rss-feed/earth-news/",
+      "label": "Earth Sciences (Phys.org)"
+    },
+    {
+      "section": "science",
+      "url": "https://phys.org/rss-feed/"
+    },
+    {
+      "section": "nature",
+      "url": "https://phys.org/rss-feed/biology-news/ecology/",
+      "label": "Wildlife Trust (Conservation)"
+    }
+  ],
+  "section_map": {
+    "science": [
+      "Physics",
+      "Space & Earth Science",
+      "Chemistry",
+      "Biology",
+      "Medicine & Health",
+      "Engineering",
+      "Astronomy",
+      "Paleontology",
+      "Cell & Microbiology",
+      "Evolution",
+      "Analytical Chemistry",
+      "Materials Science",
+      "Plasma Physics",
+      "Biochemistry",
+      "Molecular & Computational biology"
+    ],
+    "nature": [
+      "Space & Earth Science",
+      "Environment",
+      "Climate",
+      "Earth Sciences",
+      "Plants & Animals",
+      "Ecology",
+      "Agriculture"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "lifestyle": [
+      "Medicine & Health"
+    ],
+    "history": [
+      "Archaeology"
+    ],
+    "geography": [
+      "Space Exploration"
+    ]
+  },
+  "other": [
+    "Education"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,56 @@
+{
+  "newspaper": "Polygon",
+  "tier": "secondary",
+  "homepage": "https://www.polygon.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.polygon.com/rss/index.xml"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Zelda",
+      "Guides",
+      "Pokémon",
+      "What To Play",
+      "What to Watch",
+      "Reviews",
+      "Previews",
+      "Anime",
+      "Horror",
+      "Sci-Fi",
+      "Subnautica 2",
+      "Forza Horizon 6",
+      "Pokémon Go",
+      "Switchboard",
+      "Magic: The Gathering",
+      "Polygon Lists",
+      "FYI",
+      "Nintendo",
+      "Gaming",
+      "The Legend of Zelda",
+      "Nintendo Switch 2",
+      "Mass Effect 2",
+      "DC",
+      "Man of Tomorrow",
+      "Steps",
+      "Movies"
+    ],
+    "sports": [
+      "Fantasy"
+    ],
+    "technology": [
+      "Grand Theft Auto 6"
+    ]
+  },
+  "other": [
+    "Videos",
+    "Analysis"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,41 @@
+{
+  "newspaper": "Sky Sports",
+  "tier": "secondary",
+  "homepage": "https://www.skysports.com/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "sports",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "sports",
+      "url": "https://www.skysports.com/rss/12040"
+    }
+  ],
+  "section_map": {
+    "sports": [
+      "Football",
+      "Cricket",
+      "Rugby Union",
+      "Rugby League",
+      "Golf",
+      "Boxing",
+      "NFL",
+      "Tennis",
+      "NBA",
+      "Racing",
+      "Darts",
+      "Netball",
+      "MMA",
+      "Watch",
+      "Upcoming on Sky",
+      "Get Sky Sports",
+      "Watch Sky Sports",
+      "News Story",
+      "Liveblog",
+      "Report"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

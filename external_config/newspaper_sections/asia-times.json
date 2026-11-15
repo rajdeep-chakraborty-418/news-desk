@@ -1,0 +1,54 @@
+{
+  "newspaper": "Asia Times",
+  "tier": "secondary",
+  "homepage": "https://asiatimes.com/",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://asiatimes.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "China",
+      "Asia",
+      "Politics",
+      "Society",
+      "Donald Trump",
+      "Southeast Asia",
+      "Trump Tariffs",
+      "Iran",
+      "US Midterms",
+      "United States"
+    ],
+    "business": [
+      "Business",
+      "Economy"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "entertainment": [
+      "Culture"
+    ],
+    "defence": [
+      "Military",
+      "Iran War"
+    ],
+    "geopolitics": [
+      "Geopolitics",
+      "Middle East"
+    ],
+    "nature": [
+      "Energy",
+      "Environment"
+    ]
+  },
+  "other": [
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

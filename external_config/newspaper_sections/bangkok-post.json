@@ -1,0 +1,62 @@
+{
+  "newspaper": "Bangkok Post",
+  "tier": "secondary",
+  "homepage": "https://www.bangkokpost.com/",
+  "country": "Thailand",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.bangkokpost.com/rss/data/world.xml"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.bangkokpost.com/rss/data/sports.xml"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "BUSINESS",
+      "PROPERTY",
+      "INVESTMENT",
+      "- Investment"
+    ],
+    "world": [
+      "WORLD",
+      "POLITICS",
+      "PR NEWS",
+      "- Politics",
+      "- PR news"
+    ],
+    "sports": [
+      "SPORTS"
+    ],
+    "technology": [
+      "MOTORING",
+      "TECH",
+      "- Motoring"
+    ],
+    "lifestyle": [
+      "LIFE",
+      "SOCIAL & LIFESTYLE"
+    ],
+    "entertainment": [
+      "ARTS & ENTERTAINMENT",
+      "HOROSCOPE",
+      "E-BOOK"
+    ],
+    "geography": [
+      "TRAVEL"
+    ]
+  },
+  "other": [
+    "OPINION",
+    "COLUMNIST",
+    "VIDEO",
+    "PHOTOS",
+    "- Columnist"
+  ],
+  "unmapped_default": "other"
+}

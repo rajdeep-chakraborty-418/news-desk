@@ -1,0 +1,92 @@
+{
+  "newspaper": "JSTOR Daily",
+  "tier": "secondary",
+  "homepage": "https://daily.jstor.org/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "history",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "history",
+      "url": "https://daily.jstor.org/feed/"
+    }
+  ],
+  "section_map": {
+    "history": [
+      "Collections on JSTOR",
+      "Teaching and Learning Resources",
+      "Education & Society",
+      "Education",
+      "Religion",
+      "Politics & History",
+      "Politics & Government",
+      "U.S. History",
+      "World History",
+      "Social History",
+      "Quirky History",
+      "The Where We Were",
+      "Beyond the Plantation House",
+      "Cabinet of Curiosities",
+      "London’s Railway for the Dead",
+      "JSTOR Collections",
+      "Pedagogies",
+      "Roundup",
+      "Jane Goodall",
+      "The Long History of Sexpionage",
+      "Reading Lists",
+      "Annotations",
+      "The Fifteenth Amendment: Annotated",
+      "China",
+      "women's history",
+      "women's magazines",
+      "fiction",
+      "time",
+      "architecture",
+      "slavery",
+      "Ancient world"
+    ],
+    "entertainment": [
+      "Arts & Culture",
+      "Art & Art History",
+      "Film & Media",
+      "Language & Literature",
+      "Performing Arts",
+      "liberal arts"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Health"
+    ],
+    "science": [
+      "Social Sciences",
+      "Science & Technology",
+      "research"
+    ],
+    "world": [
+      "Politics & History"
+    ],
+    "technology": [
+      "Science & Technology",
+      "Technology",
+      "Reveal Digital Collections"
+    ],
+    "nature": [
+      "Natural Science",
+      "Plants & Animals",
+      "Sustainability & The Environment",
+      "Plant of the Month",
+      "Rights of Nature: A Reading List"
+    ],
+    "business": [
+      "Business & Economics",
+      "Business",
+      "Economics"
+    ],
+    "defence": [
+      "In Defense of the Humanities"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

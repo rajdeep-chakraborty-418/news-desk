@@ -1,0 +1,53 @@
+{
+  "newspaper": "Science News",
+  "tier": "secondary",
+  "homepage": "https://www.sciencenews.org/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "science",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "science",
+      "url": "https://www.sciencenews.org/feed"
+    }
+  ],
+  "section_map": {
+    "science": [
+      "Puzzles",
+      "Collections",
+      "Century of Science",
+      "Unsung characters",
+      "Coronavirus Outbreak",
+      "Paleontology",
+      "Health & Medicine",
+      "Physics",
+      "Neuroscience",
+      "Space"
+    ],
+    "entertainment": [
+      "Reviews"
+    ],
+    "business": [
+      "Investors Lab"
+    ],
+    "lifestyle": [
+      "Health & Medicine",
+      "Life"
+    ],
+    "nature": [
+      "Climate",
+      "Animals",
+      "Oceans",
+      "Environment"
+    ],
+    "history": [
+      "Archaeology"
+    ],
+    "technology": [
+      "Computing"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

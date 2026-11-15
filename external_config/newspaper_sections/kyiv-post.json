@@ -1,0 +1,64 @@
+{
+  "newspaper": "Kyiv Post",
+  "tier": "secondary",
+  "homepage": "https://www.kyivpost.com/",
+  "country": "Ukraine",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.kyivpost.com/feed"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Ukraine",
+      "World",
+      "North America",
+      "Latin America",
+      "Europe",
+      "Eastern Europe",
+      "Africa",
+      "Asia",
+      "UK",
+      "Australia",
+      "OPINION: Russia Craters"
+    ],
+    "geopolitics": [
+      "Middle East"
+    ],
+    "business": [
+      "Economy",
+      "Business",
+      "Finance"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "nature": [
+      "Energy",
+      "Agriculture"
+    ],
+    "entertainment": [
+      "Culture",
+      "Reviews"
+    ],
+    "history": [
+      "History"
+    ],
+    "sports": [
+      "Sports"
+    ]
+  },
+  "other": [
+    "Videos",
+    "Analysis",
+    "Opinions",
+    "Classifieds",
+    "Cartoons",
+    "VIDEO"
+  ],
+  "unmapped_default": "other"
+}

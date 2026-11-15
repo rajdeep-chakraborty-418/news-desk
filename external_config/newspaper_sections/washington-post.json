@@ -1,0 +1,59 @@
+{
+  "newspaper": "Washington Post",
+  "tier": "secondary",
+  "homepage": "https://www.washingtonpost.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://feeds.washingtonpost.com/rss/world"
+    },
+    {
+      "section": "entertainment",
+      "url": "https://feeds.washingtonpost.com/rss/entertainment",
+      "label": "Washington Post Entertainment"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Politics",
+      "World",
+      "National",
+      "Local"
+    ],
+    "lifestyle": [
+      "Style",
+      "Health",
+      "Food",
+      "Lifestyle"
+    ],
+    "entertainment": [
+      "Entertainment"
+    ],
+    "business": [
+      "Business"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "nature": [
+      "Climate & Environment"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "science": [
+      "Science"
+    ]
+  },
+  "other": [
+    "Opinions"
+  ],
+  "unmapped_default": "other"
+}

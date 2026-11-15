@@ -1,0 +1,57 @@
+{
+  "newspaper": "The Express Tribune",
+  "tier": "secondary",
+  "homepage": "https://tribune.com.pk/",
+  "country": "Pakistan",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://tribune.com.pk/feed/home"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Pakistan",
+      "World",
+      "Karachi's enduring encroachments",
+      "Punjab",
+      "Lahore",
+      "Islamabad"
+    ],
+    "business": [
+      "Business",
+      "BUSINESSBusinessBusiness"
+    ],
+    "sports": [
+      "Sports",
+      "SPORTSSPORTSSPORTS",
+      "MORESPORTS"
+    ],
+    "lifestyle": [
+      "Life & Style",
+      "LIFE & STYLELife StyleLife & Style",
+      "Life &amp; Style"
+    ],
+    "technology": [
+      "Tech",
+      "Sci -TechSci -TechSci-tech",
+      "MORESci-tech",
+      "Technology"
+    ],
+    "geopolitics": [
+      "Govt meets IMF fiscal conditions"
+    ],
+    "entertainment": [
+      "Entertainment"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Cartoon",
+    "OPINION OPINIONOPINION"
+  ],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,35 @@
+{
+  "newspaper": "ScienceAlert",
+  "tier": "secondary",
+  "homepage": "https://www.sciencealert.com/",
+  "country": "Australia",
+  "continent": "Oceania",
+  "focus": "science",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "science",
+      "url": "https://www.sciencealert.com/feed"
+    }
+  ],
+  "section_map": {
+    "science": [
+      "Space",
+      "Humans",
+      "Physics",
+      "MSFT Content"
+    ],
+    "lifestyle": [
+      "Health"
+    ],
+    "nature": [
+      "Environment",
+      "Nature"
+    ],
+    "technology": [
+      "Tech"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

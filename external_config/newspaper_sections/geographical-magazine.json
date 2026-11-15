@@ -1,0 +1,42 @@
+{
+  "newspaper": "Geographical Magazine",
+  "tier": "secondary",
+  "homepage": "https://geographical.co.uk/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "geography",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "geography",
+      "url": "https://geographical.co.uk/feed"
+    }
+  ],
+  "section_map": {
+    "nature": [
+      "Oceans",
+      "Science & Environment",
+      "Conservation",
+      "Marine wildlife"
+    ],
+    "entertainment": [
+      "Culture",
+      "Books"
+    ],
+    "science": [
+      "Space",
+      "Science & Environment"
+    ],
+    "geography": [
+      "Quizzes",
+      "December 2026 issue",
+      "November 2026 issue",
+      "Writer's Reads"
+    ],
+    "geopolitics": [
+      "Geopolitics"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

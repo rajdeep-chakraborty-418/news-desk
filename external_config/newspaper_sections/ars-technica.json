@@ -1,0 +1,55 @@
+{
+  "newspaper": "Ars Technica",
+  "tier": "secondary",
+  "homepage": "https://arstechnica.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "technology",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "technology",
+      "url": "https://feeds.arstechnica.com/arstechnica/index"
+    }
+  ],
+  "section_map": {
+    "technology": [
+      "Cars",
+      "Security",
+      "AI",
+      "spacex",
+      "starship",
+      "air traffic control",
+      "FAA",
+      "microsoft",
+      "Tech",
+      "South Africa",
+      "flight 15",
+      "Ground stop"
+    ],
+    "entertainment": [
+      "Culture",
+      "Gaming",
+      "Reviews"
+    ],
+    "lifestyle": [
+      "Health",
+      "wine making"
+    ],
+    "geopolitics": [
+      "Policy"
+    ],
+    "science": [
+      "Science",
+      "Space",
+      "astronomy"
+    ],
+    "nature": [
+      "exoplanets",
+      "planet formation",
+      "climate change"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

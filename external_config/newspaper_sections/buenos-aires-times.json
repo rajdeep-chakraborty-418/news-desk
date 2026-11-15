@@ -1,0 +1,43 @@
+{
+  "newspaper": "Buenos Aires Times",
+  "tier": "secondary",
+  "homepage": "https://www.batimes.com.ar/",
+  "country": "Argentina",
+  "continent": "South America",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.batimes.com.ar/feed"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Argentina",
+      "Latin America",
+      "World",
+      "Javier Milei",
+      "Milei Government",
+      "Politics",
+      "United States",
+      "Donald Trump",
+      "Milei"
+    ],
+    "business": [
+      "Economy"
+    ],
+    "entertainment": [
+      "Culture"
+    ],
+    "sports": [
+      "Sports",
+      "Sport",
+      "Football"
+    ]
+  },
+  "other": [
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

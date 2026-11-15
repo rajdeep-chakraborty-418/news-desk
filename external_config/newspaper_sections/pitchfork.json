@@ -1,0 +1,53 @@
+{
+  "newspaper": "Pitchfork",
+  "tier": "secondary",
+  "homepage": "https://pitchfork.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://pitchfork.com/feed/feed-news/rss"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Reviews",
+      "Best New Music",
+      "Lists",
+      "Ecco2k’s Long, Long Coming of Age",
+      "The Fate of Pavement",
+      "Electronic",
+      "Rap",
+      "Snakes & Ladders",
+      "Rock",
+      "Secret Language",
+      "Cherry Soda",
+      "Unfindable Ring",
+      "Twisted Teens Hit the Big Time",
+      "The 62 Best Albums of 2026 So Far",
+      "The 50 Best Albums of 2025",
+      "The 100 Best Songs of 2025",
+      "The Nightfly",
+      "Katamari Fortissimo Damacy",
+      "Pop/R&B",
+      "In My Own Words",
+      "Experimental",
+      "The Perfect Prescription",
+      "Folk/Country",
+      "Taking the Long Way",
+      "Beat",
+      "Northern Exposure"
+    ],
+    "nature": [
+      "Quiet Forest"
+    ],
+    "technology": [
+      "The Way Nirosta Steel Tells It"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

@@ -1,0 +1,31 @@
+{
+  "newspaper": "Taipei Times",
+  "tier": "secondary",
+  "homepage": "https://www.taipeitimes.com/",
+  "country": "Taiwan",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.taipeitimes.com/xml/index.rss"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Taiwan News",
+      "World News"
+    ],
+    "business": [
+      "Business"
+    ],
+    "sports": [
+      "Sports"
+    ]
+  },
+  "other": [
+    "Editorial & Opinion"
+  ],
+  "unmapped_default": "other"
+}

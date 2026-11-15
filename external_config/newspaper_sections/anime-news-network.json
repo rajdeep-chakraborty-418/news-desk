@@ -1,0 +1,76 @@
+{
+  "newspaper": "Anime News Network",
+  "tier": "secondary",
+  "homepage": "https://www.animenewsnetwork.com/",
+  "country": "Japan",
+  "continent": "Asia",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.animenewsnetwork.com/all/rss.xml"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Convention reports",
+      "Newsfeed",
+      "Interest",
+      "Press Releases",
+      "This Week in Anime - Roll the Dice",
+      "Newtype",
+      "Seasonal",
+      "Anime Spotlight",
+      "Preview Guide",
+      "Weekly Rankings",
+      "Game Reviews",
+      "Answerman",
+      "The ANN Aftershow",
+      "The Anime Backlog",
+      "This Week in Anime",
+      "This Week in Games",
+      "ANNCast",
+      "Anime News Nina!",
+      "Astro Toy",
+      "Buried Treasure",
+      "Chicks On Anime",
+      "Crashing Japan",
+      "Epic Threads",
+      "From The Gallery",
+      "Hai Fidelity",
+      "House of 1000 Manga",
+      "Ima Kore Ga Hoshiin Da",
+      "Old School",
+      "Pile of Shame",
+      "RIGHT TURN ONLY!!",
+      "Sound Decision",
+      "Anime",
+      "Manga",
+      "Games",
+      "Live-Action",
+      "Korean",
+      "Novels",
+      "Events",
+      "Music",
+      "Merch",
+      "Animation",
+      "People",
+      "Comics"
+    ],
+    "science": [
+      "Brain Diving"
+    ],
+    "lifestyle": [
+      "Shelf Life"
+    ],
+    "business": [
+      "Industry"
+    ],
+    "technology": [
+      "AI"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

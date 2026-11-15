@@ -1,0 +1,73 @@
+{
+  "newspaper": "Marca",
+  "tier": "primary",
+  "homepage": "https://www.marca.com/",
+  "country": "Spain",
+  "continent": "Europe",
+  "focus": "sports",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/portada.xml"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Radio MARCA",
+      "Tiramillas",
+      "Radio"
+    ],
+    "sports": [
+      "Hazte socio de CLUB MARCA",
+      "Fútbol",
+      "Baloncesto",
+      "Motor",
+      "Polideportivo",
+      "Última hora",
+      "Bazar ofertas y regalos",
+      "Alavés",
+      "Athletic Club",
+      "Atlético de Madrid",
+      "Barcelona",
+      "Betis",
+      "Celta de Vigo",
+      "Deportivo",
+      "Elche",
+      "Espanyol",
+      "Getafe",
+      "Levante",
+      "Málaga",
+      "Osasuna",
+      "Racing de Santander",
+      "Rayo Vallecano",
+      "Real Madrid",
+      "Real Sociedad",
+      "Sevilla",
+      "Valencia",
+      "Ver más",
+      "Selección",
+      "NBA",
+      "Otros deportes",
+      "Premier League",
+      "GP Qatar",
+      "Copa Rey",
+      "Primera División",
+      "Natación",
+      "Politica",
+      "Sociedad",
+      "WTA Finals",
+      "Nations League",
+      "NFL",
+      "Portada",
+      "Bundesliga",
+      "Paralimpicos"
+    ],
+    "technology": [
+      "Coches",
+      "Marca Coches"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

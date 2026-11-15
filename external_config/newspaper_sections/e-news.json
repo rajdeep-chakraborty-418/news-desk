@@ -1,0 +1,50 @@
+{
+  "newspaper": "E! News",
+  "tier": "secondary",
+  "homepage": "https://www.eonline.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Kardashians",
+      "Couples",
+      "Royals",
+      "VG",
+      "Celebrities",
+      "TV",
+      "exclusives",
+      "celeb kids",
+      "shop",
+      "E! Insider",
+      "Death",
+      "celebrity families",
+      "Deals",
+      "Google Real Time",
+      "Shop Sales",
+      "Movies",
+      "Kate Gosselin",
+      "netflix"
+    ],
+    "lifestyle": [
+      "Red Carpet",
+      "Shopping",
+      "Shop Fashion"
+    ],
+    "sports": [
+      "NFL"
+    ]
+  },
+  "other": [
+    "Photos",
+    "Videos"
+  ],
+  "unmapped_default": "other"
+}

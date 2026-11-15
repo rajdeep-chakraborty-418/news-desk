@@ -1,0 +1,58 @@
+{
+  "newspaper": "Page Six",
+  "tier": "secondary",
+  "homepage": "https://pagesix.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://pagesix.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Entertainment",
+      "Movies",
+      "Music",
+      "Awards",
+      "Page Six Hollywood",
+      "Virtual Reali-Tea",
+      "Society",
+      "Los Angeles",
+      "Miami",
+      "New York City",
+      "Palm Beach",
+      "Washington, DC",
+      "Page Swift",
+      "Parents",
+      "Tips",
+      "Celebrity Parents"
+    ],
+    "lifestyle": [
+      "Page Six Style",
+      "Fashion",
+      "Beauty",
+      "Shopping",
+      "Royal Family",
+      "Lifestyle",
+      "Style"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "business": [
+      "Real Estate"
+    ],
+    "sports": [
+      "Sports"
+    ]
+  },
+  "other": [
+    "Photos",
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

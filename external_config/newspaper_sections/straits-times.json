@@ -1,0 +1,38 @@
+{
+  "newspaper": "Straits Times",
+  "tier": "secondary",
+  "homepage": "https://www.straitstimes.com/",
+  "country": "Singapore",
+  "continent": "Asia",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "sports",
+      "url": "https://www.straitstimes.com/news/sport/rss.xml"
+    },
+    {
+      "section": "world",
+      "url": "https://www.straitstimes.com/news/world/rss.xml"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "asia",
+      "world"
+    ],
+    "lifestyle": [
+      "life"
+    ],
+    "business": [
+      "business"
+    ],
+    "sports": [
+      "sport"
+    ]
+  },
+  "other": [
+    "opinion"
+  ],
+  "unmapped_default": "other"
+}

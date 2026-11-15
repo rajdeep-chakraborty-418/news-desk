@@ -1,0 +1,45 @@
+{
+  "newspaper": "News in English (Norway)",
+  "tier": "secondary",
+  "homepage": "https://www.newsinenglish.no/",
+  "country": "Norway",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.newsinenglish.no/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "politics",
+      "crime",
+      "government",
+      "Northern Norway",
+      "Russia",
+      "Ukraine"
+    ],
+    "defence": [
+      "defense"
+    ],
+    "business": [
+      "Business"
+    ],
+    "entertainment": [
+      "Royals"
+    ],
+    "geography": [
+      "tourism"
+    ],
+    "sports": [
+      "transport"
+    ],
+    "nature": [
+      "energy"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

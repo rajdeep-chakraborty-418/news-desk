@@ -1,0 +1,72 @@
+{
+  "newspaper": "The Rio Times",
+  "tier": "secondary",
+  "homepage": "https://www.riotimesonline.com/",
+  "country": "Brazil",
+  "continent": "South America",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.riotimesonline.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Brazil",
+      "Brazil Election 2026",
+      "Brazil Election Polls",
+      "Brazil Election Odds",
+      "Brazil Election Results",
+      "Rio de Janeiro",
+      "Politics",
+      "Latin America",
+      "Argentina",
+      "Mexico",
+      "Chile",
+      "Colombia",
+      "Peru",
+      "Venezuela",
+      "Uruguay",
+      "Bolivia",
+      "Ecuador",
+      "Paraguay",
+      "Cuba",
+      "Costa Rica",
+      "Panama",
+      "Africa",
+      "Africa Critical Minerals",
+      "Africa & the Great Powers",
+      "Africa & Latin America",
+      "Horn of Africa & Red Sea",
+      "Africa Intelligence Dossier",
+      "Africa Intelligence Brief",
+      "Central Africa",
+      "Eastern Africa",
+      "Northern Africa",
+      "Southern Africa",
+      "Western Africa",
+      "South Africa",
+      "South Africa banks",
+      "Morocco"
+    ],
+    "business": [
+      "Business",
+      "Real Estate",
+      "Africa Markets & Investment",
+      "Doing Business & Living in Africa",
+      "Markets",
+      "Investec",
+      "retail banking"
+    ],
+    "nature": [
+      "Africa Energy"
+    ],
+    "lifestyle": [
+      "Doing Business & Living in Africa"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

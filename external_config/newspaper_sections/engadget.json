@@ -1,0 +1,68 @@
+{
+  "newspaper": "Engadget",
+  "tier": "secondary",
+  "homepage": "https://www.engadget.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "technology",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "technology",
+      "url": "https://www.engadget.com/rss.xml"
+    }
+  ],
+  "section_map": {
+    "technology": [
+      "Computing",
+      "Social Media",
+      "Headphones",
+      "Photography",
+      "Best E-Ink Tablets",
+      "Best Power Banks",
+      "Best Fast Chargers",
+      "Best Wireless Earbuds",
+      "Nintendo",
+      "PlayStation",
+      "Xbox",
+      "Big Tech",
+      "Amazon",
+      "Apple",
+      "Google",
+      "Meta",
+      "Microsoft",
+      "Samsung",
+      "Cybersecurity",
+      "VPN",
+      "Tomorrow",
+      "Robotics",
+      "Smartphones",
+      "Accessories",
+      "Buying Guides",
+      "Wearables"
+    ],
+    "sports": [
+      "EVs & Transportation",
+      "EVs and Transportation"
+    ],
+    "entertainment": [
+      "Reviews",
+      "Gaming",
+      "Best Gaming Handhelds",
+      "Best Live TV Streaming",
+      "Entertainment",
+      "TV & Movies",
+      "Streaming",
+      "Reviews Policy"
+    ],
+    "science": [
+      "Science",
+      "Space"
+    ],
+    "geopolitics": [
+      "No-AI Writing Policy"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

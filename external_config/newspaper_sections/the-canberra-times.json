@@ -1,0 +1,66 @@
+{
+  "newspaper": "The Canberra Times",
+  "tier": "secondary",
+  "homepage": "https://www.canberratimes.com.au/",
+  "country": "Australia",
+  "continent": "Oceania",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.canberratimes.com.au/rss.xml"
+    }
+  ],
+  "section_map": {
+    "sports": [
+      "Sport",
+      "Local Sport",
+      "Cricket",
+      "National Sport",
+      "World Sport"
+    ],
+    "lifestyle": [
+      "Life and Culture",
+      "Health",
+      "Lifestyle",
+      "Food & Drink"
+    ],
+    "entertainment": [
+      "Life and Culture",
+      "Arts & Entertainment",
+      "TV Guide"
+    ],
+    "geography": [
+      "Explore Travel",
+      "Destinations"
+    ],
+    "world": [
+      "Local news",
+      "Federal politics",
+      "ACT politics",
+      "Court and Crime",
+      "National News",
+      "World News",
+      "Australian of the Year",
+      "Canberra Raiders",
+      "Australian Rules"
+    ],
+    "business": [
+      "Property and Development",
+      "Business and Finance"
+    ],
+    "nature": [
+      "Weather and Environment"
+    ]
+  },
+  "other": [
+    "Classifieds",
+    "Education",
+    "Obituaries",
+    "Opinion",
+    "Editorial",
+    "Cartoons"
+  ],
+  "unmapped_default": "other"
+}

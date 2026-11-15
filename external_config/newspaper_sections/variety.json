@@ -1,0 +1,72 @@
+{
+  "newspaper": "Variety",
+  "tier": "secondary",
+  "homepage": "https://variety.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://variety.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Plus Icon Film",
+      "Plus Icon What To Watch",
+      "Plus Icon Music",
+      "Plus Icon Digital & Gaming",
+      "Plus Icon Global",
+      "Plus Icon What To Hear",
+      "Got a Tip?",
+      "Asia",
+      "Global",
+      "Film",
+      "Reviews",
+      "Box Office",
+      "Trailers",
+      "Ratings",
+      "What To Watch",
+      "Music",
+      "Album Reviews",
+      "Concert Reviews",
+      "Hitmakers",
+      "Music For Screens",
+      "Grammys",
+      "Film Predictions",
+      "TV Predictions",
+      "Artisans",
+      "Cover Shoots - Behind the Scenes",
+      "Actors on Actors",
+      "Power of Women",
+      "What to Hear",
+      "Adam Newport-Berra",
+      "Club Kid",
+      "jordan firstman",
+      "Ebenezer",
+      "Johnny Depp",
+      "Adam Driver",
+      "Star Wars",
+      "Saturday Night Live",
+      "Shane Gillis",
+      "SNL",
+      "James Gunn",
+      "Man of Tomorrow",
+      "Skydance",
+      "Superman"
+    ],
+    "technology": [
+      "Plus Icon Digital & Gaming",
+      "VIP+ Tech"
+    ],
+    "business": [
+      "Markets & Festivals"
+    ]
+  },
+  "other": [
+    "Columns"
+  ],
+  "unmapped_default": "other"
+}

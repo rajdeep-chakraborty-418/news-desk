@@ -1,0 +1,33 @@
+{
+  "newspaper": "Venezuelanalysis",
+  "tier": "secondary",
+  "homepage": "https://venezuelanalysis.com/",
+  "country": "Venezuela",
+  "continent": "South America",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://venezuelanalysis.com/feed"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "US-Venezuela Relations",
+      "Brazil-Venezuela Relations",
+      "Elections",
+      "Israel"
+    ],
+    "nature": [
+      "Climate Change"
+    ],
+    "defence": [
+      "US Military Bases"
+    ]
+  },
+  "other": [
+    "Claudio Fermín"
+  ],
+  "unmapped_default": "other"
+}

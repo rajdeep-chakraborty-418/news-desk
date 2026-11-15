@@ -1,0 +1,41 @@
+{
+  "newspaper": "Smithsonian Magazine",
+  "tier": "secondary",
+  "homepage": "https://www.smithsonianmag.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "(your decision)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "history",
+      "url": "https://www.smithsonianmag.com/rss/history/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Smart News"
+    ],
+    "history": [
+      "History",
+      "National Museum of Natural History",
+      "The Humble History of the Bedpan"
+    ],
+    "science": [
+      "Science",
+      "Innovation"
+    ],
+    "entertainment": [
+      "Arts & Culture",
+      "Archives of American Art"
+    ],
+    "geography": [
+      "Travel"
+    ]
+  },
+  "other": [
+    "Photo Contest",
+    "Videos"
+  ],
+  "unmapped_default": "other"
+}

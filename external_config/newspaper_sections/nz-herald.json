@@ -1,0 +1,53 @@
+{
+  "newspaper": "NZ Herald",
+  "tier": "secondary",
+  "homepage": "https://www.nzherald.co.nz/",
+  "country": "New Zealand",
+  "continent": "Oceania",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.nzherald.co.nz/arc/outboundfeeds/rss/section/world/?outputType=xml"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "New Zealand",
+      "World",
+      "Crime",
+      "Politics"
+    ],
+    "sports": [
+      "Sport"
+    ],
+    "business": [
+      "Business",
+      "Herald NOW Business",
+      "Markets",
+      "Commodities",
+      "Stock Takes",
+      "Crypto"
+    ],
+    "entertainment": [
+      "Entertainment"
+    ],
+    "lifestyle": [
+      "Lifestyle"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "nature": [
+      "Weather"
+    ]
+  },
+  "other": [
+    "Video",
+    "Herald Premium",
+    "Viva Premium",
+    "Education"
+  ],
+  "unmapped_default": "other"
+}

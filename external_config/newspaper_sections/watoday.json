@@ -1,0 +1,76 @@
+{
+  "newspaper": "WAtoday",
+  "tier": "secondary",
+  "homepage": "https://www.watoday.com.au/",
+  "country": "Australia",
+  "continent": "Oceania",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.watoday.com.au/rss/feed.xml"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Perth",
+      "Politics",
+      "World",
+      "Western Australia",
+      "North America",
+      "Europe",
+      "Asia",
+      "South America",
+      "Africa",
+      "National",
+      "National / NSW",
+      "National / WA",
+      "National / Victoria",
+      "Politics / Victoria",
+      "World / Asia"
+    ],
+    "business": [
+      "Business",
+      "Companies",
+      "Markets",
+      "The economy",
+      "Banking & finance",
+      "Small business",
+      "Workplace",
+      "Property"
+    ],
+    "lifestyle": [
+      "Good Food",
+      "Lifestyle",
+      "Living"
+    ],
+    "geography": [
+      "Traveller",
+      "Travel / Travel news"
+    ],
+    "sports": [
+      "Sport",
+      "Rugby union",
+      "Cricket",
+      "Soccer",
+      "Racing",
+      "Tennis",
+      "Basketball",
+      "Motorsport",
+      "Sport / Swimming",
+      "Sport / AFL",
+      "Sport / NRL"
+    ],
+    "geopolitics": [
+      "Middle East"
+    ],
+    "nature": [
+      "Oceania"
+    ]
+  },
+  "other": [
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

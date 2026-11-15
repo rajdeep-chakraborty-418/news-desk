@@ -1,0 +1,80 @@
+{
+  "newspaper": "The Verge",
+  "tier": "secondary",
+  "homepage": "https://www.theverge.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "technology",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "technology",
+      "url": "https://www.theverge.com/rss/index.xml"
+    }
+  ],
+  "section_map": {
+    "technology": [
+      "Tech",
+      "Amazon",
+      "Apple",
+      "Google",
+      "Microsoft",
+      "Samsung",
+      "Audio",
+      "OpenAI",
+      "Anthropic",
+      "Antitrust",
+      "Politics",
+      "Law",
+      "Security",
+      "Laptops",
+      "Phones",
+      "Speakers",
+      "Wearables",
+      "Buying Guides",
+      "Deals",
+      "Gift Guides",
+      "Gadgets",
+      "AI",
+      "Black Friday",
+      "Cyber Monday",
+      "Decoder",
+      "Autonomous Cars",
+      "Electric Cars",
+      "Elon Musk",
+      "Tesla",
+      "Hands-on"
+    ],
+    "entertainment": [
+      "Reviews",
+      "Entertainment",
+      "Phone Reviews",
+      "Tablet Reviews",
+      "Headphone Reviews",
+      "Gaming"
+    ],
+    "science": [
+      "Science",
+      "Space"
+    ],
+    "geopolitics": [
+      "Policy"
+    ],
+    "business": [
+      "Business"
+    ],
+    "nature": [
+      "Energy",
+      "Environment"
+    ],
+    "lifestyle": [
+      "Health",
+      "Verge Shopping"
+    ],
+    "sports": [
+      "Transportation"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

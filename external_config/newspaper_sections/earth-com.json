@@ -1,0 +1,32 @@
+{
+  "newspaper": "Earth.com",
+  "tier": "secondary",
+  "homepage": "https://www.earth.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "(your decision)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "geography",
+      "url": "https://www.earth.com/feed/"
+    }
+  ],
+  "section_map": {
+    "science": [
+      "Science",
+      "Space"
+    ],
+    "nature": [
+      "Animals",
+      "Climate"
+    ],
+    "lifestyle": [
+      "Lifestyle"
+    ]
+  },
+  "other": [
+    "videos"
+  ],
+  "unmapped_default": "other"
+}

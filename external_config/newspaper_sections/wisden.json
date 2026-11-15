@@ -1,0 +1,36 @@
+{
+  "newspaper": "Wisden",
+  "tier": "primary",
+  "homepage": "https://www.wisden.com/",
+  "country": "United Kingdom",
+  "continent": "Europe",
+  "focus": "sports",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "sports",
+      "url": "https://www.wisden.com/feed"
+    }
+  ],
+  "section_map": {
+    "sports": [
+      "Live Scores",
+      "Fixtures",
+      "Results",
+      "SA vs AUS",
+      "NZ vs IND",
+      "BAN vs WI",
+      "WTC 2025-27",
+      "County Championship 2026",
+      "Quizzes",
+      "Wisden Cricketers' Almanack",
+      "The Wisden Story",
+      "Wisden Cricket Monthly"
+    ]
+  },
+  "other": [
+    "Videos",
+    "Photos"
+  ],
+  "unmapped_default": "other"
+}

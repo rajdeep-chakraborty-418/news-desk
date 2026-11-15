@@ -1,0 +1,73 @@
+{
+  "newspaper": "TechCrunch",
+  "tier": "secondary",
+  "homepage": "https://techcrunch.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "technology",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "technology",
+      "url": "https://techcrunch.com/feed/"
+    }
+  ],
+  "section_map": {
+    "business": [
+      "Startups",
+      "Crypto",
+      "Startup Battlefield"
+    ],
+    "technology": [
+      "Venture",
+      "Security",
+      "Disrupt 2026",
+      "Commerce",
+      "Enterprise",
+      "Fintech",
+      "Fundraising",
+      "Gadgets",
+      "Hardware",
+      "Robotics",
+      "Social",
+      "TechCrunch Brand Studio",
+      "AI",
+      "nvidia",
+      "Jensen Huang",
+      "In Brief",
+      "TC",
+      "Apps",
+      "AI agents",
+      "e-readers",
+      "kindle colorsoft",
+      "amazon kindle",
+      "neocloud",
+      "open source",
+      "Airlines"
+    ],
+    "lifestyle": [
+      "Biotech & Health"
+    ],
+    "nature": [
+      "Climate"
+    ],
+    "entertainment": [
+      "Gaming",
+      "Media & Entertainment"
+    ],
+    "world": [
+      "Government & Policy"
+    ],
+    "geopolitics": [
+      "Government & Policy"
+    ],
+    "science": [
+      "Space"
+    ],
+    "sports": [
+      "Transportation"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

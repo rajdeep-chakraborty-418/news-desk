@@ -1,0 +1,37 @@
+{
+  "newspaper": "Colombia One",
+  "tier": "secondary",
+  "homepage": "https://colombiaone.com/",
+  "country": "Colombia",
+  "continent": "South America",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://colombiaone.com/feed/"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "News feed",
+      "Colombia News",
+      "Colombia",
+      "World",
+      "United States",
+      "Crime",
+      "Colombia 1985"
+    ],
+    "technology": [
+      "Technology"
+    ],
+    "history": [
+      "History"
+    ],
+    "entertainment": [
+      "Culture"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

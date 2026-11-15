@@ -1,0 +1,40 @@
+{
+  "newspaper": "Prothom Alo (English)",
+  "tier": "secondary",
+  "homepage": "https://en.prothomalo.com/",
+  "country": "Bangladesh",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://en.prothomalo.com/feed"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Bangladesh",
+      "International",
+      "local news",
+      "local"
+    ],
+    "sports": [
+      "Sports",
+      "Football"
+    ],
+    "business": [
+      "Business"
+    ],
+    "entertainment": [
+      "Entertainment"
+    ],
+    "lifestyle": [
+      "Lifestyle"
+    ]
+  },
+  "other": [
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

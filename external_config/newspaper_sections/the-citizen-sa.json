@@ -1,0 +1,77 @@
+{
+  "newspaper": "The Citizen (SA)",
+  "tier": "secondary",
+  "homepage": "https://www.citizen.co.za/",
+  "country": "South Africa",
+  "continent": "Africa",
+  "focus": "general",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.citizen.co.za/feed/"
+    },
+    {
+      "section": "sports",
+      "url": "https://www.citizen.co.za/sport/feed/"
+    }
+  ],
+  "section_map": {
+    "nature": [
+      "Rand Water"
+    ],
+    "world": [
+      "Elections 2026",
+      "National Lottery",
+      "Local News",
+      "South Africa",
+      "Africa",
+      "World",
+      "Free State",
+      "Springboks (Bokke/Boks)",
+      "Bafana Bafana",
+      "Kenya",
+      "Crime and Courts"
+    ],
+    "business": [
+      "Business",
+      "Personal Finance"
+    ],
+    "sports": [
+      "Sport",
+      "Cricket",
+      "Soccer",
+      "Rugby",
+      "World Soccer",
+      "Proteas cricket team",
+      "australian cricket team"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Food And Drink",
+      "Health",
+      "Fashion And Beauty",
+      "Garden Route"
+    ],
+    "technology": [
+      "Motoring",
+      "Tech and Science"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Celebs And Viral",
+      "TV"
+    ],
+    "science": [
+      "Tech and Science"
+    ],
+    "geography": [
+      "Travel"
+    ]
+  },
+  "other": [
+    "Video",
+    "Opinion"
+  ],
+  "unmapped_default": "other"
+}

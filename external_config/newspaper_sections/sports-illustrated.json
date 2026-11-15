@@ -1,0 +1,64 @@
+{
+  "newspaper": "Sports Illustrated",
+  "tier": "primary",
+  "homepage": "https://www.si.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "sports",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "sports",
+      "url": "https://www.si.com/feed"
+    }
+  ],
+  "section_map": {
+    "sports": [
+      "BUY THE ISSUE",
+      "SI FORUMS",
+      "NFL",
+      "NBA",
+      "SOCCER",
+      "FANTASY",
+      "WATCH",
+      "FORUMS",
+      "MLB",
+      "WNBA",
+      "Betting",
+      "NFL Picks",
+      "NBA Picks",
+      "MLB Picks",
+      "CFB Picks",
+      "Golf Picks",
+      "Betting Sites",
+      "Sportsbook Promos",
+      "BetMGM Bonus Code",
+      "Fanatics Sportsbook Promo",
+      "Canada Sportsbook Promos",
+      "bet365 CA Bonus Code",
+      "Rainbet Promo Code",
+      "Stake Promo Code",
+      "NFL Market",
+      "NBA Market",
+      "MLB Market",
+      "Kalshi Promo Code",
+      "Kalshi Referral Code",
+      "Novig Promo Code",
+      "Underdog Promo Code",
+      "Boxing",
+      "Formula 1",
+      "Golf",
+      "High School",
+      "Horse Racing"
+    ],
+    "business": [
+      "Prediction Markets",
+      "College Market",
+      "Prediction Market Promos",
+      "Polymarket Promo Code",
+      "Polymarket Referral Code"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

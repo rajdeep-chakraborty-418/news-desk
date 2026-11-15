@@ -1,0 +1,39 @@
+{
+  "newspaper": "The Athletic",
+  "tier": "primary",
+  "homepage": "https://www.nytimes.com/athletic/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "sports",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "sports",
+      "url": "https://www.nytimes.com/athletic/rss/news/"
+    }
+  ],
+  "section_map": {
+    "sports": [
+      "NFL",
+      "NBA",
+      "MLB",
+      "NHL",
+      "College Football",
+      "College Basketball",
+      "Soccer",
+      "Premier League",
+      "MLS",
+      "Golf",
+      "Tennis",
+      "Formula 1",
+      "WNBA",
+      "Boxing",
+      "MMA",
+      "Cricket",
+      "Olympics",
+      "Fantasy"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

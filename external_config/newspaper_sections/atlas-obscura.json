@@ -1,0 +1,59 @@
+{
+  "newspaper": "Atlas Obscura",
+  "tier": "secondary",
+  "homepage": "https://www.atlasobscura.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "geography",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "geography",
+      "url": "https://www.atlasobscura.com/feeds/latest"
+    }
+  ],
+  "section_map": {
+    "geography": [
+      "Places",
+      "Join",
+      "Places near me",
+      "Random place",
+      "Paris",
+      "London",
+      "New York",
+      "Berlin",
+      "Rome",
+      "Los Angeles",
+      "sculptures",
+      "catholic",
+      "churches",
+      "shoes",
+      "hotels",
+      "bars",
+      "architecture",
+      "oil",
+      "goddess",
+      "folktales",
+      "folklore",
+      "rivers",
+      "lamppost"
+    ],
+    "history": [
+      "artifacts",
+      "ancient",
+      "mythology"
+    ],
+    "science": [
+      "dinosaurs"
+    ],
+    "nature": [
+      "environment",
+      "animals"
+    ],
+    "sports": [
+      "sports"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

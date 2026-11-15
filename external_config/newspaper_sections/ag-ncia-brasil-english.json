@@ -1,0 +1,42 @@
+{
+  "newspaper": "Agência Brasil (English)",
+  "tier": "secondary",
+  "homepage": "https://agenciabrasil.ebc.com.br/",
+  "country": "Brazil",
+  "continent": "South America",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://agenciabrasil.ebc.com.br/en/rss/ultimasnoticias/feed.xml"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "radioAgência",
+      "Radioagência Nacional"
+    ],
+    "business": [
+      "Economia",
+      "agribusiness"
+    ],
+    "sports": [
+      "Esportes"
+    ],
+    "world": [
+      "Política",
+      "cities",
+      "global warming",
+      "Philippines"
+    ],
+    "nature": [
+      "Climate change"
+    ],
+    "geopolitics": [
+      "summit"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

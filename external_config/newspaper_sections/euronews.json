@@ -1,0 +1,63 @@
+{
+  "newspaper": "Euronews",
+  "tier": "secondary",
+  "homepage": "https://www.euronews.com/",
+  "country": "France",
+  "continent": "Europe",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://www.euronews.com/rss?format=mrss"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "Canada",
+      "World News",
+      "Europe News",
+      "EU News",
+      "Europe",
+      "Germany",
+      "France",
+      "United Kingdom",
+      "Spain",
+      "Italy",
+      "Made in Europe",
+      "Europe in Motion",
+      "The Europe Conversation",
+      "World",
+      "Americas",
+      "Africa",
+      "Asia",
+      "USA",
+      "The World Conversation"
+    ],
+    "business": [
+      "Euronews investigates",
+      "Business",
+      "Economy",
+      "Markets",
+      "Money"
+    ],
+    "technology": [
+      "Make it Work",
+      "Tech News"
+    ],
+    "geography": [
+      "Smart Regions"
+    ],
+    "geopolitics": [
+      "Middle East"
+    ],
+    "nature": [
+      "Oceania"
+    ],
+    "science": [
+      "Space"
+    ]
+  },
+  "other": [],
+  "unmapped_default": "other"
+}

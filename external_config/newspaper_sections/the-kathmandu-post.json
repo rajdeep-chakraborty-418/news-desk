@@ -1,0 +1,71 @@
+{
+  "newspaper": "The Kathmandu Post",
+  "tier": "secondary",
+  "homepage": "https://kathmandupost.com/",
+  "country": "Nepal",
+  "continent": "Asia",
+  "focus": "general (World)",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "world",
+      "url": "https://kathmandupost.com/rss"
+    }
+  ],
+  "section_map": {
+    "world": [
+      "National",
+      "Politics",
+      "National Security",
+      "Kathmandu",
+      "World"
+    ],
+    "business": [
+      "Money"
+    ],
+    "sports": [
+      "Sports",
+      "Cricket",
+      "Football",
+      "International Sports"
+    ],
+    "entertainment": [
+      "Culture & Lifestyle",
+      "Arts",
+      "Movies",
+      "Theater",
+      "Entertainment",
+      "Books"
+    ],
+    "lifestyle": [
+      "Culture & Lifestyle",
+      "Brunch with the Post",
+      "Life & Style",
+      "Fashion",
+      "Health",
+      "Food",
+      "Recipes"
+    ],
+    "technology": [
+      "As it is",
+      "Science & Technology"
+    ],
+    "geography": [
+      "Travel"
+    ],
+    "nature": [
+      "Climate & Environment"
+    ],
+    "science": [
+      "Science & Technology"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Letters",
+    "Columns",
+    "Editorial",
+    "Cartoon"
+  ],
+  "unmapped_default": "other"
+}

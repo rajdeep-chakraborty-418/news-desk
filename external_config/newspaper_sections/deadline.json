@@ -1,0 +1,65 @@
+{
+  "newspaper": "Deadline",
+  "tier": "secondary",
+  "homepage": "https://deadline.com/",
+  "country": "United States",
+  "continent": "North America",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://deadline.com/feed/"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "Got A Tip?",
+      "Film",
+      "Awards",
+      "Awards Hub",
+      "Box Office",
+      "International",
+      "Theater",
+      "Reviews",
+      "Film: London",
+      "Television: Docs + Unscripted",
+      "Television",
+      "For The Love Of Docs",
+      "Tip Us",
+      "Manage Account",
+      "Ratings",
+      "Late-Night",
+      "Primetime Pilot Panic",
+      "Acquisitions",
+      "Documentary",
+      "FAA",
+      "Politics",
+      "FAA Shutdown",
+      "Obituaries",
+      "Olivier Mourgue",
+      "Steen Ostergaard",
+      "Ebenezer",
+      "Oklahoma Sooners",
+      "Ole Miss Rebels",
+      "Roger Denny",
+      "Alexandru Solomon",
+      "Cinephil",
+      "IDFA",
+      "microfilm"
+    ],
+    "business": [
+      "Business"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "science": [
+      "2001: A Space Odyssey"
+    ]
+  },
+  "other": [
+    "Video"
+  ],
+  "unmapped_default": "other"
+}

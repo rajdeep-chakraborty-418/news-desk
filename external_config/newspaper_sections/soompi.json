@@ -1,0 +1,44 @@
+{
+  "newspaper": "Soompi",
+  "tier": "secondary",
+  "homepage": "https://www.soompi.com/",
+  "country": "South Korea",
+  "continent": "Asia",
+  "focus": "entertainment",
+  "note": "Sections taken from the site's menu and feed tags, mapped to our sections; review the mapping.",
+  "feeds": [
+    {
+      "section": "entertainment",
+      "url": "https://www.soompi.com/feed"
+    }
+  ],
+  "section_map": {
+    "entertainment": [
+      "MV/Teaser",
+      "Drama",
+      "Culture",
+      "Quiz",
+      "Celeb",
+      "TV/FILM",
+      "Music",
+      "Trending Now",
+      "Drama Preview",
+      "kpop",
+      "ATEEZ",
+      "RIIZE",
+      "The Perfect Lie",
+      "RESCENE",
+      "aespa",
+      "TWS",
+      "Soompi Spotlight",
+      "Seo Hyun Jin",
+      "Yoo Yeon Seok",
+      "BTS",
+      "HANA (group)"
+    ]
+  },
+  "other": [
+    "Video"
+  ],
+  "unmapped_default": "other"
+}
