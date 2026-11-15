@@ -58,11 +58,11 @@ class WindowAndCountTest(EnvTestCase):
         os.environ["ARTICLE_COUNT"] = "150"
         self.assertEqual(fn.article_count(), 20)          # no longer allowed -> the new default
 
-    def test_per_feed_limit_grows_with_the_window_and_the_requested_count(self):
-        self.assertEqual([fn.per_feed_limit(h, 150) for h in (6, 24, 72, 168, 720, 2160)], [20, 20, 30, 50, 80, 100])
-        self.assertEqual(fn.per_feed_limit(24, 300), 40)            # twice the default count -> twice the allowance
-        self.assertEqual(fn.per_feed_limit(24, 50), 20)             # never below the base
-        self.assertEqual(fn.per_feed_limit(24), 20)                 # default count
+    def test_per_feed_limit_is_100_and_grows_with_the_requested_count(self):
+        self.assertEqual([fn.per_feed_limit(h, 150) for h in (6, 24, 72, 168, 720, 2160)], [100] * 6)
+        self.assertEqual(fn.per_feed_limit(24, 300), 200)           # twice the default count -> twice the allowance
+        self.assertEqual(fn.per_feed_limit(24, 50), 100)            # never below the base
+        self.assertEqual(fn.per_feed_limit(24), 100)                # default count
 
     def test_google_news_window_is_rewritten(self):
         g = "https://news.google.com/rss/search?q=site%3Agoal.com%20when%3A3d&hl=en-US&gl=US&ceid=US:en"
@@ -105,12 +105,12 @@ class FetchOneTest(EnvTestCase):
         self.assertEqual(out[0]["state"], "Kerala")
 
     def test_newest_first_and_limited_per_feed(self):
-        items = [{"title": f"S{i}", "link": f"https://n.example/{i}", "hours_ago": i / 10} for i in range(1, 60)]
+        items = [{"title": f"S{i}", "link": f"https://n.example/{i}", "hours_ago": i / 20} for i in range(1, 200)]
         out, _ = self.fetch(items, hours=24, count=150)
-        self.assertEqual(len(out), 20)
+        self.assertEqual(len(out), 100)                           # 100 per feed, however short the time range
         self.assertEqual(out[0]["title"], "S1")
         out, _ = self.fetch(items, hours=24, count=250)           # more stories requested -> a bigger allowance
-        self.assertEqual(len(out), 34)
+        self.assertEqual(len(out), 167)
 
     def test_undated_stories_are_kept(self):
         out, _ = self.fetch([{"title": "No date", "link": "https://n.example/1"}])

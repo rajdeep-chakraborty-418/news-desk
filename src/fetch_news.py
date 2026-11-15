@@ -84,12 +84,14 @@ def article_count():
     return n if n in ALLOWED_COUNTS else DEFAULT_COUNT
 
 
-def per_feed_limit(hours, count=None):
-    """Longer windows may take more stories per feed (feeds only list what they still hold); asking for more
-    stories per section raises the per-feed allowance in proportion."""
+PER_FEED_LIMIT = 100                 # newest stories taken from each feed, whatever the time range (feeds list fewer anyway)
+
+
+def per_feed_limit(hours=None, count=None):
+    """Stories taken from each feed: always PER_FEED_LIMIT (100); asking for more than the default stories per section
+    raises it in proportion."""
     count = count or DEFAULT_COUNT
-    base = 20 if hours <= 24 else 30 if hours <= 72 else 50 if hours <= 168 else 80 if hours <= 720 else 100
-    return int(base * max(1.0, count / DEFAULT_COUNT) + 0.999)
+    return int(PER_FEED_LIMIT * max(1.0, count / DEFAULT_COUNT) + 0.999)
 
 
 def window_url(url, hours):
