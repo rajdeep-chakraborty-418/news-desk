@@ -623,6 +623,10 @@ class HomeAndTabsTest(BrowserBase):
         self.assertEqual(self.page.title(), "RC News Desk")
         self.assertEqual(self.page.locator("#tabs button").count(), 7)
 
+    def test_home_heading_is_todays_picks(self):
+        self.home()
+        self.assertEqual(self.page.inner_text("#homeview .feathead h2"), "Today's Picks")
+
     def test_home_features_one_story_with_a_picture_for_every_section(self):
         self.home()
         cards = self.page.locator("#feat .fcard")
@@ -652,8 +656,10 @@ class HomeAndTabsTest(BrowserBase):
         self.assertEqual(tab.get_attribute("#homelink", "href"), "/index.html")
         for sel in ("#refresh", "#lastrefresh", "#nextrefresh", "#range", "#count"):
             self.assertFalse(tab.is_visible(sel), sel)
-        for sel in ("#chips", "#q", "#rangebar", "#sidebox", "#reset", "#paperlist"):
+        for sel in ("#chips", "#q", "#rangebar", "#sidebox", "#reset"):
             self.assertTrue(tab.is_visible(sel), sel)
+        self.assertFalse(tab.is_visible("#paperlist"))                           # the Newspaper Homepage link is on Home only
+        self.assertFalse(tab.is_visible("#navlinks"))
         self.assertEqual(tab.locator("#tabs button[aria-pressed=true]").inner_text(), "World Desk")
 
     def test_opening_an_open_section_again_jumps_to_its_tab_and_keeps_its_filters(self):
