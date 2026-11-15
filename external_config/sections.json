@@ -6,8 +6,7 @@
       "color": {
         "light": "#b0123a",
         "dark": "#ff7a9a"
-      },
-      "place": "newspaper"
+      }
     },
     {
       "key": "india",
@@ -15,10 +14,6 @@
       "color": {
         "light": "#c2570c",
         "dark": "#ff9a4d"
-      },
-      "place": {
-        "country": "India",
-        "continent": "Asia"
       }
     },
     {

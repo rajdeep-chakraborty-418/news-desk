@@ -230,38 +230,61 @@ class WebUITest(BrowserBase):
         self.assertEqual(self.tiles(), 26)
         self.assertTrue(all(c == "Africa" or True for c in chips))
 
-    def test_country_panel_is_multi_select_and_searchable(self):
-        self.open(); self.tab("World Desk")
-        self.assertEqual(self.page.inner_text("#selnote"), "All shown")
-        self.page.locator("#clist label", has_text="France").locator("input").check()
-        self.assertEqual(self.tiles(), 26)
-        self.page.locator("#clist label", has_text="Japan").locator("input").check()
-        self.assertEqual(self.tiles(), 50)                                  # 26 + 26 = 52, capped to the first 50
-        self.assertEqual(self.page.inner_text("#selnote"), "2 selected")
-        self.page.fill("#cq", "ger")
-        self.assertEqual(self.page.locator("#clist label").all_inner_texts()[0].split("\n")[0], "Germany")   # only matches are listed ...
-        self.assertEqual(self.page.inner_text("#selnote"), "2 selected")                                    # ... the ticked ones stay selected
-        self.page.click("#clear")
-        self.assertEqual(self.page.inner_text("#selnote"), "All shown")
+    def country_row(self, name):
+        return self.page.locator(f"#tree .cgrp[data-country='{name}']")
 
-    def test_newspaper_panel_filters_together_with_the_other_selections(self):
+    def test_one_tree_country_then_newspapers(self):
         self.open(); self.tab("World Desk")
-        self.assertEqual(self.page.inner_text("#nselnote"), "All shown")
-        names = [t.split("\n")[0] for t in self.page.locator("#nlist label").all_inner_texts()]
-        self.assertIn("Alpha Times", names); self.assertIn("Beta Post", names)
-        self.page.locator("#nlist label", has_text="Alpha Times").locator("input").check()
-        self.assertEqual(self.page.inner_text("#nselnote"), "1 selected")
-        before = self.tiles()
-        self.assertTrue(0 < before < 50)
+        self.assertEqual(self.page.inner_text("#selnote"), "All shown")
+        self.assertEqual(self.page.locator("#nlist, #clist").count(), 0)                    # the two old panels are gone
+        countries = [t.split("\n")[0] for t in self.page.locator("#tree .crow label").all_inner_texts()]
+        self.assertEqual(sorted(countries), ["Brazil", "France", "Germany", "Japan", "Kenya"])
+        self.assertEqual(self.page.locator("#tree .plist").count(), 0)                      # collapsed to start with
+        self.country_row("France").locator(".tw").click()                                   # expand a country -> its newspapers
+        papers = [t.split("\n")[0] for t in self.country_row("France").locator(".plist label").all_inner_texts()]
+        self.assertEqual(sorted(papers), ["Alpha Times", "Beta Post"])
+        self.country_row("France").locator(".tw").click()
+        self.assertEqual(self.country_row("France").locator(".plist").count(), 0)
+
+    def test_ticking_a_country_selects_all_its_newspapers(self):
+        self.open(); self.tab("World Desk")
+        self.country_row("France").locator("input.cc").check()
+        self.assertEqual(self.tiles(), 26)                                                  # every France story
+        self.assertEqual(self.page.inner_text("#selnote"), "2 newspapers selected")
+        self.assertEqual(self.country_row("France").locator(".plist input.pp:checked").count(), 2)
+        self.country_row("Japan").locator("input.cc").check()
+        self.assertEqual(self.tiles(), 50)                                                  # 26 + 26, capped to the first 50
+        self.country_row("France").locator("input.cc").uncheck()
+        self.assertEqual(self.tiles(), 26)
+
+    def test_a_single_newspaper_gives_a_partly_ticked_country(self):
+        self.open(); self.tab("World Desk")
+        self.country_row("France").locator(".tw").click()
+        self.country_row("France").locator(".plist label", has_text="Alpha Times").locator("input").check()
+        self.assertEqual(self.page.inner_text("#selnote"), "1 newspaper selected")
+        self.assertTrue(self.country_row("France").locator("input.cc").evaluate("e => e.indeterminate"))
+        self.assertTrue(0 < self.tiles() < 26)
         self.assertTrue(all("Alpha Times" in t for t in self.page.locator("a.tile").all_inner_texts()))
-        self.page.locator("#clist label", has_text="France").locator("input").check()      # combines with the country filter
-        self.assertLessEqual(self.tiles(), before)
-        self.page.fill("#nq", "beta")
-        self.assertEqual(self.page.locator("#nlist label").count() >= 1, True)
-        self.page.click("#nclear")
-        self.assertEqual(self.page.inner_text("#nselnote"), "All shown")
+
+    def test_search_finds_countries_and_newspapers(self):
+        self.open(); self.tab("World Desk")
+        self.page.fill("#cq", "ger")
+        self.assertEqual([t.split("\n")[0] for t in self.page.locator("#tree .crow label").all_inner_texts()], ["Germany"])
+        self.page.fill("#cq", "beta")                                                        # a newspaper name: every country that has it
+        self.assertEqual(self.page.locator("#tree .crow label").count(), 5)
+        self.assertEqual(self.page.locator("#tree .plist label").all_inner_texts()[0].split("\n")[0], "Beta Post")
+        self.page.click("#clear")
+        self.assertEqual(self.page.input_value("#cq"), "")
+
+    def test_tree_combines_with_the_other_selections(self):
+        self.open(); self.tab("World Desk")
+        self.page.click("#chips button:text-is('Europe')")
+        self.country_row("France").locator("input.cc").check()
+        self.assertEqual(self.tiles(), 26)
+        self.page.fill("#q", "story 1")
+        self.assertLessEqual(self.tiles(), 26)
         self.page.click("#reset")
-        self.assertEqual(self.page.input_value("#nq"), "")
+        self.assertEqual(self.page.inner_text("#selnote"), "All shown")
 
     def test_search_box_filters_by_text(self):
         self.open(); self.tab("World Desk")
@@ -287,7 +310,7 @@ class WebUITest(BrowserBase):
     def test_source_type_applies_on_top_of_existing_filters(self):
         self.open(); self.tab("World Desk")
         self.page.click("#chips button:text-is('Europe')")
-        self.page.locator("#clist label", has_text="France").locator("input").check()
+        self.country_row("France").locator("input.cc").check()
         before = self.tiles()                                                            # all France stories
         self.page.fill("#q", "story 1")
         narrowed = self.tiles()
@@ -297,7 +320,7 @@ class WebUITest(BrowserBase):
         self.assertLessEqual(after, narrowed)
         self.assertTrue(all(self.page.locator("#grid .tile").nth(i).locator(".pri").count() == 1 for i in range(after)))
         self.assertEqual(self.page.input_value("#q"), "story 1")                         # earlier filters still in force
-        self.assertEqual(self.page.inner_text("#selnote"), "1 selected")
+        self.assertEqual(self.page.inner_text("#selnote"), "2 newspapers selected")
         self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "Europe")
 
     def test_headline_is_entirely_black(self):
@@ -361,7 +384,7 @@ class WebUITest(BrowserBase):
         start = self.snapshot()
         self.tab("World Desk"); self.page.click("#chips button:text-is('Europe')")
         self.page.fill("#q", "story 1"); self.page.check("#fPrimary"); self.page.fill("#cq", "fr")
-        self.page.locator("#clist label", has_text="France").locator("input").check()
+        self.country_row("France").locator("input.cc").check()
         self.page.select_option("#range", "72"); self.page.select_option("#count", "250")
         self.assertNotEqual(self.snapshot(), start)
         self.page.click("#reset")

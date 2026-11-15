@@ -20,7 +20,6 @@ from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 
 import config
-import geo
 import settings
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -42,19 +41,17 @@ SNIPPET_LEN = 160
 
 # The sections and their keyword rules come from external_config/sections.json (see config.py); main() loads them.
 SECTIONS = []          # validated section definitions, in tab order
-PLACE = {}             # section key -> "newspaper" | {"country", "continent"} for sections whose stories get a fixed place
 SECTION_MAPS = {}       # newspaper name -> {normalised newspaper section: [section keys]} (external_config/newspaper_sections)
 
 
 def configure(sections, st=None, maps=None):
     """Install the section rules and the refresh choices (settings.json; loaded from the config folder if not given)."""
-    global SECTIONS, PLACE, ALLOWED_WINDOWS, DEFAULT_WINDOW, ALLOWED_COUNTS, DEFAULT_COUNT, SECTION_MAPS
+    global SECTIONS, ALLOWED_WINDOWS, DEFAULT_WINDOW, ALLOWED_COUNTS, DEFAULT_COUNT, SECTION_MAPS
     SECTION_MAPS = maps or {}
     st = st or settings.load_settings()
     ALLOWED_WINDOWS, DEFAULT_WINDOW = st["hours"], st["default_hours"]
     ALLOWED_COUNTS, DEFAULT_COUNT = st["counts"], st["default_count"]
     SECTIONS = sections
-    PLACE = {s["key"]: s["place"] for s in sections if s["place"]}
 
 
 WIDTH_QS_RE = re.compile(r"[?&](?:w|width)=(\d{2,4})\b", re.I)
@@ -321,16 +318,8 @@ def classify(feed, title, summary, link="", tags=()):
     return sections
 
 
-def place(feed, title, summary):
-    """Country and continent a story is about. A section can pin it (Indian News = India) or take it from the newspaper."""
-    rule = PLACE.get(feed["category"])
-    if isinstance(rule, dict):
-        return rule["country"], rule["continent"]
-    if rule == "newspaper":
-        return feed.get("country") or "Other", feed.get("continent") or "Other"
-    country, continent = geo.find_country(title, summary)
-    if country:
-        return country, continent
+def place(feed):
+    """Country and continent of a story: always its newspaper's own (nothing is guessed from the text)."""
     return feed.get("country") or "Other", feed.get("continent") or "Other"
 
 
@@ -352,7 +341,7 @@ def fetch_one(feed):
     items.sort(key=lambda x: x["date"] or datetime.now(timezone.utc), reverse=True)
     out = []
     for it in items[:per_feed_limit(WINDOW_HOURS, ARTICLE_COUNT)]:
-        country, continent = place(feed, it["title"], it["summary"])
+        country, continent = place(feed)
         out.append({
             "title": it["title"],
             "link": it["link"],

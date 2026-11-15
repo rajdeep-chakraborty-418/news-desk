@@ -1,4 +1,4 @@
-"""fetch_news.classify / place and geo.find_country, driven by the sample sections (never the real ones)."""
+"""fetch_news.classify / place, driven by the sample sections (never the real ones)."""
 import copy
 
 import support
@@ -6,7 +6,6 @@ from support import SAMPLE_SECTIONS, TestCase
 
 import config
 import fetch_news as fn
-import geo
 
 
 def configure(sections_dict=None):
@@ -39,37 +38,11 @@ class ClassifyTest(TestCase):
 
 
 class PlaceTest(TestCase):
-    def setUp(self):
-        super().setUp()
-        configure()
-
-    def test_fixed_place_for_a_section(self):
-        self.assertEqual(fn.place({"category": "india"}, "Anything about Pakistan", ""), ("India", "Asia"))
-
-    def test_newspaper_place_for_a_section(self):
-        feed = {"category": "home", "country": "Bangladesh", "continent": "Asia"}
-        self.assertEqual(fn.place(feed, "Putin warns Kyiv", ""), ("Bangladesh", "Asia"))
-        self.assertEqual(fn.place({"category": "home"}, "x", ""), ("Other", "Other"))
-
-    def test_detected_from_text_otherwise(self):
+    def test_country_and_continent_are_always_the_newspapers(self):
         feed = {"category": "world", "country": "France", "continent": "Europe"}
-        self.assertEqual(fn.place(feed, "Putin warns Kyiv over missile strikes", ""), ("Russia", "Europe"))
-
-    def test_falls_back_to_the_newspapers_country_then_other(self):
-        self.assertEqual(fn.place({"category": "world", "country": "France", "continent": "Europe"}, "Quiet day", ""), ("France", "Europe"))
-        self.assertEqual(fn.place({"category": "world"}, "Quiet day", ""), ("Other", "Other"))
-
-
-class GeoTest(TestCase):
-    def test_country_and_continent(self):
-        self.assertEqual(geo.find_country("Putin warns Kyiv over missile strikes"), ("Russia", "Europe"))
-        self.assertEqual(geo.find_country("nothing here", "Israeli forces enter Gaza"), ("Israel", "Asia"))
-        self.assertEqual(geo.find_country("Quiet day in the markets"), (None, None))
-        self.assertEqual(geo.find_country(None, ""), (None, None))
-
-    def test_earliest_match_wins_and_whole_words_only(self):
-        self.assertEqual(geo.find_country("Talks between Delhi and Islamabad")[0], "India")
-        self.assertEqual(geo.find_country("Indiana storms")[0], None)
+        self.assertEqual(fn.place(feed), ("France", "Europe"))                 # whatever the headline is about
+        self.assertEqual(fn.place({"category": "india", "country": "Bangladesh", "continent": "Asia"}), ("Bangladesh", "Asia"))
+        self.assertEqual(fn.place({"category": "world"}), ("Other", "Other"))
 
 
 class NewspaperSectionMapTest(TestCase):

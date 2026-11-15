@@ -5,12 +5,11 @@
        "section_map": {"<our section>": ["<its own section>", ...]}, "other": [...]}
       feed      = {"section", "url", "label"?, "state"?, "country"?, "continent"?}
   sections.json    {"sections": [section, ...]}   (the order here is the order of the tabs on the page)
-      section   = {"key", "label", "color": {"light", "dark"}, "place"?}
+      section   = {"key", "label", "color": {"light", "dark"}}
 
 A feed's "section" is where its stories always appear. A story also appears in every section that its newspaper's file in
 newspaper_sections/ maps its own section to (see load_section_maps); there are no keyword rules.
-"place" decides the story's country: omitted = detected from the text, "newspaper" = the newspaper's own country,
-or a fixed {"country", "continent"}.
+A story's country and continent are always its newspaper's (the "country" and "continent" in its newspaper_sections file).
 
 NEWSDESK_CONFIG_DIR points the code at a different folder (for example one written by a hosted app for one user).
 """
@@ -70,13 +69,10 @@ def load_sections(directory=None):
         color = s.get("color")
         if not (isinstance(color, dict) and COLOR_RE.match(str(color.get("light"))) and COLOR_RE.match(str(color.get("dark")))):
             raise ConfigError(f"{where}: 'color' must be {{\"light\": \"#rrggbb\", \"dark\": \"#rrggbb\"}}")
-        place = s.get("place")
-        if place not in (None, "newspaper") and not (isinstance(place, dict) and place.get("country") and place.get("continent")):
-            raise ConfigError(f"{where}: 'place' must be \"newspaper\" or {{\"country\": ..., \"continent\": ...}}")
-        for old in ("keywords", "also_from_sections", "include_general_newspapers", "extra_keywords_for_general_newspapers"):
+        for old in ("keywords", "also_from_sections", "include_general_newspapers", "extra_keywords_for_general_newspapers", "place"):
             if old in s:
-                raise ConfigError(f"{where}: '{old}' is no longer supported (keyword rules were removed; use newspaper_sections/ maps)")
-        out.append({"key": key, "label": s["label"].strip(), "color": color, "place": place})
+                raise ConfigError(f"{where}: '{old}' is no longer supported (keyword rules and place rules were removed; use newspaper_sections/ maps; the country comes from the newspaper)")
+        out.append({"key": key, "label": s["label"].strip(), "color": color})
     return out
 
 

@@ -18,9 +18,8 @@ sys.path.insert(0, str(SRC))
 
 # ---------------------------------------------------------------- sample configuration (never the real one)
 SAMPLE_SECTIONS = {"sections": [
-    {"key": "home", "label": "Home News", "color": {"light": "#b0123a", "dark": "#ff7a9a"}, "place": "newspaper"},
-    {"key": "india", "label": "India Desk", "color": {"light": "#c2570c", "dark": "#ff9a4d"},
-     "place": {"country": "India", "continent": "Asia"}},
+    {"key": "home", "label": "Home News", "color": {"light": "#b0123a", "dark": "#ff7a9a"}},
+    {"key": "india", "label": "India Desk", "color": {"light": "#c2570c", "dark": "#ff9a4d"}},
     {"key": "world", "label": "World Desk", "color": {"light": "#2a4d8f", "dark": "#7ea3f0"}},
     {"key": "sports", "label": "Sports Desk", "color": {"light": "#1b6e5a", "dark": "#4cc3a4"}},
     {"key": "showbiz", "label": "Showbiz Desk", "color": {"light": "#9b2f7a", "dark": "#e27cc0"}},

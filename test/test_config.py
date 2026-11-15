@@ -12,13 +12,7 @@ class LoadSectionsTest(TestCase):
     def test_loads_in_file_order(self):
         secs = config.load_sections(support.SAMPLE_CONFIG)
         self.assertEqual([s["key"] for s in secs], ["home", "india", "world", "sports", "showbiz", "defence", "money"])
-        self.assertEqual(set(secs[3]), {"key", "label", "color", "place"})      # no keyword rules any more
-
-    def test_place_rules(self):
-        secs = {s["key"]: s for s in config.load_sections(support.SAMPLE_CONFIG)}
-        self.assertEqual(secs["home"]["place"], "newspaper")
-        self.assertEqual(secs["india"]["place"], {"country": "India", "continent": "Asia"})
-        self.assertIsNone(secs["world"]["place"])
+        self.assertEqual(set(secs[3]), {"key", "label", "color"})      # no keyword or place rules any more
 
     def _bad(self, mutate, message):
         data = copy.deepcopy(SAMPLE_SECTIONS)
@@ -33,7 +27,7 @@ class LoadSectionsTest(TestCase):
         self._bad(lambda s: s[1].update(key="home"), "listed twice")
         self._bad(lambda s: s[0].pop("label"), "'label' is required")
         self._bad(lambda s: s[0].update(color={"light": "red", "dark": "#000000"}), "'color' must be")
-        self._bad(lambda s: s[0].update(place="elsewhere"), "'place' must be")
+        self._bad(lambda s: s[0].update(place="newspaper"), "'place' is no longer supported")
         self._bad(lambda s: s[3].update(keywords=["cricket"]), "'keywords' is no longer supported")
         self._bad(lambda s: s[4].update(also_from_sections=["world"]), "'also_from_sections' is no longer supported")
 

@@ -67,18 +67,19 @@
   .navlink:hover, .navnew:hover { color: var(--muted); }
   .reset { padding: 2px 10px; font-size: 11px; border-radius: 999px; }
   .clear { padding: 5px 12px; font-size: 13px; justify-self: start; }
-  #clist, #nlist { overflow-y: auto; display: grid; gap: 2px; padding-right: 4px; }
-  #clist { max-height: 20vh; }          /* fewer countries visible at a time ... */
-  #nlist { max-height: 56vh; }          /* ... and more newspapers */
-  #newsbox { border-top: 1px solid var(--line); }
-  #clist label, #nlist label { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 4px 6px; border-radius: 6px; cursor: pointer; }
-  #clist label:hover, #nlist label:hover { background: var(--bg); }
-  #clist .n, #nlist .n { margin-left: auto; color: var(--muted); font-size: 12px; }
+  #tree { overflow-y: auto; max-height: 72vh; display: grid; gap: 2px; padding-right: 4px; align-content: start; }
+  #tree label { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 4px 6px; border-radius: 6px; cursor: pointer; flex: 1; min-width: 0; }
+  #tree label:hover { background: var(--bg); }
+  #tree .n { margin-left: auto; color: var(--muted); font-size: 12px; }
+  #tree .crow { display: flex; align-items: center; }
+  #tree .crow label { font-weight: 600; }
+  #tree .tw { border: 0; background: none; color: var(--muted); width: 22px; padding: 0; cursor: pointer; font-size: 12px; }
+  #tree .plist { margin-left: 22px; display: grid; gap: 1px; border-left: 1px solid var(--line); padding-left: 6px; }
+  #tree .plist label { font-weight: 400; }
   @media (max-width: 900px) {
     .layout { grid-template-columns: 1fr; }
     aside { position: static; order: -1; }
-    #clist { max-height: 22vh; }
-    #nlist { max-height: 50vh; }
+    #tree { max-height: 60vh; }
   }
   a.tile { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--card); border: 1px solid var(--line);
            border-radius: 10px; overflow: hidden; transition: transform .12s, box-shadow .12s; }
@@ -179,19 +180,11 @@
     </div>
     <aside id="side">
       <details id="sidebox" open>
-        <summary>Countries <span class="selnote" id="selnote">All shown</span></summary>
+        <summary>Countries &amp; newspapers <span class="selnote" id="selnote">All shown</span></summary>
         <div class="sidebody">
-          <input type="search" id="cq" placeholder="Find a country…" aria-label="Find a country">
-          <button class="clear" id="clear" type="button">Show all countries</button>
-          <div id="clist" role="group" aria-label="Filter by country"></div>
-        </div>
-      </details>
-      <details id="newsbox" open>
-        <summary>Newspapers <span class="selnote" id="nselnote">All shown</span></summary>
-        <div class="sidebody">
-          <input type="search" id="nq" placeholder="Find a newspaper…" aria-label="Find a newspaper">
-          <button class="clear" id="nclear" type="button">Show all newspapers</button>
-          <div id="nlist" role="group" aria-label="Filter by newspaper"></div>
+          <input type="search" id="cq" placeholder="Find a country or newspaper…" aria-label="Find a country or newspaper">
+          <button class="clear" id="clear" type="button">Show all</button>
+          <div id="tree" role="tree" aria-label="Filter by country and newspaper"></div>
         </div>
       </details>
     </aside>
@@ -212,7 +205,7 @@ const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South A
 const PRIMARY_BOOST_MS = 6 * 3600 * 1000;   // primary-source stories rank as if 6 hours newer
 const FIRST = 50;                            // the range starts as articles 1-50 and goes back to that whenever a filter changes
 let MAX = 200;                               // the most stories kept per section (news.json "max_articles"; 200 for older data)
-const state = { lm: "", generated: "", section: "", continent: "All", countries: new Set(), papers: new Set(), nq: "", kinds: new Set(), q: "", cq: "", items: [], from: 1, to: FIRST };
+const state = { lm: "", generated: "", section: "", continent: "All", papers: new Set(), open: new Set(), kinds: new Set(), q: "", cq: "", items: [], from: 1, to: FIRST };
 const resetRange = () => { state.from = 1; state.to = FIRST; };
 const $ = (id) => document.getElementById(id);
 
@@ -315,38 +308,70 @@ function makeTile(i, n) {
 }
 
 const paperOf = (i) => i.newspaper || i.source;
-// one checklist (countries or newspapers): counts come from the stories left by every other filter
-function fillChecklist(boxId, noteId, chosen, counts, query, noun) {
-  for (const c of chosen) counts[c] = counts[c] || 0;      // keep ticked names visible
-  const q = query.trim().toLowerCase();
-  const names = Object.keys(counts).filter(n => !q || n.toLowerCase().includes(q))
-    .sort((a, b) => (chosen.has(b) - chosen.has(a)) || counts[b] - counts[a] || a.localeCompare(b));
-  const box = $(boxId);
-  box.replaceChildren();
-  for (const n of names) {
-    const l = document.createElement("label");
-    const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = chosen.has(n);
-    cb.onchange = () => {
-      cb.checked ? chosen.add(n) : chosen.delete(n);
-      resetRange(); render();
-    };
-    const name = document.createElement("span"); name.textContent = n;
-    const num = document.createElement("span"); num.className = "n"; num.textContent = counts[n];
-    l.append(cb, name, num); box.append(l);
-  }
-  if (!names.length) { const e = document.createElement("div"); e.className = "selnote"; e.textContent = `No ${noun} found.`; box.append(e); }
-  $(noteId).textContent = chosen.size ? `${chosen.size} selected` : "All shown";
-}
-
+const pkey = (c, p) => c + "\u0001" + p;                    // a newspaper within its country
+const keyOf = (i) => pkey(i.country, paperOf(i));
+// Countries & newspapers: one tree, country -> its newspapers. Only newspapers are selected; a country box ticks all of its
+// newspapers. Counts come from the stories left by the section, continent, source-type and search filters.
 function renderSidebar(base) {
   const inCont = base.filter(i => state.continent === "All" || i.continent === state.continent);
-  const cCounts = {}, pCounts = {};
+  const tree = new Map();
   for (const i of inCont) {
-    if (!state.papers.size || state.papers.has(paperOf(i))) cCounts[i.country] = (cCounts[i.country] || 0) + 1;
-    if (!state.countries.size || state.countries.has(i.country)) pCounts[paperOf(i)] = (pCounts[paperOf(i)] || 0) + 1;
+    const c = i.country, p = paperOf(i);
+    if (!tree.has(c)) tree.set(c, new Map());
+    tree.get(c).set(p, (tree.get(c).get(p) || 0) + 1);
   }
-  fillChecklist("clist", "selnote", state.countries, cCounts, state.cq, "countries");
-  fillChecklist("nlist", "nselnote", state.papers, pCounts, state.nq, "newspapers");
+  for (const k of state.papers) {                                                    // keep ticked newspapers visible
+    const [c, p] = k.split("\u0001");
+    if (!tree.has(c)) tree.set(c, new Map());
+    if (!tree.get(c).has(p)) tree.get(c).set(p, 0);
+  }
+  const q = state.cq.trim().toLowerCase();
+  const box = $("tree"); box.replaceChildren();
+  const rows = [];
+  for (const [c, papers] of tree) {
+    const countryHit = q && c.toLowerCase().includes(q);
+    const shown = [...papers].filter(([p]) => !q || countryHit || p.toLowerCase().includes(q));
+    if (!shown.length) continue;
+    shown.sort((a, b) => (state.papers.has(pkey(c, b[0])) - state.papers.has(pkey(c, a[0]))) || b[1] - a[1] || a[0].localeCompare(b[0]));
+    const total = shown.reduce((n, [, k]) => n + k, 0);
+    rows.push({ c, shown, total, sel: shown.some(([p]) => state.papers.has(pkey(c, p))) });
+  }
+  rows.sort((a, b) => (b.sel - a.sel) || b.total - a.total || a.c.localeCompare(b.c));
+  for (const { c, shown, total } of rows) {
+    const names = shown.map(([p]) => p), on = names.filter(p => state.papers.has(pkey(c, p))).length;
+    const open = state.open.has(c) || !!q || on > 0;
+    const g = document.createElement("div"); g.className = "cgrp"; g.dataset.country = c;
+    const row = document.createElement("div"); row.className = "crow";
+    const tw = document.createElement("button"); tw.type = "button"; tw.className = "tw"; tw.textContent = open ? "▾" : "▸";
+    tw.setAttribute("aria-expanded", open); tw.setAttribute("aria-label", `${open ? "Hide" : "Show"} newspapers in ${c}`);
+    tw.onclick = () => { open && !q && on === 0 ? state.open.delete(c) : state.open.add(c); render(); };
+    const l = document.createElement("label");
+    const cb = document.createElement("input"); cb.type = "checkbox"; cb.className = "cc";
+    cb.checked = on === names.length; cb.indeterminate = on > 0 && on < names.length;
+    cb.onchange = () => {
+      for (const p of names) cb.checked ? state.papers.add(pkey(c, p)) : state.papers.delete(pkey(c, p));
+      if (cb.checked) state.open.add(c);
+      resetRange(); render();
+    };
+    const nm = document.createElement("span"); nm.textContent = c;
+    const num = document.createElement("span"); num.className = "n"; num.textContent = total;
+    l.append(cb, nm, num); row.append(tw, l); g.append(row);
+    if (open) {
+      const list = document.createElement("div"); list.className = "plist";
+      for (const [p, k] of shown) {
+        const pl = document.createElement("label");
+        const pc = document.createElement("input"); pc.type = "checkbox"; pc.className = "pp"; pc.checked = state.papers.has(pkey(c, p));
+        pc.onchange = () => { pc.checked ? state.papers.add(pkey(c, p)) : state.papers.delete(pkey(c, p)); resetRange(); render(); };
+        const pn = document.createElement("span"); pn.textContent = p;
+        const pk = document.createElement("span"); pk.className = "n"; pk.textContent = k;
+        pl.append(pc, pn, pk); list.append(pl);
+      }
+      g.append(list);
+    }
+    box.append(g);
+  }
+  if (!rows.length) { const e = document.createElement("div"); e.className = "selnote"; e.textContent = "No countries or newspapers found."; box.append(e); }
+  $("selnote").textContent = state.papers.size ? `${state.papers.size} newspaper${state.papers.size === 1 ? "" : "s"} selected` : "All shown";
 }
 
 function render() {
@@ -354,12 +379,11 @@ function render() {
   renderSidebar(base);
   const list = base.filter(i =>
     (state.continent === "All" || i.continent === state.continent) &&
-    (state.countries.size === 0 || state.countries.has(i.country)) &&
-    (state.papers.size === 0 || state.papers.has(paperOf(i)))
+    (state.papers.size === 0 || state.papers.has(keyOf(i)))
   ).sort((a, b) => score(b) - score(a));
 
   const total = Math.min(list.length, MAX);
-  // the range is applied last, on the list left after the section, continent, country, newspaper, source-type and search filters;
+  // the range is applied last, on the list left after the section, continent, newspaper, source-type and search filters;
   // articles are numbered 1.. within that list
   const from = Math.min(Math.max(1, state.from | 0), MAX), to = Math.min(Math.max(from, state.to | 0), MAX);
   state.from = from; state.to = to;
@@ -427,15 +451,13 @@ function build() {
   }
   $("q").addEventListener("input", (e) => { state.q = e.target.value; resetRange(); render(); });
   $("cq").addEventListener("input", (e) => { state.cq = e.target.value; render(); });
-  $("nq").addEventListener("input", (e) => { state.nq = e.target.value; render(); });
-  $("clear").onclick = () => { state.countries.clear(); state.cq = ""; $("cq").value = ""; resetRange(); render(); };
-  $("nclear").onclick = () => { state.papers.clear(); state.nq = ""; $("nq").value = ""; resetRange(); render(); };
+  $("clear").onclick = () => { state.papers.clear(); state.open.clear(); state.cq = ""; $("cq").value = ""; resetRange(); render(); };
   // Reset: back to the starting view - first section, all continents and countries, both source types, no searches,
   // no newspaper chosen, and the refresh options at their defaults (the defaults in settings.json)
   $("reset").onclick = () => {
-    state.section = SECTIONS[0][0]; state.continent = "All"; state.countries.clear(); state.papers.clear(); state.kinds.clear();
-    state.q = ""; state.cq = ""; state.nq = ""; resetRange();
-    $("q").value = ""; $("cq").value = ""; $("nq").value = "";
+    state.section = SECTIONS[0][0]; state.continent = "All"; state.papers.clear(); state.open.clear(); state.kinds.clear();
+    state.q = ""; state.cq = ""; resetRange();
+    $("q").value = ""; $("cq").value = "";
     $("fPrimary").checked = false; $("fSecondary").checked = false;
     tabs.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
     chips.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));

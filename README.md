@@ -15,7 +15,6 @@ src/                    all code
   config.py, settings.py  load and validate the files in external_config/
   build_site.py           builds site/ (page + sections.json + papers.json + settings.json)
   scheduler_loop.py       the refresh scheduler and the Refresh-button relay listener
-  geo.py                  country detection from headlines
   check_images.py         image health report (diagnostic)
   web/index.html          the front page
   web/newspaper-list/     the Newspaper Homepage page (published at .../newspaper-list/)
@@ -27,10 +26,8 @@ site/                   generated, not committed
 ## Configuring
 - **Newspapers** (`newspaper_sections/<newspaper>.json`, one file each; the only list of newspapers): `newspaper`, `tier` (`primary`/`secondary`), `homepage`, optional `country`/`continent`, `feeds` (each `section`, `url`, optional `label`/`state`) and the section map below.
 - **Sections** (`sections.json`): the order here is the tab order. Each has `key`, `label` and `color` (light and dark).
-  Optional keyword rules: `keywords` are matched as whole words in headline and snippet of stories from feeds in
-  `also_from_sections`, and from `general` feeds when `include_general_newspapers` is true
-  (`extra_keywords_for_general_newspapers` adds words for those). `place` pins the story's country
-  (`{"country", "continent"}`) or takes it from the newspaper (`"newspaper"`).
+  There are no keyword or place rules: a story's section comes from its feed plus the newspaper's section map, and its
+  country and continent are always its newspaper's (`country` / `continent` in its file; "Other" if it has none).
 - **Settings** (`settings.json`): `refresh.manual_cooldown_minutes` (after a refresh finishes, no other refresh is
   accepted for this long; 360 = 6 hours), `refresh.min_gap_seconds`, `refresh.request_topic`, `time_ranges` (the
   "Fetch stories from" choices and default) and `article_counts` (the "Stories per section" choices and default).
@@ -52,7 +49,7 @@ python3 -m unittest discover -s test     # or: python3 -m pytest test
 Tests need PyYAML for the workflow checks; the browser tests need Playwright and Chrome and skip themselves without.
 
 ## The page
-- Tabs (sections), continent chips, a multi-select country box, search, and Primary / Secondary source-type checkboxes
+- Tabs (sections), continent chips, one Countries & newspapers tree (tick a country for all its newspapers, or expand it to pick newspapers), search, and Primary / Secondary source-type checkboxes
   that apply on top of the other filters. Reset clears every selection.
 - **Newspaper Homepage** (link beside the headline; the arrow opens it in a new tab) is a separate page at
   `newspaper-list/`: filter by continent, then country, search by country or newspaper, pick one newspaper, and a
