@@ -49,7 +49,7 @@ python3 -m unittest discover -s test     # or: python3 -m pytest test
 Tests need PyYAML for the workflow checks; the browser tests need Playwright and Chrome and skip themselves without.
 
 ## The page
-- Tabs (sections), continent chips, one Countries & newspapers tree (tick a country for all its newspapers, or expand it to pick newspapers), search, and Primary / Secondary source-type checkboxes
+- Tabs (sections), continent chips, one Newspapers tree (tick a country for all its newspapers, or expand it to pick newspapers), search, and Primary / Secondary source-type checkboxes
   that apply on top of the other filters. Reset clears every selection.
 - **Newspaper Homepage** (link beside the headline; the arrow opens it in a new tab) is a separate page at
   `newspaper-list/`: filter by continent, then country, search by country or newspaper, pick one newspaper, and a
@@ -83,3 +83,9 @@ The listener job (`scheduler.yml`) restarts itself every ~3 hours; GitHub may de
 ```
 
 A story is looked up by its feed tags and by the folders in its web address (`/sports/cricket/...`). Every match adds that story to the mapped section, on top of the section of the feed it came from. There are no keyword rules: a story is in its feed's section plus whatever the map gives. A newspaper is on the site only if it has a file here. Pilot: Hindustan Times, Times of India, India Today, Deccan Herald. `legacy_newspapers.json` is the old, unused list.
+
+## Home page and section tabs
+
+- **Home** (`/`) shows the refresh controls (Refresh, Last/Next Refresh, "Fetch stories from", "Stories per section"), the section buttons, and one random story *with a picture* for every section (a card reading "No stories yet" when a section has none). Picks change on every page load, after a refresh, and with the Shuffle button.
+- **Section pages** (`/?section=<key>`) hold the filters, the Newspapers panel and the stories, and show nothing about refreshing. The headline reads "RC News Desk – {Section}" and links back to Home.
+- Clicking a section opens it in its own browser tab (named `rcnd-<key>`); if that tab is already open it is just brought forward. A new tab starts with default filters; each tab keeps its filters in its URL and its own sessionStorage, so reloads restore them and tabs never affect each other.

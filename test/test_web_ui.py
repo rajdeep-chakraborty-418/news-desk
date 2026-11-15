@@ -41,6 +41,9 @@ def make_news(max_articles=120):
         items.append({"title": f"Sports story {n}", "link": f"https://news.example/s{n}", "summary": "", "image": "",
                       "published": (NOW - timedelta(minutes=n)).isoformat(), "source": "Gamma Wire", "newspaper": "Gamma Wire", "primary": False,
                       "category": "sports", "sections": ["sports"], "continent": "Europe", "country": "United Kingdom", "state": None})
+    for it in items:                                    # two stories with a picture: the Home page features only those
+        if it["title"] in ("World story 3", "Sports story 0"):
+            it["image"] = "https://img.example/pic.jpg"
     for it in items:                                    # older data without the field: matched on the source name instead
         if it["title"].startswith("World story") and int(it["title"].split()[-1]) % 4 == 1:
             del it["newspaper"]
@@ -106,10 +109,17 @@ class BrowserBase(unittest.TestCase):
 @unittest.skipUnless(sync_playwright and CHROME, "Playwright with Chrome is not available")
 class WebUITest(BrowserBase):
     # ---------------------------------------------------------------- helpers
-    def open(self, page=None):
+    def open(self, page=None, section="home"):
+        """A section page (the first section by default), where the stories and filters are."""
+        page = page or self.page
+        page.goto(self.url + "?section=" + section)
+        page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+        return page
+
+    def open_home(self, page=None):
         page = page or self.page
         page.goto(self.url)
-        page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+        page.wait_for_function("document.querySelectorAll('#feat > *').length > 0")
         return page
 
     def tiles(self):
@@ -119,7 +129,10 @@ class WebUITest(BrowserBase):
         return self.page.locator("#grid .tile h2").all_inner_texts()
 
     def tab(self, label):
-        self.page.click(f"#tabs button:text-is('{label}')")
+        """Go to a section the way a reload of its own page would (opening it in its own tab is tested separately)."""
+        key = self.page.locator(f"#tabs button:text-is('{label}')").get_attribute("data-section")
+        self.page.goto(self.url + "?section=" + key)
+        self.page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
 
     # ---------------------------------------------------------------- tabs and colours come from sections.json
     def test_tabs_follow_sections_json_in_order(self):
@@ -324,13 +337,13 @@ class WebUITest(BrowserBase):
         self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "Europe")
 
     def test_headline_is_entirely_black(self):
-        self.open()
+        self.open_home()
         colours = self.page.evaluate("[document.querySelector('h1'), document.querySelector('h1 span')].map(e => getComputedStyle(e).color)")
         self.assertEqual(colours, ["rgb(0, 0, 0)", "rgb(0, 0, 0)"])
         self.assertEqual(self.page.inner_text("h1").replace("\n", " "), "RC News Desk")
 
     def test_newspaper_homepage_link_and_page_title_are_entirely_black(self):
-        self.open()
+        self.open_home()
         self.assertEqual(self.page.evaluate("getComputedStyle(document.querySelector('a.navlink')).color"), "rgb(0, 0, 0)")
         self.page.click("a.navlink"); self.page.wait_for_url("**/newspaper-list/")
         colours = self.page.evaluate("[document.querySelector('h1'), document.querySelector('h1 span')].map(e => getComputedStyle(e).color)")
@@ -346,7 +359,7 @@ class WebUITest(BrowserBase):
 
     # ---------------------------------------------------------------- Newspaper Homepage moved to its own page
     def test_header_links_to_the_newspaper_list_page(self):
-        self.open()
+        self.open_home()
         link, new = self.page.locator("a.navlink"), self.page.locator("a.navnew")
         self.assertEqual(link.inner_text(), "Newspaper Homepage")
         self.assertEqual(link.get_attribute("href"), "newspaper-list/")
@@ -358,13 +371,13 @@ class WebUITest(BrowserBase):
         self.assertGreater(box["x"], title["x"] + title["width"] - 2)
 
     def test_link_opens_the_page_in_the_same_tab(self):
-        self.open()
+        self.open_home()
         self.page.click("a.navlink")
         self.page.wait_for_url("**/newspaper-list/")
         self.assertEqual(self.page.locator("h1").inner_text().replace("\n", " "), "Newspaper Homepage")
 
     def test_arrow_opens_the_page_in_a_new_tab(self):
-        self.open()
+        self.open_home()
         with self.ctx.expect_page() as popup:
             self.page.click("a.navnew")
         new = popup.value
@@ -380,12 +393,11 @@ class WebUITest(BrowserBase):
 
     # ---------------------------------------------------------------- reset
     def test_reset_clears_every_selection(self):
-        self.open()
+        self.open(section="world")
         start = self.snapshot()
-        self.tab("World Desk"); self.page.click("#chips button:text-is('Europe')")
+        self.page.click("#chips button:text-is('Europe')")
         self.page.fill("#q", "story 1"); self.page.check("#fPrimary"); self.page.fill("#cq", "fr")
         self.country_row("France").locator("input.cc").check()
-        self.page.select_option("#range", "72"); self.page.select_option("#count", "250")
         self.assertNotEqual(self.snapshot(), start)
         self.page.click("#reset")
         self.assertEqual(self.snapshot(), start)
@@ -394,8 +406,7 @@ class WebUITest(BrowserBase):
         p = self.page
         return dict(tab=p.locator("#tabs button[aria-pressed=true]").inner_text(), chip=p.locator("#chips button[aria-pressed=true]").inner_text(),
                     q=p.input_value("#q"), cq=p.input_value("#cq"), pri=p.is_checked("#fPrimary"), sec=p.is_checked("#fSecondary"),
-                    sel=p.inner_text("#selnote"),
-                    range=p.input_value("#range"), count=p.input_value("#count"), tiles=self.tiles())
+                    sel=p.inner_text("#selnote"), tiles=self.tiles())
 
     def test_reset_button_sits_under_the_logo(self):
         self.open()
@@ -406,14 +417,14 @@ class WebUITest(BrowserBase):
 
     # ---------------------------------------------------------------- refresh choices come from settings.json
     def test_refresh_choices_and_defaults_come_from_settings_json(self):
-        self.open()
+        self.open_home()
         opts = lambda sel: self.page.evaluate(f"[...document.querySelectorAll('{sel} option')].map(o => [o.value, o.textContent])")
         self.assertEqual(opts("#range"), [["6", "Six hours"], ["24", "One day"], ["72", "Three days"], ["168", "One week"]])
         self.assertEqual(opts("#count"), [["50", "50"], ["150", "150"], ["250", "250"]])
         self.assertEqual((self.page.input_value("#range"), self.page.input_value("#count")), ("24", "150"))
 
     def test_choices_are_remembered_but_only_while_still_valid(self):
-        self.open()
+        self.open_home()
         self.page.select_option("#range", "72"); self.page.select_option("#count", "250")
         self.page.reload(); self.page.wait_for_function("document.querySelectorAll('#range option').length > 0")
         self.assertEqual((self.page.input_value("#range"), self.page.input_value("#count")), ("72", "250"))
@@ -423,7 +434,7 @@ class WebUITest(BrowserBase):
 
     def test_choices_saved_before_the_defaults_changed_are_ignored_once(self):
         self.page.add_init_script("if (!localStorage.getItem('seeded')) { localStorage.setItem('seeded', '1'); localStorage.setItem('rcnd_range', '72'); localStorage.setItem('rcnd_count', '250'); }")
-        self.open()
+        self.open_home()
         self.assertEqual((self.page.input_value("#range"), self.page.input_value("#count")), ("24", "150"))   # old saved values not used
         self.page.select_option("#range", "72")                                                              # a new choice is remembered again
         self.page.reload(); self.page.wait_for_function("document.querySelectorAll('#range option').length > 0")
@@ -439,7 +450,7 @@ class WebUITest(BrowserBase):
         self.page.wait_for_function("document.querySelector('#rstatus').innerText.startsWith('Last')")
 
     def test_refresh_posts_range_and_count_to_the_configured_topic_without_asking_for_a_token(self):
-        self.open(); self.wait_ready()
+        self.open_home(); self.wait_ready()
         self.page.select_option("#range", "168"); self.page.select_option("#count", "250")
         seen = []
         def gh(route):
@@ -461,7 +472,7 @@ class WebUITest(BrowserBase):
         self.assertEqual(self.gh_posts, [])
 
     def test_topic_in_the_request_url_comes_from_settings(self):
-        self.open(); self.wait_ready()
+        self.open_home(); self.wait_ready()
         self.page.click("#refresh")
         self.page.wait_for_function("document.querySelector('#rlabel').innerText === 'Refreshing…'")
         for _ in range(50):
@@ -470,7 +481,7 @@ class WebUITest(BrowserBase):
         self.assertEqual(self.relay_urls, ["https://ntfy.sh/test-topic-abc"])
 
     def test_failed_run_is_reported(self):
-        self.open(); self.wait_ready()
+        self.open_home(); self.wait_ready()
         def gh(route):
             runs = [run(6, "completed", "failure"), run(5, "completed", "success")] if self.relay else self.runs
             route.fulfill(status=200, content_type="application/json", body=json.dumps({"workflow_runs": runs}))
@@ -480,7 +491,7 @@ class WebUITest(BrowserBase):
         self.assertFalse(self.page.is_disabled("#refresh"))
 
     def test_relay_down_shows_a_message_and_re_enables_the_button(self):
-        self.open(); self.wait_ready()
+        self.open_home(); self.wait_ready()
         self.page.route("https://ntfy.sh/**", lambda r: r.abort())
         self.page.click("#refresh")
         self.page.wait_for_selector("#refmsg:not([hidden])")
@@ -499,7 +510,7 @@ class WebUITest(BrowserBase):
             runs = [run(6, "completed", "success"), run(5, "completed", "success")] if relay else [run(5, "completed", "success")]
             route.fulfill(status=200, content_type="application/json", body=json.dumps({"workflow_runs": runs}))
         page.route("https://api.github.com/**", gh)
-        self.open(page); page.wait_for_function("document.querySelector('#rstatus').innerText.startsWith('Last')")
+        self.open_home(page); page.wait_for_function("document.querySelector('#rstatus').innerText.startsWith('Last')")
         page.click("#refresh")
         page.wait_for_function("document.querySelector('#rlabel').innerText==='Refresh' && !document.querySelector('#refresh').disabled", timeout=10000)
         self.assertEqual(relay, ["hours=24&count=150"])                                  # fell back to the relay
@@ -507,11 +518,11 @@ class WebUITest(BrowserBase):
         self.assertEqual(self.dialogs, [])
 
     def test_header_shows_when_the_data_was_generated(self):
-        self.open()
+        self.open_home()
         self.assertIn("Last Refresh", self.page.inner_text("#lastrefresh"))
 
     def test_header_shows_the_next_manual_refresh_one_cooldown_after_the_last(self):
-        self.open()
+        self.open_home()
         self.page.wait_for_function("document.querySelector('#nextrefresh').innerText.startsWith('Next Refresh')")
         self.assertIn("✓", self.page.inner_text("#lastrefresh"))
         want = self.page.evaluate("""(g) => { const d = new Date(new Date(g).getTime() + 60 * 60000);
@@ -527,7 +538,7 @@ class WebUITest(BrowserBase):
         self.page.route("**/refresh.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps({"refreshed_at": done})))
         self.page.route("https://ntfy.sh/**", lambda r: (posts.append(r.request.post_data), r.fulfill(status=200, body="{}")))
         self.page.route("https://api.github.com/**", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps({"workflow_runs": [run(5, "completed", "success")]})))
-        self.open(); self.page.wait_for_function("document.querySelector('#rstatus').innerText.startsWith('Last')")
+        self.open_home(); self.page.wait_for_function("document.querySelector('#rstatus').innerText.startsWith('Last')")
         return posts
 
     def test_refresh_inside_the_cooldown_sends_nothing_and_explains(self):
@@ -566,7 +577,7 @@ class WebUITest(BrowserBase):
         self.page.route("**/refresh.json*", lambda r: r.fulfill(status=200, content_type="application/json", headers={"Date": far_future}, body=json.dumps({"refreshed_at": done})))
         self.page.route("https://ntfy.sh/**", lambda r: (posts.append(r.request.post_data), r.fulfill(status=200, body="{}")))
         self.page.route("https://api.github.com/**", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps({"workflow_runs": []})))
-        self.open(); self.page.wait_for_function("!document.querySelector('#refresh').disabled")
+        self.open_home(); self.page.wait_for_function("!document.querySelector('#refresh').disabled")
         self.page.click("#refresh")
         self.page.wait_for_timeout(800)
         self.assertEqual(posts, ["hours=24&count=150"])                                  # by the server's clock the cooldown is long over
@@ -575,7 +586,7 @@ class WebUITest(BrowserBase):
         posts = []
         self.page.route("https://ntfy.sh/**", lambda r: (posts.append(r.request.post_data), r.fulfill(status=200, body="{}")))
         self.page.route("https://api.github.com/**", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps({"workflow_runs": []})))
-        self.open(); self.page.wait_for_function("!document.querySelector('#refresh').disabled")
+        self.open_home(); self.page.wait_for_function("!document.querySelector('#refresh').disabled")
         self.page.click("#refresh")
         self.page.wait_for_timeout(800)
         self.assertEqual(len(posts), 1)
@@ -583,9 +594,115 @@ class WebUITest(BrowserBase):
     def test_a_cancelled_run_is_not_shown_as_a_failed_refresh(self):
         self.page.route("https://api.github.com/**", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps(
             {"workflow_runs": [run(9, "completed", "cancelled"), run(5, "completed", "success")]})))
-        self.open(); self.page.wait_for_function("document.querySelector('#rstatus').innerText.startsWith('Last')")
+        self.open_home(); self.page.wait_for_function("document.querySelector('#rstatus').innerText.startsWith('Last')")
         self.assertIn("✓", self.page.inner_text("#rstatus"))
         self.assertIn("✓", self.page.inner_text("#lastrefresh"))
+
+
+@unittest.skipUnless(sync_playwright and CHROME, "Playwright with Chrome is not available")
+class HomeAndTabsTest(BrowserBase):
+    def setUp(self):
+        super().setUp()
+        self.ctx.route("https://img.example/**", lambda r: r.fulfill(status=404, body=""))
+
+    def home(self):
+        self.page.goto(self.url)
+        self.page.wait_for_function("document.querySelectorAll('#feat > *').length > 0")
+
+    def section_page(self, page, key, **params):
+        from urllib.parse import urlencode
+        page.goto(self.url + "?" + urlencode({"section": key, **params}))
+        page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+
+    def test_home_shows_no_stories_or_filters_but_the_refresh_options(self):
+        self.home()
+        for sel in ("#grid", "#sidebox", "#chips", "#q", "#rangebar", "#reset"):
+            self.assertFalse(self.page.is_visible(sel), sel)
+        for sel in ("#refresh", "#range", "#count", "#lastrefresh", "#paperlist", "#tabs"):
+            self.assertTrue(self.page.is_visible(sel), sel)
+        self.assertEqual(self.page.title(), "RC News Desk")
+        self.assertEqual(self.page.locator("#tabs button").count(), 7)
+
+    def test_home_features_one_story_with_a_picture_for_every_section(self):
+        self.home()
+        cards = self.page.locator("#feat .fcard")
+        self.assertEqual(cards.count(), 7)                                        # empty sections are not hidden
+        by = {c.get_attribute("data-section"): c for c in cards.all()}
+        self.assertEqual(by["world"].locator("h2").inner_text(), "World story 3")
+        self.assertEqual(by["sports"].locator("h2").inner_text(), "Sports story 0")
+        self.assertEqual(by["world"].locator("a.fmain").get_attribute("href"), "https://news.example/w3")
+        self.assertEqual(by["world"].locator("a.fmain").get_attribute("target"), "_blank")
+        self.assertIn("No stories yet", by["india"].inner_text())                 # no story with a picture: no fallback
+        self.assertEqual(by["india"].locator("a.fmain").count(), 0)
+        self.assertEqual(self.page.locator("#shuffle").count(), 1)
+        self.page.click("#shuffle")
+        self.assertEqual(self.page.locator("#feat .fcard").count(), 7)
+
+    def test_a_section_opens_in_a_new_tab_and_home_is_untouched(self):
+        self.home()
+        with self.ctx.expect_page() as info:
+            self.page.click("#tabs button:text-is('World Desk')")
+        tab = info.value
+        tab.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+        self.assertIn("section=world", tab.url)
+        self.assertEqual(self.page.url, self.url)
+        self.assertEqual(self.page.locator("#feat .fcard").count(), 7)
+        self.assertEqual(tab.title(), "RC News Desk – World Desk")
+        self.assertEqual(tab.inner_text("h1"), "RC News Desk – World Desk")
+        self.assertEqual(tab.get_attribute("#homelink", "href"), "/index.html")
+        for sel in ("#refresh", "#lastrefresh", "#nextrefresh", "#range", "#count"):
+            self.assertFalse(tab.is_visible(sel), sel)
+        for sel in ("#chips", "#q", "#rangebar", "#sidebox", "#reset", "#paperlist"):
+            self.assertTrue(tab.is_visible(sel), sel)
+        self.assertEqual(tab.locator("#tabs button[aria-pressed=true]").inner_text(), "World Desk")
+
+    def test_opening_an_open_section_again_jumps_to_its_tab_and_keeps_its_filters(self):
+        self.home()
+        with self.ctx.expect_page() as info:
+            self.page.click("#tabs button:text-is('World Desk')")
+        tab = info.value
+        tab.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+        tab.fill("#q", "story 1")
+        tab.wait_for_function("location.search.includes('story+1')")
+        before = len(self.ctx.pages)
+        self.page.click("#tabs button:text-is('World Desk')")
+        self.page.wait_for_timeout(500)
+        self.assertEqual(len(self.ctx.pages), before)
+        self.assertEqual(tab.input_value("#q"), "story 1")
+
+    def test_each_tab_keeps_its_own_filters(self):
+        self.home()
+        tabs = {}
+        for label, key in (("World Desk", "world"), ("Sports Desk", "sports")):
+            with self.ctx.expect_page() as info:
+                self.page.click(f"#tabs button:text-is('{label}')")
+            tabs[key] = info.value
+            tabs[key].wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+        tabs["world"].click("#chips button:text-is('Europe')"); tabs["world"].check("#fPrimary")
+        self.assertEqual(tabs["sports"].locator("#chips button[aria-pressed=true]").inner_text(), "All")
+        self.assertFalse(tabs["sports"].is_checked("#fPrimary"))
+        self.assertEqual(tabs["sports"].locator("#grid .tile").count(), 3)
+
+    def test_filters_survive_a_reload_and_a_new_tab_starts_clean(self):
+        self.section_page(self.page, "world")
+        self.page.click("#chips button:text-is('Asia')"); self.page.fill("#q", "story")
+        self.page.reload(); self.page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+        self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "Asia")
+        self.assertEqual(self.page.input_value("#q"), "story")
+        other = self.ctx.new_page()
+        self.section_page(other, "world", fresh="1")
+        self.assertEqual(other.locator("#chips button[aria-pressed=true]").inner_text(), "All")
+        self.assertEqual(other.input_value("#q"), "")
+
+    def test_the_headline_links_back_to_home(self):
+        self.section_page(self.page, "sports")
+        self.page.click("#homelink")
+        self.page.wait_for_function("document.querySelectorAll('#feat > *').length > 0")
+        self.assertEqual(self.page.title(), "RC News Desk")
+
+    def test_the_panel_is_called_newspapers(self):
+        self.section_page(self.page, "world")
+        self.assertTrue(self.page.inner_text("#sidebox summary").startswith("Newspapers"))
 
 
 @unittest.skipUnless(sync_playwright and CHROME, "Playwright with Chrome is not available")

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RC News Desk — headlines from newspapers around the world</title>
+<title>RC News Desk</title>
 <meta name="description" content="Headlines from newspapers across the world, refreshed regularly.">
 <meta name="referrer" content="no-referrer">
 <style>
@@ -19,6 +19,22 @@
   header { padding: 24px 0 12px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; border-bottom: 3px double var(--ink); }
   h1 { margin: 0; font-size: clamp(28px, 5vw, 44px); letter-spacing: -.02em; color: var(--brand); }   /* the whole headline is one colour: black (light text in dark mode) */
   h1 span { color: inherit; }
+  h1 a { color: inherit; text-decoration: none; }
+  h1 a:not([href]) { cursor: default; }
+  .featgrid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); margin-top: 6px; }
+  .feathead { display: flex; align-items: center; gap: 12px; margin: 18px 0 8px; font-family: system-ui, sans-serif; }
+  .feathead h2 { margin: 0; font-size: 18px; }
+  .feathead button { padding: 4px 12px; font-size: 13px; }
+  .fcard { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .fcard a.fmain { display: flex; flex-direction: column; flex: 1; color: inherit; text-decoration: none; }
+  .fcard a.fmain:hover h2, .fcard a.fmain:focus-visible h2 { text-decoration: underline; }
+  .fcard h2 { margin: 0; font-size: 18px; line-height: 1.28; }
+  .fcard .fsec { display: block; width: 100%; text-align: left; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: none; padding: 9px 14px; font: 700 12px system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--tc, var(--ink)); }
+  .fcard .fsec:hover { text-decoration: underline; }
+  .fcard.none .fmain { cursor: default; }
+  .fcard .nostory { padding: 38px 14px; text-align: center; color: var(--muted); font: 14px system-ui, sans-serif; flex: 1; }
+  body[data-mode=home] .controls { position: static; }
+  @media (max-width: 700px) { body[data-mode=home] .tabs { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; } body[data-mode=home] .tabs button { white-space: normal; } .featgrid { grid-template-columns: 1fr; } }
   .hright { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
   .updated { color: var(--muted); font: 13px/1.5 system-ui, sans-serif; text-align: right; }
   button.refresh { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; border-radius: 10px; padding: 7px 14px; text-align: left; min-width: 168px; }
@@ -126,13 +142,13 @@
   <header>
     <div class="brand">
       <div class="titlerow">
-        <h1>RC News <span>Desk</span></h1>
+        <h1><a id="homelink">RC News <span>Desk</span><span id="secname"></span></a></h1>
         <span class="navlinks"><a class="navlink" id="paperlist" href="newspaper-list/" title="Browse newspapers and open their homepages">Newspaper Homepage</a>
           <a class="navnew" href="newspaper-list/" target="_blank" rel="noopener" title="Open Newspaper Homepage in a new tab" aria-label="Open Newspaper Homepage in a new tab">↗</a></span>
       </div>
       <button class="reset" id="reset" type="button" title="Clear every selection and filter">Reset</button>
     </div>
-    <div class="hright">
+    <div class="hright" id="homeonly">
       <div class="updated" id="updated" aria-live="polite">
         <div id="lastrefresh">Loading…</div>
         <div id="nextrefresh"></div>
@@ -156,7 +172,7 @@
 
   <div class="controls">
     <div class="tabs" id="tabs" role="group" aria-label="Section"></div>
-    <div class="row">
+    <div class="row" id="filters">
       <div class="chips" id="chips" role="group" aria-label="Continent"></div>
       <fieldset class="kindbox" id="kind">
         <legend>Source type</legend>
@@ -167,7 +183,12 @@
     </div>
   </div>
 
-  <div class="layout">
+  <section id="homeview" hidden>
+    <div class="feathead"><h2>Today's picks</h2><button id="shuffle" type="button" title="Pick different stories">⟳ Shuffle</button></div>
+    <div class="featgrid" id="feat"></div>
+  </section>
+
+  <div class="layout" id="sectionview" hidden>
     <div>
       <div class="rangebar" id="rangebar" role="group" aria-label="Range of articles to show">
         <span>Show articles</span>
@@ -180,7 +201,7 @@
     </div>
     <aside id="side">
       <details id="sidebox" open>
-        <summary>Countries &amp; newspapers <span class="selnote" id="selnote">All shown</span></summary>
+        <summary>Newspapers <span class="selnote" id="selnote">All shown</span></summary>
         <div class="sidebody">
           <input type="search" id="cq" placeholder="Find a country or newspaper…" aria-label="Find a country or newspaper">
           <button class="clear" id="clear" type="button">Show all</button>
@@ -207,6 +228,8 @@ const FIRST = 50;                            // the range starts as articles 1-5
 let MAX = 200;                               // the most stories kept per section (news.json "max_articles"; 200 for older data)
 const state = { lm: "", generated: "", section: "", continent: "All", papers: new Set(), open: new Set(), kinds: new Set(), q: "", cq: "", items: [], from: 1, to: FIRST };
 const resetRange = () => { state.from = 1; state.to = FIRST; };
+const PARAMS = new URLSearchParams(location.search);
+let HOME = true;                              // Home (no ?section=) or a section page; decided once sections.json is loaded
 const $ = (id) => document.getElementById(id);
 
 const color = (sec) => `var(--c-${sec})`;
@@ -272,6 +295,96 @@ function attachImage(thumb, src) {
   };
   img.src = src;
   thumb.append(img);
+}
+
+// ---------- sections open in their own browser tab ----------
+// Each section lives at ?section=<key> in a tab named rcnd-<key>. Clicking a section looks for that named tab: if it is
+// already open it is only brought forward (nothing reloads, its filters stay); otherwise a new tab starts clean.
+function openSection(key) {
+  const url = new URL("?section=" + encodeURIComponent(key), location.href).href;
+  let w = null;
+  try { w = window.open("", "rcnd-" + key); } catch (e) {}
+  if (!w) { location.href = url; return; }                       // pop-ups blocked: use this tab instead
+  let reuse = false;
+  try { reuse = w.location.href !== "about:blank" && new URL(w.location.href).searchParams.get("section") === key; } catch (e) {}
+  if (!reuse) {
+    try { w.opener = null; } catch (e) {}
+    w.location.replace(url + "&fresh=1");                         // fresh: ignore anything remembered for this section
+  }
+  try { w.focus(); } catch (e) {}
+}
+// A section tab keeps its filters in its own URL and in this tab's sessionStorage, so a reload restores them and
+// other tabs are never affected.
+const FILTER_KEYS = ["continent", "q", "pri", "sec", "from", "to", "papers"];
+const skey = () => "rcnd_sec_" + state.section;
+function saveState() {
+  const o = {};
+  if (state.continent !== "All") o.continent = state.continent;
+  if (state.q) o.q = state.q;
+  if (state.kinds.has("primary")) o.pri = "1";
+  if (state.kinds.has("secondary")) o.sec = "1";
+  if (state.from !== 1 || state.to !== FIRST) { o.from = String(state.from); o.to = String(state.to); }
+  if (state.papers.size) o.papers = JSON.stringify([...state.papers]);
+  try { history.replaceState(null, "", "?" + new URLSearchParams({ section: state.section, ...o })); } catch (e) {}
+  try { sessionStorage.setItem(skey(), JSON.stringify(o)); } catch (e) {}
+}
+function restoreState(params) {
+  let o = {};
+  if (FILTER_KEYS.some(k => params.has(k))) FILTER_KEYS.forEach(k => { if (params.has(k)) o[k] = params.get(k); });
+  else if (params.has("fresh")) { try { sessionStorage.removeItem(skey()); } catch (e) {} }
+  else { try { o = JSON.parse(sessionStorage.getItem(skey()) || "{}") || {}; } catch (e) {} }
+  if (CONTINENTS.includes(o.continent)) state.continent = o.continent;
+  state.q = typeof o.q === "string" ? o.q : "";
+  state.kinds.clear();
+  if (o.pri === "1") state.kinds.add("primary");
+  if (o.sec === "1") state.kinds.add("secondary");
+  const f = parseInt(o.from, 10), t = parseInt(o.to, 10);
+  if (f > 0 && t >= f) { state.from = f; state.to = t; }
+  try { const a = JSON.parse(o.papers || "[]"); if (Array.isArray(a)) a.filter(x => typeof x === "string" && x.includes("\u0001")).forEach(x => { state.papers.add(x); state.open.add(x.split("\u0001")[0]); }); } catch (e) {}
+}
+// put the controls in step with state (after a restore or a reset)
+function syncControls() {
+  $("q").value = state.q;
+  $("fPrimary").checked = state.kinds.has("primary"); $("fSecondary").checked = state.kinds.has("secondary");
+  $("chips").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.textContent === state.continent));
+}
+
+// ---------- Home: one random story with a picture for every section ----------
+const homeState = { picks: null, generated: null };
+function pickRandom() {
+  homeState.picks = SECTIONS.map(([key]) => {
+    const pool = state.items.filter(i => i.sections.includes(key) && i.image && i.image.startsWith("https://"));
+    return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+  });
+  homeState.generated = state.generated;
+}
+function renderHome() {
+  if (!homeState.picks || homeState.picks.length !== SECTIONS.length) pickRandom();
+  const box = $("feat"); box.replaceChildren();
+  SECTIONS.forEach(([key, label], n) => {
+    const i = homeState.picks[n];
+    const card = document.createElement("article"); card.className = "fcard" + (i ? "" : " none"); card.dataset.section = key;
+    card.style.setProperty("--tc", color(key));
+    if (i) {
+      const a = document.createElement("a"); a.className = "fmain"; a.href = i.link; a.target = "_blank"; a.rel = "noopener noreferrer";
+      const thumb = document.createElement("div"); thumb.className = "thumb";
+      const ph = document.createElement("div"); ph.className = "ph"; ph.textContent = (i.source || "?").charAt(0);
+      thumb.append(ph); attachImage(thumb, i.image);
+      const body = document.createElement("div"); body.className = "body";
+      const meta = document.createElement("div"); meta.className = "meta";
+      const c = document.createElement("span"); c.textContent = i.country; const t = document.createElement("span"); t.textContent = ago(i.published);
+      meta.append(c, t);
+      const h = document.createElement("h2"); h.textContent = i.title;
+      const f = document.createElement("div"); f.className = "foot"; const s = document.createElement("span"); s.className = "src"; s.textContent = i.source;
+      f.append(s, document.createTextNode("Read ↗"));
+      body.append(meta, h, f); a.append(thumb, body); card.append(a);
+    } else {
+      const d = document.createElement("div"); d.className = "nostory"; d.textContent = "No stories yet"; card.append(d);
+    }
+    const sec = document.createElement("button"); sec.type = "button"; sec.className = "fsec"; sec.textContent = label + " →";
+    sec.title = "Open " + label + " in its own tab"; sec.onclick = () => openSection(key);
+    card.append(sec); box.append(card);
+  });
 }
 
 function makeTile(i, n) {
@@ -375,6 +488,8 @@ function renderSidebar(base) {
 }
 
 function render() {
+  if (HOME) return;
+  saveState();
   const base = bySection();
   renderSidebar(base);
   const list = base.filter(i =>
@@ -421,13 +536,9 @@ function build() {
   for (const [key, label] of SECTIONS) {
     const b = document.createElement("button");
     b.textContent = label; b.style.setProperty("--tabc", color(key));
-    b.setAttribute("aria-pressed", key === state.section);
-    b.onclick = () => {
-      state.section = key; state.continent = "All"; resetRange();
-      tabs.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
-      $("chips").querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
-      render();
-    };
+    b.type = "button"; b.dataset.section = key;
+    b.setAttribute("aria-pressed", !HOME && key === state.section);
+    b.onclick = () => openSection(key);
     tabs.append(b);
   }
   const chips = $("chips");
@@ -452,21 +563,15 @@ function build() {
   $("q").addEventListener("input", (e) => { state.q = e.target.value; resetRange(); render(); });
   $("cq").addEventListener("input", (e) => { state.cq = e.target.value; render(); });
   $("clear").onclick = () => { state.papers.clear(); state.open.clear(); state.cq = ""; $("cq").value = ""; resetRange(); render(); };
-  // Reset: back to the starting view - first section, all continents and countries, both source types, no searches,
-  // no newspaper chosen, and the refresh options at their defaults (the defaults in settings.json)
+  // Reset: this tab's section back to its starting view - all continents and countries, both source types, no searches,
+  // no newspaper chosen. The refresh options live on Home.
   $("reset").onclick = () => {
-    state.section = SECTIONS[0][0]; state.continent = "All"; state.papers.clear(); state.open.clear(); state.kinds.clear();
+    state.continent = "All"; state.papers.clear(); state.open.clear(); state.kinds.clear();
     state.q = ""; state.cq = ""; resetRange();
-    $("q").value = ""; $("cq").value = "";
-    $("fPrimary").checked = false; $("fSecondary").checked = false;
-    tabs.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
-    chips.querySelectorAll("button").forEach((x, n) => x.setAttribute("aria-pressed", n === 0));
-    if (!$("range").disabled) {
-      $("range").value = SETTINGS.default_hours; $("count").value = SETTINGS.default_count;
-      try { localStorage.removeItem(RANGE_KEY); localStorage.removeItem(COUNT_KEY); } catch (e) {}
-    }
+    $("cq").value = ""; syncControls();
     render(); window.scrollTo({ top: 0 });
   };
+  $("shuffle").onclick = () => { pickRandom(); renderHome(); };
   for (const id of ["rfrom", "rto"]) {                                // typed range: applied when the box loses focus or Enter is pressed
     $(id).addEventListener("change", () => { state.from = parseInt($("rfrom").value, 10) || 1; state.to = parseInt($("rto").value, 10) || state.from; render(); });
   }
@@ -482,10 +587,13 @@ async function load() {
     state.lm = res.headers.get("last-modified") || state.lm; state.generated = data.generated_at;
     $("demo").style.display = data.demo ? "block" : "none";
     state.rangeHours = data.range_hours;
-    paintSchedule();
-    render();
+    if (HOME) {
+      paintSchedule();
+      if (homeState.generated !== state.generated) pickRandom();      // new picks after every refresh (and on every page load)
+      renderHome();
+    } else render();
   } catch (e) {
-    $("lastrefresh").textContent = "Could not load headlines"; $("nextrefresh").textContent = "";
+    if (HOME) { $("lastrefresh").textContent = "Could not load headlines"; $("nextrefresh").textContent = ""; }
     $("grid").innerHTML = '<div class="empty">News data is unavailable. If you opened this file directly, serve it with a web server (python3 -m http.server).</div>';
   }
 }
@@ -651,20 +759,39 @@ function initRefreshControls() {
   $("range").onchange = (e) => { try { localStorage.setItem(RANGE_KEY, e.target.value); } catch (err) {} };
 }
 $("refresh").onclick = startRefresh;
-syncStatus();
-setInterval(() => { if (!rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
+setInterval(() => { if (HOME && !rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
 // sections.json decides the tabs (order, names) and their colours; the page cannot start without it
 async function loadSections() {
   const list = await (await fetch("sections.json?t=" + Date.now())).json();
   SECTIONS = list.map((x) => [x.key, x.label]);
-  state.section = SECTIONS[0][0];
+  const want = PARAMS.get("section");
+  HOME = !SECTIONS.some(([k]) => k === want);                      // no (or an unknown) ?section= means the Home page
+  state.section = HOME ? "" : want;
   const css = (scheme) => list.map((x) => `--c-${x.key}: ${x.color[scheme]};`).join(" ");
   const st = document.createElement("style");
   st.textContent = `:root { ${css("light")} } @media (prefers-color-scheme: dark) { :root { ${css("dark")} } }`;
   document.head.appendChild(st);
 }
 async function loadSettings() { SETTINGS = await (await fetch("settings.json?t=" + Date.now())).json(); }
-Promise.all([loadSections(), loadSettings()]).then(() => { initRefreshControls(); build(); load(); }).catch(() => {
+// Home shows the refresh controls and one featured story per section; a section page shows that section's filters and stories
+function setMode() {
+  document.body.dataset.mode = HOME ? "home" : "section";
+  const label = HOME ? "" : (SECTIONS.find(([k]) => k === state.section) || ["", ""])[1];
+  $("secname").textContent = label ? " – " + label : "";
+  document.title = label ? "RC News Desk – " + label : "RC News Desk";
+  if (HOME) $("homelink").removeAttribute("href"); else { $("homelink").href = location.pathname; window.name = "rcnd-" + state.section; }
+  for (const id of ["homeonly", "homeview", "refmsg"]) $(id).hidden = !HOME;
+  for (const id of ["filters", "sectionview", "reset"]) $(id).hidden = HOME;
+  $("footnote").hidden = !HOME;
+}
+Promise.all([loadSections(), loadSettings()]).then(() => {
+  setMode();
+  if (HOME) { initRefreshControls(); syncStatus(); }
+  build();
+  if (!HOME) { restoreState(PARAMS); syncControls(); }
+  load();
+}).catch((e) => {
+  console.error(e);
   document.body.insertAdjacentHTML("afterbegin", '<p style="padding:20px">Could not load the page configuration (sections.json / settings.json).</p>');
 });
 setInterval(load, 10 * 60 * 1000);   // re-check for new data every 10 minutes
