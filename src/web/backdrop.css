@@ -1,0 +1,12 @@
+/* Header with a picture behind it (see backdrop.js). The pictures are light, so the header keeps dark text and light
+   controls in dark mode too. */
+header.banded { background-size: cover; background-position: right center; background-repeat: no-repeat;
+  border: 1px solid var(--line); border-radius: 14px; padding: 22px 22px 16px; min-height: 150px; align-items: flex-end; margin-top: 12px;
+  color-scheme: light; --ink: #1b1b1f; --brand: #1b1b1f; --muted: #4a4a55; --card: #ffffff; --line: #d9d6cd; --accent: #b3261e; color: var(--ink); }
+header.banded h1 { text-shadow: 0 0 14px rgba(255,255,255,.85), 0 0 4px rgba(255,255,255,.8); }
+body[data-mode="home"] header.banded { min-height: 210px; }
+header.banded { position: relative; }
+header.banded::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(90deg, rgba(255,255,255,.82) 0, rgba(255,255,255,.55) 38%, rgba(255,255,255,0) 62%); }
+header.banded > * { position: relative; }
+header.banded .hright { background: rgba(255,255,255,.78); border-radius: 12px; padding: 8px 12px; }

@@ -14,7 +14,7 @@ class BuildSiteTest(TestCase):
     def test_writes_the_pages_and_the_three_data_files(self):
         n_sections, n_papers, out = build_site.build(self.tmp / "site")
         self.assertEqual((n_sections, n_papers), (7, 4))
-        self.assertEqual(sorted(p.name for p in out.iterdir()), ["cards.css", "index.html", "layout.css", "layout.js", "newspaper-list", "papers.json", "sections.json", "settings.json"])
+        self.assertEqual(sorted(p.name for p in out.iterdir()), ["backdrop.css", "backdrop.js", "backgrounds.json", "cards.css", "index.html", "layout.css", "layout.js", "newspaper-list", "papers.json", "sections.json", "settings.json"])
         self.assertEqual((out / "index.html").read_bytes(), (support.SRC / "web" / "index.html").read_bytes())
         for name in ("cards.css", "layout.css", "layout.js"):                                                   # the layout module ships with the page
             self.assertEqual((out / name).read_bytes(), (support.SRC / "web" / name).read_bytes())
@@ -73,7 +73,7 @@ class BuildSiteTest(TestCase):
 
     def test_rebuilding_overwrites_cleanly(self):
         build_site.build(self.tmp / "site"); build_site.build(self.tmp / "site")
-        self.assertEqual(len(list((self.tmp / "site").iterdir())), 8)
+        self.assertEqual(len(list((self.tmp / "site").iterdir())), 11)
 
     def test_the_page_itself_has_no_built_in_sections_or_refresh_choices(self):
         page = (support.SRC / "web" / "index.html").read_text()

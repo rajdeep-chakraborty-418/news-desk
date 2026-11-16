@@ -94,6 +94,7 @@
 </style>
   <link rel="stylesheet" href="cards.css">
   <link rel="stylesheet" href="layout.css">
+  <link rel="stylesheet" href="backdrop.css">
 </head>
 <body>
 <div class="wrap">
@@ -184,6 +185,7 @@
 </div>
 
 <script src="layout.js"></script>
+<script src="backdrop.js"></script>
 <script>
 let SECTIONS = [];   // [key, label] pairs, filled from sections.json (external_config/sections.json) before the page is built
 const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
@@ -722,6 +724,7 @@ async function loadSections() {
 }
 async function loadSettings() { SETTINGS = await (await fetch("settings.json?t=" + Date.now())).json(); }
 Promise.all([loadSections(), loadSettings()]).then(() => {
+  Backdrop.apply(HOME ? "landing" : PARAMS.get("section"));
   Layout.applyMode({ home: HOME, section: state.section, label: HOME ? "" : (SECTIONS.find(([k]) => k === state.section) || ["", ""])[1] });
   if (HOME) { initRefreshControls(); syncStatus(); }
   build();

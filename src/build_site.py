@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Assemble the site/ folder that gets published: the page from src/web/, plus the lists the page reads at load time,
-generated from external_config/ (sections.json -> site/sections.json, newspaper_sections/*.json -> site/papers.json, settings.json -> site/settings.json).
+generated from external_config/ (sections.json -> site/sections.json, newspaper_sections/*.json -> site/papers.json, settings.json -> site/settings.json, backgrounds/<place>/ images -> site/backgrounds/ + backgrounds.json).
 fetch_news.py then adds site/news.json.   Usage: python3 src/build_site.py [output_dir]"""
 import json
 import shutil
 import sys
 from pathlib import Path
 
+import backgrounds
 import config
 import settings
 
@@ -25,6 +26,7 @@ def build(out_dir=None, web_dir=None):
     papers = config.public_newspapers(newspapers)
     (out / "sections.json").write_text(json.dumps(config.public_sections(sections), ensure_ascii=False, separators=(",", ":")))
     (out / "papers.json").write_text(json.dumps(papers, ensure_ascii=False, separators=(",", ":")))
+    backgrounds.build(out, {s["key"] for s in sections})     # image sets from external_config/backgrounds/
     return len(sections), len(papers), out
 
 

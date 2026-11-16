@@ -118,7 +118,7 @@ class LayoutTest(TestCase):
     def test_expected_folders_and_config_files_exist(self):
         for d in ("src", "test", "external_config", ".github/workflows"):
             self.assertTrue((support.REPO / d).is_dir(), d)
-        self.assertEqual(sorted(os.listdir(support.REPO / "external_config")), ["legacy_newspapers.json", "newspaper_sections", "sections.json", "settings.json"])
+        self.assertEqual(sorted(os.listdir(support.REPO / "external_config")), ["backgrounds", "legacy_newspapers.json", "newspaper_sections", "sections.json", "settings.json"])
         for f in ("fetch_news.py", "config.py", "settings.py", "build_site.py", "scheduler_loop.py", "check_images.py"):
             self.assertTrue((support.SRC / f).is_file(), f)
         self.assertTrue((support.SRC / "web" / "index.html").is_file())

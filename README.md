@@ -107,3 +107,10 @@ Panels start compact (**Standard**): Today's Picks is one row showing at least f
 The page layout is separate from the page logic: `src/web/layout.css` (panels, compact/maximised states, headline link, landing-page-only section buttons) and `src/web/layout.js`. `index.html` (stories, filters, refresh) uses only three calls into it: `Layout.openSection(key)`, `Layout.applyMode({home, section, label})` and `Layout.setMax(panel, on)`, so the layout can be reworked without touching the page logic. Both files are published next to `index.html` by `build_site.py`.
 
 Story-card styling (section tiles and the landing-page featured cards) is in `src/web/cards.css`; `index.html` keeps only the page chrome, colours and filter controls.
+
+## Header pictures (external_config/backgrounds/)
+The landing page and each section page have a picture behind the header. Pictures live in `external_config/backgrounds/<place>/`
+(`landing/` or a section key such as `sports/`); every image file in a folder is in that place's set and the page shows one
+at random per visit. Add or delete files to change a set; the next refresh/build (`src/backgrounds.py`) rebuilds `site/backgrounds/`
+and `backgrounds.json`. No folder or no files = plain header. The page side is `src/web/backdrop.js` + `backdrop.css`.
+The starting set is code-drawn SVG; replace or extend it with AI-made images (see external_config/backgrounds/README.md).

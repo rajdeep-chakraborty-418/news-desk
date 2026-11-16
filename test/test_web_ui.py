@@ -585,6 +585,20 @@ class HomeAndTabsTest(BrowserBase):
         page.goto(self.url + "?" + urlencode({"section": key, **params}))
         page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
 
+    def test_header_picture_comes_from_the_image_set_of_the_place(self):
+        (self.site / "backgrounds" / "landing").mkdir(parents=True, exist_ok=True)
+        (self.site / "backgrounds" / "landing" / "a.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 2"/>')
+        (self.site / "backgrounds.json").write_text(json.dumps({"landing": ["backgrounds/landing/a.svg"]}))
+        try:
+            self.home()
+            page = self.page
+            page.wait_for_selector("header.banded")
+            self.assertIn("backgrounds/landing/a.svg", page.evaluate("document.querySelector('header').style.backgroundImage"))
+            self.section_page(page, "world")                              # no image set for this section: plain header
+            self.assertEqual(page.locator("header.banded").count(), 0)
+        finally:
+            (self.site / "backgrounds.json").write_text("{}")
+
     def test_home_shows_no_stories_or_filters_but_the_refresh_options(self):
         self.home()
         for sel in ("#grid", "#sidebox", "#chips", "#q", "#rangebar", "#reset"):
