@@ -686,7 +686,11 @@ class HomeAndTabsTest(BrowserBase):
         self.home()
         picks, papers = self.page.locator("#panel-picks"), self.page.locator("#panel-papers")
         self.assertLessEqual(picks.bounding_box()["height"], 400)
-        self.assertLess(abs(picks.bounding_box()["y"] - papers.bounding_box()["y"]), 5)                # side by side on a wide screen
+        self.assertLess(picks.bounding_box()["y"] + picks.bounding_box()["height"], papers.bounding_box()["y"] + 1)   # one panel per row
+        grid = self.page.locator("#feat").bounding_box()
+        for n in range(5):                                                                              # five cards fit without scrolling
+            card = self.page.locator("#feat .fcard").nth(n).bounding_box()
+            self.assertLessEqual(card["x"] + card["width"], grid["x"] + grid["width"] + 1, n)
         btn = papers.locator(".pmax")
         self.assertEqual(btn.inner_text(), "Maximise")
         small = papers.bounding_box()["height"]
