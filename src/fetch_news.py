@@ -20,6 +20,7 @@ from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 
 import config
+import dedupe
 import settings
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -399,6 +400,8 @@ def main():
                 if not prev["image"] and it["image"]:
                     prev["image"] = it["image"]
     items = sorted(by_link.values(), key=lambda x: x["published"], reverse=True)
+    items, repeats = dedupe.dedupe(items)
+    print(f"Repeated headlines removed: {repeats}")
     before = len(items)
     items = trim_sections(items, ARTICLE_COUNT)
     got, tried = enrich_images(items)

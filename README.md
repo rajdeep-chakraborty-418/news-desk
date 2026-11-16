@@ -89,3 +89,7 @@ A story is looked up by its feed tags and by the folders in its web address (`/s
 - **Home** (`/`) shows the refresh controls (Refresh, Last/Next Refresh, "Fetch stories from", "Stories per section"), the section buttons, and one random story *with a picture* for every section (a card reading "No stories yet" when a section has none). Picks change on every page load, after a refresh, and with the Shuffle button.
 - **Section pages** (`/?section=<key>`) hold the filters, the Newspapers panel and the stories, and show nothing about refreshing. The headline reads "RC News Desk – {Section}" and links back to Home.
 - Clicking a section opens it in its own browser tab (named `rcnd-<key>`); if that tab is already open it is just brought forward. A new tab starts with default filters; each tab keeps its filters in its URL and its own sessionStorage, so reloads restore them and tabs never affect each other.
+
+## Repeated headlines
+
+On every refresh, `src/dedupe.py` removes repeated headlines inside each section, across all newspapers: headlines at least 90% similar (character based, after lower-casing and dropping punctuation and a trailing " - Newspaper") count as the same story and only one is kept. A primary source beats a secondary one; then the copy with an image, the longer summary and the longer headline wins. A story dropped in one section but kept in another stays only in the one where it was kept. This runs before the per-section story cap, so the cap fills with distinct stories.

@@ -224,6 +224,17 @@ class MainRunTest(EnvTestCase):
             fn.main()
         return json.loads(self.out.read_text())
 
+    def test_the_same_headline_from_two_newspapers_is_kept_once_primary_first(self):
+        table = {
+            "alphatimes.example/rss/world": rss([{"title": "Floods hit the coast badly today - Alpha Times", "link": "https://a.example/f", "hours_ago": 2}]),
+            "betapost.example": rss([{"title": "Floods hit the coast badly today", "link": "https://b.example/f", "hours_ago": 1,
+                                      "image": "https://img.example/f.jpg"}]),
+        }
+        data = self.run_main(table)
+        floods = [i for i in data["items"] if "Floods" in i["title"]]
+        self.assertEqual(len(floods), 1)
+        self.assertTrue(floods[0]["primary"])                 # Alpha Times is the primary source: it beats the secondary copy with a picture
+
     def test_end_to_end(self):
         shared = {"title": "Army drill near border", "link": "https://shared.example/1", "hours_ago": 3}
         table = {
