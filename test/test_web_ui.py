@@ -344,7 +344,6 @@ class WebUITest(BrowserBase):
 
     def test_newspaper_homepage_link_and_page_title_are_entirely_black(self):
         self.open_home()
-        self.assertEqual(self.page.evaluate("getComputedStyle(document.querySelector('a.navlink')).color"), "rgb(0, 0, 0)")
         self.page.goto(self.base + "newspaper-list/")
         colours = self.page.evaluate("[document.querySelector('h1'), document.querySelector('h1 span')].map(e => getComputedStyle(e).color)")
         self.assertEqual(colours, ["rgb(0, 0, 0)", "rgb(0, 0, 0)"])
@@ -356,40 +355,6 @@ class WebUITest(BrowserBase):
         colours = page.evaluate("[document.querySelector('h1'), document.querySelector('h1 span')].map(e => getComputedStyle(e).color)")
         self.assertEqual(colours[0], colours[1])
         self.assertNotEqual(colours[0], "rgb(0, 0, 0)")                  # black on the dark background would vanish
-
-    # ---------------------------------------------------------------- Newspaper Homepage moved to its own page
-    def test_header_links_to_the_newspaper_list_page(self):
-        self.open_home()
-        link, new = self.page.locator("a.navlink"), self.page.locator("a.navnew")
-        self.assertEqual(link.inner_text(), "Newspaper Homepage")
-        self.assertEqual(link.get_attribute("href"), "newspaper-list/")
-        self.assertEqual((new.get_attribute("href"), new.get_attribute("target")), ("newspaper-list/", "_blank"))
-        self.assertIn("noopener", new.get_attribute("rel"))
-        title, box = self.page.locator("h1").bounding_box(), link.bounding_box()
-        self.assertLess(abs((box["y"] + box["height"] / 2) - (title["y"] + title["height"] / 2)), 30)   # beside the headline
-        self.assertGreater(box["x"], title["x"] + title["width"] - 2)
-
-    def test_link_opens_the_list_in_a_panel_on_the_landing_page(self):
-        self.open_home()
-        self.assertFalse(self.page.is_visible("#papers"))
-        self.page.click("a.navlink")
-        self.page.wait_for_selector("#papers[open]")
-        self.assertEqual(self.page.url, self.url)                                          # still on the landing page
-        frame = self.page.frame_locator("#papersframe")
-        frame.locator("h1, .layout").first.wait_for(state="attached")
-        self.assertIn("newspaper-list/?embed=1", self.page.get_attribute("#papersframe", "src"))
-        self.assertFalse(frame.locator("a.back").is_visible())                            # no way back needed inside the panel
-        self.page.click("#papersclose")
-        self.assertFalse(self.page.is_visible("#papers"))
-
-    def test_arrow_opens_the_page_in_a_new_tab(self):
-        self.open_home()
-        with self.ctx.expect_page() as popup:
-            self.page.click("a.navnew")
-        new = popup.value
-        new.wait_for_load_state()
-        self.assertTrue(new.url.endswith("/newspaper-list/"))
-        self.assertTrue(self.page.url.endswith("/index.html"))                            # the original tab stays put
 
     def test_main_page_no_longer_has_the_newspaper_dropdown(self):
         self.open()
@@ -624,14 +589,14 @@ class HomeAndTabsTest(BrowserBase):
         self.home()
         for sel in ("#grid", "#sidebox", "#chips", "#q", "#rangebar", "#reset"):
             self.assertFalse(self.page.is_visible(sel), sel)
-        for sel in ("#refresh", "#range", "#count", "#lastrefresh", "#paperlist", "#tabs"):
+        for sel in ("#refresh", "#range", "#count", "#lastrefresh", "#panel-picks", "#panel-papers", "#tabs"):
             self.assertTrue(self.page.is_visible(sel), sel)
         self.assertEqual(self.page.title(), "RC News Desk")
         self.assertEqual(self.page.locator("#tabs button").count(), 7)
 
     def test_home_heading_is_todays_picks(self):
         self.home()
-        self.assertEqual(self.page.inner_text("#homeview .feathead h2"), "Today's Picks")
+        self.assertEqual(self.page.inner_text("#panel-picks h2"), "Today's Picks")
 
     def test_home_features_one_story_with_a_picture_for_every_section(self):
         self.home()
@@ -664,8 +629,8 @@ class HomeAndTabsTest(BrowserBase):
             self.assertFalse(tab.is_visible(sel), sel)
         for sel in ("#chips", "#q", "#rangebar", "#sidebox", "#reset"):
             self.assertTrue(tab.is_visible(sel), sel)
-        self.assertFalse(tab.is_visible("#paperlist"))                           # the Newspaper Homepage link is on Home only
-        self.assertFalse(tab.is_visible("#navlinks"))
+        self.assertFalse(tab.is_visible("#panel-papers"))                        # the panels are on Home only
+        self.assertFalse(tab.is_visible("#panel-picks"))
         self.assertEqual(tab.locator("#tabs button[aria-pressed=true]").inner_text(), "World Desk")
 
     def test_opening_an_open_section_again_jumps_to_its_tab_and_keeps_its_filters(self):
@@ -705,6 +670,18 @@ class HomeAndTabsTest(BrowserBase):
         self.section_page(other, "world", fresh="1")
         self.assertEqual(other.locator("#chips button[aria-pressed=true]").inner_text(), "All")
         self.assertEqual(other.input_value("#q"), "")
+
+    def test_newspaper_homepage_is_a_fixed_panel_with_no_link(self):
+        self.home()
+        self.assertEqual(self.page.inner_text("#panel-papers h2"), "Newspaper Homepage")
+        for gone in ("a.navlink", "a.navnew", "#paperlist", "#papers"):
+            self.assertEqual(self.page.locator(gone).count(), 0, gone)
+        self.assertEqual(self.page.locator("a[href*='newspaper-list']").count(), 0)         # no hyperlink to it anywhere
+        frame = self.page.frame_locator("#papersframe")
+        frame.locator(".layout").wait_for(state="attached")
+        self.assertFalse(frame.locator("a.back").is_visible())
+        self.page.wait_for_function("parseInt(document.getElementById('papersframe').style.height) > 300")   # sized to its content
+        self.assertTrue(self.page.locator("#panel-picks").bounding_box()["y"] < self.page.locator("#panel-papers").bounding_box()["y"])
 
     def test_the_headline_links_back_to_home(self):
         self.section_page(self.page, "sports")

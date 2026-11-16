@@ -21,10 +21,13 @@
   h1 span { color: inherit; }
   h1 a { color: inherit; text-decoration: none; }
   h1 a:not([href]) { cursor: default; }
+  .panels { display: grid; gap: 22px; margin-top: 18px; }
+  .hpanel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px 16px; }
+  .phead { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; font-family: system-ui, sans-serif; }
+  .phead h2 { margin: 0; font-size: 18px; }
+  .phead button { padding: 4px 12px; font-size: 13px; }
+  #papersframe { display: block; width: 100%; height: 760px; border: 0; background: transparent; }
   .featgrid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); margin-top: 6px; }
-  .feathead { display: flex; align-items: center; gap: 12px; margin: 18px 0 8px; font-family: system-ui, sans-serif; }
-  .feathead h2 { margin: 0; font-size: 18px; }
-  .feathead button { padding: 4px 12px; font-size: 13px; }
   .fcard { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
   .fcard a.fmain { display: flex; flex-direction: column; flex: 1; color: inherit; text-decoration: none; }
   .fcard a.fmain:hover h2, .fcard a.fmain:focus-visible h2 { text-decoration: underline; }
@@ -35,12 +38,6 @@
   .fcard .nostory { padding: 38px 14px; text-align: center; color: var(--muted); font: 14px system-ui, sans-serif; flex: 1; }
   body[data-mode=home] .controls { position: static; }
   @media (max-width: 700px) { body[data-mode=home] .tabs { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; } body[data-mode=home] .tabs button { white-space: normal; } .featgrid { grid-template-columns: 1fr; } }
-  dialog.papers { width: min(1100px, 96vw); height: 88vh; max-width: none; max-height: none; padding: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--bg); color: var(--ink); overflow: hidden; }
-  dialog.papers::backdrop { background: rgba(0,0,0,.5); }
-  dialog.papers[open] { display: flex; flex-direction: column; }
-  dialog.papers .bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 8px 8px 16px; border-bottom: 1px solid var(--line); font: 700 15px system-ui, sans-serif; }
-  dialog.papers .bar button { padding: 4px 12px; font-size: 14px; }
-  dialog.papers iframe { flex: 1; width: 100%; border: 0; background: var(--bg); }
   .hright { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
   .updated { color: var(--muted); font: 13px/1.5 system-ui, sans-serif; text-align: right; }
   button.refresh { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; border-radius: 10px; padding: 7px 14px; text-align: left; min-width: 168px; }
@@ -83,10 +80,6 @@
   .sidebody input[type=search] { margin: 0; min-width: 0; width: 100%; }
   .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
   .titlerow { display: flex; align-items: baseline; gap: 6px 16px; flex-wrap: wrap; }
-  .navlinks { display: inline-flex; align-items: baseline; gap: 4px; font: 600 14px/1 system-ui, sans-serif; }
-  .navlink { color: var(--brand); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
-  .navnew { color: var(--muted); text-decoration: none; padding: 0 4px; }
-  .navlink:hover, .navnew:hover { color: var(--muted); }
   .reset { padding: 2px 10px; font-size: 11px; border-radius: 999px; }
   .clear { padding: 5px 12px; font-size: 13px; justify-self: start; }
   #tree { overflow-y: auto; max-height: 72vh; display: grid; gap: 2px; padding-right: 4px; align-content: start; }
@@ -149,8 +142,6 @@
     <div class="brand">
       <div class="titlerow">
         <h1><a id="homelink">RC News <span>Desk</span><span id="secname"></span></a></h1>
-        <span class="navlinks" id="navlinks"><a class="navlink" id="paperlist" href="newspaper-list/" title="Browse newspapers and open their homepages">Newspaper Homepage</a>
-          <a class="navnew" href="newspaper-list/" target="_blank" rel="noopener" title="Open Newspaper Homepage in a new tab" aria-label="Open Newspaper Homepage in a new tab">↗</a></span>
       </div>
       <button class="reset" id="reset" type="button" title="Clear every selection and filter">Reset</button>
     </div>
@@ -189,10 +180,17 @@
     </div>
   </div>
 
-  <section id="homeview" hidden>
-    <div class="feathead"><h2>Today's Picks</h2><button id="shuffle" type="button" title="Pick different stories">⟳ Shuffle</button></div>
-    <div class="featgrid" id="feat"></div>
-  </section>
+  <!-- Landing page panels: each is a <section class="hpanel"> with a title bar; add a new one here to add a feature -->
+  <div id="homeview" class="panels" hidden>
+    <section class="hpanel" id="panel-picks" aria-labelledby="picks-t">
+      <div class="phead"><h2 id="picks-t">Today's Picks</h2><button id="shuffle" type="button" title="Pick different stories">⟳ Shuffle</button></div>
+      <div class="featgrid" id="feat"></div>
+    </section>
+    <section class="hpanel" id="panel-papers" aria-labelledby="papers-t">
+      <div class="phead"><h2 id="papers-t">Newspaper Homepage</h2></div>
+      <iframe id="papersframe" title="Newspaper Homepage" loading="lazy"></iframe>
+    </section>
+  </div>
 
   <div class="layout" id="sectionview" hidden>
     <div>
@@ -216,10 +214,6 @@
       </details>
     </aside>
   </div>
-  <dialog class="papers" id="papers" aria-label="Newspaper Homepage">
-    <div class="bar"><span>Newspaper Homepage</span><button id="papersclose" type="button" aria-label="Close">✕ Close</button></div>
-    <iframe id="papersframe" title="Newspaper Homepage"></iframe>
-  </dialog>
   <dialog class="notice" id="cooldown" aria-labelledby="cdtitle">
     <h3 id="cdtitle">Please wait for the next refresh</h3>
     <p id="cdtext"></p>
@@ -769,16 +763,11 @@ function initRefreshControls() {
   $("range").onchange = (e) => { try { localStorage.setItem(RANGE_KEY, e.target.value); } catch (err) {} };
 }
 $("refresh").onclick = startRefresh;
-// Newspaper Homepage opens in a panel on this page; the list itself is the separate page newspaper-list/ (loaded when first opened)
-$("paperlist").addEventListener("click", (e) => {
-  if (e.button || e.ctrlKey || e.metaKey || e.shiftKey || !$("papers").showModal) return;     // modified clicks keep the normal link
-  e.preventDefault();
-  const f = $("papersframe");
-  if (!f.getAttribute("src")) f.src = "newspaper-list/?embed=1";
-  $("papers").showModal();
+// The Newspaper Homepage panel shows the separate page newspaper-list/ and grows to the height that page reports
+window.addEventListener("message", (e) => {
+  if (e.origin !== location.origin || !e.data || e.data.type !== "rcnd-height") return;
+  $("papersframe").style.height = Math.max(300, Math.ceil(e.data.height)) + "px";
 });
-$("papersclose").onclick = () => $("papers").close();
-$("papers").addEventListener("click", (e) => { if (e.target === $("papers")) $("papers").close(); });
 setInterval(() => { if (HOME && !rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
 // sections.json decides the tabs (order, names) and their colours; the page cannot start without it
 async function loadSections() {
@@ -800,9 +789,10 @@ function setMode() {
   $("secname").textContent = label ? " – " + label : "";
   document.title = label ? "RC News Desk – " + label : "RC News Desk";
   if (HOME) $("homelink").removeAttribute("href"); else { $("homelink").href = location.pathname; window.name = "rcnd-" + state.section; }
-  for (const id of ["homeonly", "homeview", "refmsg", "navlinks"]) $(id).hidden = !HOME;
+  for (const id of ["homeonly", "homeview", "refmsg"]) $(id).hidden = !HOME;
   for (const id of ["filters", "sectionview", "reset"]) $(id).hidden = HOME;
   $("footnote").hidden = !HOME;
+  if (HOME) $("papersframe").src = "newspaper-list/?embed=1";
 }
 Promise.all([loadSections(), loadSettings()]).then(() => {
   setMode();
