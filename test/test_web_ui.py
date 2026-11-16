@@ -345,7 +345,7 @@ class WebUITest(BrowserBase):
     def test_newspaper_homepage_link_and_page_title_are_entirely_black(self):
         self.open_home()
         self.assertEqual(self.page.evaluate("getComputedStyle(document.querySelector('a.navlink')).color"), "rgb(0, 0, 0)")
-        self.page.click("a.navlink"); self.page.wait_for_url("**/newspaper-list/")
+        self.page.goto(self.base + "newspaper-list/")
         colours = self.page.evaluate("[document.querySelector('h1'), document.querySelector('h1 span')].map(e => getComputedStyle(e).color)")
         self.assertEqual(colours, ["rgb(0, 0, 0)", "rgb(0, 0, 0)"])
 
@@ -363,18 +363,24 @@ class WebUITest(BrowserBase):
         link, new = self.page.locator("a.navlink"), self.page.locator("a.navnew")
         self.assertEqual(link.inner_text(), "Newspaper Homepage")
         self.assertEqual(link.get_attribute("href"), "newspaper-list/")
-        self.assertIsNone(link.get_attribute("target"))                                   # same tab by default
         self.assertEqual((new.get_attribute("href"), new.get_attribute("target")), ("newspaper-list/", "_blank"))
         self.assertIn("noopener", new.get_attribute("rel"))
         title, box = self.page.locator("h1").bounding_box(), link.bounding_box()
         self.assertLess(abs((box["y"] + box["height"] / 2) - (title["y"] + title["height"] / 2)), 30)   # beside the headline
         self.assertGreater(box["x"], title["x"] + title["width"] - 2)
 
-    def test_link_opens_the_page_in_the_same_tab(self):
+    def test_link_opens_the_list_in_a_panel_on_the_landing_page(self):
         self.open_home()
+        self.assertFalse(self.page.is_visible("#papers"))
         self.page.click("a.navlink")
-        self.page.wait_for_url("**/newspaper-list/")
-        self.assertEqual(self.page.locator("h1").inner_text().replace("\n", " "), "Newspaper Homepage")
+        self.page.wait_for_selector("#papers[open]")
+        self.assertEqual(self.page.url, self.url)                                          # still on the landing page
+        frame = self.page.frame_locator("#papersframe")
+        frame.locator("h1, .layout").first.wait_for(state="attached")
+        self.assertIn("newspaper-list/?embed=1", self.page.get_attribute("#papersframe", "src"))
+        self.assertFalse(frame.locator("a.back").is_visible())                            # no way back needed inside the panel
+        self.page.click("#papersclose")
+        self.assertFalse(self.page.is_visible("#papers"))
 
     def test_arrow_opens_the_page_in_a_new_tab(self):
         self.open_home()

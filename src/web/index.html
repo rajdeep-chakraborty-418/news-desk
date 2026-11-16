@@ -35,6 +35,12 @@
   .fcard .nostory { padding: 38px 14px; text-align: center; color: var(--muted); font: 14px system-ui, sans-serif; flex: 1; }
   body[data-mode=home] .controls { position: static; }
   @media (max-width: 700px) { body[data-mode=home] .tabs { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; } body[data-mode=home] .tabs button { white-space: normal; } .featgrid { grid-template-columns: 1fr; } }
+  dialog.papers { width: min(1100px, 96vw); height: 88vh; max-width: none; max-height: none; padding: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--bg); color: var(--ink); overflow: hidden; }
+  dialog.papers::backdrop { background: rgba(0,0,0,.5); }
+  dialog.papers[open] { display: flex; flex-direction: column; }
+  dialog.papers .bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 8px 8px 16px; border-bottom: 1px solid var(--line); font: 700 15px system-ui, sans-serif; }
+  dialog.papers .bar button { padding: 4px 12px; font-size: 14px; }
+  dialog.papers iframe { flex: 1; width: 100%; border: 0; background: var(--bg); }
   .hright { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
   .updated { color: var(--muted); font: 13px/1.5 system-ui, sans-serif; text-align: right; }
   button.refresh { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; border-radius: 10px; padding: 7px 14px; text-align: left; min-width: 168px; }
@@ -210,6 +216,10 @@
       </details>
     </aside>
   </div>
+  <dialog class="papers" id="papers" aria-label="Newspaper Homepage">
+    <div class="bar"><span>Newspaper Homepage</span><button id="papersclose" type="button" aria-label="Close">✕ Close</button></div>
+    <iframe id="papersframe" title="Newspaper Homepage"></iframe>
+  </dialog>
   <dialog class="notice" id="cooldown" aria-labelledby="cdtitle">
     <h3 id="cdtitle">Please wait for the next refresh</h3>
     <p id="cdtext"></p>
@@ -759,6 +769,16 @@ function initRefreshControls() {
   $("range").onchange = (e) => { try { localStorage.setItem(RANGE_KEY, e.target.value); } catch (err) {} };
 }
 $("refresh").onclick = startRefresh;
+// Newspaper Homepage opens in a panel on this page; the list itself is the separate page newspaper-list/ (loaded when first opened)
+$("paperlist").addEventListener("click", (e) => {
+  if (e.button || e.ctrlKey || e.metaKey || e.shiftKey || !$("papers").showModal) return;     // modified clicks keep the normal link
+  e.preventDefault();
+  const f = $("papersframe");
+  if (!f.getAttribute("src")) f.src = "newspaper-list/?embed=1";
+  $("papers").showModal();
+});
+$("papersclose").onclick = () => $("papers").close();
+$("papers").addEventListener("click", (e) => { if (e.target === $("papers")) $("papers").close(); });
 setInterval(() => { if (HOME && !rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
 // sections.json decides the tabs (order, names) and their colours; the page cannot start without it
 async function loadSections() {
