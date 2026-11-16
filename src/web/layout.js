@@ -42,7 +42,7 @@ const Layout = (() => {
     for (const id of ["homeonly", "homeview", "refmsg", "tabs"]) $(id).hidden = !home;      // landing page only
     for (const id of ["filters", "sectionview", "reset"]) $(id).hidden = home;
     $("footnote").hidden = !home;
-    if (home) $("papersframe").src = "newspaper-list/?embed=1";
+    if (home) $("papersframe").src = "newspaper-list/?embed=1&t=" + Date.now();       // t: never show a cached copy of the list page
   }
 
   document.querySelectorAll(".hpanel .pmax").forEach((b) => b.addEventListener("click", () => { const p = b.closest(".hpanel"); setMax(p, !p.classList.contains("max")); }));
