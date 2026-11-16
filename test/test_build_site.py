@@ -14,8 +14,10 @@ class BuildSiteTest(TestCase):
     def test_writes_the_pages_and_the_three_data_files(self):
         n_sections, n_papers, out = build_site.build(self.tmp / "site")
         self.assertEqual((n_sections, n_papers), (7, 4))
-        self.assertEqual(sorted(p.name for p in out.iterdir()), ["index.html", "newspaper-list", "papers.json", "sections.json", "settings.json"])
+        self.assertEqual(sorted(p.name for p in out.iterdir()), ["index.html", "layout.css", "layout.js", "newspaper-list", "papers.json", "sections.json", "settings.json"])
         self.assertEqual((out / "index.html").read_bytes(), (support.SRC / "web" / "index.html").read_bytes())
+        for name in ("layout.css", "layout.js"):                                                   # the layout module ships with the page
+            self.assertEqual((out / name).read_bytes(), (support.SRC / "web" / name).read_bytes())
         self.assertEqual((out / "newspaper-list" / "index.html").read_bytes(),
                          (support.SRC / "web" / "newspaper-list" / "index.html").read_bytes())      # served at .../newspaper-list/
 
@@ -54,9 +56,20 @@ class BuildSiteTest(TestCase):
             build_site.build(self.tmp / "site")
         self.assertFalse((self.tmp / "site" / "sections.json").exists())
 
+    def test_layout_code_lives_in_its_own_module(self):
+        page = (support.SRC / "web" / "index.html").read_text()
+        js = (support.SRC / "web" / "layout.js").read_text()
+        css = (support.SRC / "web" / "layout.css").read_text()
+        self.assertIn('href="layout.css"', page); self.assertIn('src="layout.js"', page)
+        for gone in (".hpanel", ".panels", "function openSection", "function setMax", "rcnd-height"):
+            self.assertNotIn(gone, page, gone)                       # moved out of the page
+        for name in ("openSection", "applyMode", "setMax"):
+            self.assertIn(name, js.split("return {")[-1])           # the module's whole interface
+        self.assertIn(".hpanel.max", css)
+
     def test_rebuilding_overwrites_cleanly(self):
         build_site.build(self.tmp / "site"); build_site.build(self.tmp / "site")
-        self.assertEqual(len(list((self.tmp / "site").iterdir())), 5)
+        self.assertEqual(len(list((self.tmp / "site").iterdir())), 7)
 
     def test_the_page_itself_has_no_built_in_sections_or_refresh_choices(self):
         page = (support.SRC / "web" / "index.html").read_text()

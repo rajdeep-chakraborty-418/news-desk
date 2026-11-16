@@ -19,26 +19,6 @@
   header { padding: 24px 0 12px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; border-bottom: 3px double var(--ink); }
   h1 { margin: 0; font-size: clamp(28px, 5vw, 44px); letter-spacing: -.02em; color: var(--brand); }   /* the whole headline is one colour: black (light text in dark mode) */
   h1 span { color: inherit; }
-  h1 a { color: inherit; text-decoration: none; }
-  h1 a:not([href]) { cursor: default; }
-  .panels { display: grid; gap: 14px; margin-top: 14px; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; }
-  @media (max-width: 1000px) { .panels { grid-template-columns: minmax(0, 1fr); } }
-  .hpanel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px 16px; }
-  .phead .pmax { margin-left: auto; }
-  .phead { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; font-family: system-ui, sans-serif; }
-  .phead h2 { margin: 0; font-size: 18px; }
-  .phead button { padding: 4px 12px; font-size: 13px; }
-  #papersframe { display: block; width: 100%; height: 330px; border: 0; background: transparent; }
-  /* compact (standard) panels: one scrolling row of small cards; Maximise gives the panel the whole window */
-  .hpanel { padding: 10px 12px 12px; }
-  .hpanel:not(.max) .featgrid { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
-  .hpanel:not(.max) .fcard { flex: 0 0 210px; scroll-snap-align: start; }
-  .hpanel:not(.max) .fcard h2 { font-size: 15px; }
-  .hpanel:not(.max) .fcard .body { padding: 8px 10px; gap: 5px; }
-  .hpanel.max { position: fixed; inset: 10px; z-index: 40; overflow: auto; box-shadow: 0 0 0 100vmax rgba(0,0,0,.55); }
-  .hpanel.max #papersframe { height: var(--fh, 760px); }
-  .hpanel.max .featgrid { display: grid; }
-  body.pmax { overflow: hidden; }
   .featgrid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); margin-top: 6px; }
   .fcard { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
   .fcard a.fmain { display: flex; flex-direction: column; flex: 1; color: inherit; text-decoration: none; }
@@ -48,8 +28,6 @@
   .fcard .fsec:hover { text-decoration: underline; }
   .fcard.none .fmain { cursor: default; }
   .fcard .nostory { padding: 38px 14px; text-align: center; color: var(--muted); font: 14px system-ui, sans-serif; flex: 1; }
-  body[data-mode=home] .controls { position: static; }
-  @media (max-width: 700px) { body[data-mode=home] .tabs { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; } body[data-mode=home] .tabs button { white-space: normal; } .featgrid { grid-template-columns: 1fr; } }
   .hright { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
   .updated { color: var(--muted); font: 13px/1.5 system-ui, sans-serif; text-align: right; }
   button.refresh { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; border-radius: 10px; padding: 7px 14px; text-align: left; min-width: 168px; }
@@ -147,6 +125,7 @@
   .end { text-align: center; color: var(--muted); font: 14px system-ui, sans-serif; margin-top: 22px; }
   footer { margin-top: 36px; color: var(--muted); font: 13px system-ui, sans-serif; text-align: center; }
 </style>
+  <link rel="stylesheet" href="layout.css">
 </head>
 <body>
 <div class="wrap">
@@ -236,6 +215,7 @@
   <footer>Headlines, images and links belong to their respective newspapers. Click a tile to read the original story. <span id="footnote">Headlines refresh when someone clicks Refresh.</span></footer>
 </div>
 
+<script src="layout.js"></script>
 <script>
 let SECTIONS = [];   // [key, label] pairs, filled from sections.json (external_config/sections.json) before the page is built
 const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
@@ -313,22 +293,6 @@ function attachImage(thumb, src) {
   thumb.append(img);
 }
 
-// ---------- sections open in their own browser tab ----------
-// Each section lives at ?section=<key> in a tab named rcnd-<key>. Clicking a section looks for that named tab: if it is
-// already open it is only brought forward (nothing reloads, its filters stay); otherwise a new tab starts clean.
-function openSection(key) {
-  const url = new URL("?section=" + encodeURIComponent(key), location.href).href;
-  let w = null;
-  try { w = window.open("", "rcnd-" + key); } catch (e) {}
-  if (!w) { location.href = url; return; }                       // pop-ups blocked: use this tab instead
-  let reuse = false;
-  try { reuse = w.location.href !== "about:blank" && new URL(w.location.href).searchParams.get("section") === key; } catch (e) {}
-  if (!reuse) {
-    try { w.opener = null; } catch (e) {}
-    w.location.replace(url + "&fresh=1");                         // fresh: ignore anything remembered for this section
-  }
-  try { w.focus(); } catch (e) {}
-}
 // A section tab keeps its filters in its own URL and in this tab's sessionStorage, so a reload restores them and
 // other tabs are never affected.
 const FILTER_KEYS = ["continent", "q", "pri", "sec", "from", "to", "papers"];
@@ -398,7 +362,7 @@ function renderHome() {
       const d = document.createElement("div"); d.className = "nostory"; d.textContent = "No stories yet"; card.append(d);
     }
     const sec = document.createElement("button"); sec.type = "button"; sec.className = "fsec"; sec.textContent = label + " →";
-    sec.title = "Open " + label + " in its own tab"; sec.onclick = () => openSection(key);
+    sec.title = "Open " + label + " in its own tab"; sec.onclick = () => Layout.openSection(key);
     card.append(sec); box.append(card);
   });
 }
@@ -554,7 +518,7 @@ function build() {
     b.textContent = label; b.style.setProperty("--tabc", color(key));
     b.type = "button"; b.dataset.section = key;
     b.setAttribute("aria-pressed", !HOME && key === state.section);
-    b.onclick = () => openSection(key);
+    b.onclick = () => Layout.openSection(key);
     tabs.append(b);
   }
   const chips = $("chips");
@@ -775,19 +739,6 @@ function initRefreshControls() {
   $("range").onchange = (e) => { try { localStorage.setItem(RANGE_KEY, e.target.value); } catch (err) {} };
 }
 $("refresh").onclick = startRefresh;
-// Panels start compact ("Standard"); Maximise gives one panel the whole window, Standard or Esc brings it back
-function setMax(panel, on) {
-  document.querySelectorAll(".hpanel.max").forEach(p => { if (p !== panel || !on) { p.classList.remove("max"); p.querySelector(".pmax").textContent = "Maximise"; p.querySelector(".pmax").setAttribute("aria-pressed", "false"); } });
-  if (on) { panel.classList.add("max"); const b = panel.querySelector(".pmax"); b.textContent = "Standard"; b.setAttribute("aria-pressed", "true"); }
-  document.body.classList.toggle("pmax", !!on);
-}
-document.querySelectorAll(".hpanel .pmax").forEach(b => b.addEventListener("click", () => { const p = b.closest(".hpanel"); setMax(p, !p.classList.contains("max")); }));
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMax(null, false); });
-// The Newspaper Homepage panel shows the separate page newspaper-list/; maximised, it grows to the height that page reports
-window.addEventListener("message", (e) => {
-  if (e.origin !== location.origin || !e.data || e.data.type !== "rcnd-height") return;
-  $("panel-papers").style.setProperty("--fh", Math.max(300, Math.ceil(e.data.height)) + "px");
-});
 setInterval(() => { if (HOME && !rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
 // sections.json decides the tabs (order, names) and their colours; the page cannot start without it
 async function loadSections() {
@@ -802,20 +753,8 @@ async function loadSections() {
   document.head.appendChild(st);
 }
 async function loadSettings() { SETTINGS = await (await fetch("settings.json?t=" + Date.now())).json(); }
-// Home shows the refresh controls and one featured story per section; a section page shows that section's filters and stories
-function setMode() {
-  document.body.dataset.mode = HOME ? "home" : "section";
-  const label = HOME ? "" : (SECTIONS.find(([k]) => k === state.section) || ["", ""])[1];
-  $("secname").textContent = label ? " – " + label : "";
-  document.title = label ? "RC News Desk – " + label : "RC News Desk";
-  if (HOME) $("homelink").removeAttribute("href"); else { $("homelink").href = location.pathname; window.name = "rcnd-" + state.section; }
-  for (const id of ["homeonly", "homeview", "refmsg", "tabs"]) $(id).hidden = !HOME;      // section buttons: landing page only
-  for (const id of ["filters", "sectionview", "reset"]) $(id).hidden = HOME;
-  $("footnote").hidden = !HOME;
-  if (HOME) $("papersframe").src = "newspaper-list/?embed=1";
-}
 Promise.all([loadSections(), loadSettings()]).then(() => {
-  setMode();
+  Layout.applyMode({ home: HOME, section: state.section, label: HOME ? "" : (SECTIONS.find(([k]) => k === state.section) || ["", ""])[1] });
   if (HOME) { initRefreshControls(); syncStatus(); }
   build();
   if (!HOME) { restoreState(PARAMS); syncControls(); }
