@@ -1,4 +1,4 @@
-"""scheduler_loop: request parsing, relay polling, starting refreshes through gh, the timing rules."""
+"""adhoc_refresh: request parsing, relay polling, starting refreshes through gh, the timing rules."""
 import contextlib
 import io
 import json
@@ -8,7 +8,8 @@ from unittest import mock
 import support
 from support import FakeResp, TestCase
 
-import scheduler_loop as sl
+import adhoc_refresh as sl
+import refresh_runs
 
 
 def msg(i, text, t):
@@ -84,7 +85,7 @@ class GhTest(TestCase):
         with mock.patch.object(sl, "gh", fake), mock.patch.object(sl, "REPO", "me/repo"), contextlib.redirect_stdout(io.StringIO()):
             self.assertTrue(sl.trigger(168, "test", 250))
             self.assertTrue(sl.trigger(24, "test"))
-        self.assertEqual(calls[0], ("workflow", "run", "update.yml", "--repo", "me/repo", "--ref", "main", "-f", "hours=168", "-f", "count=250"))
+        self.assertEqual(calls[0], ("workflow", "run", "update.yml", "--repo", "me/repo", "--ref", "main", "-f", "kind=adhoc", "-f", "hours=168", "-f", "count=250"))
         self.assertEqual(calls[1][-4:], ("-f", "hours=24", "-f", "count=150"))      # default count from settings
 
     def test_trigger_reports_failure(self):
@@ -92,21 +93,22 @@ class GhTest(TestCase):
                 contextlib.redirect_stdout(io.StringIO()):
             self.assertFalse(sl.trigger(24, "x"))
 
-    def test_refresh_state_counts_only_manual_refreshes(self):
+    def test_refresh_state_counts_refreshes_of_every_kind_but_not_pushes(self):
         from datetime import datetime, timedelta, timezone
         now = datetime.now(timezone.utc)
         iso = lambda m: (now - timedelta(minutes=m)).strftime("%Y-%m-%dT%H:%M:%SZ")
-        run = lambda c, u, concl, status, ev="workflow_dispatch": {"createdAt": iso(c), "updatedAt": iso(u), "conclusion": concl, "status": status, "event": ev}
-        runs = [run(2, 2, "", "in_progress"), run(5, 4, "success", "completed", "push"), run(30, 29, "failure", "completed"),
-                run(70, 65, "success", "completed")]
-        with mock.patch.object(sl, "gh", lambda *a: SimpleNamespace(returncode=0, stdout=json.dumps(runs), stderr="")):
+        run = lambda c, u, concl, status, ev="workflow_dispatch", title="Refresh (adhoc)": {
+            "createdAt": iso(c), "updatedAt": iso(u), "conclusion": concl, "status": status, "event": ev, "displayTitle": title}
+        runs = [run(2, 2, "", "in_progress"), run(5, 4, "success", "completed", "push", "Refresh (push)"), run(30, 29, "failure", "completed"),
+                run(70, 65, "success", "completed", title="Refresh (scheduled)")]
+        with mock.patch.object(refresh_runs, "gh", lambda *a: SimpleNamespace(returncode=0, stdout=json.dumps(runs), stderr="")):
             newest, done, running = sl.refresh_state()
         self.assertAlmostEqual(newest, 2, delta=0.5)
-        self.assertAlmostEqual(done, 65, delta=0.5)         # measured from when it finished; the push run is ignored
+        self.assertAlmostEqual(done, 65, delta=0.5)         # a scheduled refresh counts too; the push run is ignored
         self.assertTrue(running)
-        with mock.patch.object(sl, "gh", lambda *a: SimpleNamespace(returncode=0, stdout="[]", stderr="")):
+        with mock.patch.object(refresh_runs, "gh", lambda *a: SimpleNamespace(returncode=0, stdout="[]", stderr="")):
             self.assertEqual(sl.refresh_state(), (None, None, False))
-        with mock.patch.object(sl, "gh", mock.Mock(side_effect=OSError)):
+        with mock.patch.object(refresh_runs, "gh", mock.Mock(side_effect=OSError)):
             self.assertEqual(sl.refresh_state(), (None, None, False))
 
     def test_cooldown_left(self):

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Refresh scheduler loop, run by the 'Refresh scheduler' workflow.
+"""Adhoc refresh listener, run by the 'Adhoc refresh' workflow (the website's Refresh button). The 4-hourly schedule is a separate
+job and is not touched by anything here.
 
 Every POLL_SECONDS it reads refresh requests that the website's Refresh button posted to a public ntfy.sh topic and, if
 the cooldown (refresh.manual_cooldown_minutes in external_config/settings.json) since the last successful refresh has
-passed and none is running, starts the "Update news and deploy" workflow through the GitHub CLI. There is no automatic
-periodic refresh. After LOOP_MINUTES it exits so the workflow can start a fresh round of itself.
+passed and none is running, starts the "Update news and deploy" workflow through the GitHub CLI. After LOOP_MINUTES it exits so the workflow can start a fresh round of itself.
 
 Requests carry only the chosen time range and story count ("hours=168&count=500"); anything else is ignored, both must
 be one of the allowed values (a missing or invalid value means the default in settings.json), and at most one refresh is started per MIN_GAP_SECONDS, so spamming the topic does nothing.
@@ -12,20 +12,19 @@ be one of the allowed values (a missing or invalid value means the default in se
 import json
 import os
 import re
-import subprocess
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.request import Request, urlopen
 
 import config
+import refresh_runs
 import settings
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG = Path(os.environ.get("NEWSDESK_CONFIG_DIR") or ROOT / "external_config")
 NTFY = os.environ.get("NTFY_BASE", "https://ntfy.sh").rstrip("/")
-GH = os.environ.get("GH_BIN", "gh")
-REPO = os.environ.get("GITHUB_REPOSITORY", "")
+REPO = refresh_runs.REPO
 try:
     SETTINGS = settings.load_settings(CONFIG)      # external_config/settings.json
 except config.ConfigError as exc:
@@ -46,8 +45,7 @@ def log(msg):
     print(time.strftime("%H:%M:%S"), msg, flush=True)
 
 
-def gh(*args):
-    return subprocess.run([GH, *args], capture_output=True, text=True, timeout=120)
+gh = refresh_runs.gh
 
 
 def parse_count(text):
@@ -64,18 +62,16 @@ def parse_hours(text):
 
 def refresh_state():
     """(minutes since the newest refresh run started, minutes since the newest successful refresh finished, is one running);
-    None where unknown. Only refreshes started by hand (workflow_dispatch) count: a code push merely redeploys."""
-    try:
-        r = gh("run", "list", "--repo", REPO, "--workflow", "update.yml", "--limit", "30", "--json", "createdAt,updatedAt,conclusion,status,event")
-        runs = [x for x in json.loads(r.stdout) if x.get("event") == "workflow_dispatch"]
-    except Exception:
+    None where unknown. Refreshes of every kind count (a scheduled run just done makes an adhoc one pointless, and two
+    must never run together); a code push merely redeploys and does not count."""
+    runs = refresh_runs.list_runs(30)
+    if runs is None:
         return None, None, False
     now = datetime.now(timezone.utc)
-    age = lambda iso: (now - datetime.fromisoformat(iso.replace("Z", "+00:00"))).total_seconds() / 60
-    newest = age(runs[0]["createdAt"]) if runs else None
-    done = next((age(x["updatedAt"]) for x in runs if x.get("conclusion") == "success"), None)
-    running = any(x.get("status") in ("queued", "in_progress", "waiting", "pending", "requested") for x in runs)
-    return newest, done, running
+    age = lambda t: (now - t).total_seconds() / 60
+    newest = age(runs[0]["created"]) if runs else None
+    done = next((age(x["updated"]) for x in runs if x["conclusion"] == "success"), None)
+    return newest, done, any(refresh_runs.is_active(x) for x in runs)
 
 
 def cooldown_left(done_age):
@@ -88,7 +84,7 @@ def cooldown_left(done_age):
 
 def trigger(hours, why, count=None):
     count = count or DEFAULT_COUNT
-    r = gh("workflow", "run", "update.yml", "--repo", REPO, "--ref", "main", "-f", f"hours={hours}", "-f", f"count={count}")
+    r = gh("workflow", "run", "update.yml", "--repo", REPO, "--ref", "main", "-f", "kind=adhoc", "-f", f"hours={hours}", "-f", f"count={count}")
     ok = r.returncode == 0
     log(("Started" if ok else "FAILED to start") + f" refresh ({why}, last {hours} h, {count} per section)" + ("" if ok else f": {r.stderr.strip()[:200]}"))
     return ok
@@ -120,7 +116,7 @@ def main():
     newest_age, _, _ = refresh_state()
     # when the last refresh started (stops a second round from repeating a request the first round just handled)
     last_start = time.time() - newest_age * 60 if newest_age is not None else 0.0
-    log(f"Loop started: no automatic refresh; refreshes only on request, at most one per {COOLDOWN_MIN} min; "
+    log(f"Adhoc loop started: refreshes on request, at most one per {COOLDOWN_MIN} min; "
         f"polling the relay every {POLL_SECONDS:g}s for {LOOP_MINUTES:g} min")
     seen, since = set(), start - 90          # also catch a request made just before this round began
     while time.time() < end:

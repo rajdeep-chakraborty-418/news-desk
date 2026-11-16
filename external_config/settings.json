@@ -4,6 +4,16 @@
     "min_gap_seconds": 300,
     "request_topic": "rcnd-d6930e74e95016bf07496776"
   },
+  "schedule": {
+    "every_hours": 4,
+    "first_slot": "00:00",
+    "timezone": "Asia/Kolkata",
+    "range_hours": 24,
+    "count": 3000,
+    "retries": 3,
+    "retry_gap_minutes": 10,
+    "catchup_grace_minutes": 15
+  },
   "time_ranges": {
     "default_hours": 24,
     "options": [

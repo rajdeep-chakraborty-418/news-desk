@@ -4,6 +4,12 @@
                                    (there is no periodic automatic refresh: the news only updates when someone clicks Refresh)
   refresh.min_gap_seconds    at most one refresh is started per this many seconds, however many requests arrive
   refresh.request_topic      the name of the relay channel the page's Refresh button posts to (3-64 letters, digits, - or _)
+  schedule.every_hours       the scheduled refresh runs at fixed clock slots this many hours apart (a divisor of 24)
+  schedule.first_slot        "HH:MM" of the first slot of the day in schedule.timezone (e.g. 00:00, 04:00, 08:00, ...)
+  schedule.timezone          the time zone the slots are fixed in, e.g. "Asia/Kolkata"
+  schedule.range_hours       time range of every scheduled refresh;  schedule.count   stories kept per section
+  schedule.retries           extra attempts after a failed scheduled run;  schedule.retry_gap_minutes  wait between attempts
+  schedule.catchup_grace_minutes   a slot later than this is shown on the page as "delayed"
   time_ranges                the "Fetch stories from" choices: default_hours and options [{hours, label}]
   article_counts             the "Stories per section" choices: default and options [number, ...]
 
@@ -14,6 +20,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import config
 from config import ConfigError
@@ -25,6 +32,26 @@ def _int(value, where, minimum=1):
     if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
         raise ConfigError(f"settings.json: {where} must be a whole number of at least {minimum} (got {value!r})")
     return value
+
+
+def _schedule(sch):
+    if not isinstance(sch, dict):
+        raise ConfigError("settings.json: 'schedule' is missing (every_hours, first_slot, timezone, range_hours, count, ...)")
+    every = _int(sch.get("every_hours"), "schedule.every_hours")
+    if 24 % every:
+        raise ConfigError(f"settings.json: schedule.every_hours ({every}) must divide 24 so the slots repeat every day")
+    m = re.match(r"^([01]\d|2[0-3]):([0-5]\d)$", str(sch.get("first_slot")))
+    if not m:
+        raise ConfigError("settings.json: schedule.first_slot must look like 00:00 (HH:MM, 24-hour)")
+    try:
+        ZoneInfo(str(sch.get("timezone")))
+    except (ZoneInfoNotFoundError, ValueError, OSError):
+        raise ConfigError(f"settings.json: schedule.timezone {sch.get('timezone')!r} is not a known time zone (e.g. Asia/Kolkata)")
+    return {"every_hours": every, "first_slot": (int(m.group(1)), int(m.group(2))), "timezone": sch["timezone"],
+            "range_hours": _int(sch.get("range_hours"), "schedule.range_hours"), "count": _int(sch.get("count"), "schedule.count"),
+            "retries": _int(sch.get("retries"), "schedule.retries", 0),
+            "retry_gap_minutes": _int(sch.get("retry_gap_minutes"), "schedule.retry_gap_minutes", 1),
+            "catchup_grace_minutes": _int(sch.get("catchup_grace_minutes"), "schedule.catchup_grace_minutes", 0)}
 
 
 def load_settings(directory=None):
@@ -66,6 +93,7 @@ def load_settings(directory=None):
     if default_count not in counts:
         raise ConfigError(f"settings.json: article_counts.default ({default_count}) must be one of the options ({counts})")
     return {
+        "schedule": _schedule(data.get("schedule")),
         "cooldown_minutes": _int(refresh.get("manual_cooldown_minutes"), "refresh.manual_cooldown_minutes", 0),
         "min_gap_seconds": _int(refresh.get("min_gap_seconds"), "refresh.min_gap_seconds", 0),
         "request_topic": topic,
@@ -74,9 +102,12 @@ def load_settings(directory=None):
     }
 
 
-def public_settings(st):
-    """What the web page needs: the two choice lists, their defaults, the relay topic and the refresh interval."""
-    return {"cooldown_minutes": st["cooldown_minutes"],      # lets the page work out when the next manual refresh is allowed
+def public_settings(st, now=None):
+    """What the web page needs: the two choice lists, their defaults, the relay topic, the cooldown and the schedule
+    (a slot time to count from, the gap between slots and how late counts as delayed)."""
+    import refresh_schedule
+    return {"schedule": refresh_schedule.public_schedule(st["schedule"], now),
+            "cooldown_minutes": st["cooldown_minutes"],      # lets the page work out when the next manual refresh is allowed
             "time_ranges": st["time_ranges"], "default_hours": st["default_hours"],
             "article_counts": list(st["counts"]), "default_count": st["default_count"], "request_topic": st["request_topic"]}
 

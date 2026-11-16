@@ -27,7 +27,9 @@ class UpdateWorkflowTest(TestCase):
         on = self.wf["on"]
         self.assertNotIn("schedule", on)                          # no periodic refresh
         self.assertNotIn("cron", self.text)
-        self.assertEqual(set(on["workflow_dispatch"]["inputs"]), {"hours", "count"})
+        self.assertEqual(set(on["workflow_dispatch"]["inputs"]), {"kind", "hours", "count"})
+        self.assertEqual(on["workflow_dispatch"]["inputs"]["kind"]["options"], ["adhoc", "scheduled"])
+        self.assertIn("inputs.kind", self.wf["run-name"])                          # the jobs tell scheduled and adhoc runs apart by name
         self.assertEqual(on["push"]["branches"], ["main"])
 
     def test_inputs_have_no_hard_coded_defaults(self):
@@ -38,7 +40,8 @@ class UpdateWorkflowTest(TestCase):
 
     def test_fetch_step_receives_the_chosen_values(self):
         fetch = next(s for s in self.steps if s.get("name", "").startswith("Fetch latest headlines"))
-        self.assertEqual(fetch["env"], {"WINDOW_HOURS": "${{ github.event.inputs.hours }}", "ARTICLE_COUNT": "${{ github.event.inputs.count }}"})
+        self.assertEqual(fetch["env"], {"WINDOW_HOURS": "${{ github.event.inputs.hours }}", "ARTICLE_COUNT": "${{ github.event.inputs.count }}",
+                                        "REFRESH_KIND": "${{ github.event.inputs.kind }}", "PREVIOUS_REFRESH_FILE": "${{ runner.temp }}/previous_refresh.json"})
         self.assertEqual(fetch["run"], "python3 src/fetch_news.py")
 
     def test_build_step_runs_before_fetch(self):
@@ -73,32 +76,56 @@ class UpdateWorkflowTest(TestCase):
         for script in re.findall(r"python3 (src/\S+\.py)", self.text):
             self.assertTrue((support.REPO / script).is_file(), script)
 
-    def test_one_deployment_at_a_time(self):
-        self.assertEqual(self.wf["concurrency"], {"group": "pages", "cancel-in-progress": True})
+    def test_one_deployment_at_a_time_and_a_running_refresh_is_never_cancelled(self):
+        self.assertEqual(self.wf["concurrency"], {"group": "pages", "cancel-in-progress": False})
+
+    def test_a_scheduled_refresh_skips_the_cooldown_gate(self):
+        gate = next(s for s in self.steps if s.get("id") == "gate")
+        self.assertIn('"${{ inputs.kind }}" = "scheduled"', gate["run"])
+
+    def test_the_previous_refresh_record_is_read_before_fetching(self):
+        names = [s.get("name", "") for s in self.steps]
+        i = next(n for n, x in enumerate(names) if x.startswith("Read the previous refresh record"))
+        self.assertLess(i, next(n for n, x in enumerate(names) if x.startswith("Fetch latest headlines")))
 
 
-class SchedulerWorkflowTest(TestCase):
-    def setUp(self):
-        super().setUp()
-        self.wf = load("scheduler.yml")
-        self.text = (WF / "scheduler.yml").read_text()
-        self.steps = self.wf["jobs"]["loop"]["steps"]
+class ChainWorkflowTest(TestCase):
+    """The two independent chains: adhoc_refresh.yml (Refresh button) and scheduled_refresh.yml (the 4-hourly schedule)."""
+    CHAINS = {"adhoc_refresh.yml": ("adhoc_refresh", [{"cron": "47 */3 * * *"}]),
+              "scheduled_refresh.yml": ("scheduled_refresh", [{"cron": "7,37 * * * *"}])}
+
+    def each(self):
+        for name, (module, cron) in self.CHAINS.items():
+            wf = load(name)
+            yield name, module, cron, wf, wf["jobs"]["loop"]["steps"], (WF / name).read_text()
 
     def test_triggers_and_permissions(self):
-        self.assertIn("chain", self.wf["on"]["workflow_dispatch"]["inputs"])
-        self.assertEqual(self.wf["on"]["schedule"], [{"cron": "47 */3 * * *"}])
-        self.assertEqual(self.wf["permissions"]["actions"], "write")
+        for name, module, cron, wf, steps, text in self.each():
+            self.assertIn("chain", wf["on"]["workflow_dispatch"]["inputs"], name)
+            self.assertEqual(wf["on"]["schedule"], cron, name)
+            self.assertEqual(wf["permissions"]["actions"], "write", name)
 
-    def test_runs_the_loop_from_src_and_chains_itself(self):
-        runs = " ".join(str(s.get("run", "")) for s in self.steps)
-        self.assertIn("python3 src/scheduler_loop.py", runs)
-        self.assertIn("gh workflow run scheduler.yml", runs)
-        self.assertIn("chain=true", runs)
-        self.assertTrue((support.REPO / "src" / "scheduler_loop.py").is_file())
+    def test_runs_its_own_loop_from_src_and_chains_itself(self):
+        for name, module, cron, wf, steps, text in self.each():
+            runs = " ".join(str(s.get("run", "")) for s in steps)
+            self.assertIn(f"python3 src/{module}.py", runs, name)
+            self.assertIn(f"gh workflow run {name}", runs, name)
+            self.assertIn(f"--workflow {name}", runs, name)          # the one-chain guard only counts its own runs
+            self.assertIn("chain=true", runs, name)
+            self.assertTrue((support.REPO / "src" / f"{module}.py").is_file(), module)
 
     def test_loop_is_shorter_than_the_job_timeout(self):
-        import scheduler_loop
-        self.assertLess(scheduler_loop.LOOP_MINUTES, self.wf["jobs"]["loop"]["timeout-minutes"])
+        import adhoc_refresh, scheduled_refresh
+        for name, module, cron, wf, steps, text in self.each():
+            loop = {"adhoc_refresh": adhoc_refresh, "scheduled_refresh": scheduled_refresh}[module].LOOP_MINUTES
+            self.assertLess(loop, wf["jobs"]["loop"]["timeout-minutes"], name)
+
+    def test_the_two_modules_do_not_depend_on_each_other(self):
+        sched = (support.SRC / "scheduled_refresh.py").read_text()
+        adhoc = (support.SRC / "adhoc_refresh.py").read_text()
+        self.assertNotIn("adhoc_refresh", sched)
+        self.assertNotIn("scheduled_refresh", adhoc)
+        self.assertNotIn("refresh_schedule", adhoc)               # the slot maths belongs to the schedule only
 
 
 class LayoutTest(TestCase):
@@ -119,12 +146,12 @@ class LayoutTest(TestCase):
         for d in ("src", "test", "external_config", ".github/workflows"):
             self.assertTrue((support.REPO / d).is_dir(), d)
         self.assertEqual(sorted(os.listdir(support.REPO / "external_config")), ["backgrounds", "legacy_newspapers.json", "newspaper_sections", "sections.json", "settings.json"])
-        for f in ("fetch_news.py", "config.py", "settings.py", "build_site.py", "scheduler_loop.py", "check_images.py"):
+        for f in ("fetch_news.py", "config.py", "settings.py", "build_site.py", "adhoc_refresh.py", "scheduled_refresh.py", "refresh_runs.py", "refresh_schedule.py", "check_images.py"):
             self.assertTrue((support.SRC / f).is_file(), f)
         self.assertTrue((support.SRC / "web" / "index.html").is_file())
 
     def test_old_layout_is_gone(self):
-        for old in ("feeds.json", "homepages.py", "fetch_news.py", "scheduler_loop.py", "refresh_topic.txt", "refresh_minutes.txt", "config", "tests", "web"):
+        for old in ("feeds.json", "homepages.py", "fetch_news.py", "scheduler_loop.py", "scheduler.yml", "refresh_topic.txt", "refresh_minutes.txt", "config", "tests", "web"):
             self.assertFalse((support.REPO / old).exists(), old)
 
     def test_generated_site_folder_is_not_committed(self):

@@ -492,14 +492,62 @@ class WebUITest(BrowserBase):
         self.open_home()
         self.assertIn("Last Refresh", self.page.inner_text("#lastrefresh"))
 
-    def test_header_shows_the_next_manual_refresh_one_cooldown_after_the_last(self):
+    def record_page(self, record, schedule=None):
+        """Home page with refresh.json (and optionally the schedule in settings.json) replaced; the text lines of the header block."""
+        self.page.route("**/refresh.json*", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps(record)))
+        if schedule:
+            def settings_route(route):
+                data = route.fetch().json(); data["schedule"].update(schedule)
+                route.fulfill(status=200, content_type="application/json", body=json.dumps(data))
+            self.page.route("**/settings.json*", settings_route)
         self.open_home()
         self.page.wait_for_function("document.querySelector('#nextrefresh').innerText.startsWith('Next Refresh')")
-        self.assertIn("✓", self.page.inner_text("#lastrefresh"))
-        want = self.page.evaluate("""(g) => { const d = new Date(new Date(g).getTime() + 60 * 60000);
-            return d.toLocaleString([], { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }); }""", NOW.isoformat())
-        self.assertEqual(self.page.inner_text("#nextrefresh"), "Next Refresh " + want)       # sample cooldown is 60 minutes
-        self.assertNotIn("scheduled", self.page.inner_text("#updated").lower())
+        return {k: self.page.inner_text("#" + k) for k in ("lastrefresh", "lastsched", "nextrefresh")}
+
+    def fmt(self, ms):
+        return self.page.evaluate("(ms) => RefreshInfo.format(ms)", ms)
+
+    def test_header_shows_the_last_refresh_and_the_next_scheduled_slot(self):
+        from datetime import datetime, timezone
+        import refresh_schedule, settings
+        now = datetime.now(timezone.utc)
+        text = self.record_page({"refreshed_at": (now - timedelta(minutes=5)).isoformat(), "kind": "scheduled", "range_hours": 72,
+                                 "max_articles": 250, "last_scheduled_at": (now - timedelta(minutes=5)).isoformat()})
+        want = refresh_schedule.next_slot(settings.load_settings(support.SAMPLE_CONFIG)["schedule"], now)        # sample: every 6 h from 01:30 IST
+        self.assertEqual(text["nextrefresh"], "Next Refresh " + self.fmt(int(want.timestamp() * 1000)))
+        self.assertIn("(scheduled)", text["lastrefresh"])
+        self.assertIn("✓", text["lastrefresh"])
+        self.assertEqual(text["lastsched"], "")
+
+    def test_an_adhoc_refresh_shows_its_own_time_and_leaves_the_next_slot_alone(self):
+        from datetime import datetime, timezone
+        now = datetime.now(timezone.utc)
+        sched = (now - timedelta(hours=2)).isoformat()
+        scheduled = self.record_page({"refreshed_at": sched, "kind": "scheduled", "range_hours": 72, "max_articles": 250, "last_scheduled_at": sched})
+        self.page.unroute_all()
+        adhoc = self.record_page({"refreshed_at": (now - timedelta(minutes=3)).isoformat(), "kind": "adhoc", "range_hours": 6,
+                                  "max_articles": 50, "last_scheduled_at": sched})
+        self.assertIn("(adhoc, last 6 h / 50 stories)", adhoc["lastrefresh"])
+        self.assertEqual(adhoc["lastsched"], "Last scheduled " + self.fmt(int(datetime.fromisoformat(sched).timestamp() * 1000)))
+        self.assertEqual(adhoc["nextrefresh"], scheduled["nextrefresh"])                    # the slot did not move
+
+    def test_a_late_slot_is_shown_as_delayed_until_a_scheduled_refresh_catches_up(self):
+        from datetime import datetime, timezone
+        now = datetime.now(timezone.utc)
+        slot = {"every_minutes": 240, "anchor": (now - timedelta(minutes=40)).strftime("%Y-%m-%dT%H:%M:%SZ"), "grace_minutes": 15}
+        old = (now - timedelta(hours=5)).isoformat()
+        late = self.record_page({"refreshed_at": old, "kind": "scheduled", "range_hours": 24, "max_articles": 3000, "last_scheduled_at": old}, slot)
+        self.assertEqual(late["nextrefresh"], "Next Refresh due (delayed)")
+        self.page.unroute_all()
+        fresh = (now - timedelta(minutes=10)).isoformat()
+        ok = self.record_page({"refreshed_at": fresh, "kind": "scheduled", "range_hours": 24, "max_articles": 3000, "last_scheduled_at": fresh}, slot)
+        self.assertNotIn("delayed", ok["nextrefresh"])
+
+    def test_a_missing_refresh_record_still_shows_the_data_time_and_next_slot(self):
+        self.page.route("**/refresh.json*", lambda r: r.fulfill(status=404, body=""))
+        self.open_home()
+        self.page.wait_for_function("document.querySelector('#nextrefresh').innerText.startsWith('Next Refresh')")
+        self.assertIn("Last Refresh", self.page.inner_text("#lastrefresh"))
 
     # ---------------------------------------------------------------- the cooldown between manual refreshes
     def cooldown_page(self, refreshed_minutes_ago):

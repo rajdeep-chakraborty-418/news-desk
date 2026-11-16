@@ -29,6 +29,27 @@ class SettingsTest(TestCase):
         self.assertEqual(st["default_count"], 150)
         self.assertEqual(st["time_ranges"][1], {"hours": 24, "label": "One day"})
 
+    def test_the_schedule(self):
+        sch = settings.load_settings(support.SAMPLE_CONFIG)["schedule"]
+        self.assertEqual(sch, {"every_hours": 6, "first_slot": (1, 30), "timezone": "Asia/Kolkata", "range_hours": 72, "count": 250,
+                               "retries": 2, "retry_gap_minutes": 7, "catchup_grace_minutes": 20})
+
+    def test_schedule_validation(self):
+        self._bad(lambda d: d.pop("schedule"), "'schedule' is missing")
+        self._bad(lambda d: d["schedule"].update(every_hours=5), "must divide 24")
+        self._bad(lambda d: d["schedule"].update(every_hours=0), "every_hours")
+        self._bad(lambda d: d["schedule"].update(first_slot="25:00"), "first_slot")
+        self._bad(lambda d: d["schedule"].update(first_slot="9:00"), "first_slot")
+        self._bad(lambda d: d["schedule"].update(timezone="Mars/Base"), "not a known time zone")
+        self._bad(lambda d: d["schedule"].update(count=0), "schedule.count")
+        self._bad(lambda d: d["schedule"].update(retries=-1), "schedule.retries")
+        self._bad(lambda d: d["schedule"].update(retry_gap_minutes=0), "schedule.retry_gap_minutes")
+
+    def test_the_page_gets_the_schedule(self):
+        from datetime import datetime, timezone
+        pub = settings.public_settings(settings.load_settings(support.SAMPLE_CONFIG), datetime(2026, 11, 16, 12, 0, tzinfo=timezone.utc))
+        self.assertEqual(pub["schedule"], {"every_minutes": 360, "anchor": "2026-11-16T08:00:00Z", "range_hours": 72, "count": 250, "grace_minutes": 20})
+
     def test_validation(self):
         self._bad(lambda d: d["refresh"].update(manual_cooldown_minutes=-1), "manual_cooldown_minutes must be a whole number")
         self._bad(lambda d: d["refresh"].update(manual_cooldown_minutes="60"), "manual_cooldown_minutes")

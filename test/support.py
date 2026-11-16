@@ -51,6 +51,8 @@ SAMPLE_NEWSPAPERS = {
 # deliberately different from the shipped settings, so nothing can pass by relying on built-in numbers
 SAMPLE_SETTINGS = {
     "refresh": {"manual_cooldown_minutes": 60, "min_gap_seconds": 120, "request_topic": "test-topic-abc"},
+    "schedule": {"every_hours": 6, "first_slot": "01:30", "timezone": "Asia/Kolkata", "range_hours": 72, "count": 250,
+                 "retries": 2, "retry_gap_minutes": 7, "catchup_grace_minutes": 20},
     "time_ranges": {"default_hours": 24, "options": [
         {"hours": 6, "label": "Six hours"}, {"hours": 24, "label": "One day"},
         {"hours": 72, "label": "Three days"}, {"hours": 168, "label": "One week"}]},

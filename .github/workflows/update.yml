@@ -1,10 +1,18 @@
 name: Update news and deploy
 
+run-name: Refresh (${{ github.event_name == 'push' && 'push' || inputs.kind || 'adhoc' }})
+
 on:
-  # There is no periodic schedule: the news only refreshes when someone clicks Refresh on the page (which starts this
-  # workflow through the relay), and then at most once per refresh.manual_cooldown_minutes (external_config/settings.json).
-  workflow_dispatch:          # a refresh: the page's Refresh button uses this, and so can you from the Actions tab
+  # Refreshes are started by two separate jobs: scheduled_refresh.yml (every 4 hours, kind=scheduled) and adhoc_refresh.yml
+  # (the page's Refresh button through the relay, kind=adhoc, at most once per refresh.manual_cooldown_minutes).
+  workflow_dispatch:          # a refresh: those two use this, and so can you from the Actions tab
     inputs:
+      kind:
+        description: "scheduled (set by the scheduler; ignores the cooldown) or adhoc (a manual refresh; obeys the cooldown)"
+        required: false
+        default: "adhoc"
+        type: choice
+        options: [adhoc, scheduled]
       hours:
         description: "Only include stories from the last N hours (one of time_ranges in external_config/settings.json; empty = its default)"
         required: false
@@ -25,7 +33,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false    # a refresh in progress is never cancelled by a newer one; the newer one waits its turn
 
 jobs:
   build-and-deploy:
@@ -38,12 +46,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Gate (a manual refresh must wait refresh.manual_cooldown_minutes after the last successful one)
+      - name: Gate (an adhoc refresh must wait refresh.manual_cooldown_minutes after the last successful one; a scheduled one never waits)
         id: gate
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ] || [ "${{ inputs.kind }}" = "scheduled" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
           cooldown=$(python3 src/settings.py cooldown_minutes)
           last=$(gh api "repos/${{ github.repository }}/actions/workflows/update.yml/runs?event=workflow_dispatch&status=success&per_page=1" --jq '.workflow_runs[0].updated_at // empty' || true)
           if [ -z "$last" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
@@ -70,9 +78,15 @@ jobs:
           curl -fsS --retry 2 "$base/refresh.json" -o site/refresh.json
           python3 -c "import json; json.load(open('site/news.json')); json.load(open('site/refresh.json'))"
           echo "kept=true" >> "$GITHUB_OUTPUT"
+      - name: Read the previous refresh record (an adhoc refresh keeps the time of the last scheduled one)
+        if: steps.gate.outputs.go == 'true' && steps.keep.outputs.kept != 'true'
+        continue-on-error: true
+        run: curl -fsS --retry 2 "${{ steps.pages.outputs.base_url }}/refresh.json" -o "$RUNNER_TEMP/previous_refresh.json"
       - name: Fetch latest headlines (every refresh; also the very first deployment)
         if: steps.gate.outputs.go == 'true' && steps.keep.outputs.kept != 'true'
         env:
+          REFRESH_KIND: ${{ github.event.inputs.kind }}
+          PREVIOUS_REFRESH_FILE: ${{ runner.temp }}/previous_refresh.json
           WINDOW_HOURS: ${{ github.event.inputs.hours }}
           ARTICLE_COUNT: ${{ github.event.inputs.count }}
         run: python3 src/fetch_news.py

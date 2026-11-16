@@ -9,17 +9,19 @@ and a link to the original article.
 external_config/        everything you configure (no code)
   sections.json           the sections (tabs): names, colours, keyword rules
   newspaper_sections/      one file per newspaper: its own sections mapped onto your sections (many-to-one, e.g. Sports, AFL, NFL -> sports)
-  settings.json           refresh interval, time-range and story-count choices, relay topic
+  settings.json           the refresh schedule, adhoc-refresh rules, time-range and story-count choices, relay topic
 src/                    all code
   fetch_news.py           fetches feeds, sorts stories into sections, writes site/news.json
   config.py, settings.py  load and validate the files in external_config/
   build_site.py           builds site/ (page + sections.json + papers.json + settings.json)
-  scheduler_loop.py       the refresh scheduler and the Refresh-button relay listener
+  scheduled_refresh.py    the 4-hourly scheduled refresh job (+ refresh_schedule.py: the slot maths)
+  adhoc_refresh.py        the Refresh-button listener (adhoc refreshes)
+  refresh_runs.py         the small GitHub helper both of them use
   check_images.py         image health report (diagnostic)
   web/index.html          the front page
   web/newspaper-list/     the Newspaper Homepage page (published at .../newspaper-list/)
 test/                   tests (they use their own sample data and mocks, never external_config/)
-.github/workflows/      update.yml (fetch + deploy), scheduler.yml (timer + refresh requests)
+.github/workflows/      update.yml (fetch + deploy), scheduled_refresh.yml (the 4-hourly timer), adhoc_refresh.yml (Refresh-button requests)
 site/                   generated, not committed
 ```
 
@@ -31,13 +33,28 @@ site/                   generated, not committed
 - **Settings** (`settings.json`): `refresh.manual_cooldown_minutes` (after a refresh finishes, no other refresh is
   accepted for this long; 360 = 6 hours), `refresh.min_gap_seconds`, `refresh.request_topic`, `time_ranges` (the
   "Fetch stories from" choices and default) and `article_counts` (the "Stories per section" choices and default).
-  **There is no automatic refresh**: the news only updates when someone clicks Refresh. The page checks the cooldown
-  first (using `refresh.json`, written by every refresh, and the server's clock) and shows a "please wait" popup; the
-  scheduler job and the workflow check it again, so it cannot be bypassed. A failed refresh does not start a cooldown.
+  `schedule` (see below) is the 4-hourly scheduled refresh. The page checks the adhoc cooldown first (using
+  `refresh.json`, written by every refresh, and the server's clock) and shows a "please wait" popup; the adhoc listener
+  and the workflow check it again, so it cannot be bypassed. A failed refresh does not start a cooldown.
   A code push only redeploys the site with the headlines it already has.
 
 A mistake in these files stops the build with a message naming the file, the entry and what to fix.
 Set `NEWSDESK_CONFIG_DIR` to read the configuration from another folder.
+
+## Scheduled and adhoc refresh (two separate jobs)
+- **Scheduled** (`scheduled_refresh.yml`, `src/scheduled_refresh.py`): at fixed clock slots (`schedule.every_hours` from
+  `schedule.first_slot` in `schedule.timezone`: today 00:00, 04:00, ... 20:00 India time) it starts the update workflow with
+  the schedule's own `range_hours` (24) and `count` (3000 per section). It keeps time itself, checks that a scheduled run
+  really succeeded for the slot, retries a failed one (`retries`, `retry_gap_minutes` apart) and, after being down, catches up
+  the newest missed slot. A cron every 30 minutes restarts the chain if it ever stops. Adhoc refreshes never count as the
+  scheduled one and never move a slot. Slot maths: `src/refresh_schedule.py`.
+- **Adhoc** (`adhoc_refresh.yml`, `src/adhoc_refresh.py`): the page's Refresh button, with the chosen range and count, obeying
+  `refresh.manual_cooldown_minutes`; refused while any refresh is running. It replaces the headlines until the next slot.
+- `update.yml` has a `kind` input (`scheduled` or `adhoc`; scheduled skips the cooldown) and never cancels a refresh in
+  progress; a newer one waits its turn. The run is named "Refresh (scheduled)" / "Refresh (adhoc)".
+- `refresh.json` records `refreshed_at`, `kind` and `last_scheduled_at`. The landing page shows "Last Refresh" (with its kind),
+  "Last scheduled" after an adhoc refresh, and "Next Refresh" = the next slot (counted from `schedule` in `settings.json`);
+  "due (delayed)" when a slot is more than `catchup_grace_minutes` late.
 
 ## Running locally
 ```
@@ -58,7 +75,7 @@ Tests need PyYAML for the workflow checks; the browser tests need Playwright and
 - Each section shows 50 stories, "Show more" adds 50 up to the story count kept by the last refresh, then
   "No more articles available."
 - Refresh (top right) needs no login: it posts the chosen time range and story count to a public ntfy.sh topic
-  (`refresh.request_topic`); the scheduler job checks the topic about every 30 seconds and starts the update workflow.
+  (`refresh.request_topic`); the adhoc listener job checks the topic about every 30 seconds and starts the update workflow.
   The button stays disabled until the run finishes, then shows Last: Success or Failed. At most one refresh starts per
   `refresh.min_gap_seconds`; anything that is not a valid request is ignored.
 - Many feeds only list their latest items, so long time ranges return what each feed still holds
@@ -70,7 +87,7 @@ when a feed has none; the page letterboxes odd shapes and falls back to a placeh
 
 ## Publish for free with GitHub Pages
 Public repository, Settings -> Pages -> Source: GitHub Actions, then run "Update news and deploy" once.
-The listener job (`scheduler.yml`) restarts itself every ~3 hours; GitHub may delay its backup schedule and pauses scheduled workflows in repositories with no activity for 60 days.
+The two timer jobs (`scheduled_refresh.yml`, `adhoc_refresh.yml`) restart themselves every ~3 hours; GitHub may delay its backup schedule and pauses scheduled workflows in repositories with no activity for 60 days.
 
 ## Newspaper section maps
 

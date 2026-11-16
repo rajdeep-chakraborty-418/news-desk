@@ -108,6 +108,7 @@
     <div class="hright" id="homeonly">
       <div class="updated" id="updated" aria-live="polite">
         <div id="lastrefresh">Loading…</div>
+        <div id="lastsched"></div>
         <div id="nextrefresh"></div>
       </div>
       <label class="rangebox" title="On refresh, only fetch stories published within this period">
@@ -186,6 +187,7 @@
 
 <script src="layout.js"></script>
 <script src="backdrop.js"></script>
+<script src="refreshinfo.js"></script>
 <script>
 let SECTIONS = [];   // [key, label] pairs, filled from sections.json (external_config/sections.json) before the page is built
 const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
@@ -209,16 +211,23 @@ function inText(ms) {
   return "in " + Math.floor(m / 60) + " h" + (m % 60 ? " " + (m % 60) + " min" : "");
 }
 function paintSchedule() {
-  const last = $("lastrefresh"), next = $("nextrefresh");
-  const when = state.generated ? new Date(state.generated) : null;
-  if (!when || isNaN(when)) { last.textContent = "Last Refresh: unknown"; next.textContent = ""; return; }
+  const last = $("lastrefresh"), next = $("nextrefresh"), lastSched = $("lastsched");
+  const rec = state.record || (state.generated ? { refreshed_at: state.generated } : null);
+  const d = RefreshInfo.describe(rec, SETTINGS && SETTINGS.schedule, state.nowMs || Date.now());
+  lastSched.textContent = d.lastScheduled ? "Last scheduled " + d.lastScheduled : "";
+  if (!d.last) { last.textContent = "Last Refresh: unknown"; next.textContent = ""; return; }
   // green tick unless the most recent refresh run is known to have failed (then a red cross)
   const failed = typeof rf !== "undefined" && rf.last && rf.last.conclusion && rf.last.conclusion !== "success";
   const mark = Object.assign(document.createElement("span"), { textContent: failed ? "✗" : "✓", title: failed ? "Last refresh failed" : "Last refresh succeeded" });
   mark.style.color = failed ? "#c62828" : "#2e9d4f";
-  last.replaceChildren(document.createTextNode("Last Refresh "), mark, document.createTextNode(" " + fmtTime(when)));
-  if (!SETTINGS || SETTINGS.cooldown_minutes === undefined) { next.textContent = ""; return; }
-  next.textContent = "Next Refresh " + fmtTime(new Date(when.getTime() + SETTINGS.cooldown_minutes * 60000));
+  last.replaceChildren(document.createTextNode("Last Refresh "), mark, document.createTextNode(" " + d.last + (d.kind ? " (" + d.kind + ")" : "")));
+  next.textContent = d.next ? "Next Refresh " + d.next : "";
+  next.classList.toggle("late", d.delayed);
+}
+// the refresh record (kind, last scheduled time) comes from refresh.json; read at start, after a refresh and every few minutes
+async function loadRecord() {
+  const x = await RefreshInfo.load();
+  state.record = x.record; state.nowMs = x.nowMs; paintSchedule();
 }
 
 function ago(iso) {
@@ -630,7 +639,7 @@ async function trackRun(baselineId, startWaitMs) {
   }
   if (errors >= 12 && !viaData) showMsg("Could not read refresh status (GitHub rate limit?). The headlines will update when the refresh finishes.");
   rf.busy = false; rf.note = ""; paintButton();
-  if (rf.last && rf.last.conclusion === "success") load();      // show the new headlines
+  if (rf.last && rf.last.conclusion === "success") { load(); loadRecord(); }      // show the new headlines and times
 }
 async function syncStatus() {
   try {
@@ -710,6 +719,7 @@ function initRefreshControls() {
 }
 $("refresh").onclick = startRefresh;
 setInterval(() => { if (HOME && !rf.busy) paintButton(); }, 60 * 1000);   // keep "x min ago" fresh
+setInterval(() => { if (HOME && !rf.busy) loadRecord(); }, 5 * 60 * 1000);   // pick up a scheduled refresh
 // sections.json decides the tabs (order, names) and their colours; the page cannot start without it
 async function loadSections() {
   const list = await (await fetch("sections.json?t=" + Date.now())).json();
@@ -726,7 +736,7 @@ async function loadSettings() { SETTINGS = await (await fetch("settings.json?t="
 Promise.all([loadSections(), loadSettings()]).then(() => {
   Backdrop.apply(HOME ? "landing" : PARAMS.get("section"));
   Layout.applyMode({ home: HOME, section: state.section, label: HOME ? "" : (SECTIONS.find(([k]) => k === state.section) || ["", ""])[1] });
-  if (HOME) { initRefreshControls(); syncStatus(); }
+  if (HOME) { initRefreshControls(); syncStatus(); loadRecord(); }
   build();
   if (!HOME) { restoreState(PARAMS); syncControls(); }
   load();

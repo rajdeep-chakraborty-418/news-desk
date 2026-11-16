@@ -1,8 +1,10 @@
-name: Refresh scheduler
+name: Scheduled refresh
 
-# Keeps time itself (GitHub's own cron is unreliable on small repos) and listens for requests from the
-# website's Refresh button. scheduler_loop.py runs for about 3 hours, then this workflow starts the next round.
-# The slow cron below is only a safety net that restarts the chain if it ever stops.
+# Keeps time itself (GitHub's own cron is unreliable on small repos) and starts a refresh at every slot of the schedule in
+# external_config/settings.json (every 4 hours, fixed clock times). scheduled_refresh.py runs for about 3 hours, then this
+# workflow starts the next round of itself. The cron below (every 30 minutes) is the safety net: while the chain is alive it
+# does nothing, and if the chain ever stops it starts a new one, which catches up any slot that was missed.
+# Adhoc refreshes (the Refresh button) are a separate workflow (scheduled_refresh.yml).
 on:
   push:
     branches: [main]
@@ -12,7 +14,7 @@ on:
         description: "Set by the scheduler itself when it continues its own chain"
         default: "false"
   schedule:
-    - cron: "47 */3 * * *"
+    - cron: "7,37 * * * *"
 
 permissions:
   contents: read
@@ -30,19 +32,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "${{ inputs.chain }}" = "true" ]; then echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; fi
-          others=$(gh run list --repo "${{ github.repository }}" --workflow scheduler.yml --json databaseId,status \
+          others=$(gh run list --repo "${{ github.repository }}" --workflow scheduled_refresh.yml --json databaseId,status \
             --jq '[.[] | select((.status=="in_progress" or .status=="queued") and .databaseId != ${{ github.run_id }})] | length')
           echo "Other scheduler runs active: $others"
           if [ "${others:-0}" -gt 0 ]; then echo "go=false" >> "$GITHUB_OUTPUT"; else echo "go=true" >> "$GITHUB_OUTPUT"; fi
-      - name: Run the refresh loop
+      - name: Run the scheduled refresh loop
         if: steps.guard.outputs.go == 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-        run: python3 src/scheduler_loop.py
+        run: python3 src/scheduled_refresh.py
       - name: Start the next round
         if: always() && steps.guard.outputs.go == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run scheduler.yml --repo "${{ github.repository }}" --ref main -f chain=true
+        run: gh workflow run scheduled_refresh.yml --repo "${{ github.repository }}" --ref main -f chain=true

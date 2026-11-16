@@ -257,7 +257,7 @@ class MainRunTest(EnvTestCase):
         self.assertEqual((data["range_hours"], data["max_articles"]), (72, 250))
         self.assertTrue(data["generated_at"])
         small = json.loads((self.out.parent / "refresh.json").read_text())          # the tiny file the page reads for the cooldown
-        self.assertEqual(small, {"refreshed_at": data["generated_at"], "range_hours": 72, "max_articles": 250})
+        self.assertEqual(small, {"refreshed_at": data["generated_at"], "kind": "adhoc", "range_hours": 72, "max_articles": 250})
         by_link = {i["link"]: i for i in data["items"]}
         self.assertEqual(set(by_link), {"https://a.example/1", "https://shared.example/1", "https://a.example/2",
                                         "https://g.example/1", "https://f.example/1"})
@@ -324,3 +324,25 @@ class MainRunTest(EnvTestCase):
             data = self.run_main({"solo.example": rss([{"title": "Only story", "link": "https://solo.example/1", "hours_ago": 1}])})
         self.assertEqual([f["source"] for f in data["feeds"]], ["Solo"])
         self.assertEqual(len(data["items"]), 1)
+
+
+class RefreshRecordTest(TestCase):
+    def prev(self, **rec):
+        f = self.tmp / "prev.json"; f.write_text(json.dumps(rec)); return str(f)
+
+    def test_a_scheduled_refresh_records_itself_as_the_last_scheduled_one(self):
+        self.assertEqual(fn.refresh_record("T2", "scheduled", 24, 3000, self.prev(refreshed_at="T1", kind="adhoc", last_scheduled_at="T0")),
+                         {"refreshed_at": "T2", "kind": "scheduled", "range_hours": 24, "max_articles": 3000, "last_scheduled_at": "T2"})
+
+    def test_an_adhoc_refresh_keeps_the_time_of_the_last_scheduled_one(self):
+        self.assertEqual(fn.refresh_record("T2", "adhoc", 6, 2000, self.prev(refreshed_at="T1", kind="scheduled", last_scheduled_at="T1"))["last_scheduled_at"], "T1")
+        self.assertEqual(fn.refresh_record("T3", "adhoc", 6, 2000, self.prev(refreshed_at="T2", kind="adhoc", last_scheduled_at="T1"))["last_scheduled_at"], "T1")
+        self.assertEqual(fn.refresh_record("T3", "adhoc", 6, 2000, self.prev(refreshed_at="T2", kind="scheduled"))["last_scheduled_at"], "T2")
+
+    def test_missing_or_broken_previous_record_and_unknown_kind(self):
+        for prev in (None, str(self.tmp / "nothing.json"), self.prev()):
+            rec = fn.refresh_record("T2", "adhoc", 24, 3000, prev)
+            self.assertEqual(rec, {"refreshed_at": "T2", "kind": "adhoc", "range_hours": 24, "max_articles": 3000})
+        (self.tmp / "bad.json").write_text("{nope")
+        self.assertNotIn("last_scheduled_at", fn.refresh_record("T2", None, 24, 3000, str(self.tmp / "bad.json")))
+        self.assertEqual(fn.refresh_record("T2", "weird", 24, 3000)["kind"], "adhoc")

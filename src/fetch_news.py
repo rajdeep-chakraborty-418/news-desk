@@ -362,6 +362,23 @@ def fetch_one(feed):
     return out, status
 
 
+def refresh_record(refreshed_at, kind, hours, count, previous_file=None):
+    """The contents of refresh.json. kind is 'scheduled' or 'adhoc' (anything else, or nothing, means adhoc). An adhoc
+    refresh carries over when the last scheduled one finished (from the previous refresh.json), so the page can show both."""
+    kind = kind if kind in ("scheduled", "adhoc") else "adhoc"
+    last_scheduled = refreshed_at if kind == "scheduled" else None
+    if last_scheduled is None and previous_file:
+        try:
+            prev = json.loads(Path(previous_file).read_text())
+            last_scheduled = prev.get("last_scheduled_at") or (prev.get("refreshed_at") if prev.get("kind") == "scheduled" else None)
+        except (OSError, ValueError, AttributeError):
+            pass
+    rec = {"refreshed_at": refreshed_at, "kind": kind, "range_hours": hours, "max_articles": count}
+    if last_scheduled:
+        rec["last_scheduled_at"] = last_scheduled
+    return rec
+
+
 def main():
     global WINDOW_HOURS, ARTICLE_COUNT
     try:
@@ -412,9 +429,9 @@ def main():
 
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     generated_at = datetime.now(timezone.utc).isoformat()
-    # refresh.json is tiny: the page reads it to know when the next manual refresh is allowed without downloading news.json
-    (OUT_FILE.parent / "refresh.json").write_text(json.dumps(
-        {"refreshed_at": generated_at, "range_hours": WINDOW_HOURS, "max_articles": ARTICLE_COUNT}))
+    # refresh.json is tiny: the page reads it (when did the last refresh finish, which kind, last scheduled one) without downloading news.json
+    (OUT_FILE.parent / "refresh.json").write_text(json.dumps(refresh_record(generated_at, os.environ.get("REFRESH_KIND"), WINDOW_HOURS,
+                                                                           ARTICLE_COUNT, os.environ.get("PREVIOUS_REFRESH_FILE"))))
     OUT_FILE.write_text(json.dumps({
         "generated_at": generated_at,
         "range_hours": WINDOW_HOURS,
