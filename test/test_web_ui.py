@@ -631,7 +631,7 @@ class HomeAndTabsTest(BrowserBase):
             self.assertTrue(tab.is_visible(sel), sel)
         self.assertFalse(tab.is_visible("#panel-papers"))                        # the panels are on Home only
         self.assertFalse(tab.is_visible("#panel-picks"))
-        self.assertEqual(tab.locator("#tabs button[aria-pressed=true]").inner_text(), "World Desk")
+        self.assertFalse(tab.is_visible("#tabs"))                                # section buttons are on the landing page only
 
     def test_opening_an_open_section_again_jumps_to_its_tab_and_keeps_its_filters(self):
         self.home()

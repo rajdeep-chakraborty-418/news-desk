@@ -809,7 +809,7 @@ function setMode() {
   $("secname").textContent = label ? " – " + label : "";
   document.title = label ? "RC News Desk – " + label : "RC News Desk";
   if (HOME) $("homelink").removeAttribute("href"); else { $("homelink").href = location.pathname; window.name = "rcnd-" + state.section; }
-  for (const id of ["homeonly", "homeview", "refmsg"]) $(id).hidden = !HOME;
+  for (const id of ["homeonly", "homeview", "refmsg", "tabs"]) $(id).hidden = !HOME;      // section buttons: landing page only
   for (const id of ["filters", "sectionview", "reset"]) $(id).hidden = HOME;
   $("footnote").hidden = !HOME;
   if (HOME) $("papersframe").src = "newspaper-list/?embed=1";
