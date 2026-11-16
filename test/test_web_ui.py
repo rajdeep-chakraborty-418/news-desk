@@ -789,16 +789,17 @@ class NewspaperPageTest(BrowserBase):
         self.assertEqual(self.page.locator("a.front").count(), 1)
         self.assertEqual(self.page.inner_text(".mname"), "Beta Post")
 
-    def test_front_page_tile_shows_the_four_most_recent_headlines(self):
+    def test_front_page_tile_shows_the_ten_most_recent_headlines(self):
         self.open(); self.pick("Alpha Times")
         tile = self.page.locator("a.front")
         self.assertEqual(self.page.inner_text(".mname"), "Alpha Times")
         self.assertIn("INDIA · ASIA", self.page.inner_text(".mmeta").upper())
         self.assertIn("primary", self.page.inner_text(".mmeta").lower())
-        # Alpha Times has stories 0, 4, 8, 12 ... (newest first); the lead is the newest, three more follow
+        # Alpha Times has stories 0, 4, 8, 12 ... (newest first); the lead is the newest, nine more follow
         self.assertEqual(self.page.inner_text("#lead h3"), "World story 0")
-        self.assertEqual(self.page.locator(".rest article h4").all_inner_texts(), ["World story 4", "World story 8", "World story 12"])
-        self.assertEqual(self.page.locator("#lead h3, .rest h4").count(), 4)
+        self.assertEqual(self.page.locator(".rest article h4").all_inner_texts(), [f"World story {n}" for n in range(4, 40, 4)])
+        self.assertEqual(self.page.locator("#lead h3, .rest h4").count(), 10)
+        self.assertLess(self.page.locator("a.front").bounding_box()["height"], 560)                  # compact: ten stories in a short tile
         self.assertIn("Open Alpha Times homepage", self.page.inner_text(".cta"))
         self.assertIn("www.alphatimes.example", self.page.inner_text(".cta"))
 
@@ -817,11 +818,11 @@ class NewspaperPageTest(BrowserBase):
     def test_stories_from_older_data_are_matched_on_the_source_name(self):
         self.open(); self.pick("Beta Post")
         titles = [self.page.inner_text("#lead h3")] + self.page.locator(".rest h4").all_inner_texts()
-        self.assertEqual(len(titles), 4)
+        self.assertEqual(len(titles), 10)
         self.assertTrue(all(t.startswith("World story") for t in titles))
         self.assertEqual(titles[0], "World story 1")                                       # newest Beta Post story
 
-    def test_a_paper_with_fewer_than_four_stories(self):
+    def test_a_paper_with_fewer_than_ten_stories(self):
         self.open(); self.pick("Gamma Wire")
         self.assertEqual(self.page.inner_text("#lead h3"), "Sports story 0")
         self.assertEqual(self.page.locator(".rest article").count(), 2)
