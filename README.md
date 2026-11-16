@@ -99,3 +99,5 @@ The de-duplication is a self-contained step: `fetch_news.py` calls only `dedupe.
 ## Landing-page panels
 
 The Home page is a stack of fixed panels, each a `<section class="hpanel">` with a title bar in `src/web/index.html` (currently **Today's Picks** and **Newspaper Homepage**). The Newspaper Homepage panel shows the separate `newspaper-list/` page inside the panel (there is no link to it) and grows to the height that page reports. To add a feature, add another `hpanel` section inside `#homeview` (and fill it from the page script); section pages never show the panels.
+
+Panels start compact (**Standard**): Today's Picks is one scrolling row of small cards and the Newspaper Homepage panel has a short, scrollable view, side by side on wide screens and stacked on narrow ones. Each panel's title bar has a **Maximise** button that gives that panel the whole window (it becomes **Standard**; Esc also restores it). Only one panel is maximised at a time.

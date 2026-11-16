@@ -680,8 +680,29 @@ class HomeAndTabsTest(BrowserBase):
         frame = self.page.frame_locator("#papersframe")
         frame.locator(".layout").wait_for(state="attached")
         self.assertFalse(frame.locator("a.back").is_visible())
-        self.page.wait_for_function("parseInt(document.getElementById('papersframe').style.height) > 300")   # sized to its content
-        self.assertTrue(self.page.locator("#panel-picks").bounding_box()["y"] < self.page.locator("#panel-papers").bounding_box()["y"])
+        self.assertLessEqual(self.page.locator("#panel-papers").bounding_box()["height"], 460)       # compact by default
+
+    def test_panels_are_compact_and_can_be_maximised_and_restored(self):
+        self.home()
+        picks, papers = self.page.locator("#panel-picks"), self.page.locator("#panel-papers")
+        self.assertLessEqual(picks.bounding_box()["height"], 400)
+        self.assertLess(abs(picks.bounding_box()["y"] - papers.bounding_box()["y"]), 5)                # side by side on a wide screen
+        btn = papers.locator(".pmax")
+        self.assertEqual(btn.inner_text(), "Maximise")
+        small = papers.bounding_box()["height"]
+        btn.click()
+        self.assertEqual(btn.inner_text(), "Standard")
+        box = papers.bounding_box()
+        self.assertGreater(box["height"], small + 200)
+        self.assertGreater(box["width"], 1200)                                                          # fills the window
+        self.assertFalse(picks.evaluate("e => e.classList.contains('max')"))
+        self.page.keyboard.press("Escape")                                                             # Esc restores
+        self.assertEqual(btn.inner_text(), "Maximise")
+        self.assertEqual(papers.bounding_box()["height"], small)
+        picks.locator(".pmax").click(); papers.locator(".pmax").dispatch_event("click")                # one maximised at a time
+        self.assertEqual(self.page.locator(".hpanel.max").count(), 1)
+        papers.locator(".pmax").click()
+        self.assertEqual(self.page.locator(".hpanel.max").count(), 0)
 
     def test_the_headline_links_back_to_home(self):
         self.section_page(self.page, "sports")
