@@ -1,0 +1,35 @@
+/* Story cards: the tiles in a section's grid and the featured cards on the landing page (picture box, text, badges).
+   Page layout is in layout.css; colours and page chrome are in index.html. */
+.featgrid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); margin-top: 6px; }
+.fcard { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.fcard a.fmain { display: flex; flex-direction: column; flex: 1; color: inherit; text-decoration: none; }
+.fcard a.fmain:hover h2, .fcard a.fmain:focus-visible h2 { text-decoration: underline; }
+.fcard h2 { margin: 0; font-size: 18px; line-height: 1.28; }
+.fcard .fsec { display: block; width: 100%; text-align: left; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: none; padding: 9px 14px; font: 700 12px system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; color: var(--tc, var(--ink)); }
+.fcard .fsec:hover { text-decoration: underline; }
+.fcard.none .fmain { cursor: default; }
+.fcard .nostory { padding: 38px 14px; text-align: center; color: var(--muted); font: 14px system-ui, sans-serif; flex: 1; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
+a.tile { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--card); border: 1px solid var(--line);
+         border-radius: 10px; overflow: hidden; transition: transform .12s, box-shadow .12s; }
+a.tile:hover, a.tile:focus-visible { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.14); outline: none; }
+.thumb { position: relative; aspect-ratio: 16 / 9; background: var(--line); overflow: hidden; }
+/* Every tile gets the same 16:9 image box. A normal photo fills it (cropped from the top third, where faces
+   usually are); a narrow, square or tall photo is shown whole over a blurred copy of itself; a small image is
+   shown at its natural size, centred, instead of being stretched into a blur. */
+.thumb img.main { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block; }
+.thumb img.main.contain { object-fit: contain; object-position: center; }
+.thumb img.main.small { inset: auto; top: 50%; left: 50%; width: auto; height: auto; max-width: 100%; max-height: 100%; transform: translate(-50%, -50%); object-fit: contain; }
+.thumb .bg { position: absolute; inset: -14%; z-index: 1; background-size: cover; background-position: center; filter: blur(18px) saturate(1.15) brightness(.92); }
+.ph { position: absolute; inset: 0; display: grid; place-items: center; font: 700 34px system-ui, sans-serif; color: #fff; background: linear-gradient(135deg, var(--tc, #555), color-mix(in srgb, var(--tc, #555) 70%, #000)); }
+.badge { z-index: 3; position: absolute; left: 8px; top: 8px; font: 700 11px system-ui, sans-serif; letter-spacing: .05em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--tc, #555); color: #fff; }
+.body { padding: 12px 14px 12px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
+.meta { display: flex; justify-content: space-between; gap: 8px; font: 12px system-ui, sans-serif; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.tile h2 { margin: 0; font-size: 18px; line-height: 1.28; }
+.tile.lead h2 { font-size: 19px; }
+.tile p { margin: 0; color: var(--muted); font-size: 14px; }
+.foot { margin-top: auto; display: flex; justify-content: space-between; font: 12px system-ui, sans-serif; color: var(--muted); }
+.src { font-weight: 700; color: var(--ink); }
+.pri { color: var(--accent); font-weight: 700; }
+.empty { text-align: center; color: var(--muted); padding: 60px 0; font-family: system-ui, sans-serif; grid-column: 1 / -1; }
+.num { z-index: 3; position: absolute; right: 8px; top: 8px; font: 700 11px system-ui, sans-serif; padding: 3px 8px; border-radius: 999px; background: rgba(0,0,0,.72); color: #fff; }

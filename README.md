@@ -105,3 +105,5 @@ Panels start compact (**Standard**): Today's Picks is one scrolling row of small
 ### Layout module
 
 The page layout is separate from the page logic: `src/web/layout.css` (panels, compact/maximised states, headline link, landing-page-only section buttons) and `src/web/layout.js`. `index.html` (stories, filters, refresh) uses only three calls into it: `Layout.openSection(key)`, `Layout.applyMode({home, section, label})` and `Layout.setMax(panel, on)`, so the layout can be reworked without touching the page logic. Both files are published next to `index.html` by `build_site.py`.
+
+Story-card styling (section tiles and the landing-page featured cards) is in `src/web/cards.css`; `index.html` keeps only the page chrome, colours and filter controls.
