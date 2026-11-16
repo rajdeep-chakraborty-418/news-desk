@@ -400,8 +400,11 @@ def main():
                 if not prev["image"] and it["image"]:
                     prev["image"] = it["image"]
     items = sorted(by_link.values(), key=lambda x: x["published"], reverse=True)
-    items, repeats = dedupe.dedupe(items)
-    print(f"Repeated headlines removed: {repeats}")
+    try:                                              # a separate step: if it ever fails the refresh carries on without it
+        items, repeats = dedupe.apply(items)
+        print(f"Repeated headlines removed: {repeats}")
+    except Exception as e:
+        print(f"Repeated-headline removal skipped: {type(e).__name__}: {e}", file=sys.stderr)
     before = len(items)
     items = trim_sections(items, ARTICLE_COUNT)
     got, tried = enrich_images(items)

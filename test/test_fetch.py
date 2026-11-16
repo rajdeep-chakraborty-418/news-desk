@@ -235,6 +235,12 @@ class MainRunTest(EnvTestCase):
         self.assertEqual(len(floods), 1)
         self.assertTrue(floods[0]["primary"])                 # Alpha Times is the primary source: it beats the secondary copy with a picture
 
+    def test_a_failure_in_the_dedupe_step_does_not_stop_the_refresh(self):
+        table = {"alphatimes.example/rss/world": rss([{"title": "Cricket final tonight", "link": "https://a.example/2", "hours_ago": 2}])}
+        with mock.patch.object(fn.dedupe, "apply", side_effect=RuntimeError("boom")):
+            data = self.run_main(table)
+        self.assertIn("https://a.example/2", {i["link"] for i in data["items"]})
+
     def test_end_to_end(self):
         shared = {"title": "Army drill near border", "link": "https://shared.example/1", "hours_ago": 3}
         table = {

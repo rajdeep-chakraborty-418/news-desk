@@ -93,3 +93,5 @@ A story is looked up by its feed tags and by the folders in its web address (`/s
 ## Repeated headlines
 
 On every refresh, `src/dedupe.py` removes repeated headlines inside each section, across all newspapers: headlines at least 90% similar (character based, after lower-casing and dropping punctuation and a trailing " - Newspaper") count as the same story and only one is kept. A primary source beats a secondary one; then the copy with an image, the longer summary and the longer headline wins. A story dropped in one section but kept in another stays only in the one where it was kept. This runs before the per-section story cap, so the cap fills with distinct stories.
+
+The de-duplication is a self-contained step: `fetch_news.py` calls only `dedupe.apply(items) -> (items, removed)`, which never changes its input, never adds or reorders stories and touches only each story's `sections`. The method inside `src/dedupe.py` (threshold, similarity, speed-ups) can be changed or replaced without touching the fetcher, the page or `news.json`'s format, and `test/test_dedupe.py` checks that contract. If the step ever raises an error, the refresh carries on without it.

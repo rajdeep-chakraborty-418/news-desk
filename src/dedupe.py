@@ -10,7 +10,15 @@ story is compared only with the copies already kept that could possibly match it
   2. otherwise only kept headlines sharing a (not too common) word are candidates, found through a word index;
   3. a pair is skipped when the lengths alone, or the characters the two share, cannot reach the threshold;
   4. only then is the full ratio worked out.
-The skipped pairs could never have reached the threshold, so steps 3 and 4 give the same answer as comparing everything."""
+The skipped pairs could never have reached the threshold, so steps 3 and 4 give the same answer as comparing everything.
+
+THE CONTRACT with the rest of the program (everything above can be rewritten without touching anything else):
+  apply(items) -> (items, removed_count)
+  in:  a list of story dicts. Only "title", "sections", "primary", "image" and "summary" are read.
+  out: a new list in the same order, holding the surviving stories. A survivor is the same story with its "sections"
+       narrowed to where it was kept (a new dict; the input list and its dicts are never changed), every other field
+       untouched. Stories are never added or reordered, and the result never holds a story with no sections.
+fetch_news.py calls only apply(), and carries on with the unchanged list if it raises."""
 import re
 import unicodedata
 from difflib import SequenceMatcher
@@ -81,7 +89,7 @@ def _losers(group, threshold=THRESHOLD):
     return dropped
 
 
-def dedupe(items, threshold=THRESHOLD):
+def apply(items, threshold=THRESHOLD):
     """Drops repeated headlines section by section. A story that loses in one section but is kept in another stays, in
     the sections where it was kept; one that loses everywhere is removed. Returns (items, number removed)."""
     by_section = {}
@@ -96,6 +104,5 @@ def dedupe(items, threshold=THRESHOLD):
     for n, it in enumerate(items):
         keep = [s for s in it["sections"] if (n, s) not in lost]
         if keep:
-            it["sections"] = keep
-            out.append(it)
+            out.append(it if keep == it["sections"] else {**it, "sections": keep})
     return out, len(items) - len(out)
