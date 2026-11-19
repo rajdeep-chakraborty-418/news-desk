@@ -41,8 +41,8 @@ def make_news(max_articles=120):
         items.append({"title": f"Sports story {n}", "link": f"https://news.example/s{n}", "summary": "", "image": "",
                       "published": (NOW - timedelta(minutes=n)).isoformat(), "source": "Gamma Wire", "newspaper": "Gamma Wire", "primary": False,
                       "category": "sports", "sections": ["sports"], "continent": "Europe", "country": "United Kingdom", "state": None})
-    for it in items:                                    # two stories with a picture: the Home page features only those
-        if it["title"] in ("World story 3", "Sports story 0"):
+    for it in items:                                    # stories with a picture (the Home page features only those): 6 in World, 2 in Sports
+        if it["title"] in ("World story 0", "World story 1", "World story 2", "World story 3", "World story 4", "World story 5", "Sports story 0", "Sports story 1"):
             it["image"] = "https://img.example/pic.jpg"
     for it in items:                                    # older data without the field: matched on the source name instead
         if it["title"].startswith("World story") and int(it["title"].split()[-1]) % 4 == 1:
@@ -660,20 +660,40 @@ class HomeAndTabsTest(BrowserBase):
         self.home()
         self.assertEqual(self.page.inner_text("#panel-picks h2"), "Today's Picks")
 
-    def test_home_features_one_story_with_a_picture_for_every_section(self):
+    def test_home_features_five_stories_with_a_picture_for_every_section(self):
         self.home()
-        cards = self.page.locator("#feat .fcard")
-        self.assertEqual(cards.count(), 7)                                        # empty sections are not hidden
-        by = {c.get_attribute("data-section"): c for c in cards.all()}
-        self.assertEqual(by["world"].locator("h2").inner_text(), "World story 3")
-        self.assertEqual(by["sports"].locator("h2").inner_text(), "Sports story 0")
-        self.assertEqual(by["world"].locator("a.fmain").get_attribute("href"), "https://news.example/w3")
-        self.assertEqual(by["world"].locator("a.fmain").get_attribute("target"), "_blank")
-        self.assertIn("No stories yet", by["india"].inner_text())                 # no story with a picture: no fallback
-        self.assertEqual(by["india"].locator("a.fmain").count(), 0)
+        lanes = {l.get_attribute("data-section"): l for l in self.page.locator("#feat .lane").all()}
+        self.assertEqual(len(lanes), 7)                                           # empty sections are not hidden
+        world = lanes["world"].locator(".fcard")
+        self.assertEqual(world.count(), 5)                                        # six have a picture: five are picked
+        titles = world.locator("h2").all_inner_texts()
+        self.assertEqual(len(set(titles)), 5)
+        self.assertTrue(all(t.startswith("World story") for t in titles))
+        self.assertEqual(world.first.locator("a.fmain").get_attribute("target"), "_blank")
+        self.assertEqual(lanes["sports"].locator(".fcard").count(), 2)            # fewer than five with a picture: all of them
+        self.assertEqual(sorted(lanes["sports"].locator("h2").all_inner_texts()), ["Sports story 0", "Sports story 1"])
+        self.assertIn("No stories with a picture yet", lanes["india"].inner_text())      # none: no fallback
+        self.assertEqual(lanes["india"].locator("a.fmain").count(), 0)
+        self.assertEqual(lanes["world"].locator(".lanehead").text_content(), "World Desk →")
         self.assertEqual(self.page.locator("#shuffle").count(), 1)
         self.page.click("#shuffle")
-        self.assertEqual(self.page.locator("#feat .fcard").count(), 7)
+        self.assertEqual(self.page.locator("#feat .lane").count(), 7)
+        self.assertEqual(self.page.locator("#feat .lane[data-section=world] .fcard").count(), 5)
+
+    def test_shuffle_picks_a_different_five(self):
+        self.home()
+        seen = set()
+        for _ in range(12):
+            self.page.click("#shuffle")
+            seen.add(tuple(self.page.locator("#feat .lane[data-section=world] h2").all_inner_texts()))
+        self.assertGreater(len(seen), 1)                                          # 5 of 6 in random order: more than one result
+
+    def test_a_lane_heading_opens_its_section_in_a_new_tab(self):
+        self.home()
+        with self.ctx.expect_page() as info:
+            self.page.click("#feat .lane[data-section=world] .lanehead")
+        info.value.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+        self.assertIn("section=world", info.value.url)
 
     def test_a_section_opens_in_a_new_tab_and_home_is_untouched(self):
         self.home()
@@ -683,7 +703,7 @@ class HomeAndTabsTest(BrowserBase):
         tab.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
         self.assertIn("section=world", tab.url)
         self.assertEqual(self.page.url, self.url)
-        self.assertEqual(self.page.locator("#feat .fcard").count(), 7)
+        self.assertEqual(self.page.locator("#feat .lane").count(), 7)
         self.assertEqual(tab.title(), "RC News Desk – World Desk")
         self.assertEqual(tab.inner_text("h1"), "RC News Desk – World Desk")
         self.assertEqual(tab.get_attribute("#homelink", "href"), "/index.html")
@@ -747,11 +767,11 @@ class HomeAndTabsTest(BrowserBase):
     def test_panels_are_compact_and_can_be_maximised_and_restored(self):
         self.home()
         picks, papers = self.page.locator("#panel-picks"), self.page.locator("#panel-papers")
-        self.assertLessEqual(picks.bounding_box()["height"], 400)
+        self.assertLessEqual(picks.bounding_box()["height"], 800)                                       # a few lanes, then it scrolls inside
         self.assertLess(picks.bounding_box()["y"] + picks.bounding_box()["height"], papers.bounding_box()["y"] + 1)   # one panel per row
         grid = self.page.locator("#feat").bounding_box()
-        for n in range(5):                                                                              # five cards fit without scrolling
-            card = self.page.locator("#feat .fcard").nth(n).bounding_box()
+        for n in range(5):                                                                              # a lane's five cards fit without scrolling sideways
+            card = self.page.locator("#feat .lane[data-section=world] .fcard").nth(n).bounding_box()
             self.assertLessEqual(card["x"] + card["width"], grid["x"] + grid["width"] + 1, n)
         btn = papers.locator(".pmax")
         self.assertEqual(btn.inner_text(), "Maximise")

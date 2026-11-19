@@ -145,7 +145,7 @@
   <div id="homeview" class="panels" hidden>
     <section class="hpanel" id="panel-picks" aria-labelledby="picks-t">
       <div class="phead"><h2 id="picks-t">Today's Picks</h2><button id="shuffle" type="button" title="Pick different stories">⟳ Shuffle</button><button class="pmax" type="button" aria-pressed="false" title="Enlarge this panel">Maximise</button></div>
-      <div class="featgrid" id="feat"></div>
+      <div class="lanes" id="feat"></div>
     </section>
     <section class="hpanel" id="panel-papers" aria-labelledby="papers-t">
       <div class="phead"><h2 id="papers-t">Newspaper Homepage</h2><button class="pmax" type="button" aria-pressed="false" title="Enlarge this panel">Maximise</button></div>
@@ -308,41 +308,46 @@ function syncControls() {
   $("chips").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.textContent === state.continent));
 }
 
-// ---------- Home: one random story with a picture for every section ----------
+// ---------- Home: Today's Picks, five random stories with a picture for every section ----------
+const PICKS_PER_SECTION = 5;
 const homeState = { picks: null, generated: null };
 function pickRandom() {
   homeState.picks = SECTIONS.map(([key]) => {
     const pool = state.items.filter(i => i.sections.includes(key) && i.image && i.image.startsWith("https://"));
-    return pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+    for (let n = pool.length - 1; n > 0; n--) { const m = Math.floor(Math.random() * (n + 1)); [pool[n], pool[m]] = [pool[m], pool[n]]; }
+    return pool.slice(0, PICKS_PER_SECTION);
   });
   homeState.generated = state.generated;
+}
+function pickCard(i) {
+  const card = document.createElement("article"); card.className = "fcard";
+  const a = document.createElement("a"); a.className = "fmain"; a.href = i.link; a.target = "_blank"; a.rel = "noopener noreferrer";
+  const thumb = document.createElement("div"); thumb.className = "thumb";
+  const ph = document.createElement("div"); ph.className = "ph"; ph.textContent = (i.source || "?").charAt(0);
+  thumb.append(ph); attachImage(thumb, i.image);
+  const body = document.createElement("div"); body.className = "body";
+  const meta = document.createElement("div"); meta.className = "meta";
+  const c = document.createElement("span"); c.textContent = i.country; const t = document.createElement("span"); t.textContent = ago(i.published);
+  meta.append(c, t);
+  const h = document.createElement("h2"); h.textContent = i.title;
+  const f = document.createElement("div"); f.className = "foot"; const s = document.createElement("span"); s.className = "src"; s.textContent = i.source;
+  f.append(s, document.createTextNode("Read ↗"));
+  body.append(meta, h, f); a.append(thumb, body); card.append(a);
+  return card;
 }
 function renderHome() {
   if (!homeState.picks || homeState.picks.length !== SECTIONS.length) pickRandom();
   const box = $("feat"); box.replaceChildren();
   SECTIONS.forEach(([key, label], n) => {
-    const i = homeState.picks[n];
-    const card = document.createElement("article"); card.className = "fcard" + (i ? "" : " none"); card.dataset.section = key;
-    card.style.setProperty("--tc", color(key));
-    if (i) {
-      const a = document.createElement("a"); a.className = "fmain"; a.href = i.link; a.target = "_blank"; a.rel = "noopener noreferrer";
-      const thumb = document.createElement("div"); thumb.className = "thumb";
-      const ph = document.createElement("div"); ph.className = "ph"; ph.textContent = (i.source || "?").charAt(0);
-      thumb.append(ph); attachImage(thumb, i.image);
-      const body = document.createElement("div"); body.className = "body";
-      const meta = document.createElement("div"); meta.className = "meta";
-      const c = document.createElement("span"); c.textContent = i.country; const t = document.createElement("span"); t.textContent = ago(i.published);
-      meta.append(c, t);
-      const h = document.createElement("h2"); h.textContent = i.title;
-      const f = document.createElement("div"); f.className = "foot"; const s = document.createElement("span"); s.className = "src"; s.textContent = i.source;
-      f.append(s, document.createTextNode("Read ↗"));
-      body.append(meta, h, f); a.append(thumb, body); card.append(a);
-    } else {
-      const d = document.createElement("div"); d.className = "nostory"; d.textContent = "No stories yet"; card.append(d);
-    }
-    const sec = document.createElement("button"); sec.type = "button"; sec.className = "fsec"; sec.textContent = label + " →";
-    sec.title = "Open " + label + " in its own tab"; sec.onclick = () => Layout.openSection(key);
-    card.append(sec); box.append(card);
+    const lane = document.createElement("div"); lane.className = "lane"; lane.dataset.section = key;
+    lane.style.setProperty("--tc", color(key));
+    const head = document.createElement("button"); head.type = "button"; head.className = "lanehead"; head.textContent = label + " →";
+    head.title = "Open " + label + " in its own tab"; head.onclick = () => Layout.openSection(key);
+    const row = document.createElement("div"); row.className = "featgrid lrow";
+    const picks = homeState.picks[n] || [];
+    if (picks.length) picks.forEach(i => row.append(pickCard(i)));
+    else { const d = document.createElement("div"); d.className = "nostory"; d.textContent = "No stories with a picture yet"; row.append(d); }
+    lane.append(head, row); box.append(lane);
   });
 }
 
