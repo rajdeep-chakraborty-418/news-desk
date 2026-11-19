@@ -9,7 +9,11 @@ jobs:
     steps:
       - name: Look for Asian Age feeds
         run: |
-          for u in https://www.asianage.com/rss_feed https://www.asianage.com/rss_feed/ https://www.asianage.com/ ; do
-            echo "== $u"; curl -sL -m 30 -A "Mozilla/5.0" -o /tmp/p.html -w "%{http_code} %{content_type} %{url_effective}\n" "$u"
-            grep -oiE "https?://[^\"' <>]*(rss|feed|xml)[^\"' <>]*" /tmp/p.html | sort -u | head -60
+          A="Mozilla/5.0"
+          curl -sL -m 30 -A "$A" https://www.asianage.com/ -o /tmp/h.html
+          echo "== nav links"; grep -oE 'href="(https://www\.asianage\.com)?/[a-z0-9-]+(/[a-z0-9-]+)?"' /tmp/h.html | sort -u | head -70
+          echo "== link rel alternate"; grep -oiE '<link[^>]*(alternate|rss|atom)[^>]*>' /tmp/h.html | head
+          echo "== google_feeds head"; curl -sL -m 30 -A "$A" https://www.asianage.com/google_feeds.xml | head -c 700; echo
+          for p in rss.xml feed feed/ rss rss/ rssfeed.xml india/rss.xml rss/india.xml rss/world.xml rss-feed rss_feed.xml sitemap.xml feeds/rss.xml india/feed world/feed sports/feed; do
+            printf "%s " "$p"; curl -sL -m 20 -A "$A" -o /tmp/x -w "%{http_code} %{content_type} " "https://www.asianage.com/$p"; head -c 80 /tmp/x | tr '\n' ' '; echo
           done
