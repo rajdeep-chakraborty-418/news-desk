@@ -651,47 +651,54 @@ class HomeAndTabsTest(BrowserBase):
         self.home()
         for sel in ("#grid", "#sidebox", "#chips", "#q", "#rangebar", "#reset"):
             self.assertFalse(self.page.is_visible(sel), sel)
-        for sel in ("#refresh", "#range", "#count", "#lastrefresh", "#panel-picks", "#panel-papers", "#tabs"):
+        for sel in ("#refresh", "#range", "#count", "#lastrefresh", ".pickpanel", "#panel-papers", "#tabs"):
             self.assertTrue(self.page.is_visible(sel), sel)
         self.assertEqual(self.page.title(), "RC News Desk")
         self.assertEqual(self.page.locator("#tabs button").count(), 7)
 
-    def test_home_heading_is_todays_picks(self):
+    def test_home_has_one_todays_picks_panel_per_section_stacked_vertically(self):
         self.home()
-        self.assertEqual(self.page.inner_text("#panel-picks h2"), "Today's Picks")
+        panels = self.page.locator("#feat .pickpanel")
+        self.assertEqual(panels.count(), 7)                                       # empty sections are not hidden
+        titles = panels.locator(".phead h2").all_inner_texts()
+        self.assertTrue(all(t.startswith("Today's Picks - ") for t in titles))
+        self.assertIn("Today's Picks - World Desk", titles)
+        ys = [panels.nth(n).bounding_box()["y"] for n in range(7)]
+        self.assertEqual(ys, sorted(ys))                                          # one per row
+        self.assertEqual(len(set(ys)), 7)
+        self.assertLess(panels.nth(6).bounding_box()["y"], self.page.locator("#panel-papers").bounding_box()["y"])
+        self.assertEqual(self.page.locator(".pickpanel .shuffle").count(), 7)     # each panel has its own Shuffle
 
-    def test_home_features_five_stories_with_a_picture_for_every_section(self):
+    def panel(self, key):
+        return self.page.locator(f"#feat .pickpanel[data-section={key}]")
+
+    def test_each_panel_features_five_stories_with_a_picture(self):
         self.home()
-        lanes = {l.get_attribute("data-section"): l for l in self.page.locator("#feat .lane").all()}
-        self.assertEqual(len(lanes), 7)                                           # empty sections are not hidden
-        world = lanes["world"].locator(".fcard")
+        world = self.panel("world").locator(".fcard")
         self.assertEqual(world.count(), 5)                                        # six have a picture: five are picked
         titles = world.locator("h2").all_inner_texts()
         self.assertEqual(len(set(titles)), 5)
         self.assertTrue(all(t.startswith("World story") for t in titles))
         self.assertEqual(world.first.locator("a.fmain").get_attribute("target"), "_blank")
-        self.assertEqual(lanes["sports"].locator(".fcard").count(), 2)            # fewer than five with a picture: all of them
-        self.assertEqual(sorted(lanes["sports"].locator("h2").all_inner_texts()), ["Sports story 0", "Sports story 1"])
-        self.assertIn("No stories with a picture yet", lanes["india"].inner_text())      # none: no fallback
-        self.assertEqual(lanes["india"].locator("a.fmain").count(), 0)
-        self.assertEqual(lanes["world"].locator(".lanehead").text_content(), "World Desk →")
-        self.assertEqual(self.page.locator("#shuffle").count(), 1)
-        self.page.click("#shuffle")
-        self.assertEqual(self.page.locator("#feat .lane").count(), 7)
-        self.assertEqual(self.page.locator("#feat .lane[data-section=world] .fcard").count(), 5)
+        self.assertEqual(sorted(self.panel("sports").locator(".fcard h2").all_inner_texts()), ["Sports story 0", "Sports story 1"])
+        self.assertIn("No stories with a picture yet", self.panel("india").inner_text())      # none: no fallback
+        self.assertEqual(self.panel("india").locator("a.fmain").count(), 0)
 
-    def test_shuffle_picks_a_different_five(self):
+    def test_a_panels_shuffle_changes_only_that_panel(self):
         self.home()
+        before_sports = self.panel("sports").locator(".fcard h2").all_inner_texts()
         seen = set()
         for _ in range(12):
-            self.page.click("#shuffle")
-            seen.add(tuple(self.page.locator("#feat .lane[data-section=world] h2").all_inner_texts()))
+            self.panel("world").locator(".shuffle").click()
+            seen.add(tuple(self.panel("world").locator(".fcard h2").all_inner_texts()))
+            self.assertEqual(self.panel("world").locator(".fcard").count(), 5)
         self.assertGreater(len(seen), 1)                                          # 5 of 6 in random order: more than one result
+        self.assertEqual(self.panel("sports").locator(".fcard h2").all_inner_texts(), before_sports)
 
-    def test_a_lane_heading_opens_its_section_in_a_new_tab(self):
+    def test_a_panel_title_opens_its_section_in_a_new_tab(self):
         self.home()
         with self.ctx.expect_page() as info:
-            self.page.click("#feat .lane[data-section=world] .lanehead")
+            self.panel("world").locator(".phead h2").click()
         info.value.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
         self.assertIn("section=world", info.value.url)
 
@@ -703,7 +710,7 @@ class HomeAndTabsTest(BrowserBase):
         tab.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
         self.assertIn("section=world", tab.url)
         self.assertEqual(self.page.url, self.url)
-        self.assertEqual(self.page.locator("#feat .lane").count(), 7)
+        self.assertEqual(self.page.locator("#feat .pickpanel").count(), 7)
         self.assertEqual(tab.title(), "RC News Desk – World Desk")
         self.assertEqual(tab.inner_text("h1"), "RC News Desk – World Desk")
         self.assertEqual(tab.get_attribute("#homelink", "href"), "/index.html")
@@ -712,7 +719,7 @@ class HomeAndTabsTest(BrowserBase):
         for sel in ("#chips", "#q", "#rangebar", "#sidebox", "#reset"):
             self.assertTrue(tab.is_visible(sel), sel)
         self.assertFalse(tab.is_visible("#panel-papers"))                        # the panels are on Home only
-        self.assertFalse(tab.is_visible("#panel-picks"))
+        self.assertFalse(tab.is_visible(".pickpanel"))
         self.assertFalse(tab.is_visible("#tabs"))                                # section buttons are on the landing page only
 
     def test_opening_an_open_section_again_jumps_to_its_tab_and_keeps_its_filters(self):
@@ -766,12 +773,12 @@ class HomeAndTabsTest(BrowserBase):
 
     def test_panels_are_compact_and_can_be_maximised_and_restored(self):
         self.home()
-        picks, papers = self.page.locator("#panel-picks"), self.page.locator("#panel-papers")
-        self.assertLessEqual(picks.bounding_box()["height"], 800)                                       # a few lanes, then it scrolls inside
+        picks, papers = self.panel("world"), self.page.locator("#panel-papers")
+        self.assertLessEqual(picks.bounding_box()["height"], 400)
         self.assertLess(picks.bounding_box()["y"] + picks.bounding_box()["height"], papers.bounding_box()["y"] + 1)   # one panel per row
-        grid = self.page.locator("#feat").bounding_box()
-        for n in range(5):                                                                              # a lane's five cards fit without scrolling sideways
-            card = self.page.locator("#feat .lane[data-section=world] .fcard").nth(n).bounding_box()
+        grid = picks.bounding_box()
+        for n in range(5):                                                                              # the five cards fit without scrolling sideways
+            card = picks.locator(".fcard").nth(n).bounding_box()
             self.assertLessEqual(card["x"] + card["width"], grid["x"] + grid["width"] + 1, n)
         btn = papers.locator(".pmax")
         self.assertEqual(btn.inner_text(), "Maximise")

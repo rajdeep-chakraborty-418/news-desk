@@ -45,7 +45,7 @@ const Layout = (() => {
     if (home) $("papersframe").src = "newspaper-list/?embed=1&t=" + Date.now();       // t: never show a cached copy of the list page
   }
 
-  document.querySelectorAll(".hpanel .pmax").forEach((b) => b.addEventListener("click", () => { const p = b.closest(".hpanel"); setMax(p, !p.classList.contains("max")); }));
+  document.addEventListener("click", (e) => { const b = e.target.closest(".hpanel .pmax"); if (!b) return; const p = b.closest(".hpanel"); setMax(p, !p.classList.contains("max")); });      // delegated: panels can be added later
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMax(null, false); });
   // The Newspaper Homepage panel shows the separate page newspaper-list/; maximised, it grows to the height that page reports.
   window.addEventListener("message", (e) => {
