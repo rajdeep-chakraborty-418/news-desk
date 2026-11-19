@@ -1,0 +1,15 @@
+name: Probe (temporary)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Look for Asian Age feeds
+        run: |
+          for u in https://www.asianage.com/rss_feed https://www.asianage.com/rss_feed/ https://www.asianage.com/ ; do
+            echo "== $u"; curl -sL -m 30 -A "Mozilla/5.0" -o /tmp/p.html -w "%{http_code} %{content_type} %{url_effective}\n" "$u"
+            grep -oiE "https?://[^\"' <>]*(rss|feed|xml)[^\"' <>]*" /tmp/p.html | sort -u | head -60
+          done
