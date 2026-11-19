@@ -9,7 +9,88 @@
   "feeds": [
     {
       "section": "sports",
-      "url": "https://e00-marca.uecdn.es/rss/portada.xml"
+      "url": "https://e00-marca.uecdn.es/rss/portada.xml",
+      "label": "Marca"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/primera-division.xml",
+      "label": "Marca (Primera División)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/segunda-division.xml",
+      "label": "Marca (Segunda División)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/champions-league.xml",
+      "label": "Marca (Champions League)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/europa-league.xml",
+      "label": "Marca (Europa League)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/premier-league.xml",
+      "label": "Marca (Premier League)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/bundesliga.xml",
+      "label": "Marca (Bundesliga)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/liga-francesa.xml",
+      "label": "Marca (Ligue 1)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/copa-rey.xml",
+      "label": "Marca (Copa del Rey)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/seleccion.xml",
+      "label": "Marca (Selección)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/futbol-internacional.xml",
+      "label": "Marca (Fútbol Internacional)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/real-madrid.xml",
+      "label": "Marca (Real Madrid)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/barcelona.xml",
+      "label": "Marca (Barcelona)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/futbol/atletico.xml",
+      "label": "Marca (Atlético de Madrid)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/baloncesto/nba.xml",
+      "label": "Marca (NBA)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/baloncesto/acb.xml",
+      "label": "Marca (Liga Endesa)"
+    },
+    {
+      "section": "sports",
+      "url": "https://e00-marca.uecdn.es/rss/motor/formula1.xml",
+      "label": "Marca (Fórmula 1)"
     }
   ],
   "section_map": {

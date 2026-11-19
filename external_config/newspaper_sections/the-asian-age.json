@@ -1,0 +1,74 @@
+{
+  "newspaper": "The Asian Age",
+  "tier": "secondary",
+  "homepage": "https://www.asianage.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "general (India)",
+  "note": "The Asian Age publishes one mixed RSS feed (the 'Home' feed, about the latest 10 stories, advertised on its homepage), so every story is placed by the folder in its web address (/nation/, /world/, /sports/, ...) and its tags using the map below. Stories in no mapped folder (opinion, photos, top stories) stay in Other.",
+  "feeds": [
+    {
+      "section": "other",
+      "url": "https://www.asianage.com/google_feeds.xml"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "Nation",
+      "India",
+      "All India",
+      "Metros",
+      "Delhi",
+      "Tabloid",
+      "Delhi Age",
+      "Mumbai Age"
+    ],
+    "world": [
+      "World",
+      "Asia"
+    ],
+    "sports": [
+      "Sports"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Bollywood",
+      "Hollywood",
+      "Movie Reviews"
+    ],
+    "business": [
+      "Business"
+    ],
+    "technology": [
+      "Technology",
+      "In Other News"
+    ],
+    "science": [
+      "Science"
+    ],
+    "lifestyle": [
+      "Life",
+      "Decaf",
+      "Horoscope",
+      "Books",
+      "Travel",
+      "Food",
+      "Health",
+      "Fashion"
+    ]
+  },
+  "other": [
+    "Opinion",
+    "Columnists",
+    "Edit",
+    "Top Stories",
+    "In Focus",
+    "Editors Picks",
+    "Photos",
+    "Newsmakers",
+    "Discourse",
+    "360 Degree",
+    "Age on Sunday"
+  ],
+  "unmapped_default": "other"
+}

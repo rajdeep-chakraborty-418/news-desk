@@ -316,6 +316,8 @@ def classify(feed, title, summary, link="", tags=()):
     for key in mapped_sections(feed.get("newspaper"), link, tags):
         if key not in sections:
             sections.append(key)
+    if cat == "other" and len(sections) > 1:     # a mixed feed filed under Other: a story that fits a topic section leaves Other
+        sections.remove("other")
     return sections
 
 

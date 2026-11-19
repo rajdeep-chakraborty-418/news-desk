@@ -90,6 +90,18 @@ class FetchOneTest(EnvTestCase):
             out, st = self.fetch(items, hours=hours)
             self.assertEqual((len(out), st["ok"], st["count"]), (expect, True, expect), hours)
 
+    def test_a_mixed_feed_filed_under_other_puts_each_story_in_its_own_section_by_folder_and_tags(self):
+        feed = {**self.FEED, "source": "Mixed Age", "newspaper": "Mixed Age", "category": "other"}
+        look = {"nation": ["world"], "sports": ["sports"], "life": ["sports", "world"]}
+        with mock.patch.dict(fn.SECTION_MAPS, {"Mixed Age": look}, clear=True):
+            out, _ = self.fetch([
+                {"title": "A", "link": "https://m.example/sports/a-1", "hours_ago": 1},
+                {"title": "B", "link": "https://m.example/opinion/b-2", "hours_ago": 1},                 # no mapped folder: stays in Other
+                {"title": "C", "link": "https://m.example/x/c-3", "hours_ago": 1, "tags": ["Nation,Top Stories", "Life"]},
+            ], feed)
+        by = {i["title"]: i["sections"] for i in out}
+        self.assertEqual(by, {"A": ["sports"], "B": ["other"], "C": ["sports", "world"]})
+
     def test_story_fields(self):
         out, st = self.fetch([{"title": "Army exercise", "link": "https://n.example/1", "hours_ago": 2, "summary": "&lt;b&gt;s&lt;/b&gt;"}])
         s = out[0]

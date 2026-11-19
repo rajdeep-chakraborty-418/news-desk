@@ -122,13 +122,14 @@ def hours_ago(h):
 
 
 def rss(items):
-    """items: list of dicts with title, link, hours_ago?, summary?, image?  -> RSS bytes."""
+    """items: list of dicts with title, link, hours_ago?, summary?, image?, tags?  -> RSS bytes."""
     body = ""
     for it in items:
         date = f"<pubDate>{rfc822(hours_ago(it['hours_ago']))}</pubDate>" if "hours_ago" in it else ""
         img = f'<media:content url="{it["image"]}" medium="image"/>' if it.get("image") else ""
+        cats = "".join(f"<category>{t}</category>" for t in it.get("tags", []))
         body += (f"<item><title>{it['title']}</title><link>{it['link']}</link>{date}"
-                 f"<description>{it.get('summary', '')}</description>{img}</item>")
+                 f"<description>{it.get('summary', '')}</description>{img}{cats}</item>")
     return (f'<?xml version="1.0"?><rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel>{body}</channel></rss>').encode()
 
 
