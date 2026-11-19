@@ -2,27 +2,40 @@
    landing-page-only section buttons. Pure layout - story cards and colours live in index.html. */
 h1 a { color: inherit; text-decoration: none; }
 h1 a:not([href]) { cursor: default; }
-.panels { display: grid; gap: 14px; margin-top: 14px; grid-template-columns: minmax(0, 1fr); }    /* one panel per row */
+.panels { display: grid; gap: 14px; margin-top: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); }    /* four panels per row; wide panels (Newspaper Homepage) span the row */
+.panels > #panel-papers { grid-column: 1 / -1; }
+@media (max-width: 1100px) { .panels { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 800px) { .panels { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) { .panels { grid-template-columns: minmax(0, 1fr); } }
 .hpanel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px 16px; }
 .phead .pmax { margin-left: auto; }
 .phead { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; font-family: system-ui, sans-serif; }
 .phead h2 { margin: 0; font-size: 18px; }
 .phead button { padding: 4px 12px; font-size: 13px; }
 #papersframe { display: block; width: 100%; height: 330px; border: 0; background: transparent; }
-/* compact (standard) panels: one scrolling row of small cards; Maximise gives the panel the whole window */
+/* compact (standard) panels; Maximise gives the panel the whole window */
 .hpanel { padding: 10px 12px 12px; }
-.hpanel:not(.max) .featgrid { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x proximity; }
-/* Today's Picks - <section>: one panel per section, stacked; each title opens that section */
+/* Today's Picks - <section>: one panel per section, four to a row; inside a panel the five stories are stacked (picture left, text right) */
 #feat { display: contents; }
-.pickpanel .phead h2 { color: var(--tc, var(--ink)); cursor: pointer; }
+.pickpanel .phead { flex-wrap: wrap; gap: 6px 8px; }
+.pickpanel .phead h2 { flex: 1 1 100%; font-size: 15px; line-height: 1.25; color: var(--tc, var(--ink)); cursor: pointer; }
 .pickpanel .phead h2:hover { text-decoration: underline; }
+.pickpanel .phead button { padding: 2px 10px; font-size: 12px; }
+.pickpanel:not(.max) .featgrid { display: flex; flex-direction: column; gap: 8px; margin-top: 0; }
+.pickpanel:not(.max) .fcard a.fmain { flex-direction: row; }
+.pickpanel:not(.max) .fcard .thumb { flex: 0 0 38%; aspect-ratio: auto; min-height: 72px; }
+.pickpanel:not(.max) .fcard h2 { font-size: 13.5px; line-height: 1.28; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.pickpanel:not(.max) .fcard .body { padding: 6px 8px; gap: 3px; min-width: 0; }
+.pickpanel:not(.max) .fcard .meta { font-size: 10.5px; }
+.pickpanel:not(.max) .fcard .foot { font-size: 11px; }
+.pickpanel .nostory { padding: 24px 8px; text-align: center; }
 .pickpanel.max .featgrid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .hpanel.max { position: fixed; inset: 10px; z-index: 40; overflow: auto; box-shadow: 0 0 0 100vmax rgba(0,0,0,.55); }
 .hpanel.max #papersframe { height: var(--fh, 760px); }
 .hpanel.max .featgrid { display: grid; }
 body.pmax { overflow: hidden; }
 body[data-mode=home] .controls { position: static; }
-@media (max-width: 700px) { body[data-mode=home] .tabs { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; } body[data-mode=home] .tabs button { white-space: normal; } .featgrid { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { body[data-mode=home] .tabs { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; } body[data-mode=home] .tabs button { white-space: normal; } }
 
 /* last / next refresh lines (refreshinfo.js) */
 #updated .late { color: #b3261e; font-weight: 600; }

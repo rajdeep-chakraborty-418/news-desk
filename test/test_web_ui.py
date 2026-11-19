@@ -656,17 +656,19 @@ class HomeAndTabsTest(BrowserBase):
         self.assertEqual(self.page.title(), "RC News Desk")
         self.assertEqual(self.page.locator("#tabs button").count(), 7)
 
-    def test_home_has_one_todays_picks_panel_per_section_stacked_vertically(self):
+    def test_home_has_one_todays_picks_panel_per_section_four_to_a_row(self):
         self.home()
         panels = self.page.locator("#feat .pickpanel")
         self.assertEqual(panels.count(), 7)                                       # empty sections are not hidden
         titles = panels.locator(".phead h2").all_inner_texts()
         self.assertTrue(all(t.startswith("Today's Picks - ") for t in titles))
         self.assertIn("Today's Picks - World Desk", titles)
-        ys = [panels.nth(n).bounding_box()["y"] for n in range(7)]
-        self.assertEqual(ys, sorted(ys))                                          # one per row
-        self.assertEqual(len(set(ys)), 7)
-        self.assertLess(panels.nth(6).bounding_box()["y"], self.page.locator("#panel-papers").bounding_box()["y"])
+        boxes = [panels.nth(n).bounding_box() for n in range(7)]
+        self.assertEqual(len({round(b["y"]) for b in boxes[:4]}), 1)               # four panels in the first row ...
+        self.assertEqual(len({round(b["x"]) for b in boxes[:4]}), 4)
+        self.assertGreater(boxes[4]["y"], boxes[0]["y"] + boxes[0]["height"] - 1)  # ... then the next row
+        self.assertEqual(round(boxes[4]["x"]), round(boxes[0]["x"]))
+        self.assertLess(boxes[6]["y"], self.page.locator("#panel-papers").bounding_box()["y"])
         self.assertEqual(self.page.locator(".pickpanel .shuffle").count(), 7)     # each panel has its own Shuffle
 
     def panel(self, key):
@@ -774,12 +776,18 @@ class HomeAndTabsTest(BrowserBase):
     def test_panels_are_compact_and_can_be_maximised_and_restored(self):
         self.home()
         picks, papers = self.panel("world"), self.page.locator("#panel-papers")
-        self.assertLessEqual(picks.bounding_box()["height"], 400)
-        self.assertLess(picks.bounding_box()["y"] + picks.bounding_box()["height"], papers.bounding_box()["y"] + 1)   # one panel per row
+        self.assertLessEqual(picks.bounding_box()["height"], 700)
+        self.assertLess(picks.bounding_box()["y"] + picks.bounding_box()["height"], papers.bounding_box()["y"] + 1)   # Newspaper Homepage is below
+        self.assertGreater(papers.bounding_box()["width"], 1000)                                        # and spans the whole row
         grid = picks.bounding_box()
-        for n in range(5):                                                                              # the five cards fit without scrolling sideways
+        last = None
+        for n in range(5):                                                                              # the five stories are stacked inside the panel
             card = picks.locator(".fcard").nth(n).bounding_box()
             self.assertLessEqual(card["x"] + card["width"], grid["x"] + grid["width"] + 1, n)
+            self.assertLessEqual(card["y"] + card["height"], grid["y"] + grid["height"] + 1, n)
+            if last is not None:
+                self.assertGreaterEqual(card["y"], last["y"] + last["height"] - 1, n)
+            last = card
         btn = papers.locator(".pmax")
         self.assertEqual(btn.inner_text(), "Maximise")
         small = papers.bounding_box()["height"]
