@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "Marathi regional newspaper",
-  "note": "Marathi-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Marathi-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "india",
@@ -18,65 +18,82 @@
       "India",
       "National",
       "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
       "Politics",
-      "Regional",
-      "Local",
       "Crime",
-      "Maharashtra"
+      "State",
+      "Metro",
+      "City",
+      "महाराष्ट्र",
+      "देश",
+      "गुन्हेगारी",
+      "राजकारण",
+      "कृषी",
+      "Maharashtra",
+      "Mumbai",
+      "Pune",
+      "Nagpur",
+      "Agriculture",
+      "Government Policy",
+      "Career"
     ],
     "world": [
       "World",
-      "International"
+      "International",
+      "विदेश"
     ],
     "sports": [
       "Sports",
       "Sport",
       "Cricket",
-      "Football"
+      "Football",
+      "क्रीडा"
     ],
     "entertainment": [
       "Entertainment",
-      "Movies",
       "Cinema",
+      "Movies",
       "Bollywood",
       "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
+      "सिनेमा"
     ],
     "lifestyle": [
       "Lifestyle",
       "Health",
       "Food",
-      "Fashion"
+      "Travel",
+      "Fashion",
+      "Astrology",
+      "लाइफस्टाइल",
+      "भविष्य",
+      "Astro",
+      "Viral",
+      "व्हायरल"
     ],
     "business": [
       "Business",
       "Economy",
       "Finance",
-      "Markets"
+      "Markets",
+      "Trade",
+      "अर्थ",
+      "Personal Finance"
     ],
     "technology": [
       "Technology",
       "Tech",
       "Gadgets",
-      "Auto"
+      "Auto",
+      "टेक",
+      "ऑटो",
+      "Gadget",
+      "इन्फोटेक"
     ],
     "science": [
       "Science"
     ],
     "nature": [
       "Environment",
-      "Wildlife",
       "Weather"
-    ],
-    "geography": [
-      "Travel"
     ]
   }
 }

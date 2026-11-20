@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "Hindi regional newspaper",
-  "note": "Hindi-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Hindi-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "india",
@@ -17,64 +17,96 @@
       "India",
       "National",
       "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
       "Politics",
-      "Regional",
-      "Local",
-      "Crime"
+      "Crime",
+      "State",
+      "Metro",
+      "City",
+      "भारत",
+      "राज्य",
+      "क्राइम",
+      "Uttar Pradesh",
+      "Bihar",
+      "Madhya Pradesh",
+      "Rajasthan",
+      "Delhi",
+      "Patna",
+      "Lucknow",
+      "Other News",
+      "Education",
+      "Legal"
     ],
     "world": [
       "World",
-      "International"
+      "International",
+      "दुनिया"
     ],
     "sports": [
       "Sports",
       "Sport",
       "Cricket",
-      "Football"
+      "Football",
+      "खेल",
+      "आईपीएल",
+      "IPL",
+      "Cricket News"
     ],
     "entertainment": [
       "Entertainment",
-      "Movies",
       "Cinema",
+      "Movies",
       "Bollywood",
       "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
+      "मनोरंजन",
+      "टीवी",
       "TV"
     ],
     "lifestyle": [
       "Lifestyle",
       "Health",
       "Food",
-      "Fashion"
+      "Travel",
+      "Fashion",
+      "Astrology",
+      "लाइफस्टाइल",
+      "हेल्थ",
+      "Health Wellness",
+      "धर्म",
+      "Astro",
+      "Religion Rituals",
+      "Viral",
+      "वायरल",
+      "यात्रा",
+      "खान-पान",
+      "Hindi Recipes"
     ],
     "business": [
       "Business",
       "Economy",
       "Finance",
-      "Markets"
+      "Markets",
+      "Trade",
+      "बिजनेस",
+      "Personal Finance",
+      "Real Estate",
+      "पर्सनल फाइनेंस"
     ],
     "technology": [
       "Technology",
       "Tech",
       "Gadgets",
-      "Auto"
+      "Auto",
+      "टेक",
+      "ऑटो",
+      "Reviews"
     ],
     "science": [
       "Science"
     ],
     "nature": [
       "Environment",
-      "Wildlife",
-      "Weather"
-    ],
-    "geography": [
-      "Travel"
+      "Weather",
+      "मौसम"
     ]
   }
 }

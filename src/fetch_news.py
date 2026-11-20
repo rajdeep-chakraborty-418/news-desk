@@ -295,7 +295,11 @@ def mapped_sections(newspaper, link, tags):
     look = SECTION_MAPS.get(newspaper)
     if not look:
         return []
-    names = list(tags or [])
+    names = []
+    for t in tags or []:                       # "Sports,Cricket,Top News" is three tags in one
+        names.append(t)
+        if "," in t:
+            names += [x.strip() for x in t.split(",") if x.strip()]
     if link and "news.google.com" not in link:
         names += [p for p in urlparse(link).path.split("/")[:-1] if p]
     out = []

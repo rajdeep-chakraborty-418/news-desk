@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "Malayalam regional newspaper",
-  "note": "Malayalam-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Malayalam-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "india",
@@ -18,65 +18,88 @@
       "India",
       "National",
       "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
       "Politics",
-      "Regional",
-      "Local",
       "Crime",
-      "Kerala"
+      "State",
+      "Metro",
+      "City",
+      "Kerala",
+      "Education",
+      "Columns",
+      "Localnews",
+      "Local News",
+      "General"
     ],
     "world": [
       "World",
-      "International"
+      "International",
+      "Pravasi"
     ],
     "sports": [
       "Sports",
       "Sport",
       "Cricket",
-      "Football"
+      "Football",
+      "Other Sports"
     ],
     "entertainment": [
       "Entertainment",
-      "Movies",
       "Cinema",
+      "Movies",
       "Bollywood",
       "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
+      "Movies Music",
+      "Reviews",
+      "Literature",
+      "Books",
+      "Fiction",
+      "Poems",
+      "Novels",
+      "Features",
+      "Bedtime Stories",
+      "Kids"
     ],
     "lifestyle": [
       "Lifestyle",
       "Health",
       "Food",
-      "Fashion"
+      "Travel",
+      "Fashion",
+      "Astrology",
+      "Life",
+      "Style",
+      "Destination",
+      "Spirituality",
+      "Arogyamasika",
+      "Vaasa",
+      "Youth",
+      "Social"
     ],
     "business": [
       "Business",
       "Economy",
       "Finance",
-      "Markets"
+      "Markets",
+      "Trade",
+      "Money",
+      "Commodities",
+      "Wealth"
     ],
     "technology": [
       "Technology",
       "Tech",
       "Gadgets",
-      "Auto"
+      "Auto",
+      "Cars"
     ],
     "science": [
       "Science"
     ],
     "nature": [
       "Environment",
-      "Wildlife",
-      "Weather"
-    ],
-    "geography": [
-      "Travel"
+      "Weather",
+      "Earth",
+      "Agriculture"
     ]
   }
 }

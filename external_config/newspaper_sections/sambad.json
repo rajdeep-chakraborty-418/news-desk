@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "Odia regional newspaper",
-  "note": "Odia-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Odia-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "india",
@@ -18,15 +18,21 @@
       "India",
       "National",
       "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
       "Politics",
-      "Regional",
-      "Local",
       "Crime",
-      "Odisha"
+      "State",
+      "Metro",
+      "City",
+      "ଦେଶ- ବିଦେଶ",
+      "ରାଜ୍ୟ",
+      "ଜିଲ୍ଲା",
+      "ମହାନଗର",
+      "ରାଜନୀତି",
+      "ଅପରାଧ",
+      "ଆଇନ କାନୁନ",
+      "India and Beyond",
+      "District",
+      "Sahitya Khabara"
     ],
     "world": [
       "World",
@@ -36,30 +42,33 @@
       "Sports",
       "Sport",
       "Cricket",
-      "Football"
+      "Football",
+      "ଖେଳ"
     ],
     "entertainment": [
       "Entertainment",
-      "Movies",
       "Cinema",
+      "Movies",
       "Bollywood",
       "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
+      "ମନୋରଞ୍ଜନ"
     ],
     "lifestyle": [
       "Lifestyle",
       "Health",
       "Food",
-      "Fashion"
+      "Travel",
+      "Fashion",
+      "Astrology",
+      "ଧର୍ମ"
     ],
     "business": [
       "Business",
       "Economy",
       "Finance",
-      "Markets"
+      "Markets",
+      "Trade",
+      "ବାଣିଜ୍ୟ"
     ],
     "technology": [
       "Technology",
@@ -72,11 +81,8 @@
     ],
     "nature": [
       "Environment",
-      "Wildlife",
-      "Weather"
-    ],
-    "geography": [
-      "Travel"
+      "Weather",
+      "ପାଣିପାଗ"
     ]
   }
 }

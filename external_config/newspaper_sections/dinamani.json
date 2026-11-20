@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "Tamil regional newspaper",
-  "note": "Tamil-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Tamil-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "india",
@@ -18,48 +18,63 @@
       "India",
       "National",
       "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
       "Politics",
-      "Regional",
-      "Local",
       "Crime",
-      "Tamil Nadu"
+      "State",
+      "Metro",
+      "City",
+      "தமிழ்நாடு",
+      "இந்தியா",
+      "Tamilnadu",
+      "வேலைவாய்ப்பு",
+      "அரசுப் பணிகள்",
+      "Education",
+      "கல்வி"
     ],
     "world": [
       "World",
-      "International"
+      "International",
+      "உலகம்"
     ],
     "sports": [
       "Sports",
       "Sport",
       "Cricket",
-      "Football"
+      "Football",
+      "விளையாட்டு",
+      "கிரிக்கெட்"
     ],
     "entertainment": [
       "Entertainment",
-      "Movies",
       "Cinema",
+      "Movies",
       "Bollywood",
       "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
+      "திரை",
+      "திரை விமரிசனம்",
+      "சின்னத்திரை"
     ],
     "lifestyle": [
       "Lifestyle",
       "Health",
       "Food",
-      "Fashion"
+      "Travel",
+      "Fashion",
+      "Astrology",
+      "ஆன்மிகம்",
+      "ஜோதிடம்",
+      "வாரப் பலன்கள்",
+      "மருத்துவம்",
+      "Religion",
+      "Weekly Supplements"
     ],
     "business": [
       "Business",
       "Economy",
       "Finance",
-      "Markets"
+      "Markets",
+      "Trade",
+      "வணிகம்"
     ],
     "technology": [
       "Technology",
@@ -72,11 +87,7 @@
     ],
     "nature": [
       "Environment",
-      "Wildlife",
       "Weather"
-    ],
-    "geography": [
-      "Travel"
     ]
   }
 }

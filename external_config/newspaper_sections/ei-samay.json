@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "bengali",
-  "note": "Bengali-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Bengali-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "bengali",
@@ -14,8 +14,83 @@
     }
   ],
   "section_map": {
-    "bengali": [
-      "Bengali"
+    "india": [
+      "India",
+      "National",
+      "Nation",
+      "Politics",
+      "Crime",
+      "State",
+      "Metro",
+      "City",
+      "দেশ"
+    ],
+    "world": [
+      "World",
+      "International",
+      "দুনিয়া",
+      "World News",
+      "Bangladesh News"
+    ],
+    "sports": [
+      "Sports",
+      "Sport",
+      "Cricket",
+      "Football",
+      "খেলা",
+      "ক্রিকেট",
+      "ফুটবল",
+      "IPL",
+      "Other Sports"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Cinema",
+      "Movies",
+      "Bollywood",
+      "Tollywood",
+      "বিনোদন"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Health",
+      "Food",
+      "Travel",
+      "Fashion",
+      "Astrology",
+      "লাইফস্টাইল",
+      "স্বাস্থ্য",
+      "Health and Fitness",
+      "Beauty",
+      "Relationship",
+      "Religion and Rituals",
+      "Vaastu Shastra",
+      "Effect of Planets",
+      "Know More"
+    ],
+    "business": [
+      "Business",
+      "Economy",
+      "Finance",
+      "Markets",
+      "Trade",
+      "ব্যবসা",
+      "Business News",
+      "Stock Finance"
+    ],
+    "technology": [
+      "Technology",
+      "Tech",
+      "Gadgets",
+      "Auto",
+      "Auto News"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Environment",
+      "Weather"
     ]
   }
 }

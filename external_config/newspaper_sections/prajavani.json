@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "Kannada regional newspaper",
-  "note": "Kannada-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Kannada-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "india",
@@ -18,48 +18,59 @@
       "India",
       "National",
       "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
       "Politics",
-      "Regional",
-      "Local",
       "Crime",
+      "State",
+      "Metro",
+      "City",
+      "ರಾಜ್ಯ",
+      "ರಾಷ್ಟ್ರೀಯ",
+      "ಜಿಲ್ಲೆ",
+      "ಕೃಷಿ",
+      "ಕೃಷಿ ತಂತ್ರಜ್ಞಾನ",
+      "District",
       "Karnataka"
     ],
     "world": [
       "World",
-      "International"
+      "International",
+      "ವಿದೇಶ"
     ],
     "sports": [
       "Sports",
       "Sport",
       "Cricket",
-      "Football"
+      "Football",
+      "ಕ್ರಿಕೆಟ್",
+      "ಕ್ರೀಡೆ"
     ],
     "entertainment": [
       "Entertainment",
-      "Movies",
       "Cinema",
+      "Movies",
       "Bollywood",
       "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
+      "ಸಿನಿ ಸುದ್ದಿ",
+      "ಸಿನಿಮಾ ವಿಮರ್ಶೆ",
+      "ಡಿಜಿಟಲ್-ಒಟಿಟಿ"
     ],
     "lifestyle": [
       "Lifestyle",
       "Health",
       "Food",
-      "Fashion"
+      "Travel",
+      "Fashion",
+      "Astrology",
+      "ಸಂಸ್ಕೃತಿ",
+      "ಆರೋಗ್ಯ"
     ],
     "business": [
       "Business",
       "Economy",
       "Finance",
-      "Markets"
+      "Markets",
+      "Trade",
+      "ವಾಣಿಜ್ಯ"
     ],
     "technology": [
       "Technology",
@@ -72,11 +83,8 @@
     ],
     "nature": [
       "Environment",
-      "Wildlife",
-      "Weather"
-    ],
-    "geography": [
-      "Travel"
+      "Weather",
+      "ಹವಾಮಾನ"
     ]
   }
 }

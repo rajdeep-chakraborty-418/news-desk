@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "Hindi regional newspaper",
-  "note": "Hindi-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Hindi-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "india",
@@ -18,15 +18,17 @@
       "India",
       "National",
       "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
       "Politics",
-      "Regional",
-      "Local",
       "Crime",
-      "Jharkhand"
+      "State",
+      "Metro",
+      "City",
+      "बिहार",
+      "Breaking",
+      "Corruption",
+      "Exam Information",
+      "Education",
+      "Civil Services"
     ],
     "world": [
       "World",
@@ -36,30 +38,31 @@
       "Sports",
       "Sport",
       "Cricket",
-      "Football"
+      "Football",
+      "Sports News"
     ],
     "entertainment": [
       "Entertainment",
-      "Movies",
       "Cinema",
+      "Movies",
       "Bollywood",
-      "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
+      "Tollywood"
     ],
     "lifestyle": [
       "Lifestyle",
       "Health",
       "Food",
-      "Fashion"
+      "Travel",
+      "Fashion",
+      "Astrology"
     ],
     "business": [
       "Business",
       "Economy",
       "Finance",
-      "Markets"
+      "Markets",
+      "Trade",
+      "Business News"
     ],
     "technology": [
       "Technology",
@@ -72,11 +75,9 @@
     ],
     "nature": [
       "Environment",
-      "Wildlife",
-      "Weather"
-    ],
-    "geography": [
-      "Travel"
+      "Weather",
+      "Weather Forecast",
+      "Cyclone"
     ]
   }
 }

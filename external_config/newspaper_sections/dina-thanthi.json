@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "Tamil regional newspaper",
-  "note": "Tamil-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Tamil-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "india",
@@ -18,48 +18,66 @@
       "India",
       "National",
       "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
       "Politics",
-      "Regional",
-      "Local",
       "Crime",
-      "Tamil Nadu"
+      "State",
+      "Metro",
+      "City",
+      "தமிழகம்",
+      "தேசியம்",
+      "Tamilnadu",
+      "தமிழக செய்திகள் (Tamilnadu)",
+      "தேசிய செய்திகள் (National News)",
+      "கல்வி&வேலைவாய்ப்பு (Eduction and Jobs)"
     ],
     "world": [
       "World",
-      "International"
+      "International",
+      "உலகம்",
+      "உலக செய்திகள் (World News)"
     ],
     "sports": [
       "Sports",
       "Sport",
       "Cricket",
-      "Football"
+      "Football",
+      "விளையாட்டு",
+      "கிரிக்கெட் (Cricket)",
+      "Tennis",
+      "Hockey",
+      "Othersports"
     ],
     "entertainment": [
       "Entertainment",
-      "Movies",
       "Cinema",
+      "Movies",
       "Bollywood",
       "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
+      "சினிமா",
+      "சினிமா செய்திகள் (Cinema News)",
+      "OTT",
+      "Cinemanews"
     ],
     "lifestyle": [
       "Lifestyle",
       "Health",
       "Food",
-      "Fashion"
+      "Travel",
+      "Fashion",
+      "Astrology",
+      "ஜோதிடம்",
+      "ஆன்மிகம்",
+      "ஆன்மிகம் (Devotional)",
+      "Devotional",
+      "ஆலய வரலாறு (Temple History)"
     ],
     "business": [
       "Business",
       "Economy",
       "Finance",
-      "Markets"
+      "Markets",
+      "Trade",
+      "வணிகம்"
     ],
     "technology": [
       "Technology",
@@ -72,11 +90,8 @@
     ],
     "nature": [
       "Environment",
-      "Wildlife",
-      "Weather"
-    ],
-    "geography": [
-      "Travel"
+      "Weather",
+      "வானிலை செய்திகள் (Weather)"
     ]
   }
 }

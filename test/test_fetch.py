@@ -100,7 +100,7 @@ class FetchOneTest(EnvTestCase):
                 {"title": "C", "link": "https://m.example/x/c-3", "hours_ago": 1, "tags": ["Nation,Top Stories", "Life"]},
             ], feed)
         by = {i["title"]: i["sections"] for i in out}
-        self.assertEqual(by, {"A": ["sports"], "B": ["other"], "C": ["sports", "world"]})
+        self.assertEqual(by, {"A": ["sports"], "B": ["other"], "C": ["world", "sports"]})      # "Nation,Top Stories" counts as two tags
 
     def test_story_fields(self):
         out, st = self.fetch([{"title": "Army exercise", "link": "https://n.example/1", "hours_ago": 2, "summary": "&lt;b&gt;s&lt;/b&gt;"}])

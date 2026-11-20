@@ -99,7 +99,7 @@ The two timer jobs (`scheduled_refresh.yml`, `adhoc_refresh.yml`) restart themse
  "other": ["Videos", "Opinion"]}
 ```
 
-A story is looked up by its feed tags and by the folders in its web address (`/sports/cricket/...`). Every match adds that story to the mapped section, on top of the section of the feed it came from. There are no keyword rules: a story is in its feed's section plus whatever the map gives. A newspaper is on the site only if it has a file here. Pilot: Hindustan Times, Times of India, India Today, Deccan Herald. `legacy_newspapers.json` is the old, unused list.
+A story is looked up by its feed tags (a tag such as `Sports,Cricket` counts as two) and by the folders in its web address (`/sports/cricket/...`). Names may be in any script (Bengali, Tamil, Devanagari ...): they are compared as written, ignoring case and punctuation. Every match adds that story to the mapped section, on top of the section of the feed it came from. There are no keyword rules: a story is in its feed's section plus whatever the map gives. A newspaper is on the site only if it has a file here. Pilot: Hindustan Times, Times of India, India Today, Deccan Herald. `legacy_newspapers.json` is the old, unused list.
 
 ## Home page and section tabs
 

@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "Kannada regional newspaper",
-  "note": "Kannada-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Kannada-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "india",
@@ -18,65 +18,72 @@
       "India",
       "National",
       "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
       "Politics",
-      "Regional",
-      "Local",
       "Crime",
-      "Karnataka"
+      "State",
+      "Metro",
+      "City",
+      "Karnataka",
+      "Bengaluru",
+      "Mysuru",
+      "ರಾಜ್ಯ",
+      "ದೇಶ"
     ],
     "world": [
       "World",
-      "International"
+      "International",
+      "ವಿದೇಶ"
     ],
     "sports": [
       "Sports",
       "Sport",
       "Cricket",
-      "Football"
+      "Football",
+      "ಕ್ರೀಡೆ",
+      "ಕ್ರಿಕೆಟ್"
     ],
     "entertainment": [
       "Entertainment",
-      "Movies",
       "Cinema",
+      "Movies",
       "Bollywood",
       "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
+      "ಸಿನಿಮಾ"
     ],
     "lifestyle": [
       "Lifestyle",
       "Health",
       "Food",
-      "Fashion"
+      "Travel",
+      "Fashion",
+      "Astrology",
+      "ಆರೋಗ್ಯ",
+      "ಜ್ಯೋತಿಷ್ಯ",
+      "Astro",
+      "Viral"
     ],
     "business": [
       "Business",
       "Economy",
       "Finance",
-      "Markets"
+      "Markets",
+      "Trade",
+      "ವಾಣಿಜ್ಯ",
+      "Personal Finance"
     ],
     "technology": [
       "Technology",
       "Tech",
       "Gadgets",
-      "Auto"
+      "Auto",
+      "Gadget"
     ],
     "science": [
       "Science"
     ],
     "nature": [
       "Environment",
-      "Wildlife",
       "Weather"
-    ],
-    "geography": [
-      "Travel"
     ]
   }
 }

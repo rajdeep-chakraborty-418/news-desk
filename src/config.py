@@ -16,6 +16,7 @@ NEWSDESK_CONFIG_DIR points the code at a different folder (for example one writt
 import json
 import os
 import re
+import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -120,8 +121,10 @@ def load_newspapers(sections, directory=None):
 
 
 def norm_label(text):
-    """A section name or URL piece in one comparable form: lowercase words, no punctuation, no trailing 'news'."""
-    t = re.sub(r"[^a-z0-9]+", " ", str(text).lower()).strip()
+    """A section name or URL piece in one comparable form: lowercase words, no punctuation, no trailing 'news'.
+    Letters, digits and combining marks of every script are kept (Bengali, Tamil, Devanagari ... names stay distinct)."""
+    t = "".join(c if unicodedata.category(c)[0] in "LMN" else " " for c in str(text).lower())
+    t = re.sub(r"\s+", " ", t).strip()
     return re.sub(r"\s+news$", "", t) or t
 
 

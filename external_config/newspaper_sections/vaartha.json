@@ -5,7 +5,7 @@
   "country": "India",
   "continent": "Asia",
   "focus": "Telugu regional newspaper",
-  "note": "Telugu-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "note": "Telugu-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
   "feeds": [
     {
       "section": "india",
@@ -18,65 +18,85 @@
       "India",
       "National",
       "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
       "Politics",
-      "Regional",
-      "Local",
       "Crime",
-      "Telangana"
+      "State",
+      "Metro",
+      "City",
+      "తెలంగాణ",
+      "భారతదేశం",
+      "ఆంధ్రప్రదేశ్",
+      "క్రైమ్",
+      "రాజకీయాలు",
+      "Telangana",
+      "Andhra Pradesh",
+      "Telangana News",
+      "సంపాదకీయం",
+      "Category"
     ],
     "world": [
       "World",
-      "International"
+      "International",
+      "ప్రపంచం"
     ],
     "sports": [
       "Sports",
       "Sport",
       "Cricket",
-      "Football"
+      "Football",
+      "క్రీడలు"
     ],
     "entertainment": [
       "Entertainment",
-      "Movies",
       "Cinema",
+      "Movies",
       "Bollywood",
       "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
+      "సినిమా",
+      "వినోదం"
     ],
     "lifestyle": [
       "Lifestyle",
       "Health",
       "Food",
-      "Fashion"
+      "Travel",
+      "Fashion",
+      "Astrology",
+      "ఆరోగ్యం",
+      "Health Tips Telugu",
+      "ఆధ్యాత్మికం",
+      "భక్తి",
+      "వాస్తు",
+      "Devotional",
+      "Vaastu",
+      "రాశి ఫలాలు"
     ],
     "business": [
       "Business",
       "Economy",
       "Finance",
-      "Markets"
+      "Markets",
+      "Trade",
+      "బిజినెస్",
+      "బంగారం/వెండి"
     ],
     "technology": [
       "Technology",
       "Tech",
       "Gadgets",
-      "Auto"
+      "Auto",
+      "టెక్నాలజీ"
     ],
     "science": [
       "Science"
     ],
     "nature": [
       "Environment",
-      "Wildlife",
       "Weather"
     ],
-    "geography": [
-      "Travel"
+    "history": [
+      "చరిత్ర",
+      "History"
     ]
   }
 }

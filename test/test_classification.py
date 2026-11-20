@@ -85,6 +85,23 @@ class NewspaperSectionMapTest(TestCase):
         self.assertEqual(config.norm_label("India-News"), config.norm_label("india news"))
         self.assertEqual(config.norm_label("Cities"), "cities")
 
+    def test_names_in_any_script_stay_distinct(self):
+        self.assertNotEqual(config.norm_label("খেলা"), config.norm_label("বিনোদন"))          # Bengali: sports vs entertainment
+        self.assertEqual(config.norm_label("விளையாட்டு "), "விளையாட்டு")                        # Tamil: the vowel signs are kept
+        self.assertEqual(config.norm_label("खेल"), "खेल")                                        # Devanagari
+        self.assertEqual(config.norm_label("தேசிய செய்திகள் (National News)"), "தேசிய செய்திகள் national")
+        self.assertEqual(config.norm_label("%%"), "")
+
+    def test_a_regional_language_map_places_stories_by_native_tags_and_comma_tags(self):
+        self.write("p.json", {"newspaper": "Paper", "section_map": {"sports": ["খেলা", "Sports"], "showbiz": ["বিনোদন"]}})
+        maps = config.load_section_maps(self.sections, self.dir)
+        fn.configure(self.sections, maps=maps)
+        feed = {"category": "india", "newspaper": "Paper"}
+        self.assertEqual(fn.classify(feed, "x", "", "https://p.com/a/b", ["খেলা"]), ["india", "sports"])
+        self.assertEqual(fn.classify(feed, "x", "", "https://p.com/a/b", ["বিনোদন"]), ["india", "showbiz"])
+        self.assertEqual(fn.classify(feed, "x", "", "https://p.com/a/b", ["অন্য"]), ["india"])             # unmapped: only its own section
+        self.assertEqual(fn.classify(feed, "x", "", "https://p.com/a/b", ["India,Sports,Top News"]), ["india", "sports"])
+
     def test_unknown_destination_section_is_an_error(self):
         self.write("p.json", {"newspaper": "Paper", "section_map": {"nope": ["X"]}})
         with self.assertRaises(config.ConfigError):
