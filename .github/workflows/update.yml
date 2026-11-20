@@ -38,6 +38,8 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}       # Hugging Face read token for the English-headline model (optional; see README)
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -90,6 +92,30 @@ jobs:
           WINDOW_HOURS: ${{ github.event.inputs.hours }}
           ARTICLE_COUNT: ${{ github.event.inputs.count }}
         run: python3 src/fetch_news.py
+      - name: English headlines - carry over earlier translations and count what is new
+        id: plan
+        if: steps.gate.outputs.go == 'true' && steps.keep.outputs.kept != 'true'
+        continue-on-error: true
+        env:
+          PREVIOUS_NEWS_FILE: ${{ runner.temp }}/previous_news.json
+        run: |
+          curl -fsS --retry 2 "${{ steps.pages.outputs.base_url }}/news.json" -o "$PREVIOUS_NEWS_FILE" || rm -f "$PREVIOUS_NEWS_FILE"
+          python3 src/translate_news.py plan
+      - name: English headlines - model cache
+        if: steps.plan.outputs.pending != '' && steps.plan.outputs.pending != '0' && env.HF_TOKEN != ''
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-indictrans2-v1
+      - name: English headlines - translate the new Regional News headlines (skipped without the HF_TOKEN secret; never blocks the deploy)
+        if: steps.plan.outputs.pending != '' && steps.plan.outputs.pending != '0' && env.HF_TOKEN != ''
+        continue-on-error: true
+        timeout-minutes: 45
+        env:
+          PREVIOUS_NEWS_FILE: ${{ runner.temp }}/previous_news.json
+        run: |
+          pip install -r src/requirements-translate.txt
+          python3 src/translate_news.py run
       - name: Image check (diagnostic only)
         if: steps.gate.outputs.go == 'true' && github.event_name == 'workflow_dispatch'
         continue-on-error: true

@@ -41,6 +41,11 @@ def make_news(max_articles=120):
         items.append({"title": f"Sports story {n}", "link": f"https://news.example/s{n}", "summary": "", "image": "",
                       "published": (NOW - timedelta(minutes=n)).isoformat(), "source": "Gamma Wire", "newspaper": "Gamma Wire", "primary": False,
                       "category": "sports", "sections": ["sports"], "continent": "Europe", "country": "United Kingdom", "state": None})
+    for n, (hi, en) in enumerate([("मुंबई में मेट्रो शुरू", "Metro starts in Mumbai"), ("दिल्ली में भारी बारिश", "Heavy rain in Delhi"),
+                                  ("चेन्नई में बाढ़", "Flood in Chennai"), ("पुणे में आग", None)]):
+        items.append({"title": hi, "link": f"https://news.example/r{n}", "summary": "", "image": "", "published": (NOW - timedelta(minutes=n)).isoformat(),
+                      "source": "Navbharat Times", "newspaper": "Navbharat Times", "primary": False, "category": "showbiz", "sections": ["showbiz"],
+                      "continent": "Asia", "country": "India", "state": None, **({"title_en": en} if en else {})})
     for it in items:                                    # pictures on some stories (the Home page ignores them)
         if it["title"] in ("World story 0", "World story 1", "World story 2", "World story 3", "World story 4", "World story 5", "Sports story 0", "Sports story 1"):
             it["image"] = "https://img.example/pic.jpg"
@@ -273,6 +278,29 @@ class WebUITest(BrowserBase):
         self.assertEqual(self.page.get_attribute("#chips", "aria-label"), "Continent")
         self.assertEqual(self.page.locator("#chips button").first.inner_text(), "All")
         self.assertIn("Asia", self.page.locator("#chips button").all_inner_texts())
+
+    def test_english_headlines_button_and_search_on_regional_news(self):
+        self.open(section="world")
+        self.assertFalse(self.page.is_visible("#en"))                                # only where translations exist
+        self.open(section="showbiz")
+        self.assertTrue(self.page.is_visible("#en"))
+        self.assertEqual(self.page.inner_text("#en"), "Show in English")
+        self.assertIn("मुंबई में मेट्रो शुरू", self.titles())
+        self.page.fill("#q", "metro")
+        self.assertEqual(self.tiles(), 0)                                            # English words find nothing in the original headlines
+        self.page.click("#en")
+        self.assertEqual(self.page.inner_text("#en"), "Show original")
+        self.assertEqual(self.tiles(), 1)
+        self.assertEqual(self.titles(), ["Metro starts in Mumbai"])
+        self.assertIn("मुंबई में मेट्रो शुरू", self.page.inner_text("#grid"))         # the original stays underneath
+        self.page.fill("#q", "")
+        self.assertEqual(sorted(self.titles()), sorted(["Metro starts in Mumbai", "Heavy rain in Delhi", "Flood in Chennai", "पुणे में आग"]))
+        self.assertIn("en=1", self.page.url)
+        self.page.reload()
+        self.page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+        self.assertEqual(self.page.inner_text("#en"), "Show original")
+        self.page.click("#en")
+        self.assertIn("मुंबई में मेट्रो शुरू", self.titles())
 
     def test_a_section_can_switch_the_continent_buttons_off(self):
         self.open(section="money")
