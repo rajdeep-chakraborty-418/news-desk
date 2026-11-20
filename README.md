@@ -152,3 +152,7 @@ Regional News has a **Show in English** button (top right). It swaps each headli
 - `external_config/translation.json`: `section` (default `regional`), `model`, `budget_minutes` (default 30), `max_new_per_run` and `newspaper_language` (Devanagari and Bengali-script papers that are Marathi or Assamese rather than Hindi or Bengali).
 - **One-time setup**: the model is gated on Hugging Face. Create a free account, open https://huggingface.co/ai4bharat/indictrans2-indic-en-dist-200M and accept the terms, create a *read* token (Settings > Access Tokens), then add it as the repository secret `HF_TOKEN` (Settings > Secrets and variables > Actions). Without the secret the translation steps are skipped and everything else works as before.
 - The first refresh after setup translates the backlog (newest first, up to the budget); later refreshes translate only new headlines.
+
+## Page loading (small per-section data files)
+
+`src/split_news.py` runs at the end of every deploy and splits `site/news.json` into `site/data/<section>.json` (every story of that section) and `site/data/home.json` (a pool of the newest stories per section, picture stories first, for Today's Picks). A section page downloads only its own file and Home only the pool; the browser re-checks the file with the server and gets "not changed" (nothing downloaded) until the next refresh. If a data file is missing, the page falls back to the whole `news.json`. `news.json` is still produced (the newspaper-list page reads it) and is the source the data files are rebuilt from, including on a code push.

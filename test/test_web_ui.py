@@ -304,6 +304,25 @@ class WebUITest(BrowserBase):
         self.page.click("#en")
         self.assertIn("मुंबई में मेट्रो शुरू", self.titles())
 
+    def test_a_section_page_loads_only_its_own_data_file(self):
+        import split_news
+        split_news.write(json.loads((self.site / "news.json").read_text()), self.site)
+        try:
+            seen = []
+            self.page.on("request", lambda r: seen.append(r.url))
+            self.open(section="sports")
+            self.assertEqual(self.tiles(), 3)
+            self.assertTrue(any(u.endswith("/data/sports.json") for u in seen), seen)
+            self.assertFalse(any("news.json" in u for u in seen), seen)
+            seen.clear()
+            self.page.goto(self.url)                                                  # the Home page: a pool, not everything
+            self.page.wait_for_function("document.querySelectorAll('#feat .fcard').length > 0")
+            self.assertTrue(any(u.endswith("/data/home.json") for u in seen), seen)
+            self.assertFalse(any("news.json" in u for u in seen), seen)
+            self.assertGreater(self.page.locator("#feat .fcard").count(), 10)
+        finally:
+            shutil.rmtree(self.site / "data", ignore_errors=True)
+
     def test_state_buttons_show_english_and_local_name_with_the_count(self):
         self.open(section="showbiz")
         self.assertEqual(self.page.locator("#chips button").all_inner_texts(),

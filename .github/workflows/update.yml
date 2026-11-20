@@ -116,6 +116,10 @@ jobs:
         run: |
           pip install -r src/requirements-translate.txt
           python3 src/translate_news.py run
+      - name: Split the headlines into one small file per section (pages load only what they show)
+        if: steps.gate.outputs.go == 'true'
+        continue-on-error: true
+        run: python3 src/split_news.py
       - name: Image check (diagnostic only)
         if: steps.gate.outputs.go == 'true' && github.event_name == 'workflow_dispatch'
         continue-on-error: true
