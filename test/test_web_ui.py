@@ -47,7 +47,11 @@ def make_news(max_articles=120):
     for it in items:                                    # older data without the field: matched on the source name instead
         if it["title"].startswith("World story") and int(it["title"].split()[-1]) % 4 == 1:
             del it["newspaper"]
-    return {"generated_at": NOW.isoformat(), "range_hours": 24, "max_articles": max_articles, "items": items, "feeds": []}
+    for it in items:                                    # Defence Desk has topic buttons: 7 Navy, 6 Army
+        if "defence" in it["sections"]:
+            it["topics"] = ["Navy"] if int(it["title"].split()[-1]) % 20 == 0 else ["Army"]
+    topics = {"defence": [{"label": "Navy", "count": 7}, {"label": "Army", "count": 6}]}
+    return {"generated_at": NOW.isoformat(), "range_hours": 24, "max_articles": max_articles, "topics": topics, "items": items, "feeds": []}
 
 
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
@@ -68,6 +72,11 @@ class BrowserBase(unittest.TestCase):
         shutil.rmtree(cls.site, ignore_errors=True)
         build_site.build(cls.site)
         (cls.site / "news.json").write_text(json.dumps(make_news()))
+        secs = json.loads((cls.site / "sections.json").read_text())
+        for sec in secs:
+            if sec["key"] == "money":
+                sec["continent_filter"] = False                 # Money Desk: no continent buttons
+        (cls.site / "sections.json").write_text(json.dumps(secs))
         handler = functools.partial(QuietHandler, directory=str(cls.site))
         cls.server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
         threading.Thread(target=cls.server.serve_forever, daemon=True).start()
@@ -242,6 +251,40 @@ class WebUITest(BrowserBase):
         self.page.click("#chips button:text-is('Africa')")
         self.assertEqual(self.tiles(), 26)
         self.assertTrue(all(c == "Africa" or True for c in chips))
+
+    def test_topic_buttons_replace_the_continent_buttons_and_filter_the_section(self):
+        self.open(section="defence")
+        self.assertEqual(self.page.locator("#chips button").all_inner_texts(), ["All", "Navy (7)", "Army (6)"])
+        self.assertEqual(self.page.get_attribute("#chips", "aria-label"), "Topic")
+        self.assertEqual(self.tiles(), 13)
+        self.page.click("#chips button:text-is('Navy (7)')")
+        self.assertEqual(self.tiles(), 7)
+        self.assertTrue(all(t.split()[-1].isdigit() and int(t.split()[-1]) % 20 == 0 for t in self.titles()))
+        self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "Navy (7)")
+        self.assertIn("topic=Navy", self.page.url)
+        self.page.reload()                                                          # a reload restores the topic
+        self.page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+        self.assertEqual(self.tiles(), 7)
+        self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "Navy (7)")
+        self.page.click("#reset")
+        self.assertEqual(self.tiles(), 13)
+        self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "All")
+        self.open(section="world")                                                  # other sections keep the continent buttons
+        self.assertEqual(self.page.get_attribute("#chips", "aria-label"), "Continent")
+        self.assertEqual(self.page.locator("#chips button").first.inner_text(), "All")
+        self.assertIn("Asia", self.page.locator("#chips button").all_inner_texts())
+
+    def test_a_section_can_switch_the_continent_buttons_off(self):
+        self.open(section="money")
+        self.assertFalse(self.page.is_visible("#chips"))
+        self.assertEqual(self.page.locator("#chips button").count(), 0)
+        for sel in ("#kind", "#q", "#sidebox", "#reset"):                           # the other filters stay
+            self.assertTrue(self.page.is_visible(sel), sel)
+        self.page.goto(self.url + "?section=money&continent=Asia")                  # a continent in the address is ignored here
+        self.page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
+        self.assertNotIn("continent", self.page.url)
+        self.open(section="world")
+        self.assertTrue(self.page.is_visible("#chips"))
 
     def country_row(self, name):
         return self.page.locator(f"#tree .cgrp[data-country='{name}']")

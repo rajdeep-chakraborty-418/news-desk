@@ -186,12 +186,13 @@
 <script src="backdrop.js"></script>
 <script src="refreshinfo.js"></script>
 <script>
+let SECTION_CFG = {};   // key -> {continent: show the continent buttons?}, from sections.json
 let SECTIONS = [];   // [key, label] pairs, filled from sections.json (external_config/sections.json) before the page is built
 const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South America", "Oceania"];
 const PRIMARY_BOOST_MS = 6 * 3600 * 1000;   // primary-source stories rank as if 6 hours newer
 const FIRST = 50;                            // the range starts as articles 1-50 and goes back to that whenever a filter changes
 let MAX = 200;                               // the most stories kept per section (news.json "max_articles"; 200 for older data)
-const state = { lm: "", generated: "", section: "", continent: "All", papers: new Set(), open: new Set(), kinds: new Set(), q: "", cq: "", items: [], from: 1, to: FIRST };
+const state = { lm: "", generated: "", section: "", continent: "All", topic: "", topics: {}, papers: new Set(), open: new Set(), kinds: new Set(), q: "", cq: "", items: [], from: 1, to: FIRST };
 const resetRange = () => { state.from = 1; state.to = FIRST; };
 const PARAMS = new URLSearchParams(location.search);
 let HOME = true;                              // Home (no ?section=) or a section page; decided once sections.json is loaded
@@ -236,6 +237,12 @@ function ago(iso) {
 }
 const score = (i) => new Date(i.published).getTime() + (i.primary ? PRIMARY_BOOST_MS : 0);
 
+// Which buttons a section page shows: topic buttons (sections with a topics file in external_config/topics/), else continent
+// buttons, else none (sections whose "continent_filter" is false in sections.json, e.g. Bengali, Regional and Indian News)
+const continentOn = () => (SECTION_CFG[state.section] || {}).continent !== false;
+const topicList = () => state.topics[state.section] || [];
+const topicOk = (i) => !state.topic || (i.topics || []).includes(state.topic);
+
 // stories in this section, honouring primary-only and search (but not continent/country, which the sidebar counts)
 function bySection() {
   const q = state.q.trim().toLowerCase();
@@ -271,11 +278,12 @@ function attachImage(thumb, src) {
 
 // A section tab keeps its filters in its own URL and in this tab's sessionStorage, so a reload restores them and
 // other tabs are never affected.
-const FILTER_KEYS = ["continent", "q", "pri", "sec", "from", "to", "papers"];
+const FILTER_KEYS = ["continent", "topic", "q", "pri", "sec", "from", "to", "papers"];
 const skey = () => "rcnd_sec_" + state.section;
 function saveState() {
   const o = {};
-  if (state.continent !== "All") o.continent = state.continent;
+  if (state.continent !== "All" && continentOn()) o.continent = state.continent;
+  if (state.topic) o.topic = state.topic;
   if (state.q) o.q = state.q;
   if (state.kinds.has("primary")) o.pri = "1";
   if (state.kinds.has("secondary")) o.sec = "1";
@@ -289,7 +297,8 @@ function restoreState(params) {
   if (FILTER_KEYS.some(k => params.has(k))) FILTER_KEYS.forEach(k => { if (params.has(k)) o[k] = params.get(k); });
   else if (params.has("fresh")) { try { sessionStorage.removeItem(skey()); } catch (e) {} }
   else { try { o = JSON.parse(sessionStorage.getItem(skey()) || "{}") || {}; } catch (e) {} }
-  if (CONTINENTS.includes(o.continent)) state.continent = o.continent;
+  if (CONTINENTS.includes(o.continent) && continentOn()) state.continent = o.continent;
+  state.topic = typeof o.topic === "string" ? o.topic : "";
   state.q = typeof o.q === "string" ? o.q : "";
   state.kinds.clear();
   if (o.pri === "1") state.kinds.add("primary");
@@ -302,7 +311,7 @@ function restoreState(params) {
 function syncControls() {
   $("q").value = state.q;
   $("fPrimary").checked = state.kinds.has("primary"); $("fSecondary").checked = state.kinds.has("secondary");
-  $("chips").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.textContent === state.continent));
+  $("chips").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v === (topicList().length ? state.topic : state.continent)));
 }
 
 // ---------- Home: Today's Picks, one panel per section with five random stories (Standard: text only; Maximise: the same five with pictures) ----------
@@ -404,7 +413,7 @@ const keyOf = (i) => pkey(i.country, paperOf(i));
 // Countries & newspapers: one tree, country -> its newspapers. Only newspapers are selected; a country box ticks all of its
 // newspapers. Counts come from the stories left by the section, continent, source-type and search filters.
 function renderSidebar(base) {
-  const inCont = base.filter(i => state.continent === "All" || i.continent === state.continent);
+  const inCont = base.filter(i => (state.continent === "All" || i.continent === state.continent) && topicOk(i));
   const tree = new Map();
   for (const i of inCont) {
     const c = i.country, p = paperOf(i);
@@ -471,7 +480,7 @@ function render() {
   const base = bySection();
   renderSidebar(base);
   const list = base.filter(i =>
-    (state.continent === "All" || i.continent === state.continent) &&
+    (state.continent === "All" || i.continent === state.continent) && topicOk(i) &&
     (state.papers.size === 0 || state.papers.has(keyOf(i)))
   ).sort((a, b) => score(b) - score(a));
 
@@ -509,6 +518,28 @@ function render() {
   });
 }
 
+function buildChips() {
+  const chips = $("chips"); chips.replaceChildren();
+  const topics = HOME ? [] : topicList();
+  if (!topics.length && !continentOn()) { chips.style.display = "none"; return; }        // nothing to filter by on this page
+  chips.style.display = "";
+  chips.setAttribute("aria-label", topics.length ? "Topic" : "Continent");
+  if (topics.length && state.topic && !topics.some(t => t.label === state.topic)) state.topic = "";   // a topic that is no longer offered
+  const entries = topics.length ? [["", "All"]].concat(topics.map(t => [t.label, `${t.label} (${t.count})`])) : CONTINENTS.map(c => [c, c]);
+  for (const [v, text] of entries) {
+    const b = document.createElement("button");
+    b.type = "button"; b.dataset.v = v; b.textContent = text;
+    b.setAttribute("aria-pressed", v === (topics.length ? state.topic : state.continent));
+    b.onclick = () => {
+      if (topics.length) state.topic = v; else state.continent = v;
+      resetRange();
+      chips.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+      render();
+    };
+    chips.append(b);
+  }
+}
+
 function build() {
   const tabs = $("tabs");
   for (const [key, label] of SECTIONS) {
@@ -519,17 +550,7 @@ function build() {
     b.onclick = () => Layout.openSection(key);
     tabs.append(b);
   }
-  const chips = $("chips");
-  for (const c of CONTINENTS) {
-    const b = document.createElement("button");
-    b.textContent = c; b.setAttribute("aria-pressed", c === state.continent);
-    b.onclick = () => {
-      state.continent = c; resetRange();
-      chips.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
-      render();
-    };
-    chips.append(b);
-  }
+  buildChips();
   // Primary / Secondary checkboxes, applied on top of the section, continent, country and search filters:
   // none or both ticked = both kinds of source; only one ticked = only that kind
   for (const [id, kind] of [["fPrimary", "primary"], ["fSecondary", "secondary"]]) {
@@ -544,7 +565,7 @@ function build() {
   // Reset: this tab's section back to its starting view - all continents and countries, both source types, no searches,
   // no newspaper chosen. The refresh options live on Home.
   $("reset").onclick = () => {
-    state.continent = "All"; state.papers.clear(); state.open.clear(); state.kinds.clear();
+    state.continent = "All"; state.topic = ""; state.papers.clear(); state.open.clear(); state.kinds.clear();
     state.q = ""; state.cq = ""; resetRange();
     $("cq").value = ""; syncControls();
     render(); window.scrollTo({ top: 0 });
@@ -561,6 +582,7 @@ async function load() {
     const data = await res.json();
     state.items = data.items || [];
     MAX = data.max_articles || 200;
+    state.topics = data.topics || {};
     state.lm = res.headers.get("last-modified") || state.lm; state.generated = data.generated_at;
     $("demo").style.display = data.demo ? "block" : "none";
     state.rangeHours = data.range_hours;
@@ -568,7 +590,7 @@ async function load() {
       paintSchedule();
       if (homeState.generated !== state.generated) pickRandom();      // new picks after every refresh (and on every page load)
       renderHome();
-    } else render();
+    } else { buildChips(); render(); }
   } catch (e) {
     if (HOME) { $("lastrefresh").textContent = "Could not load headlines"; $("nextrefresh").textContent = ""; }
     $("grid").innerHTML = '<div class="empty">News data is unavailable. If you opened this file directly, serve it with a web server (python3 -m http.server).</div>';
@@ -742,6 +764,7 @@ setInterval(() => { if (HOME && !rf.busy) loadRecord(); }, 5 * 60 * 1000);   // 
 async function loadSections() {
   const list = await (await fetch("sections.json?t=" + Date.now())).json();
   SECTIONS = list.map((x) => [x.key, x.label]);
+  SECTION_CFG = Object.fromEntries(list.map((x) => [x.key, { continent: x.continent_filter !== false }]));
   const want = PARAMS.get("section");
   HOME = !SECTIONS.some(([k]) => k === want);                      // no (or an unknown) ?section= means the Home page
   state.section = HOME ? "" : want;

@@ -6,7 +6,8 @@
       "color": {
         "light": "#b0123a",
         "dark": "#ff7a9a"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "regional",
@@ -14,7 +15,8 @@
       "color": {
         "light": "#0b6b8a",
         "dark": "#5cc7e6"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "india",
@@ -22,7 +24,8 @@
       "color": {
         "light": "#c2570c",
         "dark": "#ff9a4d"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "world",

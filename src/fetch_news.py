@@ -20,6 +20,7 @@ from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 
 import config
+import topics
 import dedupe
 import settings
 
@@ -363,6 +364,8 @@ def fetch_one(feed):
             "continent": continent,
             "country": country,
             "state": feed.get("state"),
+            "_tags": topics.split_tags(it.get("tags")),          # working keywords for the topic buttons; removed by topics.apply
+            "_folders": topics.folders_of(it["link"]),
         })
     status.update(ok=True, count=len(out))
     return out, status
@@ -418,6 +421,8 @@ def main():
                 by_link[it["link"]] = it
             else:  # same story from two feeds: merge sections, prefer primary source and an image
                 prev["sections"] = sorted(set(prev["sections"]) | set(it["sections"]))
+                prev["_tags"] = list(dict.fromkeys(prev.get("_tags", []) + it.get("_tags", [])))
+                prev["_folders"] = list(dict.fromkeys(prev.get("_folders", []) + it.get("_folders", [])))
                 if it["primary"] and not prev["primary"]:
                     prev["primary"], prev["source"], prev["newspaper"] = True, it["source"], it["newspaper"]
                 if not prev["image"] and it["image"]:
@@ -430,6 +435,13 @@ def main():
         print(f"Repeated-headline removal skipped: {type(e).__name__}: {e}", file=sys.stderr)
     before = len(items)
     items = trim_sections(items, ARTICLE_COUNT)
+    try:                                              # topic buttons of the sections that have a topics file; a failure only drops them
+        topic_lists = topics.apply(items, topics.load_topics(sections))
+    except Exception as e:
+        print(f"Topic buttons skipped: {type(e).__name__}: {e}", file=sys.stderr)
+        topic_lists = {}
+        for it in items:
+            it.pop("_tags", None); it.pop("_folders", None); it.pop("topics", None)
     got, tried = enrich_images(items)
     print(f"Article-page images: found {got} of {tried} tried; trimmed {before - len(items)} extra stories")
 
@@ -442,6 +454,7 @@ def main():
         "generated_at": generated_at,
         "range_hours": WINDOW_HOURS,
         "max_articles": ARTICLE_COUNT,
+        "topics": topic_lists,
         "items": items,
         "feeds": statuses,
     }, ensure_ascii=False, separators=(",", ":")))

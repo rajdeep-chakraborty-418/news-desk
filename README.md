@@ -134,3 +134,11 @@ The starting set is code-drawn SVG; replace or extend it with AI-made images (se
 
 ## Regional News
 Indian outlets whose headlines are not in English (Hindi, Marathi, Gujarati, Tamil, Telugu, Kannada, Malayalam, Odia, Assamese, Garo ...) have every feed set to the `regional` section ("Regional News") and an empty `section_map`, so their stories appear only there (not in Indian News or the topic sections). Bengali outlets stay in Bengali News with their topic maps. To move an outlet in or out, change the `section` of its feeds in `external_config/newspaper_sections/<paper>.json` (and give it a `section_map` if its stories should also appear in topic sections).
+
+## Section page buttons: continents, topics, or none
+The row of buttons above a section's stories depends on the section:
+- **Continents** (All, Asia, Europe ...) is the default.
+- **None**: set `"continent_filter": false` on the section in `external_config/sections.json` (Bengali, Regional and Indian News do, because every story there is from India).
+- **Topics**: add `external_config/topics/<section key>.json` (Bengali News has one). The buttons are the most frequent keywords of the stories that are in the section at the last refresh, so they follow the news. A story's keywords are its feed tags (`Sports,Cricket` counts as two) plus, for names you list under `merge` only, the folders of its web address. The file holds:
+  `min_count` (a topic needs this many stories, default 5), `max_topics` (default 12), `merge` (one button per topic: `{"Sports · খেলা": ["Sports", "খেলা", "Cricket", ...]}`; a name may feed several buttons) and `hide` (tags that are never a topic, such as "Top Stories"). Names compare without case or punctuation, in any script. A tag that is neither merged nor hidden is a topic of its own once it is frequent enough (for example a trending person or event).
+  Each button shows its story count; clicking one narrows the list to it (it is kept in the page address like the other filters, and Reset clears it).

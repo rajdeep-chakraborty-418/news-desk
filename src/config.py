@@ -73,7 +73,13 @@ def load_sections(directory=None):
         for old in ("keywords", "also_from_sections", "include_general_newspapers", "extra_keywords_for_general_newspapers", "place"):
             if old in s:
                 raise ConfigError(f"{where}: '{old}' is no longer supported (keyword rules and place rules were removed; use newspaper_sections/ maps; the country comes from the newspaper)")
-        out.append({"key": key, "label": s["label"].strip(), "color": color})
+        cf = s.get("continent_filter", True)
+        if not isinstance(cf, bool):
+            raise ConfigError(f"{where}: 'continent_filter' must be true or false")
+        entry = {"key": key, "label": s["label"].strip(), "color": color}
+        if not cf:
+            entry["continent_filter"] = False            # only written when off: the page then shows no continent buttons
+        out.append(entry)
     return out
 
 
@@ -190,7 +196,7 @@ def load_all(directory=None):
 
 def public_sections(sections):
     """What the web page needs to draw the tabs and their colours."""
-    return [{"key": s["key"], "label": s["label"], "color": s["color"]} for s in sections]
+    return [{k: s[k] for k in ("key", "label", "color", "continent_filter") if k in s} for s in sections]
 
 
 def public_newspapers(newspapers):
