@@ -1,0 +1,21 @@
+{
+  "newspaper": "Ei Samay",
+  "tier": "secondary",
+  "homepage": "https://eisamay.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "bengali",
+  "note": "Bengali-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "feeds": [
+    {
+      "section": "bengali",
+      "url": "https://eisamay.com/feed",
+      "state": "West Bengal"
+    }
+  ],
+  "section_map": {
+    "bengali": [
+      "Bengali"
+    ]
+  }
+}

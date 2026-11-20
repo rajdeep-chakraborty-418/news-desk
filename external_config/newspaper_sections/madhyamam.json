@@ -1,0 +1,82 @@
+{
+  "newspaper": "Madhyamam",
+  "tier": "secondary",
+  "homepage": "https://www.madhyamam.com/",
+  "country": "India",
+  "continent": "Asia",
+  "focus": "Malayalam regional newspaper",
+  "note": "Malayalam-language newspaper. Single general feed; section map is a first pass (English words) pending discovery of its own tags and menu.",
+  "feeds": [
+    {
+      "section": "india",
+      "url": "https://www.madhyamam.com/feeds.xml",
+      "state": "Kerala"
+    }
+  ],
+  "section_map": {
+    "india": [
+      "India",
+      "National",
+      "Nation",
+      "State",
+      "States",
+      "City",
+      "Cities",
+      "Politics",
+      "Regional",
+      "Local",
+      "Crime",
+      "Kerala"
+    ],
+    "world": [
+      "World",
+      "International"
+    ],
+    "sports": [
+      "Sports",
+      "Sport",
+      "Cricket",
+      "Football"
+    ],
+    "entertainment": [
+      "Entertainment",
+      "Movies",
+      "Cinema",
+      "Bollywood",
+      "Tollywood",
+      "Kollywood",
+      "Showbiz",
+      "Music",
+      "TV"
+    ],
+    "lifestyle": [
+      "Lifestyle",
+      "Health",
+      "Food",
+      "Fashion"
+    ],
+    "business": [
+      "Business",
+      "Economy",
+      "Finance",
+      "Markets"
+    ],
+    "technology": [
+      "Technology",
+      "Tech",
+      "Gadgets",
+      "Auto"
+    ],
+    "science": [
+      "Science"
+    ],
+    "nature": [
+      "Environment",
+      "Wildlife",
+      "Weather"
+    ],
+    "geography": [
+      "Travel"
+    ]
+  }
+}
