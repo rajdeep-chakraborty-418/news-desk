@@ -93,3 +93,29 @@ class ContinentFilterTest(TestCase):
         support.write_config(d, sections=data)
         with self.assertRaises(config.ConfigError):
             config.load_sections(d)
+
+
+class HeadlineTopicsTest(TestCase):
+    SPEC = {"min_count": 8, "min_newspapers": 2, "max_topics": 12, "stopwords": set(), "hide": set(), "native_only": True}
+
+    def stories(self, titles_per_paper):
+        return [{"title": t, "newspaper": p} for p, titles in titles_per_paper.items() for t in titles]
+
+    def test_stem_joins_case_endings(self):
+        self.assertEqual({topics.stem(w) for w in ("কলকাতার", "কলকাতায়", "কলকাতাকে")}, {"কলকাতা"})
+        self.assertEqual(topics.stem("বৃষ্টি"), "বৃষ্টি")
+
+    def test_trending_word_needs_stories_and_newspapers(self):
+        items = self.stories({"A": ["আকভান ঝড় %d" % i for i in range(6)], "B": ["আকভানের প্রভাব %d" % i for i in range(4)]})
+        items += [{"title": "অন্য খবর %d" % i, "newspaper": "A"} for i in range(40)]
+        found, order = topics.headline_topics(items, self.SPEC)
+        self.assertIn("আকভান", order)
+        self.assertEqual(len(found["আকভান"]), 10)
+        one_paper = [{"title": "শুধু এক কাগজ", "newspaper": "A"}] * 12 + [{"title": "অন্য %d" % i, "newspaper": "B"} for i in range(40)]
+        self.assertNotIn("কাগজ", topics.headline_topics(one_paper, self.SPEC)[1])
+
+    def test_filler_words_and_english_are_not_topics(self):
+        items = [{"title": "Cyclone: নিয়ে নয় আকভান %d" % i, "newspaper": "AB"[i % 2]} for i in range(10)]
+        items += [{"title": "অন্য খবর %d" % i, "newspaper": "A"} for i in range(40)]
+        order = topics.headline_topics(items, self.SPEC)[1]
+        self.assertEqual(order, ["আকভান"])
