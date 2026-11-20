@@ -1,0 +1,28 @@
+"""Word lists for finding topics in headlines: words that are never topics, and the endings Bengali words take.
+Lists are deliberately plain data so they can be extended in external_config/topics/<section>.json ("stopwords")."""
+
+# Bengali function words, common verbs and newsroom filler (compared after the ending is stripped as well)
+BENGALI_STOP = """
+এবং ও এর এই ওই সেই যে যা কি কী কে না নয় নেই আছে আছেন ছিল ছিলেন হল হলেন হয় হয়ে হবে হবেন হয়েছে হয়েছেন হচ্ছে হচ্ছেন হলে হতে
+করে করা করতে করল করলেন করেন করছে করছেন করবে করবেন করেছে করেছেন করায় করার করলে কর
+থেকে থেকেই জন্য সঙ্গে সাথে পর পরে আগে আর তাই কিন্তু বলে বলেন বলল বললেন বলা বলছেন জানালেন জানাল জানান জানিয়েছেন জানিয়ে
+দিলেন দিল দেন দেয় দেবে দিয়ে দিতে দিয়েছেন দেওয়া দেওয়ার নিয়ে নিল নিলেন নেন নেবে নিতে নেওয়া নেওয়ার গেল গেলেন যায় যাবে যান যাচ্ছে গিয়ে যাওয়া
+এল এলেন আসে আসছে আসবে এসে আসা ফের আবার আজ আজকের কাল এখন তখন কত কেন কীভাবে কোথায় কবে কোন কোনও কেউ সব সবাই সকলে সকল
+একটি একটা এক দুই তিন চার পাঁচ ছয় সাত আট নয় দশ প্রথম দ্বিতীয় নতুন বড় ছোট বিরুদ্ধে মধ্যে মাঝে ভিতরে ভেতরে উপর ওপর নীচে নিচে জুড়ে পক্ষে মতো মত যেন যদি তবে তো ই সহ প্রায় আরও আরো শুধু কেবল
+দিন বছর মাস সময় ঘণ্টা মিনিট খবর খবরের ভিডিয়ো ভিডিও ছবি ছবিতে ফটো লাইভ আপডেট দেখুন দেখে দেখা জানুন জানতে পড়ুন কারণ কারণে ফলে তাঁর তাঁকে তাঁদের তার তাকে তাদের তিনি তাঁরা তারা তা
+আমি আমরা আমাদের আমার তুমি আপনি আপনার আপনাকে এঁদের এদের এটি এটা ওটা সেটা এখানে সেখানে যেখানে যখন যত যাঁর যাঁকে যাঁদের
+পারে পারেন পারবে পারলেন পেল পেলেন পাবে পান পেয়ে পাওয়া চান চায় চাইছে চাইলেন চাওয়া থাকবে থাকে থাকা থাকলেন রয়েছে রয়েছেন রইল
+ঘিরে নিয়ে বিষয়ে প্রসঙ্গে ব্যাপারে বদলে পাশে সামনে পিছনে আগেই পরেই মাত্র ফলে ছাড়া ছাড়াই মধ্যেই পর্যন্ত অবধি বেশি কম বহু অনেক অনেকে কয়েক কিছু কিছুই
+শুরু শেষ বন্ধ খুলে খুলল চলছে চলবে চলে চালু বাড়ল বাড়ছে কমল কমছে বাড়ে লাগল লাগে ঘটল ঘটনা ঘটনায় হামলা
+""".split()
+
+ENGLISH_STOP = """
+the a an of in on to for and or with is are was were be by at as it its this that from vs v after before over under about into out up down
+live update updates news video videos photo photos watch big breaking today latest viral exclusive top story stories read more new how why what who
+when where says say said will can may could not no yes
+""".split()
+
+# Case and plural endings, longest first; stripped once, and only from Bengali words (see stem()).
+BENGALI_ENDINGS = sorted("""
+গুলোকে গুলিকে গুলোর গুলির গুলো গুলি দেরকে দের দেরই রাও কেই কেও কে ের েরা রা টির টার টি টা তেই তেও তে য়ের য়েও য়ে য়ও য় র ে ই
+""".split(), key=len, reverse=True)
