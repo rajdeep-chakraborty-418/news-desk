@@ -4,6 +4,10 @@
   "homepage": "https://odishareporter.in/",
   "country": "India",
   "continent": "Asia",
+  "state": {
+    "en": "Odisha",
+    "local": "ଓଡ଼ିଶା"
+  },
   "focus": "regional",
   "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [

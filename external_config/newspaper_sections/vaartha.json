@@ -4,6 +4,16 @@
   "homepage": "https://vaartha.com/",
   "country": "India",
   "continent": "Asia",
+  "state": [
+    {
+      "en": "Telangana",
+      "local": "తెలంగాణ"
+    },
+    {
+      "en": "Andhra Pradesh",
+      "local": "ఆంధ్రప్రదేశ్"
+    }
+  ],
   "focus": "regional",
   "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [

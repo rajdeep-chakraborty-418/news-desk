@@ -4,6 +4,10 @@
   "homepage": "https://www.pudhari.news/",
   "country": "India",
   "continent": "Asia",
+  "state": {
+    "en": "Maharashtra",
+    "local": "महाराष्ट्र"
+  },
   "focus": "regional",
   "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [

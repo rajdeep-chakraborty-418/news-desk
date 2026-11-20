@@ -122,6 +122,11 @@ def load_newspapers(sections, directory=None):
             if f.get("continent") is not None and f["continent"] not in CONTINENTS:
                 raise ConfigError(f"{where}: feed {f['url']} has an unknown continent {f['continent']!r}")
         entry = {k: p[k] for k in ("homepage", "country", "continent", "listed", "feeds") if k in p}
+        if p.get("state") is not None:                     # an Indian state, in English and in its own language (regional newspapers)
+            st = p["state"] if isinstance(p["state"], list) else [p["state"]]
+            if not st or not all(isinstance(x, dict) and all(isinstance(x.get(k), str) and x[k].strip() for k in ("en", "local")) for x in st):
+                raise ConfigError(f'{where}: \'state\' must be {{"en": "<English name>", "local": "<name in the local language>"}} (or a list of them)')
+            entry["states"] = [{"en": x["en"].strip(), "local": x["local"].strip()} for x in st]
         data[tier].append(dict(entry, name=p["newspaper"]))
     return data
 

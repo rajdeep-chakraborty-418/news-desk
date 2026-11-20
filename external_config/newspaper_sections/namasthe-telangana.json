@@ -4,6 +4,10 @@
   "homepage": "https://www.ntnews.com/",
   "country": "India",
   "continent": "Asia",
+  "state": {
+    "en": "Telangana",
+    "local": "తెలంగాణ"
+  },
   "focus": "regional",
   "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [

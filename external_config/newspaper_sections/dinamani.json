@@ -4,6 +4,10 @@
   "homepage": "https://www.dinamani.com/",
   "country": "India",
   "continent": "Asia",
+  "state": {
+    "en": "Tamil Nadu",
+    "local": "தமிழ்நாடு"
+  },
   "focus": "regional",
   "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [

@@ -119,3 +119,27 @@ class HeadlineTopicsTest(TestCase):
         items += [{"title": "অন্য খবর %d" % i, "newspaper": "A"} for i in range(40)]
         order = topics.headline_topics(items, self.SPEC)[1]
         self.assertEqual(order, ["আকভান"])
+
+
+class StatesModeTest(TestCase):
+    def test_buttons_are_the_states_of_the_newspapers(self):
+        spec = {"mode": "states", "min_count": 1, "max_topics": 40, "newspaper_states": {"Pudhari": ["Maharashtra (महाराष्ट्र)"], "Sambad": ["Odisha (ଓଡ଼ିଶା)"],
+                "Vaartha": ["Telangana (తెలంగాణ)", "Andhra Pradesh (ఆంధ్రప్రదేశ్)"]}}
+        items = [{"newspaper": "Pudhari", "sections": ["regional"]}, {"source": "Pudhari", "sections": ["regional"]},
+                 {"newspaper": "Sambad", "sections": ["regional"]}, {"newspaper": "Vaartha", "sections": ["regional"]},
+                 {"newspaper": "Navbharat Times", "sections": ["regional"]}, {"newspaper": "Pudhari", "sections": ["world"]}]
+        out = topics.apply(items, {"regional": spec})["regional"]
+        self.assertEqual(out[0], {"label": "Maharashtra (महाराष्ट्र)", "count": 2})
+        self.assertEqual(len(out), 4)
+        self.assertEqual(items[3]["topics"], ["Telangana (తెలంగాణ)", "Andhra Pradesh (ఆంధ్రప్రదేశ్)"])
+        self.assertEqual(items[4]["topics"], [])                       # a newspaper without a state: only under All
+        self.assertNotIn("topics", items[5])                           # another section is untouched
+
+    def test_state_in_a_newspaper_file_needs_both_names(self):
+        import config
+        for bad in ({"en": "Assam"}, {"en": "", "local": "অসম"}, [], "Assam"):
+            with self.assertRaises(config.ConfigError):
+                with tempfile.TemporaryDirectory() as d:
+                    support.write_config(pathlib.Path(d), newspapers={"primary": [], "secondary": [{"name": "P", "homepage": "https://p.example/", "state": bad,
+                                         "feeds": [{"url": "https://p.example/f", "section": "world"}]}]})
+                    config.load_newspapers(config.load_sections(d), d)

@@ -545,7 +545,7 @@ function buildChips() {
   chips.style.display = "";
   chips.setAttribute("aria-label", topics.length ? "Topic" : "Continent");
   if (topics.length && state.topic && !topics.some(t => t.label === state.topic)) state.topic = "";   // a topic that is no longer offered
-  const entries = topics.length ? [["", "All"]].concat(topics.map(t => [t.label, `${t.label} (${t.count})`])) : CONTINENTS.map(c => [c, c]);
+  const entries = topics.length ? [["", "All"]].concat(topics.map(t => [t.label, t.label.endsWith(")") ? `${t.label} · ${t.count}` : `${t.label} (${t.count})`])) : CONTINENTS.map(c => [c, c]);
   for (const [v, text] of entries) {
     const b = document.createElement("button");
     b.type = "button"; b.dataset.v = v; b.textContent = text;

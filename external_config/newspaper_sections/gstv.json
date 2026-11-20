@@ -4,6 +4,10 @@
   "homepage": "https://www.gstv.in/",
   "country": "India",
   "continent": "Asia",
+  "state": {
+    "en": "Gujarat",
+    "local": "ગુજરાત"
+  },
   "focus": "regional",
   "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [

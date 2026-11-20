@@ -45,7 +45,8 @@ def make_news(max_articles=120):
                                   ("चेन्नई में बाढ़", "Flood in Chennai"), ("पुणे में आग", None)]):
         items.append({"title": hi, "link": f"https://news.example/r{n}", "summary": "", "image": "", "published": (NOW - timedelta(minutes=n)).isoformat(),
                       "source": "Navbharat Times", "newspaper": "Navbharat Times", "primary": False, "category": "showbiz", "sections": ["showbiz"],
-                      "continent": "Asia", "country": "India", "state": None, **({"title_en": en} if en else {})})
+                      "continent": "Asia", "country": "India", "state": None, **({"title_en": en} if en else {}),
+                      "topics": ["Maharashtra (महाराष्ट्र)"] if n < 2 else ["Tamil Nadu (தமிழ்நாடு)"]})
     for it in items:                                    # pictures on some stories (the Home page ignores them)
         if it["title"] in ("World story 0", "World story 1", "World story 2", "World story 3", "World story 4", "World story 5", "Sports story 0", "Sports story 1"):
             it["image"] = "https://img.example/pic.jpg"
@@ -55,7 +56,8 @@ def make_news(max_articles=120):
     for it in items:                                    # Defence Desk has topic buttons: 7 Navy, 6 Army
         if "defence" in it["sections"]:
             it["topics"] = ["Navy"] if int(it["title"].split()[-1]) % 20 == 0 else ["Army"]
-    topics = {"defence": [{"label": "Navy", "count": 7}, {"label": "Army", "count": 6}]}
+    topics = {"defence": [{"label": "Navy", "count": 7}, {"label": "Army", "count": 6}],
+              "showbiz": [{"label": "Maharashtra (महाराष्ट्र)", "count": 2}, {"label": "Tamil Nadu (தமிழ்நாடு)", "count": 2}]}
     return {"generated_at": NOW.isoformat(), "range_hours": 24, "max_articles": max_articles, "topics": topics, "items": items, "feeds": []}
 
 
@@ -301,6 +303,13 @@ class WebUITest(BrowserBase):
         self.assertEqual(self.page.inner_text("#en"), "Show original")
         self.page.click("#en")
         self.assertIn("मुंबई में मेट्रो शुरू", self.titles())
+
+    def test_state_buttons_show_english_and_local_name_with_the_count(self):
+        self.open(section="showbiz")
+        self.assertEqual(self.page.locator("#chips button").all_inner_texts(),
+                         ["All", "Maharashtra (महाराष्ट्र) · 2", "Tamil Nadu (தமிழ்நாடு) · 2"])
+        self.page.click("#chips button:has-text('Maharashtra')")
+        self.assertEqual(self.tiles(), 2)
 
     def test_a_section_can_switch_the_continent_buttons_off(self):
         self.open(section="money")

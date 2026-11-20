@@ -4,6 +4,16 @@
   "homepage": "https://www.prabhatkhabar.com/",
   "country": "India",
   "continent": "Asia",
+  "state": [
+    {
+      "en": "Jharkhand",
+      "local": "झारखंड"
+    },
+    {
+      "en": "Bihar",
+      "local": "बिहार"
+    }
+  ],
   "focus": "regional",
   "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [

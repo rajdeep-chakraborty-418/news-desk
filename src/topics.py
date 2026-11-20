@@ -61,13 +61,13 @@ def load_topics(sections, directory=None):
             raise config.ConfigError(f"{where} is not valid JSON: {e}")
         if not isinstance(d, dict):
             raise config.ConfigError(f"{where} must be an object")
-        for field, lo, hi, default in (("min_count", 1, 100000, 8 if d.get("mode") == "headlines" else 5), ("max_topics", 1, 40, 12)):
+        for field, lo, hi, default in (("min_count", 1, 100000, {"headlines": 8, "states": 1}.get(d.get("mode"), 5)), ("max_topics", 1, 40, 12)):
             v = d.get(field, default)
             if not isinstance(v, int) or isinstance(v, bool) or not lo <= v <= hi:
                 raise config.ConfigError(f"{where}: '{field}' must be a whole number from {lo} to {hi}")
         mode = d.get("mode", "tags")
-        if mode not in ("tags", "headlines"):
-            raise config.ConfigError(f'{where}: "mode" must be "tags" or "headlines"')
+        if mode not in ("tags", "headlines", "states"):
+            raise config.ConfigError(f'{where}: "mode" must be "tags", "headlines" or "states"')
         min_papers = d.get("min_newspapers", 1)
         if not isinstance(min_papers, int) or isinstance(min_papers, bool) or not 1 <= min_papers <= 100:
             raise config.ConfigError(f"{where}: 'min_newspapers' must be a whole number from 1 to 100")
@@ -86,11 +86,19 @@ def load_topics(sections, directory=None):
                 labels = alias.setdefault(config.norm_label(n), [])          # a name may feed several buttons (Cricket and Sports)
                 if label.strip() not in labels:
                     labels.append(label.strip())
-        specs[path.stem] = {"mode": mode, "min_count": d.get("min_count", 8 if mode == "headlines" else 5),
+        specs[path.stem] = {"mode": mode, "min_count": d.get("min_count", {"headlines": 8, "states": 1}.get(mode, 5)),
                             "max_topics": d.get("max_topics", 12), "min_newspapers": min_papers, "alias": alias,
                             "hide": {config.norm_label(n) for n in hide},
                             "stopwords": {w.lower() for w in extra_stop}, "native_only": bool(d.get("native_only", False))}
+        if mode == "states":                                   # the buttons are the states of the newspapers: "English (local name)"
+            specs[path.stem]["newspaper_states"] = newspaper_states(sections, directory)
     return specs
+
+
+def newspaper_states(sections, directory=None):
+    """{newspaper name: ["Maharashtra (महाराष्ट्र)", ...]} from the 'state' of each newspaper file."""
+    books = config.load_newspapers(sections, directory)
+    return {p["name"]: [f'{x["en"]} ({x["local"]})' for x in p["states"]] for node in books.values() for p in node if p.get("states")}
 
 
 # ---------------------------------------------------------------- headlines mode
@@ -197,6 +205,19 @@ def apply(items, specs):
     story and returns {section key: [{"label", "count"}, ...]} in button order (most stories first)."""
     result = {}
     for key, spec in (specs or {}).items():
+        if spec.get("mode") == "states":
+            by_paper = spec.get("newspaper_states", {})
+            story_list = [i for i in items if key in i.get("sections", ())]
+            count = {}
+            for item in story_list:
+                item["topics"] = list(by_paper.get(item.get("newspaper") or item.get("source"), []))
+                for label in item["topics"]:
+                    count[label] = count.get(label, 0) + 1
+            order = sorted((l for l, n in count.items() if n >= spec["min_count"]), key=lambda l: (-count[l], l))[:spec["max_topics"]]
+            for item in story_list:
+                item["topics"] = [l for l in item["topics"] if l in order]
+            result[key] = [{"label": l, "count": count[l]} for l in order]
+            continue
         if spec.get("mode") == "headlines":
             story_list = [i for i in items if key in i.get("sections", ())]
             found, order = headline_topics(story_list, spec)
