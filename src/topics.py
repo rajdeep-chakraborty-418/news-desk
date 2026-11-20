@@ -96,16 +96,20 @@ def load_topics(sections, directory=None):
 # ---------------------------------------------------------------- headlines mode
 def _words(text):
     """The words of a headline in their written form (punctuation, digits and invisible joiners removed)."""
-    text = text.replace("\u200c", "").replace("\u200d", "")
+    text = unicodedata.normalize("NFD", text).replace("\u200c", "").replace("\u200d", "")   # য় is one character or two depending on the keyboard
     t = "".join(c if unicodedata.category(c)[0] in "LMN" else " " for c in text)
     return [w for w in t.split() if len(w) >= 2 and not w.isdigit()]
+
+
+ENDINGS = [unicodedata.normalize("NFD", e) for e in topic_words.BENGALI_ENDINGS]
 
 
 def stem(word):
     """A Bengali word without its case/plural ending (কলকাতার, কলকাতায়, কলকাতাকে -> কলকাতা); other scripts are left alone."""
     if not ("\u0980" <= word[0] <= "\u09ff") or len(word) <= 3:
         return word
-    for suffix in topic_words.BENGALI_ENDINGS:
+    word = unicodedata.normalize("NFD", word)
+    for suffix in ENDINGS:
         if word.endswith(suffix) and len(word) - len(suffix) >= 2:
             return word[:-len(suffix)]
     return word
@@ -122,7 +126,7 @@ def headline_topics(members, spec):
     events that occur in at least min_count headlines from at least min_newspapers newspapers, most frequent first, at most
     max_topics. A phrase of two words that nearly always go together (শুভেন্দু অধিকারী) replaces its single words, and topics
     that cover almost the same stories are shown once. Words everybody uses (more than a third of the headlines) are skipped."""
-    stop = set(topic_words.BENGALI_STOP) | set(topic_words.ENGLISH_STOP) | spec.get("stopwords", set())
+    stop = {unicodedata.normalize("NFD", w) for w in set(topic_words.BENGALI_STOP) | set(topic_words.ENGLISH_STOP) | spec.get("stopwords", set())}
     n = len(members)
     uni, bi = defaultdict(set), defaultdict(set)                     # stem or "stem stem" -> story positions
     papers = defaultdict(set)
