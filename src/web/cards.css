@@ -6,7 +6,7 @@
 .fcard a.fmain:hover h2, .fcard a.fmain:focus-visible h2 { text-decoration: underline; }
 .fcard h2 { margin: 0; font-size: 18px; line-height: 1.28; }
 .nostory { padding: 38px 14px; text-align: center; color: var(--muted); font: 14px system-ui, sans-serif; flex: 1; }
-.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
+.grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); }
 a.tile { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--card); border: 1px solid var(--line);
          border-radius: 10px; overflow: hidden; transition: transform .12s, box-shadow .12s; }
 a.tile:hover, a.tile:focus-visible { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.14); outline: none; }
@@ -30,3 +30,19 @@ a.tile:hover, a.tile:focus-visible { transform: translateY(-2px); box-shadow: 0 
 .pri { color: var(--accent); font-weight: 700; }
 .empty { text-align: center; color: var(--muted); padding: 60px 0; font-family: system-ui, sans-serif; grid-column: 1 / -1; }
 .num { z-index: 3; position: absolute; right: 8px; top: 8px; font: 700 11px system-ui, sans-serif; padding: 3px 8px; border-radius: 999px; background: rgba(0,0,0,.72); color: #fff; }
+
+/* Compact section tiles: the same content (picture, country badge, number, place, age, headline, summary, source) in less space.
+   Only the section page's grid; the landing page's cards keep their own size. */
+.grid a.tile { border-radius: 8px; }
+.grid .thumb { aspect-ratio: 2 / 1; }
+.grid .badge, .grid .num { top: 6px; font-size: 10px; padding: 2px 6px; }
+.grid .badge { left: 6px; }
+.grid .num { right: 6px; }
+.grid .ph { font-size: 26px; }
+.grid .body { padding: 8px 10px 9px; gap: 4px; }
+.grid .meta { font-size: 11px; letter-spacing: .03em; }
+.grid .tile h2 { font-size: 15px; line-height: 1.25; }
+.grid .tile.lead h2 { font-size: 16px; }
+.grid .tile p { font-size: 12.5px; line-height: 1.35; }
+.grid .orig { font-size: 12px; margin: 0 0 2px; }
+.grid .foot { font-size: 11px; }
