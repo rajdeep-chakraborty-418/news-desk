@@ -308,8 +308,8 @@ function syncControls() {
 // ---------- Home: Today's Picks, one panel per section with five random stories (no pictures, to keep the panels small) ----------
 const PICKS_PER_SECTION = 5;
 const homeState = { picks: null, generated: null };
-function pickFor(key) {
-  const pool = state.items.filter(i => i.sections.includes(key));
+function pickFor(key, withPicture) {
+  const pool = state.items.filter(i => i.sections.includes(key) && (!withPicture || (i.image && i.image.startsWith("https://"))));
   for (let n = pool.length - 1; n > 0; n--) { const m = Math.floor(Math.random() * (n + 1)); [pool[n], pool[m]] = [pool[m], pool[n]]; }
   return pool.slice(0, PICKS_PER_SECTION);
 }
@@ -317,9 +317,14 @@ function pickRandom() {
   homeState.picks = SECTIONS.map(([key]) => pickFor(key));
   homeState.generated = state.generated;
 }
-function pickCard(i) {
+function pickCard(i, withPicture) {
   const card = document.createElement("article"); card.className = "fcard";
   const a = document.createElement("a"); a.className = "fmain"; a.href = i.link; a.target = "_blank"; a.rel = "noopener noreferrer";
+  if (withPicture) {                                                        // only the maximised view shows pictures
+    const thumb = document.createElement("div"); thumb.className = "thumb";
+    const ph = document.createElement("div"); ph.className = "ph"; ph.textContent = (i.source || "?").charAt(0);
+    thumb.append(ph); attachImage(thumb, i.image); a.append(thumb);
+  }
   const body = document.createElement("div"); body.className = "body";
   const meta = document.createElement("div"); meta.className = "meta";
   const c = document.createElement("span"); c.textContent = i.country; const t = document.createElement("span"); t.textContent = ago(i.published);
@@ -330,10 +335,10 @@ function pickCard(i) {
   body.append(meta, h, f); a.append(body); card.append(a);
   return card;
 }
-function fillPickRow(row, picks) {
+function fillPickRow(row, picks, withPicture) {
   row.replaceChildren();
-  if (picks.length) picks.forEach(i => row.append(pickCard(i)));
-  else { const d = document.createElement("div"); d.className = "nostory"; d.textContent = "No stories yet"; row.append(d); }
+  if (picks.length) picks.forEach(i => row.append(pickCard(i, withPicture)));
+  else { const d = document.createElement("div"); d.className = "nostory"; d.textContent = withPicture ? "No stories with a picture yet" : "No stories yet"; row.append(d); }
 }
 function renderHome() {
   if (!homeState.picks || homeState.picks.length !== SECTIONS.length) pickRandom();
@@ -351,7 +356,15 @@ function renderHome() {
     head.append(h, shuffle, max);
     const row = document.createElement("div"); row.className = "featgrid lrow";
     fillPickRow(row, homeState.picks[n] || []);
-    shuffle.onclick = () => { homeState.picks[n] = pickFor(key); fillPickRow(row, homeState.picks[n]); };     // this panel only
+    let big = null;                                                         // the five picture stories shown while this panel is maximised
+    shuffle.onclick = () => {                                               // this panel only
+      if (panel.classList.contains("max")) { big = pickFor(key, true); fillPickRow(row, big, true); }
+      else { homeState.picks[n] = pickFor(key); fillPickRow(row, homeState.picks[n]); }
+    };
+    panel.addEventListener("panelmax", (e) => {                             // standard: text only; maximised: stories with pictures
+      if (e.detail.max) { big = pickFor(key, true); fillPickRow(row, big, true); }
+      else fillPickRow(row, homeState.picks[n] || []);
+    });
     panel.setAttribute("aria-labelledby", h.id); panel.append(head, row); box.append(panel);
   });
 }

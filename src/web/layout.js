@@ -27,9 +27,9 @@ const Layout = (() => {
   // Panels start compact ("Standard"); Maximise gives one panel the whole window, Standard or Esc brings it back.
   function setMax(panel, on) {
     document.querySelectorAll(".hpanel.max").forEach((p) => {
-      if (p !== panel || !on) { p.classList.remove("max"); const b = p.querySelector(".pmax"); b.textContent = "Maximise"; b.setAttribute("aria-pressed", "false"); }
+      if (p !== panel || !on) { p.classList.remove("max"); const b = p.querySelector(".pmax"); b.textContent = "Maximise"; b.setAttribute("aria-pressed", "false"); p.dispatchEvent(new CustomEvent("panelmax", { detail: { max: false } })); }
     });
-    if (on) { panel.classList.add("max"); const b = panel.querySelector(".pmax"); b.textContent = "Standard"; b.setAttribute("aria-pressed", "true"); }
+    if (on) { panel.classList.add("max"); const b = panel.querySelector(".pmax"); b.textContent = "Standard"; b.setAttribute("aria-pressed", "true"); panel.dispatchEvent(new CustomEvent("panelmax", { detail: { max: true } })); }
     document.body.classList.toggle("pmax", !!on);
   }
 

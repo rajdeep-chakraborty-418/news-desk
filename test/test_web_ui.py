@@ -687,6 +687,23 @@ class HomeAndTabsTest(BrowserBase):
         self.assertIn("No stories yet", self.panel("india").inner_text())
         self.assertEqual(self.panel("india").locator("a.fmain").count(), 0)
 
+    def test_maximising_a_panel_shows_stories_with_pictures_and_standard_returns_to_text(self):
+        self.home()
+        world = self.panel("world")
+        self.assertEqual(world.locator(".thumb").count(), 0)                      # standard: text only
+        world.locator(".pmax").click()
+        self.assertEqual(world.locator(".fcard").count(), 5)
+        self.assertEqual(world.locator(".fcard .thumb").count(), 5)               # maximised: every story has a picture
+        self.panel("sports").locator(".pmax").dispatch_event("click")             # sports has two stories with a picture
+        self.assertEqual(self.panel("sports").locator(".fcard .thumb").count(), 2)
+        self.assertEqual(world.locator(".thumb").count(), 0)                      # world went back to standard
+        self.panel("sports").locator(".pmax").click()
+        self.assertEqual(self.panel("sports").locator(".fcard").count(), 3)
+        self.assertEqual(self.panel("sports").locator(".thumb").count(), 0)
+        world.locator(".pmax").click()
+        world.locator(".shuffle").dispatch_event("click")
+        self.assertEqual(world.locator(".fcard .thumb").count(), 5)               # Shuffle keeps the maximised view
+
     def test_a_panels_shuffle_changes_only_that_panel(self):
         self.home()
         before_sports = self.panel("sports").locator(".fcard h2").all_inner_texts()
