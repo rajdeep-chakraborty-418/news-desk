@@ -89,7 +89,7 @@ def load_topics(sections, directory=None):
         specs[path.stem] = {"mode": mode, "min_count": d.get("min_count", 8 if mode == "headlines" else 5),
                             "max_topics": d.get("max_topics", 12), "min_newspapers": min_papers, "alias": alias,
                             "hide": {config.norm_label(n) for n in hide},
-                            "stopwords": {w.lower() for w in extra_stop}}
+                            "stopwords": {w.lower() for w in extra_stop}, "native_only": bool(d.get("native_only", False))}
     return specs
 
 
@@ -133,6 +133,9 @@ def headline_topics(members, spec):
         for word in _words(item.get("title", "")):
             low = word.lower()
             st = stem(low)
+            if spec.get("native_only") and word.isascii():          # English tags in front of the headline repeat the Bengali words
+                previous = None
+                continue
             if low in stop or st in stop:
                 previous = None
                 continue

@@ -16,7 +16,7 @@ for out, st in res:
         by.setdefault(it["link"], it)
 items = [i for i in by.values() if "bengali" in i["sections"]]
 print("PROBE|" + json.dumps({"stories": len(items), "papers": dict(Counter(i["newspaper"] for i in items))}, ensure_ascii=False))
-spec = {"min_count": 8, "min_newspapers": 2, "max_topics": 12, "stopwords": set(), "hide": set()}
+spec = {"min_count": 8, "min_newspapers": 2, "max_topics": 12, "stopwords": set(), "hide": set(), "native_only": True}
 found, order = topics.headline_topics(items, spec)
 for label in order:
     ids = sorted(found[label])[:4]
