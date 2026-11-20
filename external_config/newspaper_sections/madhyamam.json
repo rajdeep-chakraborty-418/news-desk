@@ -4,101 +4,14 @@
   "homepage": "https://www.madhyamam.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Malayalam regional newspaper",
-  "note": "Malayalam-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://www.madhyamam.com/feeds.xml",
       "state": "Kerala"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "Kerala",
-      "Local News",
-      "Obituaries",
-      "Fact Check",
-      "Opinion",
-      "Editorial",
-      "Open Forum",
-      "Articles"
-    ],
-    "world": [
-      "World",
-      "International",
-      "Gulf",
-      "Gulf News",
-      "Pravasam",
-      "NRI",
-      "GCC",
-      "U.A.E",
-      "UAE",
-      "Saudi Arabia",
-      "Oman",
-      "Qatar",
-      "Bahrain",
-      "Kuwait"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "Other Games",
-      "Sports Special"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "Videos",
-      "Multimedia",
-      "Books"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology",
-      "Life",
-      "Kudumbam",
-      "Velicham",
-      "Offbeat"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "Market"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto",
-      "Tech News"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather"
-    ]
-  }
+  "section_map": {}
 }

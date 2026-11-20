@@ -340,7 +340,7 @@ class WebUITest(BrowserBase):
         self.open_home()
         colours = self.page.evaluate("[document.querySelector('h1'), document.querySelector('h1 span')].map(e => getComputedStyle(e).color)")
         self.assertEqual(colours, ["rgb(0, 0, 0)", "rgb(0, 0, 0)"])
-        self.assertEqual(self.page.inner_text("h1").replace("\n", " "), "RC News Desk")
+        self.assertEqual(self.page.inner_text("h1").replace("\n", " "), "SJ News Desk")
 
     def test_newspaper_homepage_link_and_page_title_are_entirely_black(self):
         self.open_home()
@@ -653,7 +653,7 @@ class HomeAndTabsTest(BrowserBase):
             self.assertFalse(self.page.is_visible(sel), sel)
         for sel in ("#refresh", "#range", "#count", "#lastrefresh", ".pickpanel", "#panel-papers", "#tabs"):
             self.assertTrue(self.page.is_visible(sel), sel)
-        self.assertEqual(self.page.title(), "RC News Desk")
+        self.assertEqual(self.page.title(), "SJ News Desk")
         self.assertEqual(self.page.locator("#tabs button").count(), 7)
 
     def test_home_has_one_todays_picks_panel_per_section_four_to_a_row(self):
@@ -683,26 +683,38 @@ class HomeAndTabsTest(BrowserBase):
         self.assertTrue(all(t.startswith("World story") for t in titles))
         self.assertEqual(world.first.locator("a.fmain").get_attribute("target"), "_blank")
         self.assertEqual(sorted(self.panel("sports").locator(".fcard h2").all_inner_texts()), ["Sports story 0", "Sports story 1", "Sports story 2"])
+        self.assertEqual(self.panel("sports").locator(".fcard h2").all_inner_texts()[2], "Sports story 2")   # picture stories come first, so Maximise has pictures
         self.assertEqual(self.panel("world").locator(".thumb, img").count(), 0)   # text only: pictures are left out to keep the panels small
         self.assertIn("No stories yet", self.panel("india").inner_text())
         self.assertEqual(self.panel("india").locator("a.fmain").count(), 0)
 
-    def test_maximising_a_panel_shows_stories_with_pictures_and_standard_returns_to_text(self):
+    def test_maximise_and_standard_show_the_same_stories_until_shuffle(self):
         self.home()
-        world = self.panel("world")
-        self.assertEqual(world.locator(".thumb").count(), 0)                      # standard: text only
+        world, sports = self.panel("world"), self.panel("sports")
+        std = world.locator(".fcard h2").all_inner_texts()
+        self.assertEqual(world.locator(".thumb").count(), 0)                      # Standard: text only
         world.locator(".pmax").click()
-        self.assertEqual(world.locator(".fcard").count(), 5)
-        self.assertEqual(world.locator(".fcard .thumb").count(), 5)               # maximised: every story has a picture
-        self.panel("sports").locator(".pmax").dispatch_event("click")             # sports has two stories with a picture
-        self.assertEqual(self.panel("sports").locator(".fcard .thumb").count(), 2)
-        self.assertEqual(world.locator(".thumb").count(), 0)                      # world went back to standard
-        self.panel("sports").locator(".pmax").click()
-        self.assertEqual(self.panel("sports").locator(".fcard").count(), 3)
-        self.assertEqual(self.panel("sports").locator(".thumb").count(), 0)
+        self.assertEqual(world.locator(".fcard h2").all_inner_texts(), std)       # Maximise: the very same five ...
+        self.assertEqual(world.locator(".fcard .thumb").count(), 5)               # ... now with pictures
+        world.locator(".pmax").click()                                            # back to Standard
+        self.assertEqual(world.locator(".fcard h2").all_inner_texts(), std)
+        self.assertEqual(world.locator(".thumb").count(), 0)
+        for _ in range(3):                                                        # clicking Maximise/Standard never reshuffles
+            world.locator(".pmax").click(); world.locator(".pmax").click()
+        self.assertEqual(world.locator(".fcard h2").all_inner_texts(), std)
+        sports.locator(".pmax").dispatch_event("click")                           # sports: 3 stories, 2 with a picture
+        self.assertEqual(sports.locator(".fcard").count(), 3)
+        self.assertEqual(sports.locator(".fcard .thumb").count(), 3)              # one has only a letter tile
+        self.assertEqual(sports.locator(".fcard .thumb img").count() > 0, True)
+        sports.locator(".pmax").dispatch_event("click")
         world.locator(".pmax").click()
-        world.locator(".shuffle").dispatch_event("click")
-        self.assertEqual(world.locator(".fcard .thumb").count(), 5)               # Shuffle keeps the maximised view
+        before = world.locator(".fcard h2").all_inner_texts()
+        changed = False
+        for _ in range(12):
+            world.locator(".shuffle").dispatch_event("click")
+            if world.locator(".fcard h2").all_inner_texts() != before: changed = True; break
+        self.assertTrue(changed)                                                  # only Shuffle changes the set
+        self.assertEqual(world.locator(".fcard .thumb").count(), 5)               # and the view stays maximised
 
     def test_a_panels_shuffle_changes_only_that_panel(self):
         self.home()
@@ -731,8 +743,8 @@ class HomeAndTabsTest(BrowserBase):
         self.assertIn("section=world", tab.url)
         self.assertEqual(self.page.url, self.url)
         self.assertEqual(self.page.locator("#feat .pickpanel").count(), 7)
-        self.assertEqual(tab.title(), "RC News Desk – World Desk")
-        self.assertEqual(tab.inner_text("h1"), "RC News Desk – World Desk")
+        self.assertEqual(tab.title(), "SJ News Desk – World Desk")
+        self.assertEqual(tab.inner_text("h1"), "SJ News Desk – World Desk")
         self.assertEqual(tab.get_attribute("#homelink", "href"), "/index.html")
         for sel in ("#refresh", "#lastrefresh", "#nextrefresh", "#range", "#count"):
             self.assertFalse(tab.is_visible(sel), sel)
@@ -827,7 +839,7 @@ class HomeAndTabsTest(BrowserBase):
         self.section_page(self.page, "sports")
         self.page.click("#homelink")
         self.page.wait_for_function("document.querySelectorAll('#feat > *').length > 0")
-        self.assertEqual(self.page.title(), "RC News Desk")
+        self.assertEqual(self.page.title(), "SJ News Desk")
 
     def test_the_panel_is_called_newspapers(self):
         self.section_page(self.page, "world")
@@ -855,7 +867,7 @@ class NewspaperPageTest(BrowserBase):
 
     def test_layout_and_initial_state(self):
         self.open()
-        self.assertEqual(self.page.title(), "Newspaper Homepage — RC News Desk")
+        self.assertEqual(self.page.title(), "Newspaper Homepage — SJ News Desk")
         self.assertEqual(self.page.locator("#continents button").all_inner_texts(), ["All (4)", "Asia (2)", "Europe (1)", "Other (1)"])
         self.assertEqual(self.countries(), ["All countries", "Bangladesh", "France", "India", "International"])
         self.assertEqual(self.names(), ["Alpha Times", "Beta Post", "Gamma Wire", "Gazette Home"])
@@ -866,7 +878,7 @@ class NewspaperPageTest(BrowserBase):
         self.open()
         self.page.click("a.back")
         self.page.wait_for_url("**/")
-        self.assertEqual(self.page.locator("h1").first.inner_text().replace("\n", " "), "RC News Desk")
+        self.assertEqual(self.page.locator("h1").first.inner_text().replace("\n", " "), "SJ News Desk")
 
     def test_continent_then_country_filters(self):
         self.open()

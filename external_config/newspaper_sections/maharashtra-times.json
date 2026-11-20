@@ -4,96 +4,14 @@
   "homepage": "https://maharashtratimes.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Marathi regional newspaper",
-  "note": "Marathi-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://maharashtratimes.com/langapi/sitemap/gstandrssfeed.xml",
       "state": "Maharashtra"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "महाराष्ट्र",
-      "देश",
-      "गुन्हेगारी",
-      "राजकारण",
-      "कृषी",
-      "Maharashtra",
-      "Mumbai",
-      "Pune",
-      "Nagpur",
-      "Agriculture",
-      "Government Policy",
-      "Career"
-    ],
-    "world": [
-      "World",
-      "International",
-      "विदेश"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "क्रीडा"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "सिनेमा"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology",
-      "लाइफस्टाइल",
-      "भविष्य",
-      "Astro",
-      "Viral",
-      "व्हायरल"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "अर्थ",
-      "Personal Finance"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto",
-      "टेक",
-      "ऑटो",
-      "Gadget",
-      "इन्फोटेक"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather"
-    ]
-  }
+  "section_map": {}
 }

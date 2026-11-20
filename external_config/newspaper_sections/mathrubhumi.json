@@ -4,102 +4,14 @@
   "homepage": "https://www.mathrubhumi.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Malayalam regional newspaper",
-  "note": "Malayalam-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://www.mathrubhumi.com/sitemaps/mathrubhumi/rss",
       "state": "Kerala"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "Kerala",
-      "Education",
-      "Columns",
-      "Localnews",
-      "Local News",
-      "General"
-    ],
-    "world": [
-      "World",
-      "International",
-      "Pravasi"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "Other Sports"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "Movies Music",
-      "Reviews",
-      "Literature",
-      "Books",
-      "Fiction",
-      "Poems",
-      "Novels",
-      "Features",
-      "Bedtime Stories",
-      "Kids"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology",
-      "Life",
-      "Style",
-      "Destination",
-      "Spirituality",
-      "Arogyamasika",
-      "Vaasa",
-      "Youth",
-      "Social"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "Money",
-      "Commodities",
-      "Wealth"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto",
-      "Cars"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather",
-      "Earth",
-      "Agriculture"
-    ]
-  }
+  "section_map": {}
 }

@@ -4,107 +4,33 @@
   "homepage": "https://tv9gujarati.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "general (India)",
-  "note": "Regional newspaper added for coverage of Gujarat. Generic section map; review it.",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://tv9gujarati.com/feed",
       "state": "Gujarat"
     },
     {
-      "section": "business",
+      "section": "regional",
       "url": "https://tv9gujarati.com/category/business/feed/",
       "label": "TV9 Gujarati (Business)",
       "state": "Gujarat"
     },
     {
-      "section": "entertainment",
+      "section": "regional",
       "url": "https://tv9gujarati.com/category/entertainment/feed/",
       "label": "TV9 Gujarati (Entertainment)",
       "state": "Gujarat"
     },
     {
-      "section": "sports",
+      "section": "regional",
       "url": "https://tv9gujarati.com/category/sports/feed/",
       "label": "TV9 Gujarati (Sports)",
       "state": "Gujarat"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
-      "Politics",
-      "Regional",
-      "Local",
-      "Crime",
-      "Gujarat"
-    ],
-    "world": [
-      "World",
-      "International"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Movies",
-      "Cinema",
-      "Bollywood",
-      "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Fashion"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Wildlife",
-      "Weather"
-    ],
-    "geography": [
-      "Travel"
-    ]
-  },
-  "other": [
-    "Opinion",
-    "Editorial",
-    "Videos",
-    "Photos",
-    "Education",
-    "Jobs",
-    "Web Stories"
-  ],
+  "section_map": {},
   "unmapped_default": "other"
 }

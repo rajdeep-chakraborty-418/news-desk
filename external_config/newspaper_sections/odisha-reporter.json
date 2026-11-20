@@ -4,101 +4,27 @@
   "homepage": "https://odishareporter.in/",
   "country": "India",
   "continent": "Asia",
-  "focus": "general (India)",
-  "note": "Regional newspaper added for coverage of Odisha. Generic section map; review it.",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://odishareporter.in/feed",
       "state": "Odisha"
     },
     {
-      "section": "entertainment",
+      "section": "regional",
       "url": "https://odishareporter.in/entertainment/feed/",
       "label": "Odisha Reporter (Entertainment)",
       "state": "Odisha"
     },
     {
-      "section": "sports",
+      "section": "regional",
       "url": "https://odishareporter.in/sports/feed/",
       "label": "Odisha Reporter (Sports)",
       "state": "Odisha"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
-      "Politics",
-      "Regional",
-      "Local",
-      "Crime",
-      "Odisha"
-    ],
-    "world": [
-      "World",
-      "International"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Movies",
-      "Cinema",
-      "Bollywood",
-      "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Fashion"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Wildlife",
-      "Weather"
-    ],
-    "geography": [
-      "Travel"
-    ]
-  },
-  "other": [
-    "Opinion",
-    "Editorial",
-    "Videos",
-    "Photos",
-    "Education",
-    "Jobs",
-    "Web Stories"
-  ],
+  "section_map": {},
   "unmapped_default": "other"
 }

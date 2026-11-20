@@ -4,101 +4,27 @@
   "homepage": "https://www.news7tamil.live/",
   "country": "India",
   "continent": "Asia",
-  "focus": "general (India)",
-  "note": "Regional newspaper added for coverage of Tamil Nadu. Generic section map; review it.",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://www.news7tamil.live/feed",
       "state": "Tamil Nadu"
     },
     {
-      "section": "business",
+      "section": "regional",
       "url": "https://www.news7tamil.live/category/business/feed/",
       "label": "News7 Tamil (Business)",
       "state": "Tamil Nadu"
     },
     {
-      "section": "sports",
+      "section": "regional",
       "url": "https://www.news7tamil.live/category/sports/feed/",
       "label": "News7 Tamil (Sports)",
       "state": "Tamil Nadu"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "State",
-      "States",
-      "City",
-      "Cities",
-      "Politics",
-      "Regional",
-      "Local",
-      "Crime",
-      "Tamil Nadu"
-    ],
-    "world": [
-      "World",
-      "International"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Movies",
-      "Cinema",
-      "Bollywood",
-      "Tollywood",
-      "Kollywood",
-      "Showbiz",
-      "Music",
-      "TV"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Fashion"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Wildlife",
-      "Weather"
-    ],
-    "geography": [
-      "Travel"
-    ]
-  },
-  "other": [
-    "Opinion",
-    "Editorial",
-    "Videos",
-    "Photos",
-    "Education",
-    "Jobs",
-    "Web Stories"
-  ],
+  "section_map": {},
   "unmapped_default": "other"
 }

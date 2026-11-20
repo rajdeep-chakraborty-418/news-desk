@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RC News Desk</title>
+<title>SJ News Desk</title>
 <meta name="description" content="Headlines from newspapers across the world, refreshed regularly.">
 <meta name="referrer" content="no-referrer">
 <style>
@@ -101,7 +101,7 @@
   <header>
     <div class="brand">
       <div class="titlerow">
-        <h1><a id="homelink">RC News <span>Desk</span><span id="secname"></span></a></h1>
+        <h1><a id="homelink">SJ News <span>Desk</span><span id="secname"></span></a></h1>
       </div>
       <button class="reset" id="reset" type="button" title="Clear every selection and filter">Reset</button>
     </div>
@@ -305,13 +305,15 @@ function syncControls() {
   $("chips").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.textContent === state.continent));
 }
 
-// ---------- Home: Today's Picks, one panel per section with five random stories (no pictures, to keep the panels small) ----------
+// ---------- Home: Today's Picks, one panel per section with five random stories (Standard: text only; Maximise: the same five with pictures) ----------
 const PICKS_PER_SECTION = 5;
 const homeState = { picks: null, generated: null };
-function pickFor(key, withPicture) {
-  const pool = state.items.filter(i => i.sections.includes(key) && (!withPicture || (i.image && i.image.startsWith("https://"))));
-  for (let n = pool.length - 1; n > 0; n--) { const m = Math.floor(Math.random() * (n + 1)); [pool[n], pool[m]] = [pool[m], pool[n]]; }
-  return pool.slice(0, PICKS_PER_SECTION);
+function pickFor(key) {
+  const mine = state.items.filter(i => i.sections.includes(key));
+  const shuffled = (list) => { for (let n = list.length - 1; n > 0; n--) { const m = Math.floor(Math.random() * (n + 1)); [list[n], list[m]] = [list[m], list[n]]; } return list; };
+  const withPic = shuffled(mine.filter(i => i.image && i.image.startsWith("https://")));      // stories with a picture first, so Maximise has pictures to show
+  const others = shuffled(mine.filter(i => !(i.image && i.image.startsWith("https://"))));
+  return withPic.concat(others).slice(0, PICKS_PER_SECTION);
 }
 function pickRandom() {
   homeState.picks = SECTIONS.map(([key]) => pickFor(key));
@@ -323,7 +325,7 @@ function pickCard(i, withPicture) {
   if (withPicture) {                                                        // only the maximised view shows pictures
     const thumb = document.createElement("div"); thumb.className = "thumb";
     const ph = document.createElement("div"); ph.className = "ph"; ph.textContent = (i.source || "?").charAt(0);
-    thumb.append(ph); attachImage(thumb, i.image); a.append(thumb);
+    thumb.append(ph); if (i.image && i.image.startsWith("https://")) attachImage(thumb, i.image); a.append(thumb);
   }
   const body = document.createElement("div"); body.className = "body";
   const meta = document.createElement("div"); meta.className = "meta";
@@ -338,7 +340,7 @@ function pickCard(i, withPicture) {
 function fillPickRow(row, picks, withPicture) {
   row.replaceChildren();
   if (picks.length) picks.forEach(i => row.append(pickCard(i, withPicture)));
-  else { const d = document.createElement("div"); d.className = "nostory"; d.textContent = withPicture ? "No stories with a picture yet" : "No stories yet"; row.append(d); }
+  else { const d = document.createElement("div"); d.className = "nostory"; d.textContent = "No stories yet"; row.append(d); }
 }
 function renderHome() {
   if (!homeState.picks || homeState.picks.length !== SECTIONS.length) pickRandom();
@@ -355,16 +357,10 @@ function renderHome() {
     max.title = "Enlarge this panel"; max.textContent = "Maximise";
     head.append(h, shuffle, max);
     const row = document.createElement("div"); row.className = "featgrid lrow";
-    fillPickRow(row, homeState.picks[n] || []);
-    let big = null;                                                         // the five picture stories shown while this panel is maximised
-    shuffle.onclick = () => {                                               // this panel only
-      if (panel.classList.contains("max")) { big = pickFor(key, true); fillPickRow(row, big, true); }
-      else { homeState.picks[n] = pickFor(key); fillPickRow(row, homeState.picks[n]); }
-    };
-    panel.addEventListener("panelmax", (e) => {                             // standard: text only; maximised: stories with pictures
-      if (e.detail.max) { big = pickFor(key, true); fillPickRow(row, big, true); }
-      else fillPickRow(row, homeState.picks[n] || []);
-    });
+    fillPickRow(row, homeState.picks[n] || [], false);
+    const draw = () => fillPickRow(row, homeState.picks[n] || [], panel.classList.contains("max"));   // Maximise shows the same five, with pictures
+    shuffle.onclick = () => { homeState.picks[n] = pickFor(key); draw(); };                                  // only Shuffle changes the set (this panel only)
+    panel.addEventListener("panelmax", draw);
     panel.setAttribute("aria-labelledby", h.id); panel.append(head, row); box.append(panel);
   });
 }

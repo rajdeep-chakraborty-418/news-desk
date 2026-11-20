@@ -4,90 +4,14 @@
   "homepage": "https://www.dinamani.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Tamil regional newspaper",
-  "note": "Tamil-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://www.dinamani.com/stories.rss",
       "state": "Tamil Nadu"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "தமிழ்நாடு",
-      "இந்தியா",
-      "Tamilnadu",
-      "வேலைவாய்ப்பு",
-      "அரசுப் பணிகள்",
-      "Education",
-      "கல்வி"
-    ],
-    "world": [
-      "World",
-      "International",
-      "உலகம்"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "விளையாட்டு",
-      "கிரிக்கெட்"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "திரை",
-      "திரை விமரிசனம்",
-      "சின்னத்திரை"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology",
-      "ஆன்மிகம்",
-      "ஜோதிடம்",
-      "வாரப் பலன்கள்",
-      "மருத்துவம்",
-      "Religion",
-      "Weekly Supplements"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "வணிகம்"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather"
-    ]
-  }
+  "section_map": {}
 }

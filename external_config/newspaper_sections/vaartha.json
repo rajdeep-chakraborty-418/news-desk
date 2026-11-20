@@ -4,99 +4,14 @@
   "homepage": "https://vaartha.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Telugu regional newspaper",
-  "note": "Telugu-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://vaartha.com/feed/",
       "state": "Telangana"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "తెలంగాణ",
-      "భారతదేశం",
-      "ఆంధ్రప్రదేశ్",
-      "క్రైమ్",
-      "రాజకీయాలు",
-      "Telangana",
-      "Andhra Pradesh",
-      "Telangana News",
-      "సంపాదకీయం",
-      "Category"
-    ],
-    "world": [
-      "World",
-      "International",
-      "ప్రపంచం"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "క్రీడలు"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "సినిమా",
-      "వినోదం"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology",
-      "ఆరోగ్యం",
-      "Health Tips Telugu",
-      "ఆధ్యాత్మికం",
-      "భక్తి",
-      "వాస్తు",
-      "Devotional",
-      "Vaastu",
-      "రాశి ఫలాలు"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "బిజినెస్",
-      "బంగారం/వెండి"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto",
-      "టెక్నాలజీ"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather"
-    ],
-    "history": [
-      "చరిత్ర",
-      "History"
-    ]
-  }
+  "section_map": {}
 }

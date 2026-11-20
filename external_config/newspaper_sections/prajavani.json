@@ -4,87 +4,14 @@
   "homepage": "https://www.prajavani.net/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Kannada regional newspaper",
-  "note": "Kannada-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://www.prajavani.net/feed",
       "state": "Karnataka"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "ರಾಜ್ಯ",
-      "ರಾಷ್ಟ್ರೀಯ",
-      "ಜಿಲ್ಲೆ",
-      "ಕೃಷಿ",
-      "ಕೃಷಿ ತಂತ್ರಜ್ಞಾನ",
-      "District",
-      "Karnataka"
-    ],
-    "world": [
-      "World",
-      "International",
-      "ವಿದೇಶ"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "ಕ್ರಿಕೆಟ್",
-      "ಕ್ರೀಡೆ"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "ಸಿನಿ ಸುದ್ದಿ",
-      "ಸಿನಿಮಾ ವಿಮರ್ಶೆ",
-      "ಡಿಜಿಟಲ್-ಒಟಿಟಿ"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology",
-      "ಸಂಸ್ಕೃತಿ",
-      "ಆರೋಗ್ಯ"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "ವಾಣಿಜ್ಯ"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather",
-      "ಹವಾಮಾನ"
-    ]
-  }
+  "section_map": {}
 }

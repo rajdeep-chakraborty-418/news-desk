@@ -9,6 +9,14 @@
       }
     },
     {
+      "key": "regional",
+      "label": "Regional News",
+      "color": {
+        "light": "#0b6b8a",
+        "dark": "#5cc7e6"
+      }
+    },
+    {
       "key": "india",
       "label": "Indian News",
       "color": {

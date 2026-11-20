@@ -4,84 +4,14 @@
   "homepage": "https://www.kannadaprabha.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Kannada regional newspaper",
-  "note": "Kannada-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://www.kannadaprabha.com/feed",
       "state": "Karnataka"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "ರಾಜ್ಯ",
-      "ದೇಶ",
-      "ರಾಜಕೀಯ",
-      "Karnataka",
-      "Columns"
-    ],
-    "world": [
-      "World",
-      "International",
-      "ವಿದೇಶ"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "ಕ್ರಿಕೆಟ್",
-      "ಕ್ರೀಡೆ"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "ಸಿನಿಮಾ",
-      "ಸಿನಿಮಾ ಸುದ್ದಿ"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology",
-      "ಭಕ್ತಿ-ಜ್ಯೋತಿಷ್ಯ",
-      "ಆರೋಗ್ಯ",
-      "ಅಡುಗೆ"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "ವಾಣಿಜ್ಯ"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather"
-    ]
-  }
+  "section_map": {}
 }

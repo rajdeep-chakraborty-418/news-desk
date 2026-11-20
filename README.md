@@ -1,4 +1,4 @@
-# RC News Desk
+# SJ News Desk
 
 A static front page of news tiles built from newspaper RSS feeds. A Python script fetches the headlines, a scheduler
 refreshes them, and the site is rebuilt and published to GitHub Pages. Each tile shows image, headline, source, time
@@ -104,7 +104,7 @@ A story is looked up by its feed tags (a tag such as `Sports,Cricket` counts as 
 ## Home page and section tabs
 
 - **Home** (`/`) shows the refresh controls (Refresh, Last/Next Refresh, "Fetch stories from", "Stories per section"), the section buttons, and five random stories (text only, no pictures) for every section (a card reading "No stories yet" when a section has none). Picks change on every page load, after a refresh, and with the Shuffle button.
-- **Section pages** (`/?section=<key>`) hold the filters, the Newspapers panel and the stories, and show nothing about refreshing. The headline reads "RC News Desk – {Section}" and links back to Home.
+- **Section pages** (`/?section=<key>`) hold the filters, the Newspapers panel and the stories, and show nothing about refreshing. The headline reads "SJ News Desk – {Section}" and links back to Home.
 - Clicking a section opens it in its own browser tab (named `rcnd-<key>`); if that tab is already open it is just brought forward. A new tab starts with default filters; each tab keeps its filters in its URL and its own sessionStorage, so reloads restore them and tabs never affect each other.
 
 ## Repeated headlines
@@ -117,7 +117,7 @@ The de-duplication is a self-contained step: `fetch_news.py` calls only `dedupe.
 
 The Home page is a stack of fixed panels, each a `<section class="hpanel">` with a title bar in `src/web/index.html` (currently one **Today's Picks - <section>** panel per section, built by the page script, then **Newspaper Homepage**). The Newspaper Homepage panel shows the separate `newspaper-list/` page inside the panel (there is no link to it) and grows to the height that page reports. To add a feature, add another `hpanel` section inside `#homeview` (and fill it from the page script); section pages never show the panels.
 
-Panels start compact (**Standard**): the Today's Picks - <section> panels sit four to a row (three, two or one on narrower screens) and each holds five random stories (text only, no pictures in Standard view) stacked vertically (fewer if the section has fewer), with its own **Shuffle** (only that panel changes) and a title that opens the section in its own tab; the Newspaper Homepage panel spans the whole row, and the Newspaper Homepage panel has a short, scrollable view, one panel per row. Each panel's title bar has a **Maximise** button that gives that panel the whole window (a Today's Picks panel then shows five stories that have a picture, side by side; Standard goes back to text only) (it becomes **Standard**; Esc also restores it). Only one panel is maximised at a time.
+Panels start compact (**Standard**): the Today's Picks - <section> panels sit four to a row (three, two or one on narrower screens) and each holds five random stories (text only in Standard view) stacked vertically (fewer if the section has fewer), with its own **Shuffle** (only that panel changes) and a title that opens the section in its own tab; the Newspaper Homepage panel spans the whole row, and the Newspaper Homepage panel has a short, scrollable view, one panel per row. Each panel's title bar has a **Maximise** button that gives that panel the whole window (a Today's Picks panel then shows the same five stories, side by side and with their pictures; Standard goes back to text only; only **Shuffle** changes the five, and stories with a picture are preferred when picking) (it becomes **Standard**; Esc also restores it). Only one panel is maximised at a time.
 
 ### Layout module
 
@@ -131,3 +131,6 @@ The landing page and each section page have a picture behind the header. Picture
 at random per visit. Add or delete files to change a set; the next refresh/build (`src/backgrounds.py`) rebuilds `site/backgrounds/`
 and `backgrounds.json`. No folder or no files = plain header. The page side is `src/web/backdrop.js` + `backdrop.css`.
 The starting set is code-drawn SVG; replace or extend it with AI-made images (see external_config/backgrounds/README.md).
+
+## Regional News
+Indian outlets whose headlines are not in English (Hindi, Marathi, Gujarati, Tamil, Telugu, Kannada, Malayalam, Odia, Assamese, Garo ...) have every feed set to the `regional` section ("Regional News") and an empty `section_map`, so their stories appear only there (not in Indian News or the topic sections). Bengali outlets stay in Bengali News with their topic maps. To move an outlet in or out, change the `section` of its feeds in `external_config/newspaper_sections/<paper>.json` (and give it a `section_map` if its stories should also appear in topic sections).

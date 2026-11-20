@@ -37,7 +37,7 @@ const Layout = (() => {
   function applyMode({ home, section, label }) {
     document.body.dataset.mode = home ? "home" : "section";
     $("secname").textContent = label ? " – " + label : "";
-    document.title = label ? "RC News Desk – " + label : "RC News Desk";
+    document.title = label ? "SJ News Desk – " + label : "SJ News Desk";
     if (home) $("homelink").removeAttribute("href"); else { $("homelink").href = location.pathname; window.name = "rcnd-" + section; }
     for (const id of ["homeonly", "homeview", "refmsg", "tabs"]) $(id).hidden = !home;      // landing page only
     for (const id of ["filters", "sectionview", "reset"]) $(id).hidden = home;

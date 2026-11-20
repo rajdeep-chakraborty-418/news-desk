@@ -4,83 +4,14 @@
   "homepage": "https://www.dharitri.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Odia regional newspaper",
-  "note": "Odia-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://www.dharitri.com/feed/",
       "state": "Odisha"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "ରାଜ୍ୟ",
-      "ଜାତୀୟ",
-      "ଆମ ଜିଲା ଖବର",
-      "ମେଟ୍ରୋ",
-      "ରାଜନୀତି",
-      "Home",
-      "Home Left",
-      "ସମ୍ପାଦକୀୟ"
-    ],
-    "world": [
-      "World",
-      "International",
-      "ଅନ୍ତର୍ଜାତୀୟ"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "ଖେଳ",
-      "Cricket News"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "ମନୋରଞ୍ଜନ"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "ବାଣିଜ୍ୟ"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather"
-    ]
-  }
+  "section_map": {}
 }

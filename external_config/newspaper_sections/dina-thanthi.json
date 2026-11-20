@@ -4,94 +4,14 @@
   "homepage": "https://www.dailythanthi.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Tamil regional newspaper",
-  "note": "Tamil-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://www.dailythanthi.com/feed",
       "state": "Tamil Nadu"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "தமிழகம்",
-      "தேசியம்",
-      "Tamilnadu",
-      "தமிழக செய்திகள் (Tamilnadu)",
-      "தேசிய செய்திகள் (National News)",
-      "கல்வி&வேலைவாய்ப்பு (Eduction and Jobs)"
-    ],
-    "world": [
-      "World",
-      "International",
-      "உலகம்",
-      "உலக செய்திகள் (World News)"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "விளையாட்டு",
-      "கிரிக்கெட் (Cricket)",
-      "Tennis",
-      "Hockey",
-      "Othersports"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "சினிமா",
-      "சினிமா செய்திகள் (Cinema News)",
-      "OTT",
-      "Cinemanews"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology",
-      "ஜோதிடம்",
-      "ஆன்மிகம்",
-      "ஆன்மிகம் (Devotional)",
-      "Devotional",
-      "ஆலய வரலாறு (Temple History)"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "வணிகம்"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather",
-      "வானிலை செய்திகள் (Weather)"
-    ]
-  }
+  "section_map": {}
 }

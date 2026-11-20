@@ -4,80 +4,14 @@
   "homepage": "https://www.prabhatkhabar.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Hindi regional newspaper",
-  "note": "Hindi-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://www.prabhatkhabar.com/feed",
       "state": "Jharkhand"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "बिहार",
-      "Breaking",
-      "Corruption",
-      "Exam Information",
-      "Education",
-      "Civil Services"
-    ],
-    "world": [
-      "World",
-      "International"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "Sports News"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "Business News"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather",
-      "Weather Forecast",
-      "Cyclone"
-    ]
-  }
+  "section_map": {}
 }

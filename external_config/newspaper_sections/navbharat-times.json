@@ -4,109 +4,13 @@
   "homepage": "https://navbharattimes.indiatimes.com/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Hindi regional newspaper",
-  "note": "Hindi-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://navbharattimes.indiatimes.com/langapi/sitemap/gstandrssfeed.xml"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "भारत",
-      "राज्य",
-      "क्राइम",
-      "Uttar Pradesh",
-      "Bihar",
-      "Madhya Pradesh",
-      "Rajasthan",
-      "Delhi",
-      "Patna",
-      "Lucknow",
-      "Other News",
-      "Education",
-      "Legal"
-    ],
-    "world": [
-      "World",
-      "International",
-      "दुनिया"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "खेल",
-      "आईपीएल",
-      "IPL",
-      "Cricket News"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "मनोरंजन",
-      "टीवी",
-      "TV"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology",
-      "लाइफस्टाइल",
-      "हेल्थ",
-      "Health Wellness",
-      "धर्म",
-      "Astro",
-      "Religion Rituals",
-      "Viral",
-      "वायरल",
-      "यात्रा",
-      "खान-पान",
-      "Hindi Recipes"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "बिजनेस",
-      "Personal Finance",
-      "Real Estate",
-      "पर्सनल फाइनेंस"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto",
-      "टेक",
-      "ऑटो",
-      "Reviews"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather",
-      "मौसम"
-    ]
-  }
+  "section_map": {}
 }

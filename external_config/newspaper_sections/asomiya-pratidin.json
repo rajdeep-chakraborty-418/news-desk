@@ -4,89 +4,14 @@
   "homepage": "https://www.asomiyapratidin.in/",
   "country": "India",
   "continent": "Asia",
-  "focus": "Assamese regional newspaper",
-  "note": "Assamese-language newspaper. Single general feed. Sections mapped from the paper's own menu, tags and web-address folders (native-script names included).",
+  "focus": "regional",
+  "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
     {
-      "section": "india",
+      "section": "regional",
       "url": "https://www.asomiyapratidin.in/rss",
       "state": "Assam"
     }
   ],
-  "section_map": {
-    "india": [
-      "India",
-      "National",
-      "Nation",
-      "Politics",
-      "Crime",
-      "State",
-      "Metro",
-      "City",
-      "অসম",
-      "ৰাষ্ট্ৰীয়",
-      "গুৱাহাটী",
-      "উত্তৰ-পূব",
-      "নিৰ্বাচন ২০২৬",
-      "শিক্ষা",
-      "Assam",
-      "Guwahati",
-      "North East",
-      "Editorial Desk",
-      "Special Report",
-      "My Opinion"
-    ],
-    "world": [
-      "World",
-      "International",
-      "আন্তঃৰাষ্ট্ৰীয়"
-    ],
-    "sports": [
-      "Sports",
-      "Sport",
-      "Cricket",
-      "Football",
-      "ক্রীড়া-জগত"
-    ],
-    "entertainment": [
-      "Entertainment",
-      "Cinema",
-      "Movies",
-      "Bollywood",
-      "Tollywood",
-      "বিনোদন"
-    ],
-    "lifestyle": [
-      "Lifestyle",
-      "Health",
-      "Food",
-      "Travel",
-      "Fashion",
-      "Astrology",
-      "জীৱন শৈলী",
-      "স্বাস্থ্য"
-    ],
-    "business": [
-      "Business",
-      "Economy",
-      "Finance",
-      "Markets",
-      "Trade",
-      "অর্থনীতি",
-      "অৰ্থনীতি"
-    ],
-    "technology": [
-      "Technology",
-      "Tech",
-      "Gadgets",
-      "Auto"
-    ],
-    "science": [
-      "Science"
-    ],
-    "nature": [
-      "Environment",
-      "Weather"
-    ]
-  }
+  "section_map": {}
 }
