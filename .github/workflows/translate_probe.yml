@@ -1,0 +1,13 @@
+name: Translate probe (temporary)
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r src/requirements-translate.txt 2>&1 | tail -5
+      - run: python3 src/probe_translate.py

@@ -60,6 +60,9 @@
   .sidebody input[type=search] { margin: 0; min-width: 0; width: 100%; }
   .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
   .titlerow { display: flex; align-items: baseline; gap: 6px 16px; flex-wrap: wrap; }
+  .enbtn { font: 600 13px system-ui, sans-serif; padding: 7px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  .enbtn[aria-pressed=true] { background: var(--accent, #0b6b8a); color: #fff; border-color: transparent; }
+  .orig { font: 13px system-ui, sans-serif; color: var(--muted); margin: 2px 0 6px; }
   .reset { padding: 2px 10px; font-size: 11px; border-radius: 999px; }
   .clear { padding: 5px 12px; font-size: 13px; justify-self: start; }
   #tree { overflow-y: auto; max-height: 72vh; display: grid; gap: 2px; padding-right: 4px; align-content: start; }
@@ -104,6 +107,9 @@
         <h1><a id="homelink">SJ News <span>Desk</span><span id="secname"></span></a></h1>
       </div>
       <button class="reset" id="reset" type="button" title="Clear every selection and filter">Reset</button>
+    </div>
+    <div class="hright" id="enbox" hidden>
+      <button class="enbtn" id="en" type="button" aria-pressed="false" title="Show the headlines translated into English where a translation is available">Show in English</button>
     </div>
     <div class="hright" id="homeonly">
       <div class="updated" id="updated" aria-live="polite">
@@ -192,7 +198,7 @@ const CONTINENTS = ["All", "Asia", "Europe", "Africa", "North America", "South A
 const PRIMARY_BOOST_MS = 6 * 3600 * 1000;   // primary-source stories rank as if 6 hours newer
 const FIRST = 50;                            // the range starts as articles 1-50 and goes back to that whenever a filter changes
 let MAX = 200;                               // the most stories kept per section (news.json "max_articles"; 200 for older data)
-const state = { lm: "", generated: "", section: "", continent: "All", topic: "", topics: {}, papers: new Set(), open: new Set(), kinds: new Set(), q: "", cq: "", items: [], from: 1, to: FIRST };
+const state = { lm: "", generated: "", section: "", continent: "All", topic: "", english: false, topics: {}, papers: new Set(), open: new Set(), kinds: new Set(), q: "", cq: "", items: [], from: 1, to: FIRST };
 const resetRange = () => { state.from = 1; state.to = FIRST; };
 const PARAMS = new URLSearchParams(location.search);
 let HOME = true;                              // Home (no ?section=) or a section page; decided once sections.json is loaded
@@ -241,6 +247,16 @@ const score = (i) => new Date(i.published).getTime() + (i.primary ? PRIMARY_BOOS
 // buttons, else none (sections whose "continent_filter" is false in sections.json, e.g. Bengali, Regional and Indian News)
 const continentOn = () => (SECTION_CFG[state.section] || {}).continent !== false;
 const topicList = () => state.topics[state.section] || [];
+// English headlines (Regional News only): the translation is made at each refresh; a story without one keeps its own headline
+const shownTitle = (i) => (state.english && i.title_en) ? i.title_en : i.title;
+const hasEnglish = () => state.items.some(i => i.title_en && i.sections.includes(state.section));
+function paintEnglish() {
+  const on = !HOME && hasEnglish();
+  $("enbox").hidden = !on;
+  const b = $("en"); b.setAttribute("aria-pressed", String(on && state.english));
+  b.textContent = state.english ? "Show original" : "Show in English";
+  $("q").placeholder = on && state.english ? "Search headlines in English…" : "Search headlines…";
+}
 const topicOk = (i) => !state.topic || (i.topics || []).includes(state.topic);
 
 // stories in this section, honouring primary-only and search (but not continent/country, which the sidebar counts)
@@ -249,7 +265,7 @@ function bySection() {
   return state.items.filter(i =>
     i.sections.includes(state.section) &&
     (!state.kinds.size || state.kinds.has(i.primary ? "primary" : "secondary")) &&
-    (!q || (i.title + " " + i.summary + " " + i.source + " " + i.country + " " + (i.state || "")).toLowerCase().includes(q)));
+    (!q || ((state.english && i.title_en ? i.title_en + " " : "") + i.title + " " + i.summary + " " + i.source + " " + i.country + " " + (i.state || "")).toLowerCase().includes(q)));
 }
 
 // A public image proxy used only as a second try when the publisher's own image URL fails to load.
@@ -278,12 +294,13 @@ function attachImage(thumb, src) {
 
 // A section tab keeps its filters in its own URL and in this tab's sessionStorage, so a reload restores them and
 // other tabs are never affected.
-const FILTER_KEYS = ["continent", "topic", "q", "pri", "sec", "from", "to", "papers"];
+const FILTER_KEYS = ["continent", "topic", "en", "q", "pri", "sec", "from", "to", "papers"];
 const skey = () => "rcnd_sec_" + state.section;
 function saveState() {
   const o = {};
   if (state.continent !== "All" && continentOn()) o.continent = state.continent;
   if (state.topic) o.topic = state.topic;
+  if (state.english) o.en = "1";
   if (state.q) o.q = state.q;
   if (state.kinds.has("primary")) o.pri = "1";
   if (state.kinds.has("secondary")) o.sec = "1";
@@ -300,6 +317,7 @@ function restoreState(params) {
   if (CONTINENTS.includes(o.continent) && continentOn()) state.continent = o.continent;
   state.topic = typeof o.topic === "string" ? o.topic : "";
   state.q = typeof o.q === "string" ? o.q : "";
+  state.english = o.en === "1";
   state.kinds.clear();
   if (o.pri === "1") state.kinds.add("primary");
   if (o.sec === "1") state.kinds.add("secondary");
@@ -394,8 +412,9 @@ function makeTile(i, n) {
   const c = document.createElement("span"); c.textContent = i.state || i.continent;
   const t = document.createElement("span"); t.textContent = ago(i.published);
   meta.append(c, t);
-  const h = document.createElement("h2"); h.textContent = i.title;
+  const h = document.createElement("h2"); h.textContent = shownTitle(i);
   body.append(meta, h);
+  if (state.english && i.title_en && i.title_en !== i.title) { const o = document.createElement("div"); o.className = "orig"; o.lang = ""; o.textContent = i.title; body.append(o); }
   if (i.summary) { const p = document.createElement("p"); p.textContent = i.summary; body.append(p); }
   const f = document.createElement("div"); f.className = "foot";
   const s = document.createElement("span"); s.className = "src"; s.textContent = i.source;
@@ -477,6 +496,7 @@ function renderSidebar(base) {
 function render() {
   if (HOME) return;
   saveState();
+  paintEnglish();
   const base = bySection();
   renderSidebar(base);
   const list = base.filter(i =>
@@ -559,6 +579,7 @@ function build() {
       resetRange(); render();
     };
   }
+  $("en").onclick = () => { state.english = !state.english; resetRange(); render(); };
   $("q").addEventListener("input", (e) => { state.q = e.target.value; resetRange(); render(); });
   $("cq").addEventListener("input", (e) => { state.cq = e.target.value; render(); });
   $("clear").onclick = () => { state.papers.clear(); state.open.clear(); state.cq = ""; $("cq").value = ""; resetRange(); render(); };

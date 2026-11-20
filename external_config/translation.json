@@ -1,0 +1,12 @@
+{
+  "section": "regional",
+  "model": "ai4bharat/indictrans2-indic-en-dist-200M",
+  "budget_minutes": 30,
+  "max_new_per_run": 3000,
+  "newspaper_language": {
+    "ABP Majha": "mar_Deva",
+    "Maharashtra Times": "mar_Deva",
+    "Pudhari": "mar_Deva",
+    "Asomiya Pratidin": "asm_Beng"
+  }
+}
