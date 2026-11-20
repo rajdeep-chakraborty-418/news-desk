@@ -4,6 +4,10 @@
   "homepage": "https://www.bhaskar.com/",
   "country": "India",
   "continent": "Asia",
+  "state": {
+    "en": "Madhya Pradesh",
+    "local": "मध्य प्रदेश"
+  },
   "focus": "regional",
   "note": "Regional-language outlet (headlines not in English): all its stories go to Regional News only.",
   "feeds": [
