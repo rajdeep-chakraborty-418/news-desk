@@ -41,7 +41,7 @@ def make_news(max_articles=120):
         items.append({"title": f"Sports story {n}", "link": f"https://news.example/s{n}", "summary": "", "image": "",
                       "published": (NOW - timedelta(minutes=n)).isoformat(), "source": "Gamma Wire", "newspaper": "Gamma Wire", "primary": False,
                       "category": "sports", "sections": ["sports"], "continent": "Europe", "country": "United Kingdom", "state": None})
-    for it in items:                                    # stories with a picture (the Home page features only those): 6 in World, 2 in Sports
+    for it in items:                                    # pictures on some stories (the Home page ignores them)
         if it["title"] in ("World story 0", "World story 1", "World story 2", "World story 3", "World story 4", "World story 5", "Sports story 0", "Sports story 1"):
             it["image"] = "https://img.example/pic.jpg"
     for it in items:                                    # older data without the field: matched on the source name instead
@@ -674,16 +674,17 @@ class HomeAndTabsTest(BrowserBase):
     def panel(self, key):
         return self.page.locator(f"#feat .pickpanel[data-section={key}]")
 
-    def test_each_panel_features_five_stories_with_a_picture(self):
+    def test_each_panel_features_five_stories_without_pictures(self):
         self.home()
         world = self.panel("world").locator(".fcard")
-        self.assertEqual(world.count(), 5)                                        # six have a picture: five are picked
+        self.assertEqual(world.count(), 5)                                        # six stories: five are picked
         titles = world.locator("h2").all_inner_texts()
         self.assertEqual(len(set(titles)), 5)
         self.assertTrue(all(t.startswith("World story") for t in titles))
         self.assertEqual(world.first.locator("a.fmain").get_attribute("target"), "_blank")
-        self.assertEqual(sorted(self.panel("sports").locator(".fcard h2").all_inner_texts()), ["Sports story 0", "Sports story 1"])
-        self.assertIn("No stories with a picture yet", self.panel("india").inner_text())      # none: no fallback
+        self.assertEqual(sorted(self.panel("sports").locator(".fcard h2").all_inner_texts()), ["Sports story 0", "Sports story 1", "Sports story 2"])
+        self.assertEqual(self.panel("world").locator(".thumb, img").count(), 0)   # text only: pictures are left out to keep the panels small
+        self.assertIn("No stories yet", self.panel("india").inner_text())
         self.assertEqual(self.panel("india").locator("a.fmain").count(), 0)
 
     def test_a_panels_shuffle_changes_only_that_panel(self):

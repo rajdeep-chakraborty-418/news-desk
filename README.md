@@ -103,7 +103,7 @@ A story is looked up by its feed tags and by the folders in its web address (`/s
 
 ## Home page and section tabs
 
-- **Home** (`/`) shows the refresh controls (Refresh, Last/Next Refresh, "Fetch stories from", "Stories per section"), the section buttons, and one random story *with a picture* for every section (a card reading "No stories yet" when a section has none). Picks change on every page load, after a refresh, and with the Shuffle button.
+- **Home** (`/`) shows the refresh controls (Refresh, Last/Next Refresh, "Fetch stories from", "Stories per section"), the section buttons, and five random stories (text only, no pictures) for every section (a card reading "No stories yet" when a section has none). Picks change on every page load, after a refresh, and with the Shuffle button.
 - **Section pages** (`/?section=<key>`) hold the filters, the Newspapers panel and the stories, and show nothing about refreshing. The headline reads "RC News Desk – {Section}" and links back to Home.
 - Clicking a section opens it in its own browser tab (named `rcnd-<key>`); if that tab is already open it is just brought forward. A new tab starts with default filters; each tab keeps its filters in its URL and its own sessionStorage, so reloads restore them and tabs never affect each other.
 
@@ -117,7 +117,7 @@ The de-duplication is a self-contained step: `fetch_news.py` calls only `dedupe.
 
 The Home page is a stack of fixed panels, each a `<section class="hpanel">` with a title bar in `src/web/index.html` (currently one **Today's Picks - <section>** panel per section, built by the page script, then **Newspaper Homepage**). The Newspaper Homepage panel shows the separate `newspaper-list/` page inside the panel (there is no link to it) and grows to the height that page reports. To add a feature, add another `hpanel` section inside `#homeview` (and fill it from the page script); section pages never show the panels.
 
-Panels start compact (**Standard**): the Today's Picks - <section> panels sit four to a row (three, two or one on narrower screens) and each holds five random stories that have a picture stacked vertically (fewer if the section has fewer), with its own **Shuffle** (only that panel changes) and a title that opens the section in its own tab; the Newspaper Homepage panel spans the whole row, and the Newspaper Homepage panel has a short, scrollable view, one panel per row. Each panel's title bar has a **Maximise** button that gives that panel the whole window (it becomes **Standard**; Esc also restores it). Only one panel is maximised at a time.
+Panels start compact (**Standard**): the Today's Picks - <section> panels sit four to a row (three, two or one on narrower screens) and each holds five random stories (text only, no pictures) stacked vertically (fewer if the section has fewer), with its own **Shuffle** (only that panel changes) and a title that opens the section in its own tab; the Newspaper Homepage panel spans the whole row, and the Newspaper Homepage panel has a short, scrollable view, one panel per row. Each panel's title bar has a **Maximise** button that gives that panel the whole window (it becomes **Standard**; Esc also restores it). Only one panel is maximised at a time.
 
 ### Layout module
 

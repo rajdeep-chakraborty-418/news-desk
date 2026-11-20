@@ -22,10 +22,8 @@ h1 a:not([href]) { cursor: default; }
 .pickpanel .phead h2:hover { text-decoration: underline; }
 .pickpanel .phead button { padding: 2px 10px; font-size: 12px; }
 .pickpanel:not(.max) .featgrid { display: flex; flex-direction: column; gap: 8px; margin-top: 0; }
-.pickpanel:not(.max) .fcard a.fmain { flex-direction: row; }
-.pickpanel:not(.max) .fcard .thumb { flex: 0 0 38%; aspect-ratio: auto; min-height: 72px; }
 .pickpanel:not(.max) .fcard h2 { font-size: 13.5px; line-height: 1.28; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.pickpanel:not(.max) .fcard .body { padding: 6px 8px; gap: 3px; min-width: 0; }
+.pickpanel:not(.max) .fcard .body { padding: 7px 9px; gap: 3px; min-width: 0; }
 .pickpanel:not(.max) .fcard .meta { font-size: 10.5px; }
 .pickpanel:not(.max) .fcard .foot { font-size: 11px; }
 .pickpanel .nostory { padding: 24px 8px; text-align: center; }
