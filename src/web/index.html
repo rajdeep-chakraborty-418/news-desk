@@ -443,7 +443,7 @@ function renderHome() {
     const keys = small.map((n) => SECTIONS[n][0]);
     const panel = document.createElement("section"); panel.className = "hpanel pickpanel tier-3 tabbed"; panel.id = "picks-more";
     const head = document.createElement("div"); head.className = "phead";
-    const tabs = document.createElement("div"); tabs.className = "ptabs"; tabs.setAttribute("role", "tablist");
+    const tabs = document.createElement("div"); tabs.className = "ptabs"; tabs.setAttribute("role", "tablist"); tabs.setAttribute("aria-orientation", "vertical");
     const row = document.createElement("div"); row.className = "featgrid lrow"; row.setAttribute("role", "tabpanel");
     const idx = (key) => SECTIONS.findIndex(([k]) => k === key);
     const buttons = new Map();
@@ -462,9 +462,10 @@ function renderHome() {
     const { shuffle, max, open } = panelButtons(keys[0], "", 3);
     open.onclick = () => Layout.openSection(panel.dataset.section);
     shuffle.onclick = () => { const n = idx(panel.dataset.section); homeState.picks[n] = pickFor(panel.dataset.section); draw(); };   // the open tab only
-    head.append(tabs, shuffle, max, open);
+    head.append(shuffle, max, open);                                        // the tabs run down the left, the buttons and the stories sit on the right
+    const body = document.createElement("div"); body.className = "pbody"; body.append(head, row);
     panel.addEventListener("panelmax", draw);
-    panel.append(head, row); group(3).append(panel);
+    panel.append(tabs, body); group(3).append(panel);
     select(keys.includes(homeState.tab3) ? homeState.tab3 : keys[0]);
   }
 }

@@ -74,11 +74,21 @@ body[data-mode=home] .controls { position: static; }
 .clead:hover .ctitle, .citem:hover .ctitle, .clead:focus-visible .ctitle, .citem:focus-visible .ctitle { text-decoration: underline; }
 .ph { font-size: 16px; }
 .clead .ph { font-size: 34px; }
-/* the tabbed panel of the small sections */
-.tabbed .phead { flex-wrap: wrap; }
-.ptabs { display: flex; flex-wrap: wrap; gap: 6px; flex: 1 1 auto; min-width: 0; }
-.ptab { padding: 4px 12px; font-size: 13px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--tc); cursor: pointer; font-weight: 600; }
-.ptab[aria-selected=true] { background: var(--tc); color: #fff; border-color: transparent; }
+/* the tabbed panel of the small sections: vertical tabs on the left, buttons and stories on the right */
+.tabbed { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 0 14px; align-items: start; }
+.tabbed .pbody { min-width: 0; }
+.tabbed .phead { justify-content: flex-end; margin-bottom: 10px; }
+.ptabs { display: flex; flex-direction: column; gap: 4px; border-right: 1px solid var(--line); padding-right: 10px; align-self: stretch; }
+.ptab { text-align: left; padding: 8px 12px; font-size: 14px; border-radius: 8px; border: 1px solid transparent; border-left: 4px solid var(--tc); background: transparent; color: var(--ink); cursor: pointer; font-weight: 600; }
+.ptab:hover { background: color-mix(in srgb, var(--tc) 10%, var(--card)); }
+.ptab[aria-selected=true] { background: color-mix(in srgb, var(--tc) 16%, var(--card)); color: var(--tc); border-color: var(--tc); }
 .tabbed:not(.max) .popen { background: transparent; color: var(--tc); border-color: var(--tc); }
 .tabbed:not(.max) .featgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-@media (max-width: 700px) { .tabbed:not(.max) .featgrid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 700px) {
+  .tabbed { grid-template-columns: minmax(0, 1fr); }
+  .ptabs { flex-direction: row; flex-wrap: wrap; border-right: 0; padding: 0 0 8px; margin-bottom: 8px; }
+  .ptab { border-left-width: 1px; border-color: var(--line); padding: 4px 12px; font-size: 13px; }
+  .tabbed:not(.max) .featgrid { grid-template-columns: minmax(0, 1fr); }
+}
+.tabbed .phead .pmax { margin-left: 0; }
+.ptab { font-family: system-ui, sans-serif; }
