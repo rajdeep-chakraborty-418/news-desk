@@ -797,9 +797,10 @@ class HomeAndTabsTest(BrowserBase):
         self.assertIn("No stories yet", panel.inner_text())
         panel.locator(".ptab:text-is('Sports Desk')").click()
         self.assertEqual(panel.locator(".ptab[aria-selected=true]").all_inner_texts(), ["Sports Desk"])
-        self.assertEqual(panel.locator(".citem").count(), 3)                        # Standard: up to five stories with pictures (Sports has three)
-        self.assertEqual(panel.locator(".citem .thumb").count(), 3)
-        std = panel.locator(".citem .ctitle").all_inner_texts()
+        self.assertEqual(panel.locator(".clead").count(), 2)                        # Standard: two large stories ...
+        self.assertEqual(panel.locator(".citem").count(), 1)                        # ... then the rest, compact (Sports has three stories; up to five)
+        self.assertEqual(panel.locator(".thumb").count(), 3)
+        std = panel.locator(".ctitle").all_inner_texts()
         panel.locator(".pmax").click()
         self.assertEqual(panel.locator(".fcard").count(), 3)                        # Maximise: all the section has (up to five), with pictures
         self.assertEqual(panel.locator(".fcard .thumb").count(), 3)

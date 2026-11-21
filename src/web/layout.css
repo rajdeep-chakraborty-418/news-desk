@@ -91,3 +91,6 @@ body[data-mode=home] .controls { position: static; }
 }
 .tabbed .phead .pmax { margin-left: 0; }
 .ptab { font-family: system-ui, sans-serif; }
+.cbig { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.t3 .clead .thumb { aspect-ratio: 5 / 2; }
+@media (max-width: 700px) { .cbig { grid-template-columns: minmax(0, 1fr); } }

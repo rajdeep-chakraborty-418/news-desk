@@ -395,7 +395,14 @@ function fillPanel(row, picks, tier, max) {
   const shown = max ? picks : picks.slice(0, SHOWN[tier] || PICKS_PER_SECTION);
   if (max || !shown.length) { fillPickRow(row, shown, max); return; }
   row.replaceChildren();
-  if (tier === 3) { shown.forEach(i => row.append(citem(i))); return; }       // the tabbed panel: five picture headlines in a list
+  if (tier === 3) {                                                           // the tabbed panel: two large stories side by side, then three compact ones
+    const big = document.createElement("div"); big.className = "cbig";
+    shown.slice(0, 2).forEach(i => big.append(clead(i)));
+    const list = document.createElement("div"); list.className = "clist";
+    shown.slice(2).forEach(i => list.append(citem(i)));
+    row.append(big); if (list.children.length) row.append(list);
+    return;
+  }
   const list = document.createElement("div"); list.className = "clist";
   shown.slice(1).forEach(i => list.append(citem(i)));
   row.append(clead(shown[0]), list);
