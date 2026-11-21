@@ -2,7 +2,7 @@
   "sections": [
     {
       "key": "bengali",
-      "label": "Bengali News",
+      "label": "Bengali",
       "color": {
         "light": "#b0123a",
         "dark": "#ff7a9a"
@@ -14,7 +14,7 @@
     },
     {
       "key": "regional",
-      "label": "Regional News",
+      "label": "Regional",
       "color": {
         "light": "#0b6b8a",
         "dark": "#5cc7e6"
@@ -25,7 +25,7 @@
     },
     {
       "key": "india",
-      "label": "Indian News",
+      "label": "Indian",
       "color": {
         "light": "#c2570c",
         "dark": "#ff9a4d"
@@ -37,7 +37,7 @@
     },
     {
       "key": "world",
-      "label": "World News",
+      "label": "World",
       "color": {
         "light": "#2a4d8f",
         "dark": "#7ea3f0"
@@ -47,7 +47,7 @@
     },
     {
       "key": "sports",
-      "label": "Sports News",
+      "label": "Sports",
       "color": {
         "light": "#1b6e5a",
         "dark": "#4cc3a4"
@@ -58,7 +58,7 @@
     },
     {
       "key": "entertainment",
-      "label": "Entertainment News",
+      "label": "Entertainment",
       "color": {
         "light": "#9b2f7a",
         "dark": "#e27cc0"
@@ -69,7 +69,7 @@
     },
     {
       "key": "defence",
-      "label": "Defence News",
+      "label": "Defence",
       "color": {
         "light": "#4a5a2a",
         "dark": "#9fbf5f"
@@ -77,7 +77,7 @@
     },
     {
       "key": "geopolitics",
-      "label": "Geo Politics News",
+      "label": "Geo Politics",
       "color": {
         "light": "#8a2d2d",
         "dark": "#f08a8a"

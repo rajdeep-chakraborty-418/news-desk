@@ -393,15 +393,24 @@ function clead(i) {                                                         // t
   a.append(thumb, h, m);
   return a;
 }
+const SHOWN = { 1: 5, 2: 3, 3: 2 };                                         // stories shown in Standard view per tier; Maximise shows all five
 function fillPanel(row, picks, tier, max) {
-  row.classList.toggle("t" + tier, !max && tier < 3);
-  if (max || tier === 3 || !picks.length) { fillPickRow(row, picks, max); return; }
+  row.classList.toggle("t" + tier, !max);
+  const shown = max ? picks : picks.slice(0, SHOWN[tier] || PICKS_PER_SECTION);
+  if (max || tier === 3 || !shown.length) { fillPickRow(row, shown, max); return; }
   row.replaceChildren();
-  if (tier === 1) {
-    const list = document.createElement("div"); list.className = "clist";
-    picks.slice(1).forEach(i => list.append(citem(i)));
-    row.append(clead(picks[0]), list);
-  } else picks.forEach(i => row.append(citem(i)));
+  const list = document.createElement("div"); list.className = "clist";
+  shown.slice(1).forEach(i => list.append(citem(i)));
+  row.append(clead(shown[0]), list);
+}
+function panelButtons(key, label, tier) {
+  const shuffle = document.createElement("button"); shuffle.type = "button"; shuffle.className = "shuffle"; shuffle.textContent = "⟳ Shuffle";
+  shuffle.title = "Pick different " + label + " stories";
+  const max = document.createElement("button"); max.type = "button"; max.className = "pmax"; max.setAttribute("aria-pressed", "false");
+  max.title = "Enlarge this panel"; max.textContent = "Maximise";
+  const open = document.createElement("button"); open.type = "button"; open.className = "popen"; open.textContent = "Open section →";
+  open.title = "Open " + label + " in its own tab"; open.onclick = () => Layout.openSection(key);
+  return { shuffle, max, open };
 }
 function renderHome() {
   if (!homeState.picks || homeState.picks.length !== SECTIONS.length) pickRandom();
@@ -409,34 +418,59 @@ function renderHome() {
   const order = SECTIONS.map((x, n) => n).sort((a, b) => tierOf(SECTIONS[a][0]) - tierOf(SECTIONS[b][0]) ||
     (SECTION_CFG[SECTIONS[a][0]] || {}).rank - (SECTION_CFG[SECTIONS[b][0]] || {}).rank || a - b);
   const groups = {};
+  const group = (tier) => {
+    if (!groups[tier]) { groups[tier] = document.createElement("div"); groups[tier].className = "tier tier" + tier; box.append(groups[tier]); }
+    return groups[tier];
+  };
+  const small = [];
   order.forEach((n) => {
     const [key, label] = SECTIONS[n]; const tier = tierOf(key);
+    if (tier === 3) { small.push(n); return; }
     const panel = document.createElement("section"); panel.className = "hpanel pickpanel tier-" + tier; panel.dataset.section = key; panel.id = "picks-" + key;
     panel.style.setProperty("--tc", color(key));
     const head = document.createElement("div"); head.className = "phead";
     const h = document.createElement("h2"); h.id = "picks-t-" + key; h.textContent = label;
     h.title = "Open " + label + " in its own tab"; h.onclick = () => Layout.openSection(key);
-    const shuffle = document.createElement("button"); shuffle.type = "button"; shuffle.className = "shuffle"; shuffle.textContent = "⟳ Shuffle";
-    shuffle.title = "Pick different " + label + " stories";
-    const max = document.createElement("button"); max.type = "button"; max.className = "pmax"; max.setAttribute("aria-pressed", "false");
-    max.title = "Enlarge this panel"; max.textContent = "Maximise";
+    const { shuffle, max, open } = panelButtons(key, label, tier);
+    const txt = document.createElement("div"); txt.className = "ptext"; txt.append(h);        // name (and, for tier 1, the one-line description) left, buttons right
     const desc = (SECTION_CFG[key] || {}).description;
-    if (tier === 1) {                                                       // name and one-line description on the left, buttons on the right
-      const txt = document.createElement("div"); txt.className = "ptext"; txt.append(h);
-      if (desc) { const d = document.createElement("p"); d.className = "pdesc"; d.textContent = desc; txt.append(d); }
-      const open = document.createElement("button"); open.type = "button"; open.className = "popen"; open.textContent = "Open section →";
-      open.onclick = () => Layout.openSection(key);
-      head.append(txt, shuffle, max, open);
-    } else head.append(h, shuffle, max);
+    if (desc) { const d = document.createElement("p"); d.className = "pdesc"; d.textContent = desc; txt.append(d); }
+    head.append(txt, shuffle, max, open);
     const row = document.createElement("div"); row.className = "featgrid lrow";
     fillPanel(row, homeState.picks[n] || [], tier, false);
-    const draw = () => fillPanel(row, homeState.picks[n] || [], tier, panel.classList.contains("max"));   // Maximise shows the same five, with pictures
+    const draw = () => fillPanel(row, homeState.picks[n] || [], tier, panel.classList.contains("max"));   // Maximise shows the five, with pictures
     shuffle.onclick = () => { homeState.picks[n] = pickFor(key); draw(); };                                  // only Shuffle changes the set (this panel only)
     panel.addEventListener("panelmax", draw);
-    panel.setAttribute("aria-labelledby", h.id); panel.append(head, row);
-    if (!groups[tier]) { groups[tier] = document.createElement("div"); groups[tier].className = "tier tier" + tier; box.append(groups[tier]); }
-    groups[tier].append(panel);
+    panel.setAttribute("aria-labelledby", h.id); panel.append(head, row); group(tier).append(panel);
   });
+  if (small.length) {                                                       // every tier 3 section shares ONE panel with a tab per section
+    const keys = small.map((n) => SECTIONS[n][0]);
+    const panel = document.createElement("section"); panel.className = "hpanel pickpanel tier-3 tabbed"; panel.id = "picks-more";
+    const head = document.createElement("div"); head.className = "phead";
+    const tabs = document.createElement("div"); tabs.className = "ptabs"; tabs.setAttribute("role", "tablist");
+    const row = document.createElement("div"); row.className = "featgrid lrow"; row.setAttribute("role", "tabpanel");
+    const idx = (key) => SECTIONS.findIndex(([k]) => k === key);
+    const buttons = new Map();
+    const draw = () => { fillPanel(row, homeState.picks[idx(panel.dataset.section)] || [], 3, panel.classList.contains("max")); };
+    const select = (key) => {
+      panel.dataset.section = key; homeState.tab3 = key; panel.style.setProperty("--tc", color(key));
+      buttons.forEach((b, k) => { b.setAttribute("aria-selected", String(k === key)); b.tabIndex = k === key ? 0 : -1; });
+      const label = SECTIONS[idx(key)][1];
+      shuffle.title = "Pick different " + label + " stories"; open.title = "Open " + label + " in its own tab";
+      draw();
+    };
+    keys.forEach((key) => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "ptab"; b.setAttribute("role", "tab"); b.textContent = SECTIONS[idx(key)][1];
+      b.style.setProperty("--tc", color(key)); b.onclick = () => select(key); tabs.append(b); buttons.set(key, b);
+    });
+    const { shuffle, max, open } = panelButtons(keys[0], "", 3);
+    open.onclick = () => Layout.openSection(panel.dataset.section);
+    shuffle.onclick = () => { const n = idx(panel.dataset.section); homeState.picks[n] = pickFor(panel.dataset.section); draw(); };   // the open tab only
+    head.append(tabs, shuffle, max, open);
+    panel.addEventListener("panelmax", draw);
+    panel.append(head, row); group(3).append(panel);
+    select(keys.includes(homeState.tab3) ? homeState.tab3 : keys[0]);
+  }
 }
 
 function makeTile(i, n) {
