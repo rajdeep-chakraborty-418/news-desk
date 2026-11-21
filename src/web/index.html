@@ -38,14 +38,10 @@
   .controls { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 12px 0 10px; border-bottom: 1px solid var(--line);
               font-family: system-ui, sans-serif; display: grid; gap: 10px; }
   .row { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
-  .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
-  @media (max-width: 700px) { .tabs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; } }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   button, select { font: inherit; font-size: 14px; cursor: pointer; border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 7px 14px; border-radius: 999px; }
   select { padding-right: 10px; max-width: 220px; }
   button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  .tabs button { font-weight: 600; font-size: 14px; white-space: nowrap; border-bottom-width: 3px; padding: 6px 12px; }
-  .tabs button[aria-pressed="true"] { background: var(--tabc, var(--ink)); border-color: var(--tabc, var(--ink)); color: #fff; }
   .kindbox { display: inline-flex; align-items: center; gap: 14px; margin: 0; padding: 4px 12px 6px; border: 1px solid var(--line); border-radius: 10px; }
   .kindbox legend { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 0 4px; }
   .toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); cursor: pointer; }
@@ -135,7 +131,6 @@
   <div class="demo" id="demo">Sample data for preview. Real headlines appear after the first update runs on your host.</div>
 
   <div class="controls">
-    <div class="tabs" id="tabs" role="group" aria-label="Section"></div>
     <div class="row" id="filters">
       <div class="chips" id="chips" role="group" aria-label="Continent"></div>
       <fieldset class="kindbox" id="kind">
@@ -465,7 +460,7 @@ function renderHome() {
     };
     keys.forEach((key) => {
       const b = document.createElement("button"); b.type = "button"; b.className = "ptab"; b.setAttribute("role", "tab"); b.textContent = SECTIONS[idx(key)][1];
-      b.style.setProperty("--tc", color(key)); b.onclick = () => select(key); tabs.append(b); buttons.set(key, b);
+      b.dataset.key = key; b.style.setProperty("--tc", color(key)); b.onclick = () => select(key); tabs.append(b); buttons.set(key, b);
     });
     const { shuffle, max, open } = panelButtons(keys[0], "", 3);
     open.onclick = () => Layout.openSection(panel.dataset.section);
@@ -647,15 +642,6 @@ function buildChips() {
 }
 
 function build() {
-  const tabs = $("tabs");
-  for (const [key, label] of SECTIONS) {
-    const b = document.createElement("button");
-    b.textContent = label; b.style.setProperty("--tabc", color(key));
-    b.type = "button"; b.dataset.section = key;
-    b.setAttribute("aria-pressed", !HOME && key === state.section);
-    b.onclick = () => Layout.openSection(key);
-    tabs.append(b);
-  }
   buildChips();
   // Primary / Secondary checkboxes, applied on top of the section, continent, country and search filters:
   // none or both ticked = both kinds of source; only one ticked = only that kind

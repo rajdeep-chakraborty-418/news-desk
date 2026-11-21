@@ -150,17 +150,15 @@ class WebUITest(BrowserBase):
 
     def tab(self, label):
         """Go to a section the way a reload of its own page would (opening it in its own tab is tested separately)."""
-        key = self.page.locator(f"#tabs button:text-is('{label}')").get_attribute("data-section")
+        key = {sec["label"]: sec["key"] for sec in json.loads((self.site / "sections.json").read_text())}[label]
         self.page.goto(self.url + "?section=" + key)
         self.page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
 
     # ---------------------------------------------------------------- tabs and colours come from sections.json
-    def test_tabs_follow_sections_json_in_order(self):
+    def test_a_section_page_has_no_row_of_section_buttons(self):
         self.open()
-        self.assertEqual(self.page.locator("#tabs button").all_inner_texts(),
-                         ["Home News", "India Desk", "World Desk", "Sports Desk", "Showbiz Desk", "Defence Desk", "Money Desk"])
-        self.assertEqual(self.page.locator("#tabs button[aria-pressed=true]").inner_text(), "Home News")     # the first one
-        self.assertEqual(self.tiles(), 5)
+        self.assertEqual(self.page.locator("#tabs").count(), 0)
+        self.assertEqual(self.tiles(), 5)                                           # the first section (Home News) opens by default
 
     def test_section_colours_come_from_sections_json(self):
         self.open()
@@ -478,7 +476,7 @@ class WebUITest(BrowserBase):
 
     def snapshot(self):
         p = self.page
-        return dict(tab=p.locator("#tabs button[aria-pressed=true]").inner_text(), chip=p.locator("#chips button[aria-pressed=true]").inner_text(),
+        return dict(tab=p.evaluate("new URLSearchParams(location.search).get('section')"), chip=p.locator("#chips button[aria-pressed=true]").inner_text(),
                     q=p.input_value("#q"), cq=p.input_value("#cq"), pri=p.is_checked("#fPrimary"), sec=p.is_checked("#fSecondary"),
                     sel=p.inner_text("#selnote"), tiles=self.tiles())
 
@@ -754,10 +752,10 @@ class HomeAndTabsTest(BrowserBase):
         self.home()
         for sel in ("#grid", "#sidebox", "#chips", "#q", "#rangebar", "#reset"):
             self.assertFalse(self.page.is_visible(sel), sel)
-        for sel in ("#refresh", "#range", "#count", "#lastrefresh", ".pickpanel", "#tabs"):
+        for sel in ("#refresh", "#range", "#count", "#lastrefresh", ".pickpanel"):
             self.assertTrue(self.page.is_visible(sel), sel)
         self.assertEqual(self.page.title(), "SJ News Desk")
-        self.assertEqual(self.page.locator("#tabs button").count(), 7)
+        self.assertEqual(self.page.locator("#tabs, .tabs").count(), 0)                 # no row of section buttons
 
     def test_home_panels_come_in_three_sizes_by_tier(self):
         self.home()
@@ -813,6 +811,14 @@ class HomeAndTabsTest(BrowserBase):
             panel.locator(".popen").click()
         info.value.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
         self.assertIn("section=sports", info.value.url)                             # "Open section" follows the open tab
+
+    def go(self, key):
+        """Click the way to a section on the landing page: its panel title, or its tab plus 'Open section' in the shared panel."""
+        if self.page.locator(f"#picks-more .ptab[data-key={key}]").count():
+            self.page.locator(f"#picks-more .ptab[data-key={key}]").click()
+            self.page.locator("#picks-more .popen").click()
+        else:
+            self.page.locator(f"#feat .pickpanel[data-section={key}] .phead h2").click()
 
     def panel(self, key):
         return self.page.locator(f"#feat .pickpanel[data-section={key}]")
@@ -871,7 +877,7 @@ class HomeAndTabsTest(BrowserBase):
     def test_a_section_opens_in_a_new_tab_and_home_is_untouched(self):
         self.home()
         with self.ctx.expect_page() as info:
-            self.page.click("#tabs button:text-is('World Desk')")
+            self.go("world")
         tab = info.value
         tab.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
         self.assertIn("section=world", tab.url)
@@ -886,18 +892,17 @@ class HomeAndTabsTest(BrowserBase):
             self.assertTrue(tab.is_visible(sel), sel)
         self.assertFalse(tab.is_visible("#panel-papers"))                        # the panels are on Home only
         self.assertFalse(tab.is_visible(".pickpanel"))
-        self.assertFalse(tab.is_visible("#tabs"))                                # section buttons are on the landing page only
 
     def test_opening_an_open_section_again_jumps_to_its_tab_and_keeps_its_filters(self):
         self.home()
         with self.ctx.expect_page() as info:
-            self.page.click("#tabs button:text-is('World Desk')")
+            self.go("world")
         tab = info.value
         tab.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
         tab.fill("#q", "story 1")
         tab.wait_for_function("location.search.includes('story+1')")
         before = len(self.ctx.pages)
-        self.page.click("#tabs button:text-is('World Desk')")
+        self.go("world")
         self.page.wait_for_timeout(500)
         self.assertEqual(len(self.ctx.pages), before)
         self.assertEqual(tab.input_value("#q"), "story 1")
@@ -905,9 +910,9 @@ class HomeAndTabsTest(BrowserBase):
     def test_each_tab_keeps_its_own_filters(self):
         self.home()
         tabs = {}
-        for label, key in (("World Desk", "world"), ("Sports Desk", "sports")):
+        for key in ("world", "sports"):
             with self.ctx.expect_page() as info:
-                self.page.click(f"#tabs button:text-is('{label}')")
+                self.go(key)
             tabs[key] = info.value
             tabs[key].wait_for_function("document.querySelectorAll('#grid > *').length > 0")
         tabs["world"].click("#chips button:text-is('Europe')"); tabs["world"].check("#fPrimary")

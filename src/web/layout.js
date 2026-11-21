@@ -39,7 +39,7 @@ const Layout = (() => {
     $("secname").textContent = label ? " – " + label : "";
     document.title = label ? "SJ News Desk – " + label : "SJ News Desk";
     if (home) $("homelink").removeAttribute("href"); else { $("homelink").href = location.pathname; window.name = "rcnd-" + section; }
-    for (const id of ["homeonly", "homeview", "refmsg", "tabs"]) $(id).hidden = !home;      // landing page only
+    for (const id of ["homeonly", "homeview", "refmsg"]) $(id).hidden = !home;      // landing page only
     for (const id of ["filters", "sectionview", "reset"]) $(id).hidden = home;
     $("footnote").hidden = !home;
     if (home && $("papersframe")) $("papersframe").src = "newspaper-list/?embed=1&t=" + Date.now();       // t: never show a cached copy of the list page

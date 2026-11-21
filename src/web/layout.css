@@ -33,7 +33,6 @@ h1 a:not([href]) { cursor: default; }
 .hpanel.max .featgrid { display: grid; }
 body.pmax { overflow: hidden; }
 body[data-mode=home] .controls { position: static; }
-@media (max-width: 700px) { body[data-mode=home] .tabs { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; } body[data-mode=home] .tabs button { white-space: normal; } }
 
 /* last / next refresh lines (refreshinfo.js) */
 #updated .late { color: #b3261e; font-weight: 600; }
