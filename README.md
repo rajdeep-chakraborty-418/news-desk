@@ -103,9 +103,9 @@ A story is looked up by its feed tags (a tag such as `Sports,Cricket` counts as 
 
 ## Home page and section tabs
 
-- **Home** (`/`) shows the refresh controls (Refresh, Last/Next Refresh, "Fetch stories from", "Stories per section"), the section buttons, and five random stories (text only, no pictures) for every section (a card reading "No stories yet" when a section has none). Picks change on every page load, after a refresh, and with the Shuffle button.
+- **Home** (`/`) shows the refresh controls (Refresh, Last/Next Refresh, "Fetch stories from", "Stories per section") and the Today's Picks panels (see Panel tiers below); there is no row of section buttons. Picks change on every page load, after a refresh, and with each panel's Shuffle button.
 - **Section pages** (`/?section=<key>`) hold the filters, the Newspapers panel and the stories, and show nothing about refreshing. The headline reads "SJ News Desk – {Section}" and links back to Home.
-- Clicking a section opens it in its own browser tab (named `rcnd-<key>`); if that tab is already open it is just brought forward. A new tab starts with default filters; each tab keeps its filters in its URL and its own sessionStorage, so reloads restore them and tabs never affect each other.
+- Clicking a panel's title (or *Open section*) opens that section in its own browser tab (named `rcnd-<key>`); if that tab is already open it is just brought forward. A new tab starts with default filters; each tab keeps its filters in its URL and its own sessionStorage, so reloads restore them and tabs never affect each other.
 
 ## Repeated headlines
 
