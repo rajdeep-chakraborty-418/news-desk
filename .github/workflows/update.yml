@@ -42,7 +42,7 @@ jobs:
       HF_TOKEN: ${{ secrets.HF_TOKEN }}       # Hugging Face read token for the English-headline model (optional; see README)
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment2.outputs.page_url || steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -130,4 +130,11 @@ jobs:
           path: site
       - id: deployment
         if: steps.gate.outputs.go == 'true'
+        continue-on-error: true            # GitHub sometimes does not see the just-uploaded artifact ("Found 0 artifact(s)"): wait and try once more
+        uses: actions/deploy-pages@v4
+      - name: Wait before deploying again
+        if: steps.gate.outputs.go == 'true' && steps.deployment.outcome == 'failure'
+        run: sleep 45
+      - id: deployment2
+        if: steps.gate.outputs.go == 'true' && steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
