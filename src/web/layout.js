@@ -42,7 +42,7 @@ const Layout = (() => {
     for (const id of ["homeonly", "homeview", "refmsg", "tabs"]) $(id).hidden = !home;      // landing page only
     for (const id of ["filters", "sectionview", "reset"]) $(id).hidden = home;
     $("footnote").hidden = !home;
-    if (home) $("papersframe").src = "newspaper-list/?embed=1&t=" + Date.now();       // t: never show a cached copy of the list page
+    if (home && $("papersframe")) $("papersframe").src = "newspaper-list/?embed=1&t=" + Date.now();       // t: never show a cached copy of the list page
   }
 
   document.addEventListener("click", (e) => { const b = e.target.closest(".hpanel .pmax"); if (!b) return; const p = b.closest(".hpanel"); setMax(p, !p.classList.contains("max")); });      // delegated: panels can be added later
@@ -50,7 +50,7 @@ const Layout = (() => {
   // The Newspaper Homepage panel shows the separate page newspaper-list/; maximised, it grows to the height that page reports.
   window.addEventListener("message", (e) => {
     if (e.origin !== location.origin || !e.data || e.data.type !== "rcnd-height") return;
-    $("panel-papers").style.setProperty("--fh", Math.max(300, Math.ceil(e.data.height)) + "px");
+    if ($("panel-papers")) $("panel-papers").style.setProperty("--fh", Math.max(300, Math.ceil(e.data.height)) + "px");
   });
 
   return { openSection, applyMode, setMax };

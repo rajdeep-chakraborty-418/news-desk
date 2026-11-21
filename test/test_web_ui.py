@@ -754,7 +754,7 @@ class HomeAndTabsTest(BrowserBase):
         self.home()
         for sel in ("#grid", "#sidebox", "#chips", "#q", "#rangebar", "#reset"):
             self.assertFalse(self.page.is_visible(sel), sel)
-        for sel in ("#refresh", "#range", "#count", "#lastrefresh", ".pickpanel", "#panel-papers", "#tabs"):
+        for sel in ("#refresh", "#range", "#count", "#lastrefresh", ".pickpanel", "#tabs"):
             self.assertTrue(self.page.is_visible(sel), sel)
         self.assertEqual(self.page.title(), "SJ News Desk")
         self.assertEqual(self.page.locator("#tabs button").count(), 7)
@@ -772,7 +772,6 @@ class HomeAndTabsTest(BrowserBase):
         self.assertEqual(round(b2[0]["y"]), round(b2[1]["y"]))                      # medium panels side by side
         self.assertLess(b1[0]["y"], b2[0]["y"])                                     # large above medium above the tabs
         self.assertLess(b2[0]["y"], t3.nth(0).bounding_box()["y"])
-        self.assertLess(t3.nth(0).bounding_box()["y"], self.page.locator("#panel-papers").bounding_box()["y"])
         big = self.panel("showbiz")                                                 # a large panel: description, lead picture, picture headlines
         self.assertEqual(big.locator(".pdesc").inner_text(), "Showbiz description line.")
         self.assertEqual(big.locator(".clead").count(), 1)
@@ -926,38 +925,28 @@ class HomeAndTabsTest(BrowserBase):
         self.assertEqual(other.locator("#chips button[aria-pressed=true]").inner_text(), "All")
         self.assertEqual(other.input_value("#q"), "")
 
-    def test_newspaper_homepage_is_a_fixed_panel_with_no_link(self):
+    def test_the_newspaper_homepage_panel_is_not_on_the_landing_page(self):
         self.home()
-        self.assertEqual(self.page.inner_text("#panel-papers h2"), "Newspaper Homepage")
+        self.assertEqual(self.page.locator("#panel-papers, #papersframe, a[href*='newspaper-list']").count(), 0)
         for gone in ("a.navlink", "a.navnew", "#paperlist", "#papers"):
             self.assertEqual(self.page.locator(gone).count(), 0, gone)
-        self.assertEqual(self.page.locator("a[href*='newspaper-list']").count(), 0)         # no hyperlink to it anywhere
-        frame = self.page.frame_locator("#papersframe")
-        frame.locator(".layout").wait_for(state="attached")
-        self.assertFalse(frame.locator("a.back").is_visible())
-        self.assertLessEqual(self.page.locator("#panel-papers").bounding_box()["height"], 460)       # compact by default
 
-    def test_panels_are_compact_and_can_be_maximised_and_restored(self):
+    def test_panels_can_be_maximised_and_restored(self):
         self.home()
-        picks, papers = self.panel("world"), self.page.locator("#panel-papers")
-        self.assertLessEqual(picks.bounding_box()["height"], 700)
-        self.assertLess(picks.bounding_box()["y"] + picks.bounding_box()["height"], papers.bounding_box()["y"] + 1)   # Newspaper Homepage is below
-        self.assertGreater(papers.bounding_box()["width"], 1000)                                        # and spans the whole row
-        btn = papers.locator(".pmax")
+        picks, other = self.panel("world"), self.panel("home")
+        small = picks.bounding_box()
+        btn = picks.locator(".pmax")
         self.assertEqual(btn.inner_text(), "Maximise")
-        small = papers.bounding_box()["height"]
         btn.click()
         self.assertEqual(btn.inner_text(), "Standard")
-        box = papers.bounding_box()
-        self.assertGreater(box["height"], small + 200)
+        box = picks.bounding_box()
         self.assertGreater(box["width"], 1200)                                                          # fills the window
-        self.assertFalse(picks.evaluate("e => e.classList.contains('max')"))
         self.page.keyboard.press("Escape")                                                             # Esc restores
         self.assertEqual(btn.inner_text(), "Maximise")
-        self.assertEqual(papers.bounding_box()["height"], small)
-        picks.locator(".pmax").click(); papers.locator(".pmax").dispatch_event("click")                # one maximised at a time
+        self.assertEqual(picks.bounding_box()["height"], small["height"])
+        picks.locator(".pmax").click(); other.locator(".pmax").dispatch_event("click")                  # one maximised at a time
         self.assertEqual(self.page.locator(".hpanel.max").count(), 1)
-        papers.locator(".pmax").click()
+        other.locator(".pmax").click()
         self.assertEqual(self.page.locator(".hpanel.max").count(), 0)
 
     def test_the_headline_links_back_to_home(self):
