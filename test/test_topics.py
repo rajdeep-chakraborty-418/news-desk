@@ -143,3 +143,23 @@ class StatesModeTest(TestCase):
                     support.write_config(pathlib.Path(d), newspapers={"primary": [], "secondary": [{"name": "P", "homepage": "https://p.example/", "state": bad,
                                          "feeds": [{"url": "https://p.example/f", "section": "world"}]}]})
                     config.load_newspapers(config.load_sections(d), d)
+
+
+class SectionTierTest(TestCase):
+    def load(self, **extra):
+        import config
+        with tempfile.TemporaryDirectory() as d:
+            sec = {"key": "a", "label": "A", "color": {"light": "#112233", "dark": "#aabbcc"}, **extra}
+            support.write_config(pathlib.Path(d), sections={"sections": [sec]})
+            return config.load_sections(d)[0]
+
+    def test_tier_rank_and_description_are_kept_only_when_set(self):
+        self.assertNotIn("tier", self.load())
+        got = self.load(tier=1, rank=2, description=" One line. ")
+        self.assertEqual((got["tier"], got["rank"], got["description"]), (1, 2, "One line."))
+
+    def test_bad_values_are_rejected(self):
+        import config
+        for bad in ({"tier": 4}, {"tier": "1"}, {"tier": True}, {"rank": "x"}, {"description": ""}, {"description": 5}):
+            with self.assertRaises(config.ConfigError):
+                self.load(**bad)

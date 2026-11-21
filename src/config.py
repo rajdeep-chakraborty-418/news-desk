@@ -77,6 +77,21 @@ def load_sections(directory=None):
         if not isinstance(cf, bool):
             raise ConfigError(f"{where}: 'continent_filter' must be true or false")
         entry = {"key": key, "label": s["label"].strip(), "color": color}
+        tier = s.get("tier", 3)
+        if isinstance(tier, bool) or tier not in (1, 2, 3):
+            raise ConfigError(f"{where}: 'tier' must be 1, 2 or 3 (1 = the biggest, self-describing Home panels, 3 = the smallest; default 3)")
+        rank = s.get("rank")
+        if rank is not None and (isinstance(rank, bool) or not isinstance(rank, (int, float))):
+            raise ConfigError(f"{where}: 'rank' must be a number (the order inside its tier on the Home page; default: the order in this file)")
+        desc = s.get("description")
+        if desc is not None and not (isinstance(desc, str) and desc.strip()):
+            raise ConfigError(f"{where}: 'description' must be a non-empty text (one line shown under the name of a tier 1 panel)")
+        if tier != 3:
+            entry["tier"] = tier                         # written only when set: the Home page sorts and sizes its panels by it
+        if rank is not None:
+            entry["rank"] = rank
+        if desc:
+            entry["description"] = desc.strip()
         if not cf:
             entry["continent_filter"] = False            # only written when off: the page then shows no continent buttons
         out.append(entry)
@@ -201,7 +216,7 @@ def load_all(directory=None):
 
 def public_sections(sections):
     """What the web page needs to draw the tabs and their colours."""
-    return [{k: s[k] for k in ("key", "label", "color", "continent_filter") if k in s} for s in sections]
+    return [{k: s[k] for k in ("key", "label", "color", "continent_filter", "tier", "rank", "description") if k in s} for s in sections]
 
 
 def public_newspapers(newspapers):

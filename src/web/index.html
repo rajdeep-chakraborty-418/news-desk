@@ -369,26 +369,73 @@ function fillPickRow(row, picks, withPicture) {
   if (picks.length) picks.forEach(i => row.append(pickCard(i, withPicture)));
   else { const d = document.createElement("div"); d.className = "nostory"; d.textContent = "No stories yet"; row.append(d); }
 }
+// Home panels come in three sizes (tier in sections.json): 1 = large, with the section's one-line description, a lead picture and
+// picture headlines; 2 = medium, picture headlines; 3 = small, headlines only. Maximise shows every panel the same way (pictures).
+const tierOf = (key) => (SECTION_CFG[key] || {}).tier || 3;
+function citem(i) {                                                         // compact story: small picture, headline, source and age
+  const a = document.createElement("a"); a.className = "citem"; a.href = i.link; a.target = "_blank"; a.rel = "noopener noreferrer";
+  const thumb = document.createElement("div"); thumb.className = "thumb";
+  const ph = document.createElement("div"); ph.className = "ph"; ph.textContent = (i.source || "?").charAt(0); thumb.append(ph);
+  if (i.image && i.image.startsWith("https://")) attachImage(thumb, i.image);
+  const t = document.createElement("div"); t.className = "ctext";
+  const h = document.createElement("span"); h.className = "ctitle"; h.textContent = i.title;
+  const m = document.createElement("span"); m.className = "cmeta"; m.textContent = i.source + " · " + ago(i.published);
+  t.append(h, m); a.append(thumb, t);
+  return a;
+}
+function clead(i) {                                                         // the lead story of a tier 1 panel: wide picture and a larger headline
+  const a = document.createElement("a"); a.className = "clead"; a.href = i.link; a.target = "_blank"; a.rel = "noopener noreferrer";
+  const thumb = document.createElement("div"); thumb.className = "thumb";
+  const ph = document.createElement("div"); ph.className = "ph"; ph.textContent = (i.source || "?").charAt(0); thumb.append(ph);
+  if (i.image && i.image.startsWith("https://")) attachImage(thumb, i.image);
+  const h = document.createElement("span"); h.className = "ctitle"; h.textContent = i.title;
+  const m = document.createElement("span"); m.className = "cmeta"; m.textContent = i.source + " · " + ago(i.published);
+  a.append(thumb, h, m);
+  return a;
+}
+function fillPanel(row, picks, tier, max) {
+  row.classList.toggle("t" + tier, !max && tier < 3);
+  if (max || tier === 3 || !picks.length) { fillPickRow(row, picks, max); return; }
+  row.replaceChildren();
+  if (tier === 1) {
+    const list = document.createElement("div"); list.className = "clist";
+    picks.slice(1).forEach(i => list.append(citem(i)));
+    row.append(clead(picks[0]), list);
+  } else picks.forEach(i => row.append(citem(i)));
+}
 function renderHome() {
   if (!homeState.picks || homeState.picks.length !== SECTIONS.length) pickRandom();
   const box = $("feat"); box.replaceChildren();
-  SECTIONS.forEach(([key, label], n) => {
-    const panel = document.createElement("section"); panel.className = "hpanel pickpanel"; panel.dataset.section = key; panel.id = "picks-" + key;
+  const order = SECTIONS.map((x, n) => n).sort((a, b) => tierOf(SECTIONS[a][0]) - tierOf(SECTIONS[b][0]) ||
+    (SECTION_CFG[SECTIONS[a][0]] || {}).rank - (SECTION_CFG[SECTIONS[b][0]] || {}).rank || a - b);
+  const groups = {};
+  order.forEach((n) => {
+    const [key, label] = SECTIONS[n]; const tier = tierOf(key);
+    const panel = document.createElement("section"); panel.className = "hpanel pickpanel tier-" + tier; panel.dataset.section = key; panel.id = "picks-" + key;
     panel.style.setProperty("--tc", color(key));
     const head = document.createElement("div"); head.className = "phead";
-    const h = document.createElement("h2"); h.id = "picks-t-" + key; h.textContent = "Today's Picks - " + label;
+    const h = document.createElement("h2"); h.id = "picks-t-" + key; h.textContent = label;
     h.title = "Open " + label + " in its own tab"; h.onclick = () => Layout.openSection(key);
     const shuffle = document.createElement("button"); shuffle.type = "button"; shuffle.className = "shuffle"; shuffle.textContent = "⟳ Shuffle";
     shuffle.title = "Pick different " + label + " stories";
     const max = document.createElement("button"); max.type = "button"; max.className = "pmax"; max.setAttribute("aria-pressed", "false");
     max.title = "Enlarge this panel"; max.textContent = "Maximise";
-    head.append(h, shuffle, max);
+    const desc = (SECTION_CFG[key] || {}).description;
+    if (tier === 1) {                                                       // name and one-line description on the left, buttons on the right
+      const txt = document.createElement("div"); txt.className = "ptext"; txt.append(h);
+      if (desc) { const d = document.createElement("p"); d.className = "pdesc"; d.textContent = desc; txt.append(d); }
+      const open = document.createElement("button"); open.type = "button"; open.className = "popen"; open.textContent = "Open section →";
+      open.onclick = () => Layout.openSection(key);
+      head.append(txt, shuffle, max, open);
+    } else head.append(h, shuffle, max);
     const row = document.createElement("div"); row.className = "featgrid lrow";
-    fillPickRow(row, homeState.picks[n] || [], false);
-    const draw = () => fillPickRow(row, homeState.picks[n] || [], panel.classList.contains("max"));   // Maximise shows the same five, with pictures
+    fillPanel(row, homeState.picks[n] || [], tier, false);
+    const draw = () => fillPanel(row, homeState.picks[n] || [], tier, panel.classList.contains("max"));   // Maximise shows the same five, with pictures
     shuffle.onclick = () => { homeState.picks[n] = pickFor(key); draw(); };                                  // only Shuffle changes the set (this panel only)
     panel.addEventListener("panelmax", draw);
-    panel.setAttribute("aria-labelledby", h.id); panel.append(head, row); box.append(panel);
+    panel.setAttribute("aria-labelledby", h.id); panel.append(head, row);
+    if (!groups[tier]) { groups[tier] = document.createElement("div"); groups[tier].className = "tier tier" + tier; box.append(groups[tier]); }
+    groups[tier].append(panel);
   });
 }
 
@@ -791,7 +838,7 @@ setInterval(() => { if (HOME && !rf.busy) loadRecord(); }, 5 * 60 * 1000);   // 
 async function loadSections() {
   const list = await (await fetch("sections.json?t=" + Date.now())).json();
   SECTIONS = list.map((x) => [x.key, x.label]);
-  SECTION_CFG = Object.fromEntries(list.map((x) => [x.key, { continent: x.continent_filter !== false }]));
+  SECTION_CFG = Object.fromEntries(list.map((x, n) => [x.key, { continent: x.continent_filter !== false, tier: x.tier || 3, rank: x.rank ?? n, description: x.description || "" }]));
   const want = PARAMS.get("section");
   HOME = !SECTIONS.some(([k]) => k === want);                      // no (or an unknown) ?section= means the Home page
   state.section = HOME ? "" : want;

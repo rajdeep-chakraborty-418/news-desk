@@ -83,6 +83,10 @@ class BrowserBase(unittest.TestCase):
         for sec in secs:
             if sec["key"] == "money":
                 sec["continent_filter"] = False                 # Money Desk: no continent buttons
+            if sec["key"] in ("showbiz", "defence"):            # two large Home panels (Showbiz first), one medium (Home News), the rest small
+                sec.update(tier=1, rank={"showbiz": 1, "defence": 2}[sec["key"]], **({"description": "Showbiz description line."} if sec["key"] == "showbiz" else {}))
+            if sec["key"] == "home":
+                sec["tier"] = 2
         (cls.site / "sections.json").write_text(json.dumps(secs))
         handler = functools.partial(QuietHandler, directory=str(cls.site))
         cls.server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
@@ -316,10 +320,10 @@ class WebUITest(BrowserBase):
             self.assertFalse(any("news.json" in u for u in seen), seen)
             seen.clear()
             self.page.goto(self.url)                                                  # the Home page: a pool, not everything
-            self.page.wait_for_function("document.querySelectorAll('#feat .fcard').length > 0")
+            self.page.wait_for_function("document.querySelectorAll('#feat .fcard, #feat .citem').length > 0")
             self.assertTrue(any(u.endswith("/data/home.json") for u in seen), seen)
             self.assertFalse(any("news.json" in u for u in seen), seen)
-            self.assertGreater(self.page.locator("#feat .fcard").count(), 10)
+            self.assertGreater(self.page.locator("#feat .fcard, #feat .citem, #feat .clead").count(), 10)
         finally:
             shutil.rmtree(self.site / "data", ignore_errors=True)
 
@@ -755,19 +759,39 @@ class HomeAndTabsTest(BrowserBase):
         self.assertEqual(self.page.title(), "SJ News Desk")
         self.assertEqual(self.page.locator("#tabs button").count(), 7)
 
-    def test_home_has_one_todays_picks_panel_per_section_four_to_a_row(self):
+    def test_home_panels_come_in_three_sizes_by_tier(self):
         self.home()
         panels = self.page.locator("#feat .pickpanel")
         self.assertEqual(panels.count(), 7)                                       # empty sections are not hidden
-        titles = panels.locator(".phead h2").all_inner_texts()
-        self.assertTrue(all(t.startswith("Today's Picks - ") for t in titles))
-        self.assertIn("Today's Picks - World Desk", titles)
-        boxes = [panels.nth(n).bounding_box() for n in range(7)]
-        self.assertEqual(len({round(b["y"]) for b in boxes[:4]}), 1)               # four panels in the first row ...
-        self.assertEqual(len({round(b["x"]) for b in boxes[:4]}), 4)
-        self.assertGreater(boxes[4]["y"], boxes[0]["y"] + boxes[0]["height"] - 1)  # ... then the next row
-        self.assertEqual(round(boxes[4]["x"]), round(boxes[0]["x"]))
-        self.assertLess(boxes[6]["y"], self.page.locator("#panel-papers").bounding_box()["y"])
+        self.assertEqual(self.page.locator(".tier1 .pickpanel .phead h2").all_inner_texts(), ["Showbiz Desk", "Defence Desk"])   # by rank
+        self.assertEqual(self.page.locator(".tier2 .pickpanel .phead h2").all_inner_texts(), ["Home News"])
+        self.assertEqual(self.page.locator(".tier3 .pickpanel").count(), 4)
+        t1, t2, t3 = (self.page.locator(f".tier{n} .pickpanel") for n in (1, 2, 3))
+        b1 = [t1.nth(n).bounding_box() for n in range(2)]
+        self.assertEqual(round(b1[0]["y"]), round(b1[1]["y"]))                      # two large panels side by side
+        self.assertLess(b1[0]["y"], t2.nth(0).bounding_box()["y"])                  # large above medium above small
+        self.assertLess(t2.nth(0).bounding_box()["y"], t3.nth(0).bounding_box()["y"])
+        b3 = [t3.nth(n).bounding_box() for n in range(4)]
+        self.assertEqual(len({round(b["y"]) for b in b3[:3]}), 1)                   # three small panels per row ...
+        self.assertGreater(b3[3]["y"], b3[0]["y"])                                  # ... then the next row
+        self.assertLess(b3[3]["y"], self.page.locator("#panel-papers").bounding_box()["y"])
+        big = self.panel("showbiz")                                                 # a large panel: description, lead picture, picture headlines
+        self.assertEqual(big.locator(".pdesc").inner_text(), "Showbiz description line.")
+        self.assertEqual(big.locator(".clead").count(), 1)
+        self.assertEqual(big.locator(".citem").count(), 3)                          # four stories: the lead and three more
+        self.assertEqual(big.locator(".thumb").count(), 4)
+        self.assertEqual(self.panel("defence").locator(".pdesc").count(), 0)        # no description configured
+        self.assertEqual(self.panel("defence").locator(".citem").count(), 4)        # lead + four of thirteen
+        self.assertEqual(self.panel("home").locator(".citem").count(), 5)           # a medium panel: five picture headlines
+        self.assertEqual(self.panel("home").locator(".clead").count(), 0)
+        self.assertEqual(self.panel("world").locator(".citem, .thumb").count(), 0)  # a small panel: headlines only
+        self.assertEqual(self.panel("world").locator(".fcard").count(), 5)
+        big.locator(".pmax").click()                                                # Maximise: every tier shows the same five-card view with pictures
+        self.assertEqual(big.locator(".fcard .thumb").count(), 4)
+        big.locator(".shuffle").dispatch_event("click")
+        self.assertEqual(big.locator(".fcard").count(), 4)                          # Shuffle keeps the maximised view
+        big.locator(".pmax").click()
+        self.assertEqual(big.locator(".citem").count(), 3)                          # and back to the large layout
         self.assertEqual(self.page.locator(".pickpanel .shuffle").count(), 7)     # each panel has its own Shuffle
 
     def panel(self, key):
