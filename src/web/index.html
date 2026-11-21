@@ -389,12 +389,13 @@ function clead(i) {                                                         // t
   a.append(thumb, h, m);
   return a;
 }
-const SHOWN = { 1: 5, 2: 3, 3: 2 };                                         // stories shown in Standard view per tier; Maximise shows all five
+const SHOWN = { 1: 5, 2: 3, 3: 5 };                                         // stories shown in Standard view per tier; Maximise shows all five
 function fillPanel(row, picks, tier, max) {
   row.classList.toggle("t" + tier, !max);
   const shown = max ? picks : picks.slice(0, SHOWN[tier] || PICKS_PER_SECTION);
-  if (max || tier === 3 || !shown.length) { fillPickRow(row, shown, max); return; }
+  if (max || !shown.length) { fillPickRow(row, shown, max); return; }
   row.replaceChildren();
+  if (tier === 3) { shown.forEach(i => row.append(citem(i))); return; }       // the tabbed panel: five picture headlines in a list
   const list = document.createElement("div"); list.className = "clist";
   shown.slice(1).forEach(i => list.append(citem(i)));
   row.append(clead(shown[0]), list);

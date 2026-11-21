@@ -83,12 +83,11 @@ body[data-mode=home] .controls { position: static; }
 .ptab:hover { background: color-mix(in srgb, var(--tc) 10%, var(--card)); }
 .ptab[aria-selected=true] { background: color-mix(in srgb, var(--tc) 16%, var(--card)); color: var(--tc); border-color: var(--tc); }
 .tabbed:not(.max) .popen { background: transparent; color: var(--tc); border-color: var(--tc); }
-.tabbed:not(.max) .featgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.tabbed:not(.max) .featgrid { display: flex; flex-direction: column; gap: 10px; }
 @media (max-width: 700px) {
   .tabbed { grid-template-columns: minmax(0, 1fr); }
   .ptabs { flex-direction: row; flex-wrap: wrap; border-right: 0; padding: 0 0 8px; margin-bottom: 8px; }
   .ptab { border-left-width: 1px; border-color: var(--line); padding: 4px 12px; font-size: 13px; }
-  .tabbed:not(.max) .featgrid { grid-template-columns: minmax(0, 1fr); }
 }
 .tabbed .phead .pmax { margin-left: 0; }
 .ptab { font-family: system-ui, sans-serif; }

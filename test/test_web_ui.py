@@ -797,13 +797,13 @@ class HomeAndTabsTest(BrowserBase):
         self.assertIn("No stories yet", panel.inner_text())
         panel.locator(".ptab:text-is('Sports Desk')").click()
         self.assertEqual(panel.locator(".ptab[aria-selected=true]").all_inner_texts(), ["Sports Desk"])
-        self.assertEqual(panel.locator(".fcard").count(), 2)                        # Standard: two stories, headlines only
-        self.assertEqual(panel.locator(".thumb").count(), 0)
-        std = panel.locator(".fcard h2").all_inner_texts()
+        self.assertEqual(panel.locator(".citem").count(), 3)                        # Standard: up to five stories with pictures (Sports has three)
+        self.assertEqual(panel.locator(".citem .thumb").count(), 3)
+        std = panel.locator(".citem .ctitle").all_inner_texts()
         panel.locator(".pmax").click()
         self.assertEqual(panel.locator(".fcard").count(), 3)                        # Maximise: all the section has (up to five), with pictures
         self.assertEqual(panel.locator(".fcard .thumb").count(), 3)
-        self.assertEqual(panel.locator(".fcard h2").all_inner_texts()[:2], std)     # the first two are the Standard ones
+        self.assertEqual(sorted(panel.locator(".fcard h2").all_inner_texts()), sorted(std))   # Maximise: the very same stories
         panel.locator(".ptab:text-is('Money Desk')").dispatch_event("click")        # the open tab's section is the one Shuffle and Maximise act on
         self.assertIn("No stories yet", panel.inner_text())
         panel.locator(".pmax").click()
