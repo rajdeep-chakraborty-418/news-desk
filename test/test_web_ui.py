@@ -284,6 +284,25 @@ class WebUITest(BrowserBase):
         self.assertEqual(self.page.locator("#chips button").first.inner_text(), "All")
         self.assertIn("Asia", self.page.locator("#chips button").all_inner_texts())
 
+    def test_continent_and_topic_buttons_depend_on_each_other(self):
+        self.open(section="defence")
+        vis = lambda sel: [t for t in self.page.locator(sel + " button:visible").all_inner_texts()]
+        conts = vis("#chips")
+        self.assertGreaterEqual(len(conts), 2)
+        self.page.click("#tchips button:text-is('Navy (7)')")
+        left = vis("#chips")                                                       # only continents that have Navy stories remain
+        self.assertEqual(left[0], "All")
+        self.assertTrue(set(left) <= set(conts))
+        c = left[1]
+        self.page.click("#chips button:text-is('%s')" % c)
+        n = self.tiles()
+        counts = vis("#tchips")                                                    # topic counts now follow the continent
+        navy = [t for t in counts if t.startswith("Navy")][0]
+        self.assertEqual(navy, "Navy (%d)" % n)
+        self.page.click("#reset")
+        self.assertEqual(vis("#chips"), conts)
+        self.assertEqual(vis("#tchips")[1], "Navy (7)")
+
     def test_english_headlines_button_and_search_on_regional_news(self):
         self.open(section="world")
         self.assertFalse(self.page.is_visible("#en"))                                # only where translations exist

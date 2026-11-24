@@ -581,6 +581,7 @@ function render() {
   saveState();
   paintEnglish();
   const base = bySection();
+  syncChips(base);
   renderSidebar(base);
   const list = base.filter(i =>
     (state.continent === "All" || i.continent === state.continent) && topicOk(i) &&
@@ -619,6 +620,34 @@ function render() {
     btn.onclick = () => { state.from = a; state.to = b; render(); };
     quick.append(btn);
   });
+}
+
+// The continent and topic buttons depend on each other (and on the newspaper selection): a topic button counts the stories
+// left once the chosen continent is applied, a continent button is hidden when nothing is left for the chosen topic.
+function syncChips(base) {
+  if (HOME) return;
+  const paperOk = (i) => state.papers.size === 0 || state.papers.has(keyOf(i));
+  const label = (t, n) => t.label.endsWith(")") ? `${t.label} · ${n}` : `${t.label} (${n})`;
+  const topics = topicList();
+  if (topics.length) {
+    const left = base.filter(i => (state.continent === "All" || i.continent === state.continent) && paperOk(i));
+    const n = new Map(topics.map(t => [t.label, 0]));
+    for (const i of left) for (const l of i.topics || []) if (n.has(l)) n.set(l, n.get(l) + 1);
+    $("tchips").querySelectorAll("button").forEach(b => {
+      const t = topics.find(x => x.label === b.dataset.v);
+      if (!t) return;                                                              // the "All" button
+      const k = n.get(t.label);
+      b.textContent = label(t, k);
+      b.hidden = k === 0 && state.topic !== t.label;
+    });
+  }
+  if (continentOn()) {
+    const left = base.filter(i => topicOk(i) && paperOk(i));
+    const have = new Set(left.map(i => i.continent));
+    $("chips").querySelectorAll("button").forEach(b => {
+      b.hidden = b.dataset.v !== "All" && !have.has(b.dataset.v) && state.continent !== b.dataset.v;
+    });
+  }
 }
 
 function buildChips() {
