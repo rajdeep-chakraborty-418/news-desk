@@ -9,5 +9,6 @@ for key in ("india", "world"):
     found, order = topics.headline_topics(items, spec)
     print("PROBE|%s stories=%d papers=%d" % (key, len(items), len({i.get('newspaper') or i.get('source') for i in items})))
     for t in order:
-        ex = [i["title"] for i in found[t]][:3]
-        print("PROBE|%s|%s|%d|%d|%s" % (key, t, len(found[t]), len({i.get('newspaper') or i.get('source') for i in found[t]}), " || ".join(ex)))
+        mem = [items[j] for j in sorted(found[t])]
+        ex = [i["title"] for i in mem][:3]
+        print("PROBE|%s|%s|%d|%d|%s" % (key, t, len(mem), len({i.get('newspaper') or i.get('source') for i in mem}), " || ".join(ex)))
