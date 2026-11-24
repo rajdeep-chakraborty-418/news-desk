@@ -9,6 +9,8 @@ import re
 
 import config
 
+NAME_SHARE = 0.8             # a topic word must be capitalised at least this often away from the start of a headline ...
+MIN_SEEN = 4                 # ... judged once it has been seen this many times away from the start
 COMPANION_SHARE = 0.85       # this share of the smaller topic's stories also carry the bigger topic -> one button
 COMPANION_RATIO = 3          # ... and the bigger topic has at most this many times the stories (else it is just a common word)
 
@@ -45,6 +47,8 @@ def join_companions(kept):
     groups = []
     for label, stories in kept:
         for g in groups:
+            if label.lower() in g["labels"][0].lower() or g["labels"][0].lower() in label.lower():
+                continue
             if len(g["labels"]) < 2 and len(stories & g["stories"]) >= COMPANION_SHARE * len(stories) and len(g["stories"]) <= COMPANION_RATIO * len(stories):
                 g["labels"].append(label)
                 g["stories"] = g["stories"] | stories

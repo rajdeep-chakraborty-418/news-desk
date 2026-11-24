@@ -207,3 +207,12 @@ class EnglishHeadlineTopics(TestCase):
         wide = [{"title": "Beta flood hits", "newspaper": "P%d" % i} for i in range(6)]
         _, order = topics.headline_topics(many + wide, self.spec(min_count=5, min_newspapers=1))
         self.assertTrue(order[0].startswith("Beta"))
+
+    def test_common_nouns_are_not_names(self):
+        titles = ["Govt opens school in Pune", "Big school fee hike", "Parents protest school rules", "New school bus norms", "Chennai school reopens",
+                  "Modi visits Bihar", "Narendra Modi in Delhi", "PM Modi addresses rally", "Modi government plan", "Rahul slams Modi"]
+        _, order = topics.headline_topics(self.stories(titles), self.spec(min_count=4))
+        self.assertIn("Modi", order)
+        self.assertNotIn("School", order)
+        _, order = topics.headline_topics(self.stories(titles), self.spec(min_count=4, names_only=False))
+        self.assertIn("School", order)

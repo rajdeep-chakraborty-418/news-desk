@@ -92,7 +92,7 @@ def load_topics(sections, directory=None):
         specs[path.stem] = {"mode": mode, "min_count": d.get("min_count", {"headlines": 8, "states": 1}.get(mode, 5)),
                             "max_topics": d.get("max_topics", 12), "min_newspapers": min_papers, "alias": alias,
                             "hide": {config.norm_label(n) for n in hide},
-                            "stopwords": {w.lower() for w in extra_stop}, "native_only": bool(d.get("native_only", False)),
+                            "stopwords": {w.lower() for w in extra_stop}, "native_only": bool(d.get("native_only", False)), "names_only": bool(d.get("names_only", True)),
                             "language": d.get("language", "bengali" if d.get("native_only") else "english"), "rank": d.get("rank", "newspapers")}
         if mode == "states":                                   # the buttons are the states of the newspapers: "English (local name)"
             specs[path.stem]["newspaper_states"] = newspaper_states(sections, directory)
@@ -154,10 +154,11 @@ def headline_topics(members, spec):
     uni, bi = defaultdict(set), defaultdict(set)                     # stem or "stem stem" -> story positions
     papers = defaultdict(set)
     forms = defaultdict(Counter)                                     # stem -> written form -> count
+    caps = defaultdict(lambda: [0, 0])                               # stem -> [capitalised, total] away from the start of a headline
     for pos, item in enumerate(members):
         who = item.get("newspaper") or item.get("source") or ""
         previous = None
-        for word in _words(item.get("title", "")):
+        for place, word in enumerate(_words(item.get("title", ""))):
             low = word.lower()
             st = stemmer(low)
             if spec.get("native_only") and word.isascii():          # English tags in front of the headline repeat the Bengali words
@@ -167,14 +168,20 @@ def headline_topics(members, spec):
                 previous = None
                 continue
             uni[st].add(pos); papers[st].add(who); forms[st][word if not word.islower() else low] += 1
+            if place:
+                caps[st][1] += 1
+                caps[st][0] += not word.islower()
             if previous is not None:
                 key = previous + " " + st
                 bi[key].add(pos); papers[key].add(who)
             previous = st
     too_common = 0.35 * n if n >= 30 else n + 1
 
+    def name_like(key):                       # English: a name is capitalised wherever it stands in a headline, a common noun is not
+        return all(caps[w][1] < topic_english.MIN_SEEN or caps[w][0] >= topic_english.NAME_SHARE * caps[w][1] for w in key.split())
+
     def ok(key, stories):
-        return (len(stories) >= spec["min_count"] and len(papers[key]) >= spec["min_newspapers"] and len(stories) <= too_common
+        return (not (english and spec.get("names_only", True) and not name_like(key)) and len(stories) >= spec["min_count"] and len(papers[key]) >= spec["min_newspapers"] and len(stories) <= too_common
                 and config.norm_label(key) not in spec["hide"])
     cands = {k: v for k, v in uni.items() if ok(k, v)}
     phrases = {k: v for k, v in bi.items() if ok(k, v)}
