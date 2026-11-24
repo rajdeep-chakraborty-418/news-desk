@@ -43,7 +43,8 @@
         "dark": "#7ea3f0"
       },
       "tier": 2,
-      "rank": 1
+      "rank": 1,
+      "continent_filter": false
     },
     {
       "key": "sports",
@@ -54,7 +55,8 @@
       },
       "tier": 1,
       "rank": 2,
-      "description": "Cricket, football and every other game: results, scores and analysis"
+      "description": "Cricket, football and every other game: results, scores and analysis",
+      "continent_filter": false
     },
     {
       "key": "entertainment",
@@ -65,7 +67,8 @@
       },
       "tier": 1,
       "rank": 1,
-      "description": "Bollywood, TV, OTT, music and celebrity stories from India and the world"
+      "description": "Bollywood, TV, OTT, music and celebrity stories from India and the world",
+      "continent_filter": false
     },
     {
       "key": "defence",
@@ -73,7 +76,8 @@
       "color": {
         "light": "#4a5a2a",
         "dark": "#9fbf5f"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "geopolitics",
@@ -81,7 +85,8 @@
       "color": {
         "light": "#8a2d2d",
         "dark": "#f08a8a"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "lifestyle",
@@ -91,7 +96,8 @@
         "dark": "#4fc3d3"
       },
       "tier": 2,
-      "rank": 3
+      "rank": 3,
+      "continent_filter": false
     },
     {
       "key": "business",
@@ -99,7 +105,8 @@
       "color": {
         "light": "#6b4e16",
         "dark": "#d9b25f"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "technology",
@@ -107,7 +114,8 @@
       "color": {
         "light": "#3d4fb0",
         "dark": "#8c9cf0"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "history",
@@ -115,7 +123,8 @@
       "color": {
         "light": "#7a5230",
         "dark": "#d1a27a"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "geography",
@@ -123,7 +132,8 @@
       "color": {
         "light": "#1f7a4d",
         "dark": "#64c796"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "science",
@@ -131,7 +141,8 @@
       "color": {
         "light": "#5b3fa0",
         "dark": "#b49af0"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "nature",
@@ -139,7 +150,8 @@
       "color": {
         "light": "#2f7d2a",
         "dark": "#86cf7e"
-      }
+      },
+      "continent_filter": false
     },
     {
       "key": "other",
@@ -147,7 +159,8 @@
       "color": {
         "light": "#5f6b7a",
         "dark": "#a8b3c2"
-      }
+      },
+      "continent_filter": false
     }
   ]
 }
