@@ -209,10 +209,10 @@ class EnglishHeadlineTopics(TestCase):
         self.assertTrue(order[0].startswith("Beta"))
 
     def test_common_nouns_are_not_names(self):
-        titles = ["Govt opens school in Pune", "Big school fee hike", "Parents protest school rules", "New school bus norms", "Chennai school reopens",
+        titles = ["Govt opens hospital in Pune", "Big hospital fee hike", "Parents protest hospital rules", "New hospital bus norms", "Chennai hospital reopens",
                   "Modi visits Bihar", "Narendra Modi in Delhi", "PM Modi addresses rally", "Modi government plan", "Rahul slams Modi"]
         _, order = topics.headline_topics(self.stories(titles), self.spec(min_count=4))
         self.assertIn("Modi", order)
-        self.assertNotIn("School", order)
+        self.assertNotIn("Hospital", order)
         _, order = topics.headline_topics(self.stories(titles), self.spec(min_count=4, names_only=False))
-        self.assertIn("School", order)
+        self.assertIn("Hospital", order)
