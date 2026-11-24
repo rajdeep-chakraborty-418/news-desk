@@ -133,6 +133,7 @@
   <div class="controls">
     <div class="row" id="filters">
       <div class="chips" id="chips" role="group" aria-label="Continent"></div>
+      <div class="chips" id="tchips" role="group" aria-label="Topic"></div>
       <fieldset class="kindbox" id="kind">
         <legend>Source type</legend>
         <label class="toggle"><input type="checkbox" id="fPrimary"> Primary</label>
@@ -320,7 +321,8 @@ function restoreState(params) {
 function syncControls() {
   $("q").value = state.q;
   $("fPrimary").checked = state.kinds.has("primary"); $("fSecondary").checked = state.kinds.has("secondary");
-  $("chips").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v === (topicList().length ? state.topic : state.continent)));
+  $("chips").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v === state.continent));
+  $("tchips").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.dataset.v === state.topic));
 }
 
 // ---------- Home: Today's Picks, one panel per section with five random stories (Standard: text only; Maximise: the same five with pictures) ----------
@@ -620,24 +622,26 @@ function render() {
 }
 
 function buildChips() {
-  const chips = $("chips"); chips.replaceChildren();
+  // two independent rows: continent buttons (sections that have them) and topic buttons (sections with a topics file)
   const topics = HOME ? [] : topicList();
-  if (!topics.length && !continentOn()) { chips.style.display = "none"; return; }        // nothing to filter by on this page
-  chips.style.display = "";
-  chips.setAttribute("aria-label", topics.length ? "Topic" : "Continent");
   if (topics.length && state.topic && !topics.some(t => t.label === state.topic)) state.topic = "";   // a topic that is no longer offered
-  const entries = topics.length ? [["", "All"]].concat(topics.map(t => [t.label, t.label.endsWith(")") ? `${t.label} · ${t.count}` : `${t.label} (${t.count})`])) : CONTINENTS.map(c => [c, c]);
-  for (const [v, text] of entries) {
-    const b = document.createElement("button");
-    b.type = "button"; b.dataset.v = v; b.textContent = text;
-    b.setAttribute("aria-pressed", v === (topics.length ? state.topic : state.continent));
-    b.onclick = () => {
-      if (topics.length) state.topic = v; else state.continent = v;
-      resetRange();
-      chips.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
-      render();
-    };
-    chips.append(b);
+  const rows = [["chips", "Continent", !HOME && continentOn() ? CONTINENTS.map(c => [c, c]) : [], () => state.continent, v => { state.continent = v; }],
+    ["tchips", "Topic", topics.length ? [["", "All"]].concat(topics.map(t => [t.label, t.label.endsWith(")") ? `${t.label} · ${t.count}` : `${t.label} (${t.count})`])) : [], () => state.topic, v => { state.topic = v; }]];
+  for (const [id, name, entries, get, set] of rows) {
+    const box = $(id); box.replaceChildren();
+    if (!entries.length) { box.style.display = "none"; continue; }
+    box.style.display = ""; box.setAttribute("aria-label", name);
+    for (const [v, text] of entries) {
+      const b = document.createElement("button");
+      b.type = "button"; b.dataset.v = v; b.textContent = text;
+      b.setAttribute("aria-pressed", v === get());
+      b.onclick = () => {
+        set(v); resetRange();
+        box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+        render();
+      };
+      box.append(b);
+    }
   }
 }
 

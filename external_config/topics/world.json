@@ -1,0 +1,12 @@
+{
+ "mode": "headlines",
+ "language": "english",
+ "min_count": 8,
+ "min_newspapers": 5,
+ "max_topics": 20,
+ "rank": "newspapers",
+ "hide": [
+  "world"
+ ],
+ "merge": {}
+}

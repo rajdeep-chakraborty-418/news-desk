@@ -261,23 +261,24 @@ class WebUITest(BrowserBase):
         self.assertEqual(self.tiles(), 26)
         self.assertTrue(all(c == "Africa" or True for c in chips))
 
-    def test_topic_buttons_replace_the_continent_buttons_and_filter_the_section(self):
+    def test_topic_buttons_sit_beside_the_continent_buttons_and_filter_the_section(self):
         self.open(section="defence")
-        self.assertEqual(self.page.locator("#chips button").all_inner_texts(), ["All", "Navy (7)", "Army (6)"])
-        self.assertEqual(self.page.get_attribute("#chips", "aria-label"), "Topic")
+        self.assertEqual(self.page.locator("#tchips button").all_inner_texts(), ["All", "Navy (7)", "Army (6)"])
+        self.assertEqual(self.page.get_attribute("#tchips", "aria-label"), "Topic")
+        self.assertIn("Asia", self.page.locator("#chips button").all_inner_texts())
         self.assertEqual(self.tiles(), 13)
-        self.page.click("#chips button:text-is('Navy (7)')")
+        self.page.click("#tchips button:text-is('Navy (7)')")
         self.assertEqual(self.tiles(), 7)
         self.assertTrue(all(t.split()[-1].isdigit() and int(t.split()[-1]) % 20 == 0 for t in self.titles()))
-        self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "Navy (7)")
+        self.assertEqual(self.page.locator("#tchips button[aria-pressed=true]").inner_text(), "Navy (7)")
         self.assertIn("topic=Navy", self.page.url)
         self.page.reload()                                                          # a reload restores the topic
         self.page.wait_for_function("document.querySelectorAll('#grid > *').length > 0")
         self.assertEqual(self.tiles(), 7)
-        self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "Navy (7)")
+        self.assertEqual(self.page.locator("#tchips button[aria-pressed=true]").inner_text(), "Navy (7)")
         self.page.click("#reset")
         self.assertEqual(self.tiles(), 13)
-        self.assertEqual(self.page.locator("#chips button[aria-pressed=true]").inner_text(), "All")
+        self.assertEqual(self.page.locator("#tchips button[aria-pressed=true]").inner_text(), "All")
         self.open(section="world")                                                  # other sections keep the continent buttons
         self.assertEqual(self.page.get_attribute("#chips", "aria-label"), "Continent")
         self.assertEqual(self.page.locator("#chips button").first.inner_text(), "All")
@@ -327,9 +328,9 @@ class WebUITest(BrowserBase):
 
     def test_state_buttons_show_english_and_local_name_with_the_count(self):
         self.open(section="showbiz")
-        self.assertEqual(self.page.locator("#chips button").all_inner_texts(),
+        self.assertEqual(self.page.locator("#tchips button").all_inner_texts(),
                          ["All", "Maharashtra (महाराष्ट्र) · 2", "Tamil Nadu (தமிழ்நாடு) · 2"])
-        self.page.click("#chips button:has-text('Maharashtra')")
+        self.page.click("#tchips button:has-text('Maharashtra')")
         self.assertEqual(self.tiles(), 2)
 
     def test_a_section_can_switch_the_continent_buttons_off(self):

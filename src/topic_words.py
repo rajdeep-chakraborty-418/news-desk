@@ -26,3 +26,27 @@ when where says say said will can may could not no yes
 BENGALI_ENDINGS = sorted("""
 গুলোকে গুলিকে গুলোর গুলির গুলো গুলি দেরকে দের দেরই রাও কেই কেও কে ের েরা রা তেই তেও তে য়ের য়েও য়ে য়ও য় র ে ই
 """.split(), key=len, reverse=True)
+
+# Newsroom filler that is never a topic in English headlines (the section's own list can add more: "stopwords").
+ENGLISH_NOISE = """
+against across amid among along around between during through while since until within without upon toward towards per via than then also
+back return returns returned seeks seek says says said told tells due held hold holds make makes made get gets got take takes took
+two three four five six seven eight nine ten first second third last next one day days week weeks month months year years night morning
+january february march april may june july august september october november december monday tuesday wednesday thursday friday saturday sunday
+rs lakh lakhs crore crores cr usd dollar dollars rupees per cent percent pct mn bn million billion thousand
+man men woman women boy girl people person persons family state states city district village town
+police court courts govt government minister ministers ceo chief cm hc sc pm leader leaders official officials
+report reports reported deal deals talks talk war case cases plan plans bid move moves set sets
+new old top big high low more most less least many much some any all both each every other another such own same
+warns warn urges urge asks ask demands demand claims claim hits hit sees see shows show gives give takes calls call
+up down out off over near ahead behind after before under above below inside outside
+may will would should could can must might shall
+get gets going goes go come comes came
+strike strikes killed kills dead dies die death deaths injured arrested arrest
+water power market markets price prices rate rates
+world global national international local
+""".split()
+
+# Short names that are written in capitals (shown as US, not Us).
+ACRONYMS = set("""us uk eu un uae usa nato ai ipl bjp rbi sebi isro cbi nia gst fir nasa fbi cia imf wto who opec asean brics sc hc
+tvk dmk aiadmk tmc ncp sp bsp aap jdu rjd ndtv ani pti ap""".split())

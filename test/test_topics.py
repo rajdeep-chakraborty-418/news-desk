@@ -163,3 +163,47 @@ class SectionTierTest(TestCase):
         for bad in ({"tier": 4}, {"tier": "1"}, {"tier": True}, {"rank": "x"}, {"description": ""}, {"description": 5}):
             with self.assertRaises(config.ConfigError):
                 self.load(**bad)
+
+
+class EnglishHeadlineTopics(TestCase):
+    def spec(self, **kw):
+        s = {"mode": "headlines", "language": "english", "min_count": 3, "min_newspapers": 3, "max_topics": 20,
+             "stopwords": set(), "hide": set(), "alias": {}, "native_only": False, "rank": "newspapers"}
+        s.update(kw)
+        return s
+
+    def stories(self, titles):
+        return [{"title": t, "newspaper": "P%d" % (i % 5)} for i, t in enumerate(titles)]
+
+    def test_filler_words_are_not_topics_and_plurals_merge(self):
+        titles = ["Nepal earthquake strikes villages", "Nepal earthquakes hit again", "Against all odds Nepal quake", "Nepal earthquake toll rises",
+                  "Rs 5 lakh seized", "Rs 2 lakh bribe", "Lakh Rs fine", "Market opens flat", "Weather turns cold", "Cricket final today"]
+        found, order = topics.headline_topics(self.stories(titles), self.spec())
+        self.assertTrue([l for l in order if "Nepal" in l])
+        self.assertNotIn("Against", order)
+        self.assertNotIn("Rs", order)
+        self.assertFalse([l for l in order if l.lower() == "earthquakes"])
+
+    def test_acronym_and_companion_names(self):
+        titles = ["US sanctions Nvidia", "Jensen Huang returns to Nvidia", "Nvidia chief Jensen Huang speaks", "Nvidia: Jensen Huang back",
+                  "US mulls tariffs", "US vote delayed", "US border row", "US jobs data", "Weather in Oslo", "Football news", "Chess finals"]
+        found, order = topics.headline_topics(self.stories(titles), self.spec())
+        self.assertIn("US", order)
+        joined = [l for l in order if "Nvidia" in l]
+        self.assertEqual(len(joined), 1)
+        self.assertIn("Jensen Huang", joined[0])
+
+    def test_hide_and_max_topics_are_parameters(self):
+        titles = ["Kallakurichi row grows", "Kallakurichi MLA booked", "Kallakurichi protest", "Kallakurichi inquiry",
+                  "Sabarimala rush", "Sabarimala slots", "Sabarimala queue", "Sabarimala pilgrims", "Delhi smog", "Delhi smog again", "Delhi smog worse"]
+        s = self.stories(titles)
+        _, order = topics.headline_topics(s, self.spec(hide={"delhi"}))
+        self.assertNotIn("Delhi", order)
+        _, order = topics.headline_topics(s, self.spec(max_topics=1))
+        self.assertEqual(len(order), 1)
+
+    def test_ranked_by_newspapers_not_stories(self):
+        many = [{"title": "Alpha storm hits", "newspaper": "A"} for _ in range(10)]
+        wide = [{"title": "Beta flood hits", "newspaper": "P%d" % i} for i in range(6)]
+        _, order = topics.headline_topics(many + wide, self.spec(min_count=5, min_newspapers=1))
+        self.assertTrue(order[0].startswith("Beta"))

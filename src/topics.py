@@ -22,6 +22,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import config
+import topic_english
 import topic_words
 
 MAX_NAME = 40
@@ -66,6 +67,8 @@ def load_topics(sections, directory=None):
             if not isinstance(v, int) or isinstance(v, bool) or not lo <= v <= hi:
                 raise config.ConfigError(f"{where}: '{field}' must be a whole number from {lo} to {hi}")
         mode = d.get("mode", "tags")
+        if d.get("language", "english") not in ("english", "bengali") or d.get("rank", "newspapers") not in ("newspapers", "stories"):
+            raise config.ConfigError(f'{where}: "language" must be "english" or "bengali" and "rank" "newspapers" or "stories"')
         if mode not in ("tags", "headlines", "states"):
             raise config.ConfigError(f'{where}: "mode" must be "tags", "headlines" or "states"')
         min_papers = d.get("min_newspapers", 1)
@@ -89,7 +92,8 @@ def load_topics(sections, directory=None):
         specs[path.stem] = {"mode": mode, "min_count": d.get("min_count", {"headlines": 8, "states": 1}.get(mode, 5)),
                             "max_topics": d.get("max_topics", 12), "min_newspapers": min_papers, "alias": alias,
                             "hide": {config.norm_label(n) for n in hide},
-                            "stopwords": {w.lower() for w in extra_stop}, "native_only": bool(d.get("native_only", False))}
+                            "stopwords": {w.lower() for w in extra_stop}, "native_only": bool(d.get("native_only", False)),
+                            "language": d.get("language", "bengali" if d.get("native_only") else "english"), "rank": d.get("rank", "newspapers")}
         if mode == "states":                                   # the buttons are the states of the newspapers: "English (local name)"
             specs[path.stem]["newspaper_states"] = newspaper_states(sections, directory)
     return specs
@@ -123,8 +127,10 @@ def stem(word):
     return word
 
 
-def _show(forms, key):
+def _show(forms, key, english=False):
     """The form of a word to show on a button: the plain stem if it occurs, else the commonest written form."""
+    if english and key in topic_words.ACRONYMS:
+        return key.upper()
     best = key if key in forms else max(forms, key=lambda f: (forms[f], -len(f)))
     return best[:1].upper() + best[1:] if best.islower() and best.isascii() else best
 
@@ -133,8 +139,17 @@ def headline_topics(members, spec):
     """members: the stories of one section. Returns ({label: set of story positions}, ordered labels) - the names, places and
     events that occur in at least min_count headlines from at least min_newspapers newspapers, most frequent first, at most
     max_topics. A phrase of two words that nearly always go together (শুভেন্দু অধিকারী) replaces its single words, and topics
-    that cover almost the same stories are shown once. Words everybody uses (more than a third of the headlines) are skipped."""
+    that cover almost the same stories are shown once. Words everybody uses (more than a third of the headlines) are skipped.
+    With "language": "english" (see topic_english.py) plurals are merged, acronyms stay capitals, newsroom filler words are
+    skipped, names that always appear together (Nvidia / Jensen Huang) become one button and the buttons are ranked by the
+    number of newspapers that carry them."""
+    english = spec.get("language") == "english"
     stop = {unicodedata.normalize("NFD", w) for w in set(topic_words.BENGALI_STOP) | set(topic_words.ENGLISH_STOP) | spec.get("stopwords", set())}
+    if english:
+        stop |= {w.lower() for w in topic_words.ENGLISH_NOISE}
+        stemmer = topic_english.make_stemmer(members)
+    else:
+        stemmer = stem
     n = len(members)
     uni, bi = defaultdict(set), defaultdict(set)                     # stem or "stem stem" -> story positions
     papers = defaultdict(set)
@@ -144,7 +159,7 @@ def headline_topics(members, spec):
         previous = None
         for word in _words(item.get("title", "")):
             low = word.lower()
-            st = stem(low)
+            st = stemmer(low)
             if spec.get("native_only") and word.isascii():          # English tags in front of the headline repeat the Bengali words
                 previous = None
                 continue
@@ -167,16 +182,23 @@ def headline_topics(members, spec):
         for word in phrase.split():
             if word in cands and len(stories) >= 0.6 * len(cands[word]):
                 del cands[word]
-    chosen = {}
+    chosen = {}                                                      # label -> [story positions, newspapers]
     for key, stories in list(cands.items()) + list(phrases.items()):
-        label = " ".join(_show(forms[w], w) for w in key.split())
-        chosen[label] = (key, stories)
+        label = " ".join(_show(forms[w], w, english) for w in key.split())
+        chosen[label] = [stories, papers[key]]
+    if english:
+        chosen = topic_english.merge_named(chosen, spec.get("alias", {}))
+    if english and spec.get("rank") != "stories":
+        order_key = lambda kv: (-len(kv[1][1]), -len(kv[1][0]), kv[0])
+    else:
+        order_key = lambda kv: (-len(kv[1][0]), -len(kv[0]), kv[0])
     kept = []
-    for label, (key, stories) in sorted(chosen.items(), key=lambda kv: (-len(kv[1][1]), -len(kv[0]), kv[0])):
+    for label, (stories, _) in sorted(chosen.items(), key=order_key):
         if all(len(stories & other) / len(stories | other) < 0.8 for _, other in kept):
             kept.append((label, stories))
-        if len(kept) == spec["max_topics"]:
-            break
+    if english:
+        kept = topic_english.join_companions(kept)
+    kept = kept[:spec["max_topics"]]
     return {label: stories for label, stories in kept}, [label for label, _ in kept]
 
 
