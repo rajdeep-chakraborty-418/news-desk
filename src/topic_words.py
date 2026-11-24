@@ -45,6 +45,7 @@ get gets going goes go come comes came
 strike strikes killed kills dead dies die death deaths injured arrested arrest
 water power market markets price prices rate rates
 world global national international local
+jan feb mar apr jun jul aug sep sept oct nov dec class university college school students student bank banks south north east west central
 """.split()
 
 # Short names that are written in capitals (shown as US, not Us).
